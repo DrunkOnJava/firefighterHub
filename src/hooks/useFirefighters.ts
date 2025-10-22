@@ -36,7 +36,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentShift]);
+  }, [currentShift, loadFirefighters]);
 
   async function loadFirefighters() {
     try {
@@ -178,35 +178,6 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     }
   }
 
-  async function toggleAvailable(id: string) {
-    const firefighter = firefighters.find(ff => ff.id === id);
-    if (!firefighter) return;
-
-    const newAvailableStatus = !firefighter.is_available;
-    const previousFirefighters = [...firefighters];
-
-    setFirefighters(prev => prev.map(ff =>
-      ff.id === id ? { ...ff, is_available: newAvailableStatus } : ff
-    ));
-
-    try {
-      const { error } = await supabase
-        .from('firefighters')
-        .update({ is_available: newAvailableStatus })
-        .eq('id', id);
-
-      if (error) throw error;
-
-      const status = newAvailableStatus ? 'back in rotation' : 'removed from rotation';
-      showToast(`${firefighter.name} is ${status}`, 'success');
-      await logActivity(firefighter.name, newAvailableStatus ? 'on_duty' : 'off_duty', `Marked as ${status}`, id);
-    } catch (error) {
-      console.error('Error toggling availability:', error);
-      setFirefighters(previousFirefighters);
-      showToast('Status update failed. Check your connection and retry.', 'error');
-    }
-  }
-
   async function completeHold(id: string, holdDate: string, station?: string) {
     const firefighter = firefighters.find(ff => ff.id === id);
     if (!firefighter || !firefighter.is_available) return;
@@ -222,7 +193,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
 
     try {
       for (const ff of updatedFirefighters) {
-        const updates: any = { order_position: ff.order_position };
+        const updates: { order_position: number; last_hold_date?: string } = { order_position: ff.order_position };
         if (ff.id === id) {
           updates.last_hold_date = holdDate;
         }

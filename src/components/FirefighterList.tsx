@@ -6,8 +6,7 @@ import { Firefighter, Shift } from '../lib/supabase'; // FIXED: Added missing Sh
 import { AddFirefighterForm } from './AddFirefighterForm';
 import { ReactivateModal } from './ReactivateModal';
 import { FirefighterProfileModal } from './FirefighterProfileModal';
-import { CalendarSubscribeModal } from './CalendarSubscribeModal';
-import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, CalendarPlus } from 'lucide-react';
+import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown } from 'lucide-react';
 import { exportRosterToCSV, exportRosterToJSON } from '../utils/exportUtils';
 
 interface FirefighterListProps {
@@ -30,14 +29,12 @@ export function FirefighterList({
   firefighters,
   deactivatedFirefighters = [],
   onAdd,
-  onCompleteHold: _onCompleteHold,
   onDelete,
   onDeactivate,
   onReactivate,
   onTransferShift,
   onResetAll,
   onReorder,
-  currentShift,
   isAdminMode = false,
   isDarkMode = true
 }: FirefighterListProps) {
@@ -49,9 +46,7 @@ export function FirefighterList({
   const [selectedFirefighter, setSelectedFirefighter] = useState<Firefighter | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [showBulkActions, setShowBulkActions] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
-  const [showCalendarSubscribe, setShowCalendarSubscribe] = useState(false);
 
   useEffect(() => {
     if (draggedId === null) {
@@ -160,18 +155,6 @@ export function FirefighterList({
 
     selectedIds.forEach(id => onDeactivate(id));
     deselectAll();
-  }
-
-  function handleBulkTransfer() {
-    if (selectedIds.size === 0) return;
-
-    const firstId = Array.from(selectedIds)[0];
-    const firstFirefighter = firefighters.find(ff => ff.id === firstId);
-
-    if (firstFirefighter) {
-      setSelectedFirefighter(firstFirefighter);
-      setShowBulkActions(true);
-    }
   }
 
   function handleExportCSV() {

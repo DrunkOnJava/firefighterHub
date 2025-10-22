@@ -62,7 +62,7 @@ async function addMissingFirefighters() {
       ? aShiftFirefighters[0].order_position + 1
       : 1;
 
-    const { data: newFirefighter, error } = await supabase
+    const { error } = await supabase
       .from('firefighters')
       .insert({
         name: 'Catlett',

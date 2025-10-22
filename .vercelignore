@@ -1,0 +1,44 @@
+# Development files
+node_modules
+.git
+.vscode
+.idea
+
+# Environment files (will be set in Vercel dashboard)
+.env
+.env.local
+.env.development
+.env.production
+
+# Build artifacts
+dist
+
+# Documentation (not needed in production)
+*.md
+!README.md
+
+# Scripts (not needed in production)
+scripts/
+
+# Database files (not needed in production)
+database/
+supabase/
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Temporary files
+*.tmp
+*.temp
+.temp/

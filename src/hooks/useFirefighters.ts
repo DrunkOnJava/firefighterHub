@@ -1,3 +1,7 @@
+// TECHNICAL DEBT: This hook is doing too much - violates Single Responsibility Principle
+// Consider splitting into: useFirefightersData, useFirefighterMutations, useFirefighterRealtimeSync
+// Currently 465 lines handling: data fetching, mutations, optimistic updates, logging, and real-time sync
+
 import { useEffect, useState } from 'react';
 import { supabase, Firefighter, Shift } from '../lib/supabase';
 import { recalculatePositions, moveToBottom, assignPositions } from '../utils/rotationLogic';
@@ -8,9 +12,12 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
   const [deactivatedFirefighters, setDeactivatedFirefighters] = useState<Firefighter[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // ISSUE: Missing loadFirefighters in dependency array - ESLint will warn about this
+  // The function is defined inside the hook, so it should be wrapped in useCallback or included in deps
   useEffect(() => {
     loadFirefighters();
 
+    // GOOD PRACTICE: Real-time subscription for live updates
     const channel = supabase
       .channel('firefighters_changes')
       .on(

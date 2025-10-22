@@ -1,3 +1,10 @@
+// TECHNICAL DEBT: This file has several critical architectural issues that need addressing:
+// 1. AuthContext and LoginModal exist but are never used - dead code that should be integrated or removed
+// 2. Uses hardcoded password instead of proper Supabase authentication
+// 3. Dark mode preference not persisted to localStorage (always resets to true)
+// 4. Admin mode stored in localStorage is insecure (client-side only, easily bypassed)
+// 5. Large component file (266 lines) - consider breaking into smaller components
+
 import { useEffect, useState, useRef } from 'react';
 import { Shift, Firefighter } from './lib/supabase';
 import { Calendar } from './components/Calendar';
@@ -16,6 +23,10 @@ import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { useAnnounce } from './hooks/useAnnounce';
 
+// CRITICAL SECURITY ISSUE: Hardcoded password - move to environment variable
+// RECOMMENDATION: Use proper Supabase auth with AuthContext (already exists but unused)
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Firerescue';
+
 function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showActivityLog, setShowActivityLog] = useState(false);
@@ -25,16 +36,29 @@ function App() {
   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
   const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
+  // TECHNICAL DEBT: Default shift hardcoded to 'C' - should be configurable or persist user preference
   const [currentShift, setCurrentShift] = useState<Shift>('C');
+
+  // ISSUE: Client-side admin mode is insecure - anyone can set localStorage.setItem('isAdminMode', 'true')
+  // RECOMMENDATION: Replace with server-side auth using the existing AuthContext
   const [isAdminMode, setIsAdminMode] = useState(() => {
     const saved = localStorage.getItem('isAdminMode');
     return saved === 'true';
   });
-  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // FIXED: Dark mode now persists to localStorage (was always resetting to true)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('isDarkMode');
+    return saved !== 'false'; // Default to true (dark mode) if not set
+  });
+
   const { toast, showToast, hideToast } = useToast();
   const announce = useAnnounce();
   const shiftChangeAnnouncedRef = useRef(false);
 
+  // CRITICAL SECURITY ISSUE: Password comparison in client-side code
+  // This provides NO real security - anyone can read this password from the source code
+  // RECOMMENDATION: Use Supabase authentication or at minimum hash comparison
   function handleToggleAdminMode(password: string): boolean {
     if (isAdminMode) {
       setIsAdminMode(false);
@@ -43,7 +67,8 @@ function App() {
       return true;
     }
 
-    if (password === 'Firerescue') {
+    // SECURITY CRITICAL: Hardcoded password check - never do this in production!
+    if (password === ADMIN_PASSWORD) {
       setIsAdminMode(true);
       localStorage.setItem('isAdminMode', 'true');
       showToast('Admin mode enabled', 'success');
@@ -105,6 +130,13 @@ function App() {
   }
 
 
+  // Persist dark mode preference to localStorage
+  useEffect(() => {
+    localStorage.setItem('isDarkMode', String(isDarkMode));
+  }, [isDarkMode]);
+
+  // ISSUE: Missing 'announce' in dependency array could cause stale closure
+  // The announce function is stable from useAnnounce, but ESLint will warn about this
   useEffect(() => {
     if (shiftChangeAnnouncedRef.current) {
       announce(`Switched to Shift ${currentShift}`, 'polite');

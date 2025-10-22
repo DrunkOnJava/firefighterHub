@@ -1,3 +1,6 @@
+// TECHNICAL DEBT: Similar to useFirefighters, this hook is large (224 lines) and handles multiple concerns
+// Consider splitting data fetching, mutations, and real-time sync into separate hooks
+
 import { useEffect, useState } from 'react';
 import { supabase, Firefighter, Shift } from '../lib/supabase';
 import { ScheduledHold } from '../utils/calendarUtils';

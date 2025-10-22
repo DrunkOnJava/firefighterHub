@@ -57,17 +57,19 @@ A comprehensive shift rotation and availability management system for fire depar
 firefighterHub/
 ├── src/
 │   ├── components/        # React components
+│   ├── contexts/          # React contexts (Auth, etc.)
 │   ├── hooks/             # Custom React hooks
-│   ├── lib/               # Supabase client and types
-│   └── utils/             # Utility functions
+│   ├── lib/               # Supabase client and type definitions
+│   └── utils/             # Utility functions (theme, calendar, export, etc.)
 ├── supabase/
-│   └── migrations/        # Database migrations
+│   ├── migrations/        # Database migrations
+│   └── functions/         # Edge functions (calendar subscription)
 ├── database/
 │   ├── schema.sql         # Full database schema
 │   ├── seed.sql           # Sample data
 │   └── SETUP_INSTRUCTIONS.md
-├── scripts/               # Utility scripts
-└── public/                # Static assets
+├── scripts/               # Utility scripts for data management
+└── public/                # Static assets (PWA manifests, service worker)
 ```
 
 ## Database Schema

@@ -1,5 +1,8 @@
+// TECHNICAL DEBT: This file is 400+ lines - should be split into smaller components
+// Consider extracting: BulkActions, ExportMenu, SearchBar, FirefighterCard components
+
 import { useState, useEffect } from 'react';
-import { Firefighter } from '../lib/supabase';
+import { Firefighter, Shift } from '../lib/supabase'; // FIXED: Added missing Shift import
 import { AddFirefighterForm } from './AddFirefighterForm';
 import { ReactivateModal } from './ReactivateModal';
 import { FirefighterProfileModal } from './FirefighterProfileModal';

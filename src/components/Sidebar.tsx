@@ -37,7 +37,7 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true }: Sid
       }
     }
     loadAllShiftsNextUp();
-  }, [firefighters]); // Reload when any firefighter data changes
+  }, [firefighters.length]); // Only reload when count changes, not on every array change
 
   const nextUpAllShifts = allShiftFirefighters;
 

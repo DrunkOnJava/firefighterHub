@@ -40,7 +40,7 @@ export function FirefighterProfileModal({
       setEditedFirefighter({...firefighter});
       setIsEditMode(false);
     }
-  }, [isOpen, firefighter]);
+  }, [isOpen, firefighter, loadHoldHistory]);
 
   useEffect(() => {
     if (!isOpen) return;

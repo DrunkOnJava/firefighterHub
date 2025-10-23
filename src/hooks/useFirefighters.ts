@@ -6,11 +6,13 @@ import { useEffect, useState } from 'react';
 import { supabase, Firefighter, Shift } from '../lib/supabase';
 import { recalculatePositions, moveToBottom, assignPositions } from '../utils/rotationLogic';
 import { ToastType } from './useToast';
+import { useOperationLoading, OperationType } from './useOperationLoading';
 
 export function useFirefighters(showToast: (message: string, type: ToastType) => void, currentShift: Shift) {
   const [firefighters, setFirefighters] = useState<Firefighter[]>([]);
   const [deactivatedFirefighters, setDeactivatedFirefighters] = useState<Firefighter[]>([]);
   const [loading, setLoading] = useState(true);
+  const { startLoading, stopLoading, isLoading: isOperationLoading, loadingStates } = useOperationLoading();
 
   // ISSUE: Missing loadFirefighters in dependency array - ESLint will warn about this
   // The function is defined inside the hook, so it should be wrapped in useCallback or included in deps
@@ -36,7 +38,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentShift]);
+  }, [currentShift, loadFirefighters]);
 
   async function loadFirefighters() {
     try {
@@ -105,6 +107,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
       isALS?: boolean;
     }
   ) {
+    startLoading('add');
     const available = firefighters.filter(ff => ff.is_available);
     const maxPosition = available.length > 0
       ? Math.max(...available.map(ff => ff.order_position))
@@ -175,35 +178,8 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
       console.error('Error adding firefighter:', error);
       setFirefighters(prev => prev.filter(ff => ff.id !== tempId));
       showToast('Could not add team member. Please try again.', 'error');
-    }
-  }
-
-  async function toggleAvailable(id: string) {
-    const firefighter = firefighters.find(ff => ff.id === id);
-    if (!firefighter) return;
-
-    const newAvailableStatus = !firefighter.is_available;
-    const previousFirefighters = [...firefighters];
-
-    setFirefighters(prev => prev.map(ff =>
-      ff.id === id ? { ...ff, is_available: newAvailableStatus } : ff
-    ));
-
-    try {
-      const { error } = await supabase
-        .from('firefighters')
-        .update({ is_available: newAvailableStatus })
-        .eq('id', id);
-
-      if (error) throw error;
-
-      const status = newAvailableStatus ? 'back in rotation' : 'removed from rotation';
-      showToast(`${firefighter.name} is ${status}`, 'success');
-      await logActivity(firefighter.name, newAvailableStatus ? 'on_duty' : 'off_duty', `Marked as ${status}`, id);
-    } catch (error) {
-      console.error('Error toggling availability:', error);
-      setFirefighters(previousFirefighters);
-      showToast('Status update failed. Check your connection and retry.', 'error');
+    } finally {
+      stopLoading('add');
     }
   }
 
@@ -222,7 +198,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
 
     try {
       for (const ff of updatedFirefighters) {
-        const updates: any = { order_position: ff.order_position };
+        const updates: { order_position: number; last_hold_date?: string } = { order_position: ff.order_position };
         if (ff.id === id) {
           updates.last_hold_date = holdDate;
         }
@@ -466,6 +442,8 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     transferShift,
     resetAll,
     masterReset,
-    reorderFirefighters
+    reorderFirefighters,
+    isOperationLoading,
+    loadingStates
   };
 }

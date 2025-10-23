@@ -70,7 +70,7 @@ async function testConnection() {
 
     // Test 4: Check table structure
     console.log('\nTest 4: Checking activity_log table structure...');
-    const { data: logTest, error: logError } = await supabase
+    const { error: logError } = await supabase
       .from('activity_log')
       .select('*')
       .limit(1);
@@ -85,7 +85,7 @@ async function testConnection() {
 
     // Test 5: Check scheduled_holds
     console.log('\nTest 5: Checking scheduled_holds table...');
-    const { data: holdsTest, error: holdsError } = await supabase
+    const { error: holdsError } = await supabase
       .from('scheduled_holds')
       .select('*')
       .limit(1);
@@ -111,8 +111,9 @@ async function testConnection() {
       console.log('❌ Database connection issues detected');
     }
 
-  } catch (error: any) {
-    console.error('❌ Unexpected error:', error.message || error);
+  } catch (error: unknown) {
+    const err = error as { message?: string };
+    console.error('❌ Unexpected error:', err.message || error);
   }
 }
 

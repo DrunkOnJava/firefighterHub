@@ -7,7 +7,7 @@ import { AddFirefighterForm } from './AddFirefighterForm';
 import { ReactivateModal } from './ReactivateModal';
 import { FirefighterProfileModal } from './FirefighterProfileModal';
 import { FilterPanel } from './FilterPanel';
-import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, Filter, UserPlus } from 'lucide-react';
+import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, Filter, UserPlus, History } from 'lucide-react';
 import { exportRosterToCSV, exportRosterToJSON } from '../utils/exportUtils';
 import { useFilters } from '../hooks/useFilters';
 
@@ -651,13 +651,32 @@ export function FirefighterList({
                         )}
                       </td>
                       <td className={`px-4 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
-                        {firefighter.last_hold_date
-                          ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })
-                          : <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>Never</span>}
+                        <div className="flex items-center gap-2">
+                          <span>
+                            {firefighter.last_hold_date
+                              ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                })
+                              : <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>Never</span>}
+                          </span>
+                          <button
+                            onClick={() => {
+                              setSelectedFirefighter(firefighter);
+                              setShowProfileModal(true);
+                            }}
+                            className={`p-1 rounded transition-colors ${
+                              isDarkMode
+                                ? 'hover:bg-gray-700 text-gray-500 hover:text-gray-300'
+                                : 'hover:bg-slate-100 text-slate-400 hover:text-slate-600'
+                            }`}
+                            title="View hold history"
+                            aria-label="View hold history"
+                          >
+                            <History size={14} />
+                          </button>
+                        </div>
                       </td>
                       {isAdminMode && (
                         <td className="px-4 py-4 whitespace-nowrap text-right">

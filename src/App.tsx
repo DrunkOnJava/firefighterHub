@@ -17,7 +17,8 @@ import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { MobileNav } from './components/MobileNav';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
-import { Toast } from './components/Toast';
+import { ToastContainer } from './components/Toast';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
@@ -56,7 +57,7 @@ function App() {
     return saved !== 'false'; // Default to true (dark mode) if not set
   });
 
-  const { toast, showToast, hideToast } = useToast();
+  const { toasts, showToast, hideToast } = useToast();
   const announce = useAnnounce();
   const shiftChangeAnnouncedRef = useRef(false);
 
@@ -248,47 +249,53 @@ function App() {
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
             <div className="xl:col-span-9">
               <section aria-labelledby="calendar-heading">
-                <Calendar
-                firefighters={firefighters}
-                scheduledHolds={scheduledHolds}
-                onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
-                onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
-                loading={holdsLoading}
-                isAdminMode={isAdminMode}
-                isDarkMode={isDarkMode}
-                currentShift={currentShift}
-              />
+                <ErrorBoundary componentName="Calendar" resetKeys={[currentShift]}>
+                  <Calendar
+                  firefighters={firefighters}
+                  scheduledHolds={scheduledHolds}
+                  onScheduleHold={isAdminMode ? scheduleHold : () => {}}
+                  onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
+                  onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
+                  loading={holdsLoading}
+                  isAdminMode={isAdminMode}
+                  isDarkMode={isDarkMode}
+                  currentShift={currentShift}
+                />
+                </ErrorBoundary>
               </section>
             </div>
 
             <aside className="xl:col-span-3" role="complementary" aria-label="Team statistics and information">
-              <Sidebar
-                firefighters={firefighters}
-                scheduledHolds={scheduledHolds}
-                isDarkMode={isDarkMode}
-              />
+              <ErrorBoundary componentName="Sidebar" resetKeys={[firefighters.length]}>
+                <Sidebar
+                  firefighters={firefighters}
+                  scheduledHolds={scheduledHolds}
+                  isDarkMode={isDarkMode}
+                />
+              </ErrorBoundary>
             </aside>
           </div>
 
           <div className="mb-8">
             <section aria-labelledby="roster-heading">
-              <FirefighterList
-              firefighters={firefighters}
-              deactivatedFirefighters={deactivatedFirefighters}
-              onAdd={addFirefighter}
-              onCompleteHold={handleCompleteHoldClick}
-              onDelete={deleteFirefighter}
-              onDeactivate={deactivateFirefighter}
-              onReactivate={reactivateFirefighter}
-              onTransferShift={handleTransferShiftClick}
-              onResetAll={resetAll}
-              onReorder={reorderFirefighters}
-              currentShift={currentShift}
-              isAdminMode={isAdminMode}
-              isDarkMode={isDarkMode}
-              searchInputRef={searchInputRef}
-            />
+              <ErrorBoundary componentName="FirefighterList" resetKeys={[currentShift, firefighters.length]}>
+                <FirefighterList
+                firefighters={firefighters}
+                deactivatedFirefighters={deactivatedFirefighters}
+                onAdd={addFirefighter}
+                onCompleteHold={handleCompleteHoldClick}
+                onDelete={deleteFirefighter}
+                onDeactivate={deactivateFirefighter}
+                onReactivate={reactivateFirefighter}
+                onTransferShift={handleTransferShiftClick}
+                onResetAll={resetAll}
+                onReorder={reorderFirefighters}
+                currentShift={currentShift}
+                isAdminMode={isAdminMode}
+                isDarkMode={isDarkMode}
+                searchInputRef={searchInputRef}
+              />
+              </ErrorBoundary>
             </section>
           </div>
         </main>
@@ -354,15 +361,12 @@ function App() {
         onAdd={addFirefighter}
       />
 
-      {toast && (
-        <div role="alert" aria-live="polite" aria-atomic="true">
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={hideToast}
-          />
-        </div>
-      )}
+      <div role="alert" aria-live="polite" aria-atomic="true">
+        <ToastContainer
+          toasts={toasts}
+          onClose={hideToast}
+        />
+      </div>
     </div>
   );
 }

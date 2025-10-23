@@ -22,7 +22,6 @@ interface FirefighterItemProps {
 
 export function FirefighterItem({
   firefighter,
-  onToggleAvailable: _onToggleAvailable,
   onCompleteHold,
   onDelete,
   onDeactivate,

@@ -57,7 +57,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
         onSuccess?.();
         onClose();
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred. Please try again.');
       setIsLoading(false);
     }

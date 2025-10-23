@@ -51,7 +51,7 @@ async function findDuplicateHolds() {
       dateMap.get(date)!.push(hold);
     });
 
-    const duplicates = Array.from(dateMap.entries()).filter(([_, holds]) => holds.length > 1);
+    const duplicates = Array.from(dateMap.entries()).filter(([, holds]) => holds.length > 1);
 
     if (duplicates.length > 0) {
       console.log('\n' + '='.repeat(60));

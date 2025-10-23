@@ -6,9 +6,8 @@ import { Firefighter, Shift } from '../lib/supabase'; // FIXED: Added missing Sh
 import { AddFirefighterForm } from './AddFirefighterForm';
 import { ReactivateModal } from './ReactivateModal';
 import { FirefighterProfileModal } from './FirefighterProfileModal';
-import { CalendarSubscribeModal } from './CalendarSubscribeModal';
 import { FilterPanel } from './FilterPanel';
-import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, CalendarPlus, Filter } from 'lucide-react';
+import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, Filter } from 'lucide-react';
 import { exportRosterToCSV, exportRosterToJSON } from '../utils/exportUtils';
 import { useFilters } from '../hooks/useFilters';
 
@@ -26,22 +25,22 @@ interface FirefighterListProps {
   currentShift?: Shift;
   isAdminMode?: boolean;
   isDarkMode?: boolean;
+  searchInputRef?: React.RefObject<HTMLInputElement>;
 }
 
 export function FirefighterList({
   firefighters,
   deactivatedFirefighters = [],
   onAdd,
-  onCompleteHold: _onCompleteHold,
   onDelete,
   onDeactivate,
   onReactivate,
   onTransferShift,
   onResetAll,
   onReorder,
-  currentShift,
   isAdminMode = false,
-  isDarkMode = true
+  isDarkMode = true,
+  searchInputRef
 }: FirefighterListProps) {
   const [localFirefighters, setLocalFirefighters] = useState<Firefighter[]>(firefighters);
   const [draggedId, setDraggedId] = useState<string | null>(null);
@@ -51,9 +50,7 @@ export function FirefighterList({
   const [selectedFirefighter, setSelectedFirefighter] = useState<Firefighter | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [showBulkActions, setShowBulkActions] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
-  const [showCalendarSubscribe, setShowCalendarSubscribe] = useState(false);
 
   const {
     filters,
@@ -184,18 +181,6 @@ export function FirefighterList({
 
     selectedIds.forEach(id => onDeactivate(id));
     deselectAll();
-  }
-
-  function handleBulkTransfer() {
-    if (selectedIds.size === 0) return;
-
-    const firstId = Array.from(selectedIds)[0];
-    const firstFirefighter = firefighters.find(ff => ff.id === firstId);
-
-    if (firstFirefighter) {
-      setSelectedFirefighter(firstFirefighter);
-      setShowBulkActions(true);
-    }
   }
 
   function handleExportCSV() {
@@ -361,6 +346,7 @@ export function FirefighterList({
                 isDarkMode ? 'text-gray-400' : 'text-slate-400'
               }`} />
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Search by name or station number..."
                 value={searchQuery}

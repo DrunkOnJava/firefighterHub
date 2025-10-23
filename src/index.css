@@ -11,12 +11,30 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Smooth transitions for dark/light mode */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
 
   body {
     font-size: 16px;
     line-height: 1.6;
     letter-spacing: 0.01em;
+    /* Smooth transitions for dark/light mode */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+
+  /* Apply smooth transitions to all elements when switching modes */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  /* Exclude elements that should animate independently */
+  *:where([class*="animate-"], [class*="transition-"]) {
+    transition-property: unset;
+    transition-duration: unset;
+    transition-timing-function: unset;
   }
 
   h1 {

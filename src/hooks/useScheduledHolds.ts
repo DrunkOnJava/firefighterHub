@@ -32,7 +32,7 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentShift]);
+  }, [currentShift, loadScheduledHolds]);
 
   async function loadScheduledHolds() {
     try {
@@ -106,11 +106,12 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
       const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const stationMsg = stationToUse ? ` at Station #${stationToUse}` : '';
       showToast(`Hold assigned to ${firefighter.name}${stationMsg} for ${formattedDate}`, 'success');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error scheduling hold:', error);
       setScheduledHolds(prev => prev.filter(h => h.id !== tempId));
 
-      if (error?.code === '23505') {
+      const err = error as { code?: string };
+      if (err?.code === '23505') {
         showToast('This date is already taken. Choose another date or reassign the existing hold.', 'error');
       } else {
         showToast('Could not schedule hold. Please try again.', 'error');
@@ -191,7 +192,7 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
         updatedFirefighters = recalculatePositions(updatedFirefighters);
 
         for (const ff of updatedFirefighters) {
-          const updates: any = { order_position: ff.order_position };
+          const updates: { order_position: number; last_hold_date?: string; updated_at?: string } = { order_position: ff.order_position };
           if (ff.id === hold.firefighter_id) {
             updates.last_hold_date = hold.hold_date;
             updates.updated_at = new Date().toISOString();

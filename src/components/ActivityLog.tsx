@@ -42,7 +42,7 @@ export function ActivityLog() {
       supabase.removeChannel(activityChannel);
       supabase.removeChannel(holdsChannel);
     };
-  }, []);
+  }, [loadData]);
 
   async function loadData() {
     await Promise.all([loadActivities(), loadCompletedHolds()]);

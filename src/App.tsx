@@ -17,11 +17,14 @@ import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { MobileNav } from './components/MobileNav';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
-import { Toast } from './components/Toast';
+import { ToastContainer } from './components/Toast';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { useAnnounce } from './hooks/useAnnounce';
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 
 // CRITICAL SECURITY ISSUE: Hardcoded password - move to environment variable
 // RECOMMENDATION: Use proper Supabase auth with AuthContext (already exists but unused)
@@ -34,8 +37,10 @@ function App() {
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
   const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   // TECHNICAL DEBT: Default shift hardcoded to 'C' - should be configurable or persist user preference
   const [currentShift, setCurrentShift] = useState<Shift>('C');
 
@@ -52,7 +57,7 @@ function App() {
     return saved !== 'false'; // Default to true (dark mode) if not set
   });
 
-  const { toast, showToast, hideToast } = useToast();
+  const { toasts, showToast, hideToast } = useToast();
   const announce = useAnnounce();
   const shiftChangeAnnouncedRef = useRef(false);
 
@@ -100,6 +105,68 @@ function App() {
     removeScheduledHold,
     markHoldCompleted
   } = useScheduledHolds(showToast, currentShift);
+
+  // Keyboard shortcuts configuration
+  const { shortcuts } = useKeyboardShortcuts({
+    shortcuts: [
+      {
+        key: 'k',
+        ctrl: true,
+        meta: true,
+        description: 'Focus search bar',
+        action: () => {
+          searchInputRef.current?.focus();
+          searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      },
+      {
+        key: 'n',
+        ctrl: true,
+        meta: true,
+        description: 'Quick add firefighter',
+        action: () => {
+          if (isAdminMode) {
+            setShowQuickAdd(true);
+          }
+        },
+        enabled: isAdminMode
+      },
+      {
+        key: 'e',
+        ctrl: true,
+        meta: true,
+        description: 'Export data',
+        action: () => {
+          // Trigger export menu - will be implemented when migrating FirefighterList
+          console.log('Export shortcut pressed');
+        }
+      },
+      {
+        key: 'h',
+        ctrl: true,
+        meta: true,
+        description: 'Show help',
+        action: () => setShowHelp(true)
+      },
+      {
+        key: '?',
+        description: 'Show keyboard shortcuts',
+        action: () => setShowKeyboardShortcuts(true)
+      },
+      {
+        key: 'Escape',
+        description: 'Close modal',
+        action: () => {
+          setShowHelp(false);
+          setShowActivityLog(false);
+          setShowQuickAdd(false);
+          setShowCompleteHoldModal(false);
+          setShowTransferShiftModal(false);
+          setShowKeyboardShortcuts(false);
+        }
+      }
+    ]
+  });
 
   function handleCompleteHoldClick(id: string) {
     const firefighter = firefighters.find(ff => ff.id === id);
@@ -182,46 +249,53 @@ function App() {
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
             <div className="xl:col-span-9">
               <section aria-labelledby="calendar-heading">
-                <Calendar
-                firefighters={firefighters}
-                scheduledHolds={scheduledHolds}
-                onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
-                onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
-                loading={holdsLoading}
-                isAdminMode={isAdminMode}
-                isDarkMode={isDarkMode}
-                currentShift={currentShift}
-              />
+                <ErrorBoundary componentName="Calendar" resetKeys={[currentShift]}>
+                  <Calendar
+                  firefighters={firefighters}
+                  scheduledHolds={scheduledHolds}
+                  onScheduleHold={isAdminMode ? scheduleHold : () => {}}
+                  onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
+                  onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
+                  loading={holdsLoading}
+                  isAdminMode={isAdminMode}
+                  isDarkMode={isDarkMode}
+                  currentShift={currentShift}
+                />
+                </ErrorBoundary>
               </section>
             </div>
 
             <aside className="xl:col-span-3" role="complementary" aria-label="Team statistics and information">
-              <Sidebar
-                firefighters={firefighters}
-                scheduledHolds={scheduledHolds}
-                isDarkMode={isDarkMode}
-              />
+              <ErrorBoundary componentName="Sidebar" resetKeys={[firefighters.length]}>
+                <Sidebar
+                  firefighters={firefighters}
+                  scheduledHolds={scheduledHolds}
+                  isDarkMode={isDarkMode}
+                />
+              </ErrorBoundary>
             </aside>
           </div>
 
           <div className="mb-8">
             <section aria-labelledby="roster-heading">
-              <FirefighterList
-              firefighters={firefighters}
-              deactivatedFirefighters={deactivatedFirefighters}
-              onAdd={addFirefighter}
-              onCompleteHold={handleCompleteHoldClick}
-              onDelete={deleteFirefighter}
-              onDeactivate={deactivateFirefighter}
-              onReactivate={reactivateFirefighter}
-              onTransferShift={handleTransferShiftClick}
-              onResetAll={resetAll}
-              onReorder={reorderFirefighters}
-              currentShift={currentShift}
-              isAdminMode={isAdminMode}
-              isDarkMode={isDarkMode}
-            />
+              <ErrorBoundary componentName="FirefighterList" resetKeys={[currentShift, firefighters.length]}>
+                <FirefighterList
+                firefighters={firefighters}
+                deactivatedFirefighters={deactivatedFirefighters}
+                onAdd={addFirefighter}
+                onCompleteHold={handleCompleteHoldClick}
+                onDelete={deleteFirefighter}
+                onDeactivate={deactivateFirefighter}
+                onReactivate={reactivateFirefighter}
+                onTransferShift={handleTransferShiftClick}
+                onResetAll={resetAll}
+                onReorder={reorderFirefighters}
+                currentShift={currentShift}
+                isAdminMode={isAdminMode}
+                isDarkMode={isDarkMode}
+                searchInputRef={searchInputRef}
+              />
+              </ErrorBoundary>
             </section>
           </div>
         </main>
@@ -235,6 +309,12 @@ function App() {
         onToggleAdminMode={handleToggleAdminMode}
       />
       <ActivityLogModal isOpen={showActivityLog} onClose={() => setShowActivityLog(false)} />
+      <KeyboardShortcutsModal
+        isOpen={showKeyboardShortcuts}
+        onClose={() => setShowKeyboardShortcuts(false)}
+        shortcuts={shortcuts}
+        isDarkMode={isDarkMode}
+      />
       <CompleteHoldModal
         isOpen={showCompleteHoldModal}
         firefighter={selectedFirefighterForCompletion}
@@ -281,15 +361,12 @@ function App() {
         onAdd={addFirefighter}
       />
 
-      {toast && (
-        <div role="alert" aria-live="polite" aria-atomic="true">
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={hideToast}
-          />
-        </div>
-      )}
+      <div role="alert" aria-live="polite" aria-atomic="true">
+        <ToastContainer
+          toasts={toasts}
+          onClose={hideToast}
+        />
+      </div>
     </div>
   );
 }

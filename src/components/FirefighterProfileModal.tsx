@@ -31,6 +31,8 @@ export function FirefighterProfileModal({
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedFirefighter, setEditedFirefighter] = useState<Firefighter | null>(null);
+  const [showAllHolds, setShowAllHolds] = useState(false);
+  const [selectedHoldForDetail, setSelectedHoldForDetail] = useState<HoldRecord | null>(null);
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -39,6 +41,8 @@ export function FirefighterProfileModal({
       loadHoldHistory();
       setEditedFirefighter({...firefighter});
       setIsEditMode(false);
+      setShowAllHolds(false);
+      setSelectedHoldForDetail(null);
     }
   }, [isOpen, firefighter, loadHoldHistory]);
 
@@ -64,8 +68,7 @@ export function FirefighterProfileModal({
         .from('scheduled_holds')
         .select('id, hold_date, fire_station, status, completed_at, created_at')
         .eq('firefighter_id', firefighter.id)
-        .order('hold_date', { ascending: false })
-        .limit(10);
+        .order('hold_date', { ascending: false });
 
       if (error) throw error;
       setHoldRecords(data || []);
@@ -429,13 +432,14 @@ export function FirefighterProfileModal({
                   </div>
                 </div>
 
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {holdRecords.map((record) => (
-                    <div
+                <div className="space-y-2">
+                  {(showAllHolds ? holdRecords : holdRecords.slice(0, 3)).map((record) => (
+                    <button
                       key={record.id}
-                      className="bg-gray-900/50 border border-gray-700 rounded-lg p-3 flex items-center justify-between"
+                      onClick={() => setSelectedHoldForDetail(record)}
+                      className="w-full bg-gray-900/50 border border-gray-700 hover:border-gray-600 rounded-lg p-3 flex items-center justify-between transition-colors cursor-pointer"
                     >
-                      <div className="flex-1">
+                      <div className="flex-1 text-left">
                         <p className="text-sm font-semibold text-white">
                           {new Date(record.hold_date).toLocaleDateString('en-US', {
                             month: 'short',
@@ -458,14 +462,134 @@ export function FirefighterProfileModal({
                       >
                         {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
                       </span>
-                    </div>
+                    </button>
                   ))}
                 </div>
+
+                {/* Expand/Collapse Button */}
+                {holdRecords.length > 3 && (
+                  <button
+                    onClick={() => setShowAllHolds(!showAllHolds)}
+                    className="w-full mt-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                  >
+                    {showAllHolds ? `Show Less` : `Show All ${holdRecords.length} Holds`}
+                  </button>
+                )}
+
+                {/* No Additional History Message */}
+                {showAllHolds && holdRecords.length <= 3 && (
+                  <div className="mt-3 bg-gray-900/30 border border-gray-700 rounded-lg p-4 text-center">
+                    <p className="text-sm text-gray-400">No additional hold history</p>
+                  </div>
+                )}
               </>
             )}
           </div>
         </div>
       </div>
+
+      {/* Hold Detail Modal */}
+      {selectedHoldForDetail && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setSelectedHoldForDetail(null)}
+          />
+          <div className="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-md border-2 border-gray-700">
+            <div className="border-b-2 border-gray-700 bg-gradient-to-r from-gray-800 to-gray-900 p-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-white">Hold Details</h3>
+                <button
+                  onClick={() => setSelectedHoldForDetail(null)}
+                  className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                >
+                  <X size={24} className="text-gray-400" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-5">
+              <div className="space-y-4">
+                {/* Hold Date */}
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Hold Date</p>
+                  <p className="text-2xl font-bold text-white">
+                    {new Date(selectedHoldForDetail.hold_date).toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      month: 'long',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </p>
+                </div>
+
+                {/* Firefighter Name */}
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Firefighter</p>
+                  <p className="text-lg font-semibold text-white">{firefighter?.name}</p>
+                </div>
+
+                {/* Station */}
+                {selectedHoldForDetail.fire_station && (
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Station</p>
+                    <p className="text-lg font-semibold text-white">Station #{selectedHoldForDetail.fire_station}</p>
+                  </div>
+                )}
+
+                {/* Status */}
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Status</p>
+                  <span
+                    className={`inline-block px-3 py-1.5 rounded text-sm font-bold ${
+                      selectedHoldForDetail.status === 'completed'
+                        ? 'bg-emerald-900/30 text-emerald-300 border-2 border-emerald-700/50'
+                        : 'bg-blue-900/30 text-blue-300 border-2 border-blue-700/50'
+                    }`}
+                  >
+                    {selectedHoldForDetail.status.charAt(0).toUpperCase() + selectedHoldForDetail.status.slice(1)}
+                  </span>
+                </div>
+
+                {/* Completed Date */}
+                {selectedHoldForDetail.completed_at && (
+                  <div>
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Completed On</p>
+                    <p className="text-sm text-gray-300">
+                      {new Date(selectedHoldForDetail.completed_at).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  </div>
+                )}
+
+                {/* Created Date */}
+                <div>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Scheduled On</p>
+                  <p className="text-sm text-gray-300">
+                    {new Date(selectedHoldForDetail.created_at).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setSelectedHoldForDetail(null)}
+                className="w-full mt-6 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 rounded-lg transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

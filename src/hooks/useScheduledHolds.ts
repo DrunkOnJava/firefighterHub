@@ -42,24 +42,26 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
   useEffect(() => {
     loadScheduledHolds();
 
-    const channel = supabase
-      .channel('scheduled_holds_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'scheduled_holds'
-        },
-        () => {
-          loadScheduledHolds();
-        }
-      )
-      .subscribe();
+    // DISABLED: Real-time subscription causing WebSocket failures
+    // TODO: Re-enable once Supabase WebSocket issues are resolved
+    // const channel = supabase
+    //   .channel('scheduled_holds_changes')
+    //   .on(
+    //     'postgres_changes',
+    //     {
+    //       event: '*',
+    //       schema: 'public',
+    //       table: 'scheduled_holds'
+    //     },
+    //     () => {
+    //       loadScheduledHolds();
+    //     }
+    //   )
+    //   .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // return () => {
+    //   supabase.removeChannel(channel);
+    // };
   }, [loadScheduledHolds]);
 
   async function removeScheduledHold(holdId: string) {

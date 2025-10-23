@@ -48,25 +48,26 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
   useEffect(() => {
     loadFirefighters();
 
-    // GOOD PRACTICE: Real-time subscription for live updates
-    const channel = supabase
-      .channel('firefighters_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'firefighters'
-        },
-        () => {
-          loadFirefighters();
-        }
-      )
-      .subscribe();
+    // DISABLED: Real-time subscription causing WebSocket failures
+    // TODO: Re-enable once Supabase WebSocket issues are resolved
+    // const channel = supabase
+    //   .channel('firefighters_changes')
+    //   .on(
+    //     'postgres_changes',
+    //     {
+    //       event: '*',
+    //       schema: 'public',
+    //       table: 'firefighters'
+    //     },
+    //     () => {
+    //       loadFirefighters();
+    //     }
+    //   )
+    //   .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // return () => {
+    //   supabase.removeChannel(channel);
+    // };
   }, [loadFirefighters]);
 
   async function logActivity(firefighterName: string, actionType: string, details?: string, firefighterId?: string) {

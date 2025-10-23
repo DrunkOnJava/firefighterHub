@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X, Plus, CheckCircle2, Trash2, Users } from 'lucide-react';
-import { Firefighter, Shift } from '../lib/supabase';
+import { Firefighter, Shift, supabase } from '../lib/supabase';
 import { StationSelector } from './StationSelector';
 import { ShiftIndicator } from './ShiftIndicator';
 import { useFocusTrap } from '../hooks/useFocusTrap';

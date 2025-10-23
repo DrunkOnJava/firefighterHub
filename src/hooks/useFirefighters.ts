@@ -241,12 +241,14 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
   async function deleteFirefighter(id: string) {
     const firefighter = firefighters.find(ff => ff.id === id);
     if (!firefighter) return;
-    if (!confirm(`Remove ${firefighter.name} from your roster?\n\nAny scheduled holds will be cancelled. This cannot be undone.`)) return;
+    if (!confirm(`Remove ${firefighter.name} from your roster?\n\nTheir hold history will be preserved on the calendar. This cannot be undone.`)) return;
 
     const previousFirefighters = [...firefighters];
     setFirefighters(prev => prev.filter(ff => ff.id !== id));
 
     try {
+      // Delete firefighter - their holds remain in database with firefighter_name
+      // The holds will still show on calendar since firefighter_name is denormalized
       const { error } = await supabase
         .from('firefighters')
         .delete()
@@ -254,8 +256,8 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
 
       if (error) throw error;
 
-      showToast(`${firefighter.name} removed from roster`, 'success');
-      await logActivity(firefighter.name, 'removed', 'Removed from rotation');
+      showToast(`${firefighter.name} removed - hold history preserved`, 'success');
+      await logActivity(firefighter.name, 'removed', 'Removed from rotation (hold history preserved)');
     } catch (error) {
       console.error('Error deleting firefighter:', error);
       setFirefighters(previousFirefighters);

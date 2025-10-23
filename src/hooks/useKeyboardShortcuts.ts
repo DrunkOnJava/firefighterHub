@@ -50,8 +50,7 @@ export function useKeyboardShortcuts({
 
     // Don't trigger shortcuts when typing in inputs (unless specifically allowed)
     const target = event.target as HTMLElement;
-    const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
-    const isContentEditable = target.isContentEditable;
+    const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable;
 
     for (const shortcut of shortcutsRef.current) {
       // Skip disabled shortcuts

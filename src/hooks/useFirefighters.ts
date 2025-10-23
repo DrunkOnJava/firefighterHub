@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { supabase, Firefighter, Shift } from '../lib/supabase';
 import { recalculatePositions, moveToBottom, assignPositions } from '../utils/rotationLogic';
 import { ToastType } from './useToast';
-import { useOperationLoading, OperationType } from './useOperationLoading';
+import { useOperationLoading } from './useOperationLoading';
 
 export function useFirefighters(showToast: (message: string, type: ToastType) => void, currentShift: Shift) {
   const [firefighters, setFirefighters] = useState<Firefighter[]>([]);

@@ -16,19 +16,11 @@ export function Tooltip({
   isDarkMode = true
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
   const timeoutRef = useRef<NodeJS.Timeout>();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseEnter = () => {
     timeoutRef.current = setTimeout(() => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setCoords({
-          x: rect.left + rect.width / 2,
-          y: rect.top
-        });
-      }
       setIsVisible(true);
     }, delay);
   };

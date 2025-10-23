@@ -4,6 +4,8 @@
  * This file demonstrates how to use LoadingButton with operation loading states.
  */
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { LoadingButton } from './LoadingButton';
 
 /**
@@ -81,12 +83,14 @@ export function Example3({ id }: { id: string }) {
  */
 
 import { useState } from 'react';
+
+// Dummy implementations for example code
 function saveData() { return Promise.resolve(); }
-function useFirefighters(showToast: any, shift: string) {
+function useFirefighters(_showToast: (msg: string, type: string) => void, _shift: string) {
   return {
     addFirefighter: () => {},
     deleteFirefighter: () => {},
     isOperationLoading: () => false
   };
 }
-function showToast() {}
+function showToast(_msg: string, _type: string) {}

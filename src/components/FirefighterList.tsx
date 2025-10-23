@@ -7,7 +7,7 @@ import { AddFirefighterForm } from './AddFirefighterForm';
 import { ReactivateModal } from './ReactivateModal';
 import { FirefighterProfileModal } from './FirefighterProfileModal';
 import { FilterPanel } from './FilterPanel';
-import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, Filter } from 'lucide-react';
+import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, Filter, UserPlus } from 'lucide-react';
 import { exportRosterToCSV, exportRosterToJSON } from '../utils/exportUtils';
 import { useFilters } from '../hooks/useFilters';
 
@@ -51,6 +51,7 @@ export function FirefighterList({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const {
     filters,
@@ -210,28 +211,45 @@ export function FirefighterList({
           </div>
 
           {/* Action Buttons */}
-          {firefighters.length > 0 && (
-            <div className="flex items-center gap-2">
-              {/* Filter Button */}
+          <div className="flex items-center gap-2">
+            {/* Add Button (Admin Mode) */}
+            {isAdminMode && (
               <button
-                onClick={() => setIsFilterPanelOpen(true)}
-                className={`relative flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                onClick={() => setShowAddForm(!showAddForm)}
+                className={`p-2 rounded-lg transition-all ${
                   isDarkMode
-                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                    : 'bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300'
+                    ? 'bg-green-700 hover:bg-green-600 text-white'
+                    : 'bg-green-600 hover:bg-green-700 text-white'
                 }`}
-                aria-label="Filter roster"
+                aria-label="Add team member"
+                title="Add team member"
               >
-                <Filter className="w-4 h-4" />
-                Filters
-                {activeFilterCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {activeFilterCount}
-                  </span>
-                )}
+                <UserPlus className="w-5 h-5" />
               </button>
+            )}
 
-              {/* Export Button */}
+            {firefighters.length > 0 && (
+              <>
+                {/* Filter Button */}
+                <button
+                  onClick={() => setIsFilterPanelOpen(true)}
+                  className={`relative flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                    isDarkMode
+                      ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                      : 'bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300'
+                  }`}
+                  aria-label="Filter roster"
+                >
+                  <Filter className="w-4 h-4" />
+                  Filters
+                  {activeFilterCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </button>
+
+                {/* Export Button */}
               <div className="relative">
                 <button
                   onClick={() => setShowExportMenu(!showExportMenu)}
@@ -277,14 +295,19 @@ export function FirefighterList({
                 </div>
               )}
               </div>
-            </div>
-          )}
+              </>
+            )}
+          </div>
         </div>
 
       <div className="p-6">
-        {isAdminMode && (
+        {/* Add Firefighter Form (Collapsible) */}
+        {isAdminMode && showAddForm && (
           <div className="mb-6">
-            <AddFirefighterForm onAdd={onAdd} isDarkMode={isDarkMode} />
+            <AddFirefighterForm onAdd={(name, station) => {
+              onAdd(name, station);
+              setShowAddForm(false);
+            }} isDarkMode={isDarkMode} />
           </div>
         )}
 
@@ -341,17 +364,17 @@ export function FirefighterList({
         {/* Search Bar */}
         {firefighters.length > 0 && (
           <div className="mb-6">
-            <div className="relative">
+            <div className="relative max-w-xs">
               <Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${
                 isDarkMode ? 'text-gray-400' : 'text-slate-400'
               }`} />
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Search by name or station number..."
+                placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full pl-11 pr-4 py-3 rounded-lg border-2 transition-all focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
+                className={`w-full pl-11 pr-4 py-2 rounded-lg border-2 transition-all focus:ring-2 focus:ring-orange-500 focus:border-transparent ${
                   isDarkMode
                     ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
                     : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'

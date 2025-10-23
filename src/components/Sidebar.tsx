@@ -21,7 +21,7 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
   const [allShiftFirefighters, setAllShiftFirefighters] = useState<Firefighter[]>([]);
   const [currentShiftRotation, setCurrentShiftRotation] = useState<Firefighter[]>([]);
 
-  // Load next 4 firefighters across all shifts
+  // Load next 3 firefighters across all shifts (one from each)
   useEffect(() => {
     async function loadRotationData() {
       const { data } = await supabase
@@ -32,28 +32,13 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
         .order('order_position');
 
       if (data) {
-        // Get first firefighter from each shift, then add one more (4 total for all shifts)
-        const shiftA = data.filter(ff => ff.shift === 'A').slice(0, 2);
-        const shiftB = data.filter(ff => ff.shift === 'B').slice(0, 2);
-        const shiftC = data.filter(ff => ff.shift === 'C').slice(0, 2);
+        // Get first firefighter from each shift (3 total for all shifts)
+        const shiftA = data.filter(ff => ff.shift === 'A')[0];
+        const shiftB = data.filter(ff => ff.shift === 'B')[0];
+        const shiftC = data.filter(ff => ff.shift === 'C')[0];
 
-        const nextUpAll = [];
-        if (shiftA[0]) nextUpAll.push(shiftA[0]);
-        if (shiftB[0]) nextUpAll.push(shiftB[0]);
-        if (shiftC[0]) nextUpAll.push(shiftC[0]);
-
-        // Add 4th person
-        if (nextUpAll.length < 4) {
-          if (shiftA[1] && !nextUpAll.find(ff => ff.id === shiftA[1].id)) nextUpAll.push(shiftA[1]);
-        }
-        if (nextUpAll.length < 4) {
-          if (shiftB[1] && !nextUpAll.find(ff => ff.id === shiftB[1].id)) nextUpAll.push(shiftB[1]);
-        }
-        if (nextUpAll.length < 4) {
-          if (shiftC[1] && !nextUpAll.find(ff => ff.id === shiftC[1].id)) nextUpAll.push(shiftC[1]);
-        }
-
-        setAllShiftFirefighters(nextUpAll.slice(0, 4));
+        const nextUpAll = [shiftA, shiftB, shiftC].filter(Boolean);
+        setAllShiftFirefighters(nextUpAll);
 
         // Get first 5 from current shift for rotation display
         const currentShiftFFs = data.filter(ff => ff.shift === currentShift).slice(0, 5);

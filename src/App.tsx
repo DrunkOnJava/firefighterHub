@@ -41,8 +41,8 @@ function App() {
   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
   const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  // TECHNICAL DEBT: Default shift hardcoded to 'C' - should be configurable or persist user preference
-  const [currentShift, setCurrentShift] = useState<Shift>('C');
+  // Default to Shift A
+  const [currentShift, setCurrentShift] = useState<Shift>('A');
 
   // ISSUE: Client-side admin mode is insecure - anyone can set localStorage.setItem('isAdminMode', 'true')
   // RECOMMENDATION: Replace with server-side auth using the existing AuthContext

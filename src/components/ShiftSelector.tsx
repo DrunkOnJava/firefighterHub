@@ -9,37 +9,21 @@ interface ShiftSelectorProps {
 const SHIFT_COLORS = {
   A: {
     dark: {
-      bg: 'bg-sky-700',
-      bgHover: 'hover:bg-sky-600',
-      bgInactive: 'bg-sky-950/60',
-      border: 'border-sky-800',
-      text: 'text-sky-300'
+      bg: 'bg-green-700',
+      bgHover: 'hover:bg-green-600',
+      bgInactive: 'bg-green-950/60',
+      border: 'border-green-800',
+      text: 'text-green-300'
     },
     light: {
-      bg: 'bg-sky-600',
-      bgHover: 'hover:bg-sky-700',
-      bgInactive: 'bg-sky-100',
-      border: 'border-sky-400',
-      text: 'text-sky-700'
+      bg: 'bg-green-600',
+      bgHover: 'hover:bg-green-700',
+      bgInactive: 'bg-green-100',
+      border: 'border-green-400',
+      text: 'text-green-700'
     }
   },
   B: {
-    dark: {
-      bg: 'bg-emerald-700',
-      bgHover: 'hover:bg-emerald-600',
-      bgInactive: 'bg-emerald-950/60',
-      border: 'border-emerald-800',
-      text: 'text-emerald-300'
-    },
-    light: {
-      bg: 'bg-emerald-600',
-      bgHover: 'hover:bg-emerald-700',
-      bgInactive: 'bg-emerald-100',
-      border: 'border-emerald-400',
-      text: 'text-emerald-700'
-    }
-  },
-  C: {
     dark: {
       bg: 'bg-red-700',
       bgHover: 'hover:bg-red-600',
@@ -53,6 +37,22 @@ const SHIFT_COLORS = {
       bgInactive: 'bg-red-100',
       border: 'border-red-400',
       text: 'text-red-700'
+    }
+  },
+  C: {
+    dark: {
+      bg: 'bg-gray-800',
+      bgHover: 'hover:bg-gray-700',
+      bgInactive: 'bg-gray-950/60',
+      border: 'border-gray-700',
+      text: 'text-gray-300'
+    },
+    light: {
+      bg: 'bg-gray-700',
+      bgHover: 'hover:bg-gray-600',
+      bgInactive: 'bg-gray-200',
+      border: 'border-gray-500',
+      text: 'text-gray-900'
     }
   }
 };

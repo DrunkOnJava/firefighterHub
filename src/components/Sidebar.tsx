@@ -142,10 +142,10 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
                             </p>
                             <span className={`px-2 py-0.5 text-xs font-bold rounded ${
                               ff.shift === 'A'
-                                ? 'bg-red-900/70 text-red-300'
+                                ? 'bg-green-900/70 text-green-300'
                                 : ff.shift === 'B'
-                                ? 'bg-blue-900/70 text-blue-300'
-                                : 'bg-emerald-900/70 text-emerald-300'
+                                ? 'bg-red-900/70 text-red-300'
+                                : 'bg-gray-900/70 text-gray-300'
                             }`}>
                               {ff.shift}
                             </span>

@@ -448,21 +448,31 @@ export function FirefighterList({
                   <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
                     Name
                   </th>
-                  <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                    Shift
-                  </th>
-                  <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                    Station
-                  </th>
-                  <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                    Cert Level
-                  </th>
-                  <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                    Apparatus
-                  </th>
-                  <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                    Qualifications
-                  </th>
+                  {isAdminMode && (
+                    <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                      Shift
+                    </th>
+                  )}
+                  {isAdminMode && (
+                    <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                      Station
+                    </th>
+                  )}
+                  {isAdminMode && (
+                    <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                      Cert Level
+                    </th>
+                  )}
+                  {isAdminMode && (
+                    <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                      Apparatus
+                    </th>
+                  )}
+                  {isAdminMode && (
+                    <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                      Qualifications
+                    </th>
+                  )}
                   <th className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
                     Last Hold
                   </th>
@@ -556,41 +566,48 @@ export function FirefighterList({
                           {firefighter.name}
                         </button>
                       </td>
-                      <td className={`px-4 py-4 whitespace-nowrap ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                        <span className={`px-2 py-1 rounded font-bold text-xs ${
-                          firefighter.shift === 'A'
-                            ? 'bg-red-900/70 text-red-300'
-                            : firefighter.shift === 'B'
-                            ? 'bg-blue-900/70 text-blue-300'
-                            : 'bg-emerald-900/70 text-emerald-300'
-                        }`}>
-                          Shift {firefighter.shift}
-                        </span>
-                      </td>
-                      <td className={`px-4 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                        {firefighter.fire_station ? (
-                          <span className="font-semibold">Station #{firefighter.fire_station}</span>
-                        ) : (
-                          <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
-                        )}
-                      </td>
-                      <td className={`px-4 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
-                        {firefighter.certification_level ? (
-                          <span className={`px-2 py-1 text-xs font-bold rounded ${
-                            isDarkMode
-                              ? 'bg-amber-900/70 text-amber-100'
-                              : 'bg-amber-100 text-amber-900'
+                      {isAdminMode && (
+                        <td className={`px-4 py-4 whitespace-nowrap ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                          <span className={`px-2 py-1 rounded font-bold text-xs ${
+                            firefighter.shift === 'A'
+                              ? 'bg-green-900/70 text-green-300'
+                              : firefighter.shift === 'B'
+                              ? 'bg-red-900/70 text-red-300'
+                              : 'bg-gray-900/70 text-gray-300'
                           }`}>
-                            {firefighter.certification_level}
+                            Shift {firefighter.shift}
                           </span>
-                        ) : (
-                          <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-4">
-                        {apparatusList.length > 0 ? (
-                          <div className="flex flex-wrap gap-1">
-                            {apparatusList.map((apparatus) => {
+                        </td>
+                      )}
+                      {isAdminMode && (
+                        <td className={`px-4 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                          {firefighter.fire_station ? (
+                            <span className="font-semibold">Station #{firefighter.fire_station}</span>
+                          ) : (
+                            <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
+                          )}
+                        </td>
+                      )}
+                      {isAdminMode && (
+                        <td className={`px-4 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+                          {firefighter.certification_level ? (
+                            <span className={`px-2 py-1 text-xs font-bold rounded ${
+                              isDarkMode
+                                ? 'bg-amber-900/70 text-amber-100'
+                                : 'bg-amber-100 text-amber-900'
+                            }`}>
+                              {firefighter.certification_level}
+                            </span>
+                          ) : (
+                            <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
+                          )}
+                        </td>
+                      )}
+                      {isAdminMode && (
+                        <td className="px-4 py-4">
+                          {apparatusList.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {apparatusList.map((apparatus) => {
                               let colorClass = '';
                               switch (apparatus.name) {
                                 case 'Ambulance':
@@ -633,23 +650,26 @@ export function FirefighterList({
                         ) : (
                           <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
                         )}
-                      </td>
-                      <td className="px-4 py-4">
-                        {qualifications.length > 0 ? (
-                          <div className="flex flex-wrap gap-1">
-                            {qualifications.map((qual) => (
-                              <span
-                                key={qual}
-                                className="px-1.5 py-0.5 bg-sky-900/70 text-sky-300 text-xs font-semibold rounded"
-                              >
-                                {qual}
-                              </span>
-                            ))}
-                          </div>
-                        ) : (
-                          <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
-                        )}
-                      </td>
+                        </td>
+                      )}
+                      {isAdminMode && (
+                        <td className="px-4 py-4">
+                          {qualifications.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {qualifications.map((qual) => (
+                                <span
+                                  key={qual}
+                                  className="px-1.5 py-0.5 bg-sky-900/70 text-sky-300 text-xs font-semibold rounded"
+                                >
+                                  {qual}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className={isDarkMode ? 'text-gray-600' : 'text-slate-400'}>—</span>
+                          )}
+                        </td>
+                      )}
                       <td className={`px-4 py-4 whitespace-nowrap text-sm ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
                         <div className="flex items-center gap-2">
                           <span>

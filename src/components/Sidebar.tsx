@@ -201,7 +201,7 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true }: Sid
             </div>
           )}
 
-          {nextUp.length === 0 && displayedHolds.length > 0 && (
+          {nextUpAllShifts.length === 0 && displayedHolds.length > 0 && (
             <div className={`pt-4 border-t-2 ${theme.divider}`}>
               <div className="text-center py-6">
                 <p className={`text-base mb-1 ${theme.emptyState.primaryText}`}>No one in rotation</p>

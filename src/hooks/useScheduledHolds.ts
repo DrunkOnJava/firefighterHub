@@ -62,6 +62,66 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
     };
   }, [loadScheduledHolds]);
 
+  async function removeScheduledHold(holdId: string) {
+    const previousHolds = [...scheduledHolds];
+    const hold = scheduledHolds.find(h => h.id === holdId);
+    if (!hold) return;
+
+    setScheduledHolds(prev => prev.filter(h => h.id !== holdId));
+
+    try {
+      // Delete the hold entirely
+      const { error } = await supabase
+        .from('scheduled_holds')
+        .delete()
+        .eq('id', holdId);
+
+      if (error) throw error;
+
+      // If this was a completed hold, reset the firefighter to top of rotation
+      if (hold.status === 'completed' && hold.firefighter_id) {
+        const { data: firefighterData } = await supabase
+          .from('firefighters')
+          .select('*')
+          .eq('id', hold.firefighter_id)
+          .single();
+
+        if (firefighterData) {
+          const { data: allShiftFFs } = await supabase
+            .from('firefighters')
+            .select('*')
+            .eq('shift', firefighterData.shift)
+            .eq('is_active', true)
+            .order('order_position');
+
+          if (allShiftFFs) {
+            // Move this firefighter to position 0, shift others down
+            const reordered = allShiftFFs.filter(ff => ff.id !== hold.firefighter_id);
+            reordered.unshift(firefighterData);
+
+            // Update all positions
+            for (let i = 0; i < reordered.length; i++) {
+              await supabase
+                .from('firefighters')
+                .update({
+                  order_position: i,
+                  last_hold_date: reordered[i].id === hold.firefighter_id ? null : reordered[i].last_hold_date
+                })
+                .eq('id', reordered[i].id);
+            }
+          }
+        }
+        showToast(`Hold canceled - ${hold.firefighter_name} moved to top of rotation`, 'success');
+      } else {
+        showToast(`Hold canceled for ${hold.firefighter_name}`, 'success');
+      }
+    } catch (error) {
+      console.error('Error removing hold:', error);
+      setScheduledHolds(previousHolds);
+      showToast('Could not remove hold. Please try again.', 'error');
+    }
+  }
+
   async function scheduleHold(holdDate: string, firefighter: Firefighter, station?: string) {
     const stationToUse = station || firefighter.fire_station || null;
     const tempId = `temp-${Date.now()}`;

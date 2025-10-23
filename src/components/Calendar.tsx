@@ -454,10 +454,11 @@ export function Calendar({
                                 <span className="text-sm">Complete</span>
                               </button>
                             )}
-                            {hold.status === 'scheduled' && !hold.id.startsWith('past-') && (
+                            {!hold.id.startsWith('past-') && (
                               <button
                                 onClick={() => setShowDeleteConfirm(hold.id)}
                                 className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                                title={hold.status === 'completed' ? 'Cancel completed hold and reset firefighter position' : 'Cancel scheduled hold'}
                               >
                                 <Trash2 size={16} />
                                 <span className="text-sm">Cancel</span>

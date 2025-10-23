@@ -19,21 +19,40 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true }: Sid
   const theme = getSidebarTheme(isDarkMode);
   const [allShiftFirefighters, setAllShiftFirefighters] = useState<Firefighter[]>([]);
 
-  // Load first firefighter from each shift
+  // Load next 4 firefighters across all shifts
   useEffect(() => {
     async function loadAllShiftsNextUp() {
       const { data } = await supabase
         .from('firefighters')
         .select('*')
         .eq('is_active', true)
+        .eq('is_available', true)
         .order('order_position');
 
       if (data) {
-        // Get first firefighter from each shift
-        const shiftA = data.filter(ff => ff.shift === 'A')[0];
-        const shiftB = data.filter(ff => ff.shift === 'B')[0];
-        const shiftC = data.filter(ff => ff.shift === 'C')[0];
-        setAllShiftFirefighters([shiftA, shiftB, shiftC].filter(Boolean));
+        // Get first firefighter from each shift, then add one more
+        const shiftA = data.filter(ff => ff.shift === 'A').slice(0, 2);
+        const shiftB = data.filter(ff => ff.shift === 'B').slice(0, 2);
+        const shiftC = data.filter(ff => ff.shift === 'C').slice(0, 2);
+
+        // Show 4 total: First from each shift (3), then next in rotation (1)
+        const nextUp = [];
+        if (shiftA[0]) nextUp.push(shiftA[0]);
+        if (shiftB[0]) nextUp.push(shiftB[0]);
+        if (shiftC[0]) nextUp.push(shiftC[0]);
+
+        // Add 4th person (whoever is next in overall rotation)
+        if (nextUp.length < 4) {
+          if (shiftA[1] && !nextUp.find(ff => ff.id === shiftA[1].id)) nextUp.push(shiftA[1]);
+        }
+        if (nextUp.length < 4) {
+          if (shiftB[1] && !nextUp.find(ff => ff.id === shiftB[1].id)) nextUp.push(shiftB[1]);
+        }
+        if (nextUp.length < 4) {
+          if (shiftC[1] && !nextUp.find(ff => ff.id === shiftC[1].id)) nextUp.push(shiftC[1]);
+        }
+
+        setAllShiftFirefighters(nextUp.slice(0, 4));
       }
     }
     loadAllShiftsNextUp();

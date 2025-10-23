@@ -249,7 +249,7 @@ function App() {
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
             <div className="xl:col-span-9">
               <section aria-labelledby="calendar-heading">
-                <ErrorBoundary componentName="Calendar" resetKeys={[currentShift]}>
+                <ErrorBoundary componentName="Calendar">
                   <Calendar
                   firefighters={firefighters}
                   scheduledHolds={scheduledHolds}
@@ -266,7 +266,7 @@ function App() {
             </div>
 
             <aside className="xl:col-span-3" role="complementary" aria-label="Team statistics and information">
-              <ErrorBoundary componentName="Sidebar" resetKeys={[firefighters.length]}>
+              <ErrorBoundary componentName="Sidebar">
                 <Sidebar
                   firefighters={firefighters}
                   scheduledHolds={scheduledHolds}
@@ -278,7 +278,7 @@ function App() {
 
           <div className="mb-8">
             <section aria-labelledby="roster-heading">
-              <ErrorBoundary componentName="FirefighterList" resetKeys={[currentShift, firefighters.length]}>
+              <ErrorBoundary componentName="FirefighterList">
                 <FirefighterList
                 firefighters={firefighters}
                 deactivatedFirefighters={deactivatedFirefighters}

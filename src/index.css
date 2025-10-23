@@ -11,31 +11,17 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Smooth transitions for dark/light mode */
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
 
   body {
     font-size: 16px;
     line-height: 1.6;
     letter-spacing: 0.01em;
-    /* Smooth transitions for dark/light mode */
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
 
-  /* Apply smooth transitions only to specific elements to prevent flashing */
-  div, button, input, textarea, select, aside, section, header, nav, main {
-    transition-property: background-color, border-color, color;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in-out;
-  }
-
-  /* Exclude elements that should animate independently */
-  *:where([class*="animate-"], [class*="transition-"], [role="alert"]) {
-    transition-property: unset !important;
-    transition-duration: unset !important;
-    transition-timing-function: unset !important;
-  }
+  /* REMOVED: CSS transitions were causing performance issues and flickering
+   * Can be re-added later with more targeted approach
+   */
 
   h1 {
     font-size: clamp(1.75rem, 4vw, 2.25rem);

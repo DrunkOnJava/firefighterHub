@@ -29,9 +29,10 @@ export function useToast() {
       return [...updated, newToast];
     });
 
-    // Auto-dismiss after delay
+    // Auto-dismiss after delay - use setToasts directly to avoid dependency
+    const toastId = newToast.id;
     setTimeout(() => {
-      hideToast(newToast.id);
+      setToasts(prev => prev.filter(t => t.id !== toastId));
     }, AUTO_DISMISS_DELAY);
   }, []);
 

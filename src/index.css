@@ -23,18 +23,18 @@
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
   }
 
-  /* Apply smooth transitions to all elements when switching modes */
-  * {
-    transition-property: background-color, border-color, color, fill, stroke;
+  /* Apply smooth transitions only to specific elements to prevent flashing */
+  div, button, input, textarea, select, aside, section, header, nav, main {
+    transition-property: background-color, border-color, color;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out;
   }
 
   /* Exclude elements that should animate independently */
-  *:where([class*="animate-"], [class*="transition-"]) {
-    transition-property: unset;
-    transition-duration: unset;
-    transition-timing-function: unset;
+  *:where([class*="animate-"], [class*="transition-"], [role="alert"]) {
+    transition-property: unset !important;
+    transition-duration: unset !important;
+    transition-timing-function: unset !important;
   }
 
   h1 {

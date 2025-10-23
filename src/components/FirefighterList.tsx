@@ -663,21 +663,6 @@ export function FirefighterList({
                         <td className="px-4 py-4 whitespace-nowrap text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
-                              onClick={() => onToggleAvailable(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                firefighter.is_available
-                                  ? isDarkMode
-                                    ? 'hover:bg-red-900/50 text-red-400'
-                                    : 'hover:bg-red-100 text-red-600'
-                                  : isDarkMode
-                                  ? 'hover:bg-emerald-900/50 text-emerald-400'
-                                  : 'hover:bg-emerald-100 text-emerald-600'
-                              }`}
-                              title={firefighter.is_available ? 'Mark as unavailable' : 'Mark as available'}
-                            >
-                              {firefighter.is_available ? <X size={16} /> : <Check size={16} />}
-                            </button>
-                            <button
                               onClick={() => onTransferShift(firefighter.id)}
                               className={`p-1.5 rounded transition-colors focus-ring ${
                                 isDarkMode

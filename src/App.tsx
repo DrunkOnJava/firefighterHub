@@ -17,7 +17,7 @@ import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { MobileNav } from './components/MobileNav';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
-import { Toast } from './components/Toast';
+import { ToastContainer } from './components/Toast';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
@@ -53,7 +53,7 @@ function App() {
     return saved !== 'false'; // Default to true (dark mode) if not set
   });
 
-  const { toast, showToast, hideToast } = useToast();
+  const { toasts, showToast, hideToast } = useToast();
   const announce = useAnnounce();
   const shiftChangeAnnouncedRef = useRef(false);
 
@@ -288,15 +288,12 @@ function App() {
         onAdd={addFirefighter}
       />
 
-      {toast && (
-        <div role="alert" aria-live="polite" aria-atomic="true">
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={hideToast}
-          />
-        </div>
-      )}
+      <div role="alert" aria-live="polite" aria-atomic="true">
+        <ToastContainer
+          toasts={toasts}
+          onClose={hideToast}
+        />
+      </div>
     </div>
   );
 }

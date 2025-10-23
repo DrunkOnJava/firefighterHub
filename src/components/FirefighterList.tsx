@@ -23,6 +23,7 @@ interface FirefighterListProps {
   currentShift?: Shift;
   isAdminMode?: boolean;
   isDarkMode?: boolean;
+  searchInputRef?: React.RefObject<HTMLInputElement>;
 }
 
 export function FirefighterList({
@@ -36,7 +37,8 @@ export function FirefighterList({
   onResetAll,
   onReorder,
   isAdminMode = false,
-  isDarkMode = true
+  isDarkMode = true,
+  searchInputRef
 }: FirefighterListProps) {
   const [localFirefighters, setLocalFirefighters] = useState<Firefighter[]>(firefighters);
   const [draggedId, setDraggedId] = useState<string | null>(null);
@@ -301,6 +303,7 @@ export function FirefighterList({
                 isDarkMode ? 'text-gray-400' : 'text-slate-400'
               }`} />
               <input
+                ref={searchInputRef}
                 type="text"
                 placeholder="Search by name or station number..."
                 value={searchQuery}

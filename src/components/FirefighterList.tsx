@@ -6,8 +6,10 @@ import { Firefighter, Shift } from '../lib/supabase'; // FIXED: Added missing Sh
 import { AddFirefighterForm } from './AddFirefighterForm';
 import { ReactivateModal } from './ReactivateModal';
 import { FirefighterProfileModal } from './FirefighterProfileModal';
-import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown } from 'lucide-react';
+import { FilterPanel } from './FilterPanel';
+import { Users, RefreshCw, Check, X, ArrowUpDown, Trash2, UserX, Repeat, RotateCcw, Eye, Search, CheckSquare, Square, Download, FileDown, Filter } from 'lucide-react';
 import { exportRosterToCSV, exportRosterToJSON } from '../utils/exportUtils';
+import { useFilters } from '../hooks/useFilters';
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -50,6 +52,17 @@ export function FirefighterList({
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showExportMenu, setShowExportMenu] = useState(false);
 
+  const {
+    filters,
+    updateFilter,
+    toggleArrayFilter,
+    clearAllFilters,
+    activeFilterCount,
+    applyFilters,
+    isFilterPanelOpen,
+    setIsFilterPanelOpen
+  } = useFilters();
+
   useEffect(() => {
     if (draggedId === null) {
       setLocalFirefighters(firefighters);
@@ -67,18 +80,29 @@ export function FirefighterList({
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showExportMenu]);
 
-  // Filter firefighters based on search query
-  const filteredFirefighters = localFirefighters.filter(ff => {
-    if (!searchQuery.trim()) return true;
+  // Filter firefighters based on search query AND filters
+  const searchFiltered = localFirefighters.filter(ff => {
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      const matchesName = ff.name.toLowerCase().includes(query);
+      const matchesStation = ff.fire_station?.toString().includes(query);
 
-    const query = searchQuery.toLowerCase();
-    const matchesName = ff.name.toLowerCase().includes(query);
-    const matchesStation = ff.fire_station?.toString().includes(query);
+      if (!matchesName && !matchesStation) return false;
+    }
 
-    return matchesName || matchesStation;
+    return true;
   });
 
-  const nextInRotation = filteredFirefighters[0]; // First firefighter is next in rotation
+  // Apply advanced filters
+  const filteredAndAdvancedFiltered = applyFilters(searchFiltered);
+
+  const nextInRotation = filteredAndAdvancedFiltered[0]; // First firefighter is next in rotation
+
+  // Get unique stations for filter panel
+  const availableStations = Array.from(new Set(
+    firefighters.map(ff => ff.fire_station).filter(Boolean)
+  )).sort() as string[];
 
   function handleDragStart(e: React.DragEvent, firefighterId: string) {
     if (!isAdminMode) return;
@@ -138,7 +162,7 @@ export function FirefighterList({
   }
 
   function selectAll() {
-    setSelectedIds(new Set(filteredFirefighters.map(ff => ff.id)));
+    setSelectedIds(new Set(filteredAndAdvancedFiltered.map(ff => ff.id)));
   }
 
   function deselectAll() {
@@ -188,6 +212,25 @@ export function FirefighterList({
           {/* Action Buttons */}
           {firefighters.length > 0 && (
             <div className="flex items-center gap-2">
+              {/* Filter Button */}
+              <button
+                onClick={() => setIsFilterPanelOpen(true)}
+                className={`relative flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  isDarkMode
+                    ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                    : 'bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-300'
+                }`}
+                aria-label="Filter roster"
+              >
+                <Filter className="w-4 h-4" />
+                Filters
+                {activeFilterCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+
               {/* Export Button */}
               <div className="relative">
                 <button
@@ -327,9 +370,17 @@ export function FirefighterList({
                 </button>
               )}
             </div>
-            {searchQuery && (
+            {(searchQuery || activeFilterCount > 0) && (
               <p className={`text-sm mt-2 ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>
-                Showing {filteredFirefighters.length} of {firefighters.length} firefighters
+                Showing {filteredAndAdvancedFiltered.length} of {firefighters.length} firefighters
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="ml-2 text-blue-500 hover:text-blue-400 underline"
+                  >
+                    Clear filters
+                  </button>
+                )}
               </p>
             )}
           </div>
@@ -353,11 +404,11 @@ export function FirefighterList({
                   {isAdminMode && (
                     <th className={`px-4 py-3 text-center ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
                       <button
-                        onClick={selectedIds.size === filteredFirefighters.length ? deselectAll : selectAll}
+                        onClick={selectedIds.size === filteredAndAdvancedFiltered.length ? deselectAll : selectAll}
                         className="p-1 hover:bg-gray-700 rounded transition-colors"
-                        aria-label={selectedIds.size === filteredFirefighters.length ? 'Deselect all' : 'Select all'}
+                        aria-label={selectedIds.size === filteredAndAdvancedFiltered.length ? 'Deselect all' : 'Select all'}
                       >
-                        {selectedIds.size === filteredFirefighters.length ? (
+                        {selectedIds.size === filteredAndAdvancedFiltered.length ? (
                           <CheckSquare className="w-5 h-5" />
                         ) : (
                           <Square className="w-5 h-5" />
@@ -400,7 +451,7 @@ export function FirefighterList({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
-                {filteredFirefighters.map((firefighter, index) => {
+                {filteredAndAdvancedFiltered.map((firefighter, index) => {
                   const apparatusList = [
                     { name: 'Ambulance', enabled: firefighter.apparatus_ambulance },
                     { name: 'Brush Truck', enabled: firefighter.apparatus_brush_truck },
@@ -770,6 +821,18 @@ export function FirefighterList({
           setSelectedFirefighter(null);
         }}
         isAdminMode={isAdminMode}
+      />
+
+      <FilterPanel
+        isOpen={isFilterPanelOpen}
+        onClose={() => setIsFilterPanelOpen(false)}
+        filters={filters}
+        onUpdateFilter={updateFilter}
+        onToggleArrayFilter={toggleArrayFilter}
+        onClearAll={clearAllFilters}
+        activeFilterCount={activeFilterCount}
+        isDarkMode={isDarkMode}
+        availableStations={availableStations}
       />
     </div>
   );

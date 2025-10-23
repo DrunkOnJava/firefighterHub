@@ -179,43 +179,6 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
     }
   }
 
-  async function removeScheduledHold(holdId: string) {
-    const previousHolds = [...scheduledHolds];
-    const hold = scheduledHolds.find(h => h.id === holdId);
-    if (!hold) return;
-
-    try {
-      // Reschedule to next day - firefighter still needs to take their turn
-      const currentDate = new Date(hold.hold_date + 'T00:00:00');
-      const nextDay = new Date(currentDate);
-      nextDay.setDate(nextDay.getDate() + 1);
-      const nextDayStr = nextDay.toISOString().split('T')[0];
-
-      const { error } = await supabase
-        .from('scheduled_holds')
-        .update({
-          hold_date: nextDayStr,
-          notes: hold.notes ? `${hold.notes} (Rescheduled from ${hold.hold_date})` : `Rescheduled from ${hold.hold_date}`
-        })
-        .eq('id', holdId);
-
-      if (error) throw error;
-
-      // Update local state to show on new date
-      setScheduledHolds(prev => prev.map(h =>
-        h.id === holdId
-          ? { ...h, hold_date: nextDayStr }
-          : h
-      ));
-
-      showToast(`Hold rescheduled to ${nextDayStr} - firefighter stays first in rotation`, 'success');
-    } catch (error) {
-      console.error('Error rescheduling hold:', error);
-      setScheduledHolds(previousHolds);
-      showToast('Could not reschedule hold. Please try again.', 'error');
-    }
-  }
-
   async function markHoldCompleted(hold: ScheduledHold) {
     const previousHolds = [...scheduledHolds];
     setScheduledHolds(prev => prev.map(h =>

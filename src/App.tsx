@@ -271,6 +271,7 @@ function App() {
                   firefighters={firefighters}
                   scheduledHolds={scheduledHolds}
                   isDarkMode={isDarkMode}
+                  currentShift={currentShift}
                 />
               </ErrorBoundary>
             </aside>

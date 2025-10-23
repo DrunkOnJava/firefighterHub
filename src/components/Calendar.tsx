@@ -46,6 +46,8 @@ export function Calendar({
   const [selectedStation, setSelectedStation] = useState<string>('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [showAddAnother, setShowAddAnother] = useState(false);
+  const [editingHoldId, setEditingHoldId] = useState<string | null>(null);
+  const [editStation, setEditStation] = useState<string>('');
   const modalTrapRef = useFocusTrap(selectedDay !== null);
   useFocusReturn(selectedDay !== null);
 
@@ -277,13 +279,9 @@ export function Calendar({
                                 {hold.firefighter_name}
                               </p>
                               {hold.fire_station && (
-                                <div className="flex items-center gap-1">
-                                  <div className="w-4 h-4 sm:w-5 sm:h-5 bg-white/20 rounded-md flex items-center justify-center">
-                                    <span className="text-white text-[8px] sm:text-xs font-bold">
-                                      {hold.fire_station}
-                                    </span>
-                                  </div>
-                                </div>
+                                <p className="text-[10px] sm:text-xs text-white/80 font-semibold">
+                                  Station #{hold.fire_station}
+                                </p>
                               )}
                               {hold.status === 'completed' && (
                                 <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
@@ -442,17 +440,29 @@ export function Calendar({
                             </div>
                           </div>
                         )}
-                        {isAdminMode && showDeleteConfirm !== hold.id && (
+                        {isAdminMode && showDeleteConfirm !== hold.id && editingHoldId !== hold.id && (
                           <div className="flex gap-2 pt-3 border-t border-gray-700">
                             {hold.status === 'scheduled' && !selectedDay.isPast && (
-                              <button
-                                onClick={() => handleMarkCompleted(hold)}
-                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
-                                title="Mark as completed and move to end of rotation"
-                              >
-                                <CheckCircle2 size={16} />
-                                <span className="text-sm">Complete</span>
-                              </button>
+                              <>
+                                <button
+                                  onClick={() => handleMarkCompleted(hold)}
+                                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                                  title="Mark as completed and move to end of rotation"
+                                >
+                                  <CheckCircle2 size={16} />
+                                  <span className="text-sm">Complete</span>
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setEditingHoldId(hold.id);
+                                    setEditStation(hold.fire_station || '');
+                                  }}
+                                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                                  title="Edit hold station"
+                                >
+                                  <span className="text-sm">Edit</span>
+                                </button>
+                              </>
                             )}
                             {!hold.id.startsWith('past-') && (
                               <button
@@ -464,6 +474,59 @@ export function Calendar({
                                 <span className="text-sm">Cancel</span>
                               </button>
                             )}
+                          </div>
+                        )}
+
+                        {/* Edit Mode */}
+                        {isAdminMode && editingHoldId === hold.id && (
+                          <div className="space-y-3 pt-3 border-t border-gray-700">
+                            <div>
+                              <label className="block text-sm text-gray-400 mb-2">Hold Station</label>
+                              <input
+                                type="text"
+                                value={editStation}
+                                onChange={(e) => setEditStation(e.target.value)}
+                                placeholder="Station number"
+                                className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white"
+                              />
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={async () => {
+                                  try {
+                                    const { error } = await supabase
+                                      .from('scheduled_holds')
+                                      .update({ fire_station: editStation || null })
+                                      .eq('id', hold.id);
+
+                                    if (error) throw error;
+
+                                    // Update local state
+                                    if (selectedDay) {
+                                      const updatedHolds = selectedDay.scheduledHolds.map(h =>
+                                        h.id === hold.id ? { ...h, fire_station: editStation || null } : h
+                                      );
+                                      setSelectedDay({ ...selectedDay, scheduledHolds: updatedHolds });
+                                    }
+
+                                    setEditingHoldId(null);
+                                    showToast('Hold station updated', 'success');
+                                  } catch (error) {
+                                    console.error('Error updating hold:', error);
+                                    showToast('Could not update hold', 'error');
+                                  }
+                                }}
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition-colors"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setEditingHoldId(null)}
+                                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 rounded-lg transition-colors"
+                              >
+                                Cancel
+                              </button>
+                            </div>
                           </div>
                         )}
                       </div>

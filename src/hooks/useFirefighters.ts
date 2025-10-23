@@ -375,15 +375,32 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     setFirefighters(prev => prev.filter(ff => ff.id !== id));
 
     try {
+      // Get all firefighters in the new shift to find last position
+      const { data: newShiftFFs, error: fetchError } = await supabase
+        .from('firefighters')
+        .select('*')
+        .eq('shift', newShift)
+        .eq('is_active', true)
+        .order('order_position', { ascending: false });
+
+      if (fetchError) throw fetchError;
+
+      // Place at last position in new shift
+      const lastPosition = newShiftFFs && newShiftFFs.length > 0 ? newShiftFFs[0].order_position + 1 : 0;
+
       const { error } = await supabase
         .from('firefighters')
-        .update({ shift: newShift })
+        .update({
+          shift: newShift,
+          order_position: lastPosition,
+          last_hold_date: null // Reset hold date when transferring
+        })
         .eq('id', id);
 
       if (error) throw error;
 
-      showToast(`${firefighter.name} transferred to Shift ${newShift}`, 'success');
-      await logActivity(firefighter.name, 'shift_transfer', `Transferred from Shift ${firefighter.shift} to Shift ${newShift}`, id);
+      showToast(`${firefighter.name} transferred to Shift ${newShift} at last position`, 'success');
+      await logActivity(firefighter.name, 'shift_transfer', `Transferred from Shift ${firefighter.shift} to Shift ${newShift} (placed at end)`, id);
     } catch (error) {
       console.error('Error transferring shift:', error);
       setFirefighters(previousFirefighters);
@@ -391,7 +408,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     }
   }
 
-  async function reactivateFirefighter(id: string, position: number) {
+  async function reactivateFirefighter(id: string, _position: number) {
     const firefighter = deactivatedFirefighters.find(ff => ff.id === id);
     if (!firefighter) return;
 
@@ -399,8 +416,8 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     const previousDeactivated = [...deactivatedFirefighters];
 
     try {
-      const updatedList = [...firefighters];
-      updatedList.splice(position, 0, { ...firefighter, is_active: true, is_available: true });
+      // Always place at position 0 (top of rotation)
+      const updatedList = [{ ...firefighter, is_active: true, is_available: true }, ...firefighters];
       const reordered = assignPositions(updatedList);
       setFirefighters(reordered);
       setDeactivatedFirefighters(prev => prev.filter(ff => ff.id !== id));
@@ -418,8 +435,8 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
         if (error) throw error;
       }
 
-      showToast(`${firefighter.name} reactivated at position ${position + 1}`, 'success');
-      await logActivity(firefighter.name, 'reactivated', `Reactivated and placed at position ${position + 1}`, id);
+      showToast(`${firefighter.name} reactivated at position 1`, 'success');
+      await logActivity(firefighter.name, 'reactivated', 'Reactivated and placed at position 1', id);
     } catch (error) {
       console.error('Error reactivating firefighter:', error);
       setFirefighters(previousFirefighters);

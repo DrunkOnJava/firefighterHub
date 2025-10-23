@@ -806,22 +806,6 @@ export function FirefighterList({
           </div>
         )}
 
-        {firefighters.length > 0 && isAdminMode && (
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <button
-              onClick={onResetAll}
-              className={`px-3 py-1.5 border text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 focus-ring ${
-                isDarkMode
-                  ? 'bg-red-900/30 hover:bg-red-900/50 border-red-700 text-red-300'
-                  : 'bg-red-100 hover:bg-red-200 border-red-400 text-red-700'
-              }`}
-              aria-label="Clear all firefighters from roster"
-            >
-              <RefreshCw size={14} />
-              <span>Clear All Firefighters</span>
-            </button>
-          </div>
-        )}
         </div>
       </div>
 

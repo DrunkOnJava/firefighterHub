@@ -273,7 +273,7 @@ export function Calendar({
                         <div className="flex-1 flex flex-col justify-center space-y-0.5 sm:space-y-1">
                           {day.scheduledHolds.slice(0, 2).map((hold) => (
                             <div key={hold.id} className="mb-1">
-                              <p className="text-white font-bold text-[10px] sm:text-xs lg:text-sm leading-tight line-clamp-1">
+                              <p className="text-white font-bold text-xs sm:text-sm lg:text-base leading-tight break-words">
                                 {hold.firefighter_name}
                               </p>
                               {hold.fire_station && (

@@ -412,8 +412,9 @@ export function FirefighterProfileModal({
               </div>
             ) : holdRecords.length === 0 ? (
               <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 text-center">
-                <Calendar size={32} className="text-gray-600 mx-auto mb-2" />
-                <p className="text-sm text-gray-400">No hold records found</p>
+                <Calendar size={32} className="text-gray-600 mx-auto mb-3" />
+                <p className="text-base text-gray-300 font-semibold mb-1">No previous holds</p>
+                <p className="text-xs text-gray-500">This firefighter has not completed any holds yet</p>
               </div>
             ) : (
               <>

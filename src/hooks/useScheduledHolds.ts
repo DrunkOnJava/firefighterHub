@@ -1,7 +1,7 @@
 // TECHNICAL DEBT: Similar to useFirefighters, this hook is large (224 lines) and handles multiple concerns
 // Consider splitting data fetching, mutations, and real-time sync into separate hooks
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase, Firefighter, Shift } from '../lib/supabase';
 import { ScheduledHold } from '../utils/calendarUtils';
 import { ToastType } from './useToast';
@@ -11,30 +11,7 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
   const [scheduledHolds, setScheduledHolds] = useState<ScheduledHold[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadScheduledHolds();
-
-    const channel = supabase
-      .channel('scheduled_holds_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'scheduled_holds'
-        },
-        () => {
-          loadScheduledHolds();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [currentShift, loadScheduledHolds]);
-
-  async function loadScheduledHolds() {
+  const loadScheduledHolds = useCallback(async () => {
     try {
       setLoading(true);
       const today = new Date();
@@ -60,7 +37,30 @@ export function useScheduledHolds(showToast: (message: string, type: ToastType) 
     } finally {
       setLoading(false);
     }
-  }
+  }, [currentShift, showToast]);
+
+  useEffect(() => {
+    loadScheduledHolds();
+
+    const channel = supabase
+      .channel('scheduled_holds_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'scheduled_holds'
+        },
+        () => {
+          loadScheduledHolds();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [loadScheduledHolds]);
 
   async function scheduleHold(holdDate: string, firefighter: Firefighter, station?: string) {
     const stationToUse = station || firefighter.fire_station || null;

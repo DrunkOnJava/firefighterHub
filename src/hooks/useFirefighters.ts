@@ -2,7 +2,7 @@
 // Consider splitting into: useFirefightersData, useFirefighterMutations, useFirefighterRealtimeSync
 // Currently 465 lines handling: data fetching, mutations, optimistic updates, logging, and real-time sync
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase, Firefighter, Shift } from '../lib/supabase';
 import { recalculatePositions, moveToBottom, assignPositions } from '../utils/rotationLogic';
 import { ToastType } from './useToast';
@@ -14,33 +14,7 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
   const [loading, setLoading] = useState(true);
   const { startLoading, stopLoading, isLoading: isOperationLoading, loadingStates } = useOperationLoading();
 
-  // ISSUE: Missing loadFirefighters in dependency array - ESLint will warn about this
-  // The function is defined inside the hook, so it should be wrapped in useCallback or included in deps
-  useEffect(() => {
-    loadFirefighters();
-
-    // GOOD PRACTICE: Real-time subscription for live updates
-    const channel = supabase
-      .channel('firefighters_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'firefighters'
-        },
-        () => {
-          loadFirefighters();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [currentShift, loadFirefighters]);
-
-  async function loadFirefighters() {
+  const loadFirefighters = useCallback(async () => {
     try {
       const { data: activeData, error: activeError } = await supabase
         .from('firefighters')
@@ -69,7 +43,31 @@ export function useFirefighters(showToast: (message: string, type: ToastType) =>
     } finally {
       setLoading(false);
     }
-  }
+  }, [currentShift, showToast]);
+
+  useEffect(() => {
+    loadFirefighters();
+
+    // GOOD PRACTICE: Real-time subscription for live updates
+    const channel = supabase
+      .channel('firefighters_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'firefighters'
+        },
+        () => {
+          loadFirefighters();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [loadFirefighters]);
 
   async function logActivity(firefighterName: string, actionType: string, details?: string, firefighterId?: string) {
     try {

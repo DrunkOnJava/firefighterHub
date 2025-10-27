@@ -66,7 +66,7 @@ function checkAndClearError() {
 // Query builder implementation
 class MockQueryBuilder {
   private table: keyof typeof mockDatabase;
-  private filters: Array<{ column: string; value: any; operator: 'eq' | 'neq' }> = [];
+  private filters: Array<{ column: string; value: any; operator: 'eq' | 'neq' | 'gte' | 'lte' | 'gt' | 'lt' }> = [];
   private selectedColumns = '*';
   private orderConfig: { column: string; ascending: boolean } | null = null;
   private limitValue: number | null = null;
@@ -91,6 +91,26 @@ class MockQueryBuilder {
     return this;
   }
 
+  gte(column: string, value: any) {
+    this.filters.push({ column, value, operator: 'gte' });
+    return this;
+  }
+
+  lte(column: string, value: any) {
+    this.filters.push({ column, value, operator: 'lte' });
+    return this;
+  }
+
+  gt(column: string, value: any) {
+    this.filters.push({ column, value, operator: 'gt' });
+    return this;
+  }
+
+  lt(column: string, value: any) {
+    this.filters.push({ column, value, operator: 'lt' });
+    return this;
+  }
+
   order(column: string, options?: { ascending?: boolean }) {
     this.orderConfig = {
       column,
@@ -108,10 +128,21 @@ class MockQueryBuilder {
     return data.filter(item => {
       return this.filters.every(filter => {
         const itemValue = item[filter.column];
-        if (filter.operator === 'eq') {
-          return itemValue === filter.value;
-        } else {
-          return itemValue !== filter.value;
+        switch (filter.operator) {
+          case 'eq':
+            return itemValue === filter.value;
+          case 'neq':
+            return itemValue !== filter.value;
+          case 'gte':
+            return itemValue >= filter.value;
+          case 'lte':
+            return itemValue <= filter.value;
+          case 'gt':
+            return itemValue > filter.value;
+          case 'lt':
+            return itemValue < filter.value;
+          default:
+            return true;
         }
       });
     });

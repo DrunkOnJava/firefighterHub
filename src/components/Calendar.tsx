@@ -92,7 +92,7 @@ export function Calendar({
   }, [selectedDay]);
 
   function handleDayClick(day: CalendarDay) {
-    if (!day.isCurrentMonth || day.isPast || !isAdminMode) return;
+    if (!day.isCurrentMonth || !isAdminMode) return;
     setSelectedDay(day);
     setSelectedFirefighter(null);
     setSelectedStation('');
@@ -244,7 +244,7 @@ export function Calendar({
                   <button
                     key={index}
                     onClick={() => handleDayClick(day)}
-                    disabled={!day.isCurrentMonth || day.isPast || !isAdminMode}
+                    disabled={!day.isCurrentMonth || !isAdminMode}
                     className={dayCellClasses}
                   >
                     <div className="flex flex-col h-full">
@@ -362,7 +362,7 @@ export function Calendar({
         >
           <div
             ref={modalTrapRef}
-            className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl max-w-md w-full shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto"
+            className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl max-w-md w-full shadow-2xl animate-scale-in max-h-[90vh] overflow-hidden flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="bg-gradient-to-r from-gray-900 to-gray-800 border-b-2 border-gray-700 p-5 flex items-center justify-between sticky top-0 z-10">
@@ -393,7 +393,7 @@ export function Calendar({
               </button>
             </div>
 
-            <div className="p-5">
+            <div className="p-5 overflow-y-auto">
               {selectedDay.scheduledHolds.length > 0 && !showAddAnother ? (
                 <div className="space-y-4">
                   <div className="space-y-3">
@@ -442,28 +442,31 @@ export function Calendar({
                         )}
                         {isAdminMode && showDeleteConfirm !== hold.id && editingHoldId !== hold.id && (
                           <div className="flex gap-2 pt-3 border-t border-gray-700">
+                            {/* Complete Button: Only for 'scheduled' and not past */}
                             {hold.status === 'scheduled' && !selectedDay.isPast && (
-                              <>
-                                <button
-                                  onClick={() => handleMarkCompleted(hold)}
-                                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
-                                  title="Mark as completed and move to end of rotation"
-                                >
-                                  <CheckCircle2 size={16} />
-                                  <span className="text-sm">Complete</span>
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setEditingHoldId(hold.id);
-                                    setEditStation(hold.fire_station || '');
-                                  }}
-                                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
-                                  title="Edit hold station"
-                                >
-                                  <span className="text-sm">Edit</span>
-                                </button>
-                              </>
+                              <button
+                                onClick={() => handleMarkCompleted(hold)}
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                                title="Mark as completed and move to end of rotation"
+                              >
+                                <CheckCircle2 size={16} />
+                                <span className="text-sm">Complete</span>
+                              </button>
                             )}
+
+                            {/* Edit Button: Always available */}
+                            <button
+                              onClick={() => {
+                                setEditingHoldId(hold.id);
+                                setEditStation(hold.fire_station || '');
+                              }}
+                              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                              title="Edit hold station"
+                            >
+                              <span className="text-sm">Edit</span>
+                            </button>
+
+                            {/* Cancel Button: Always available (unless legacy 'past-' id) */}
                             {!hold.id.startsWith('past-') && (
                               <button
                                 onClick={() => setShowDeleteConfirm(hold.id)}

@@ -39,7 +39,7 @@ export function FirefighterItem({
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'No holds yet';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
   };
 
   return (

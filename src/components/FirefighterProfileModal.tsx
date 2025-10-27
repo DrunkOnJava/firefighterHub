@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { X, User, Calendar, Building2, Award, Truck, Shield, Clock, Flame, Ship, Mountain, Edit, Save } from 'lucide-react';
 import { Firefighter, supabase, Shift } from '../lib/supabase';
 import { useFocusTrap } from '../hooks/useFocusTrap';
@@ -59,7 +59,7 @@ export function FirefighterProfileModal({
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
-  async function loadHoldHistory() {
+  const loadHoldHistory = useCallback(async () => {
     if (!firefighter) return;
 
     try {
@@ -78,7 +78,7 @@ export function FirefighterProfileModal({
     } finally {
       setLoading(false);
     }
-  }
+  }, [firefighter]);
 
   async function handleSave() {
     if (!editedFirefighter || !firefighter) return;
@@ -267,7 +267,8 @@ export function FirefighterProfileModal({
                   ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
-                      year: 'numeric'
+                      year: 'numeric',
+                      timeZone: 'UTC'
                     })
                   : 'Never'}
               </p>
@@ -444,7 +445,8 @@ export function FirefighterProfileModal({
                           {new Date(record.hold_date).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
-                            year: 'numeric'
+                            year: 'numeric',
+                            timeZone: 'UTC'
                           })}
                         </p>
                         {record.fire_station && (
@@ -518,7 +520,8 @@ export function FirefighterProfileModal({
                       weekday: 'long',
                       month: 'long',
                       day: 'numeric',
-                      year: 'numeric'
+                      year: 'numeric',
+                      timeZone: 'UTC'
                     })}
                   </p>
                 </div>
@@ -561,7 +564,8 @@ export function FirefighterProfileModal({
                         day: 'numeric',
                         year: 'numeric',
                         hour: 'numeric',
-                        minute: '2-digit'
+                        minute: '2-digit',
+                        timeZone: 'UTC'
                       })}
                     </p>
                   </div>
@@ -574,7 +578,8 @@ export function FirefighterProfileModal({
                     {new Date(selectedHoldForDetail.created_at).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
-                      year: 'numeric'
+                      year: 'numeric',
+                      timeZone: 'UTC'
                     })}
                   </p>
                 </div>

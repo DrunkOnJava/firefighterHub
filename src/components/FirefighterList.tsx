@@ -558,19 +558,13 @@ export function FirefighterList({
                         </div>
                       </td>
                       <td className={`px-4 py-4 whitespace-nowrap ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                        {isAdminMode ? (
-                          <button
-                            onClick={() => handleViewProfile(firefighter)}
-                            className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
-                            aria-label={`View profile for ${firefighter.name}`}
-                          >
-                            {firefighter.name}
-                          </button>
-                        ) : (
-                          <span className="font-bold text-base px-1">
-                            {firefighter.name}
-                          </span>
-                        )}
+                        <button
+                          onClick={() => handleViewProfile(firefighter)}
+                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
+                          aria-label={`View profile for ${firefighter.name}`}
+                        >
+                          {firefighter.name}
+                        </button>
                       </td>
                       {isAdminMode && (
                         <td className={`px-4 py-4 whitespace-nowrap ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>

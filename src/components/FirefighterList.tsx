@@ -32,6 +32,7 @@ export function FirefighterList({
   firefighters,
   deactivatedFirefighters = [],
   onAdd,
+  onCompleteHold,
   onDelete,
   onDeactivate,
   onReactivate,

@@ -55,7 +55,8 @@ export function useFilters() {
     });
   }, []);
 
-  const applyFilters = useCallback((firefighters: Firefighter[]) => {
+  // Remove useCallback to avoid circular dependency issues with minification
+  function applyFilters(firefighters: Firefighter[]) {
     return firefighters.filter(ff => {
       // Certification filter
       if (filters.certifications.length > 0) {
@@ -112,7 +113,7 @@ export function useFilters() {
 
       return true;
     });
-  }, [filters]);
+  }
 
   return {
     filters,

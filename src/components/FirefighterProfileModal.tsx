@@ -36,15 +36,43 @@ export function FirefighterProfileModal({
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
+  // Load hold history when modal opens
   useEffect(() => {
-    if (isOpen && firefighter) {
-      loadHoldHistory();
-      setEditedFirefighter({...firefighter});
+    if (!isOpen || !firefighter) {
+      setHoldRecords([]);
+      setLoading(false);
+      setEditedFirefighter(null);
       setIsEditMode(false);
       setShowAllHolds(false);
       setSelectedHoldForDetail(null);
+      return;
     }
-  }, [isOpen, firefighter, loadHoldHistory]);
+
+    async function loadHoldHistory() {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('scheduled_holds')
+          .select('id, hold_date, fire_station, status, completed_at, created_at')
+          .eq('firefighter_id', firefighter!.id)
+          .order('hold_date', { ascending: false });
+
+        if (error) throw error;
+        setHoldRecords(data || []);
+      } catch (error) {
+        console.error('Error loading hold history:', error);
+        setHoldRecords([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadHoldHistory();
+    setEditedFirefighter({...firefighter});
+    setIsEditMode(false);
+    setShowAllHolds(false);
+    setSelectedHoldForDetail(null);
+  }, [isOpen, firefighter]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -58,27 +86,6 @@ export function FirefighterProfileModal({
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
-
-  const loadHoldHistory = useCallback(async () => {
-    if (!firefighter) return;
-
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('scheduled_holds')
-        .select('id, hold_date, fire_station, status, completed_at, created_at')
-        .eq('firefighter_id', firefighter.id)
-        .order('hold_date', { ascending: false });
-
-      if (error) throw error;
-      setHoldRecords(data || []);
-    } catch (error) {
-      console.error('Error loading hold history:', error);
-      setHoldRecords([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [firefighter]);
 
   async function handleSave() {
     if (!editedFirefighter || !firefighter) return;

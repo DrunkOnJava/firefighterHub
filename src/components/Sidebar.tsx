@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
-import { Calendar, Users } from "lucide-react";
+import { Calendar, Users, BarChart3 } from "lucide-react";
 import { getSidebarTheme } from "../utils/sidebarTheme";
+
+type View = 'calendar' | 'reports';
 
 interface SidebarProps {
   firefighters: Firefighter[];
   scheduledHolds: ScheduledHold[];
   isDarkMode?: boolean;
   currentShift: Shift;
+  onNavigate?: (view: View) => void;
 }
 
 interface GroupedHold {
@@ -21,6 +24,7 @@ export function Sidebar({
   scheduledHolds,
   isDarkMode = true,
   currentShift,
+  onNavigate,
 }: SidebarProps) {
   const theme = getSidebarTheme(isDarkMode);
   const [allShiftFirefighters, setAllShiftFirefighters] = useState<
@@ -113,6 +117,28 @@ export function Sidebar({
 
   return (
     <div className="space-y-6 sticky top-24 h-fit">
+      {/* Navigation Buttons */}
+      {onNavigate && (
+        <div className="flex gap-2">
+          <button
+            onClick={() => onNavigate('calendar')}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors focus-ring"
+            title="View Calendar"
+          >
+            <Calendar size={18} />
+            <span className="hidden sm:inline">Calendar</span>
+          </button>
+          <button
+            onClick={() => onNavigate('reports')}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors focus-ring"
+            title="View Reports"
+          >
+            <BarChart3 size={18} />
+            <span className="hidden sm:inline">Reports</span>
+          </button>
+        </div>
+      )}
+
       <div
         className={`border-2 rounded-2xl shadow-xl overflow-hidden ${theme.container}`}
       >

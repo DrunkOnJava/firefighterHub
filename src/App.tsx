@@ -6,7 +6,7 @@
 // 5. Large component file (266 lines) - consider breaking into smaller components
 
 import { useEffect, useState, useRef } from "react";
-import { Shift, Firefighter } from "./lib/supabase";
+import { Shift, Firefighter, HoldDuration } from "./lib/supabase";
 import { Calendar } from "./components/Calendar";
 import { FirefighterList } from "./components/FirefighterList";
 import { Sidebar } from "./components/Sidebar";
@@ -20,17 +20,21 @@ import { QuickAddFirefighterModal } from "./components/QuickAddFirefighterModal"
 import { ToastContainer } from "./components/Toast";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
+import { Reports } from "./components/Reports";
 import { useFirefighters } from "./hooks/useFirefighters";
 import { useScheduledHolds } from "./hooks/useScheduledHolds";
 import { useToast } from "./hooks/useToast";
 import { useAnnounce } from "./hooks/useAnnounce";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 
+type View = 'calendar' | 'reports';
+
 // CRITICAL SECURITY ISSUE: Hardcoded password - move to environment variable
 // RECOMMENDATION: Use proper Supabase auth with AuthContext (already exists but unused)
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Firerescue";
 
 function App() {
+  const [currentView, setCurrentView] = useState<View>('calendar');
   const [showHelp, setShowHelp] = useState(false);
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
@@ -188,9 +192,11 @@ function App() {
     holdDate: string,
     newPosition: number,
     station?: string,
-    lentToShift?: Shift | null
+    lentToShift?: Shift | null,
+    duration?: HoldDuration,
+    startTime?: string
   ) {
-    completeHold(firefighterId, holdDate, newPosition, station, lentToShift);
+    completeHold(firefighterId, holdDate, newPosition, station, lentToShift, duration, startTime);
     setShowCompleteHoldModal(false);
     setSelectedFirefighterForCompletion(null);
   }
@@ -266,63 +272,76 @@ function App() {
           role="main"
           className="px-3 sm:px-6 py-4 sm:py-8"
         >
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
-            <div className="xl:col-span-9">
-              <section aria-labelledby="calendar-heading">
-                <ErrorBoundary componentName="Calendar">
-                  <Calendar
-                    firefighters={firefighters}
-                    scheduledHolds={scheduledHolds}
-                    onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                    onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
-                    onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
-                    loading={holdsLoading}
-                    isAdminMode={isAdminMode}
-                    isDarkMode={isDarkMode}
-                    currentShift={currentShift}
-                  />
-                </ErrorBoundary>
-              </section>
-            </div>
+          {currentView === 'calendar' ? (
+            <>
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
+                <div className="xl:col-span-9">
+                  <section aria-labelledby="calendar-heading">
+                    <ErrorBoundary componentName="Calendar">
+                      <Calendar
+                        firefighters={firefighters}
+                        scheduledHolds={scheduledHolds}
+                        onScheduleHold={isAdminMode ? scheduleHold : () => {}}
+                        onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
+                        onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
+                        loading={holdsLoading}
+                        isAdminMode={isAdminMode}
+                        isDarkMode={isDarkMode}
+                        currentShift={currentShift}
+                      />
+                    </ErrorBoundary>
+                  </section>
+                </div>
 
-            <aside
-              className="xl:col-span-3"
-              role="complementary"
-              aria-label="Team statistics and information"
-            >
-              <ErrorBoundary componentName="Sidebar">
-                <Sidebar
-                  firefighters={firefighters}
-                  scheduledHolds={scheduledHolds}
-                  isDarkMode={isDarkMode}
-                  currentShift={currentShift}
-                />
-              </ErrorBoundary>
-            </aside>
-          </div>
+                <aside
+                  className="xl:col-span-3"
+                  role="complementary"
+                  aria-label="Team statistics and information"
+                >
+                  <ErrorBoundary componentName="Sidebar">
+                    <Sidebar
+                      firefighters={firefighters}
+                      scheduledHolds={scheduledHolds}
+                      isDarkMode={isDarkMode}
+                      currentShift={currentShift}
+                      onNavigate={setCurrentView}
+                    />
+                  </ErrorBoundary>
+                </aside>
+              </div>
 
-          <div className="mb-8">
-            <section aria-labelledby="roster-heading">
-              <ErrorBoundary componentName="FirefighterList">
-                <FirefighterList
-                  firefighters={firefighters}
-                  deactivatedFirefighters={deactivatedFirefighters}
-                  onAdd={addFirefighter}
-                  onCompleteHold={handleCompleteHoldClick}
-                  onDelete={deleteFirefighter}
-                  onDeactivate={deactivateFirefighter}
-                  onReactivate={reactivateFirefighter}
-                  onTransferShift={handleTransferShiftClick}
-                  onResetAll={resetAll}
-                  onReorder={reorderFirefighters}
-                  currentShift={currentShift}
-                  isAdminMode={isAdminMode}
-                  isDarkMode={isDarkMode}
-                  searchInputRef={searchInputRef}
-                />
-              </ErrorBoundary>
-            </section>
-          </div>
+              <div className="mb-8">
+                <section aria-labelledby="roster-heading">
+                  <ErrorBoundary componentName="FirefighterList">
+                    <FirefighterList
+                      firefighters={firefighters}
+                      deactivatedFirefighters={deactivatedFirefighters}
+                      onAdd={addFirefighter}
+                      onCompleteHold={handleCompleteHoldClick}
+                      onDelete={deleteFirefighter}
+                      onDeactivate={deactivateFirefighter}
+                      onReactivate={reactivateFirefighter}
+                      onTransferShift={handleTransferShiftClick}
+                      onResetAll={resetAll}
+                      onReorder={reorderFirefighters}
+                      currentShift={currentShift}
+                      isAdminMode={isAdminMode}
+                      isDarkMode={isDarkMode}
+                      searchInputRef={searchInputRef}
+                    />
+                  </ErrorBoundary>
+                </section>
+              </div>
+            </>
+          ) : (
+            <ErrorBoundary componentName="Reports">
+              <Reports
+                firefighters={firefighters}
+                holds={scheduledHolds}
+                isDarkMode={isDarkMode}
+              />
+            </ErrorBoundary>
+          )}
         </main>
       </div>
 

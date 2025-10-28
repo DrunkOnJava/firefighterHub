@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Firefighter, supabase } from '../lib/supabase';
-import { ScheduledHold } from '../utils/calendarUtils';
-import { Calendar, Clock, Users } from 'lucide-react';
-import { getSidebarTheme } from '../utils/sidebarTheme';
+import { useEffect, useState } from "react";
+import { Firefighter, Shift, supabase } from "../lib/supabase";
+import { ScheduledHold } from "../utils/calendarUtils";
+import { Calendar, Users } from "lucide-react";
+import { getSidebarTheme } from "../utils/sidebarTheme";
 
 interface SidebarProps {
   firefighters: Firefighter[];
@@ -16,32 +16,43 @@ interface GroupedHold {
   holds: ScheduledHold[];
 }
 
-export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, currentShift }: SidebarProps) {
+export function Sidebar({
+  firefighters,
+  scheduledHolds,
+  isDarkMode = true,
+  currentShift,
+}: SidebarProps) {
   const theme = getSidebarTheme(isDarkMode);
-  const [allShiftFirefighters, setAllShiftFirefighters] = useState<Firefighter[]>([]);
-  const [currentShiftRotation, setCurrentShiftRotation] = useState<Firefighter[]>([]);
+  const [allShiftFirefighters, setAllShiftFirefighters] = useState<
+    Firefighter[]
+  >([]);
+  const [currentShiftRotation, setCurrentShiftRotation] = useState<
+    Firefighter[]
+  >([]);
 
   // Load next 3 firefighters across all shifts (one from each)
   useEffect(() => {
     async function loadRotationData() {
       const { data } = await supabase
-        .from('firefighters')
-        .select('*')
-        .eq('is_active', true)
-        .eq('is_available', true)
-        .order('order_position');
+        .from("firefighters")
+        .select("*")
+        .eq("is_active", true)
+        .eq("is_available", true)
+        .order("order_position");
 
       if (data) {
         // Get first firefighter from each shift (3 total for all shifts)
-        const shiftA = data.filter(ff => ff.shift === 'A')[0];
-        const shiftB = data.filter(ff => ff.shift === 'B')[0];
-        const shiftC = data.filter(ff => ff.shift === 'C')[0];
+        const shiftA = data.filter((ff) => ff.shift === "A")[0];
+        const shiftB = data.filter((ff) => ff.shift === "B")[0];
+        const shiftC = data.filter((ff) => ff.shift === "C")[0];
 
         const nextUpAll = [shiftA, shiftB, shiftC].filter(Boolean);
         setAllShiftFirefighters(nextUpAll);
 
         // Get first 5 from current shift for rotation display
-        const currentShiftFFs = data.filter(ff => ff.shift === currentShift).slice(0, 5);
+        const currentShiftFFs = data
+          .filter((ff) => ff.shift === currentShift)
+          .slice(0, 5);
         setCurrentShiftRotation(currentShiftFFs);
       }
     }
@@ -54,17 +65,20 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
   today.setHours(0, 0, 0, 0);
 
   const upcomingHolds = scheduledHolds
-    .filter(h => {
+    .filter((h) => {
       const holdDate = new Date(h.hold_date);
       holdDate.setHours(0, 0, 0, 0);
-      return holdDate >= today && h.status === 'scheduled';
+      return holdDate >= today && h.status === "scheduled";
     })
-    .sort((a, b) => new Date(a.hold_date).getTime() - new Date(b.hold_date).getTime());
+    .sort(
+      (a, b) =>
+        new Date(a.hold_date).getTime() - new Date(b.hold_date).getTime()
+    );
 
   const groupedHolds: GroupedHold[] = [];
   const dateMap = new Map<string, ScheduledHold[]>();
 
-  upcomingHolds.forEach(hold => {
+  upcomingHolds.forEach((hold) => {
     if (!dateMap.has(hold.hold_date)) {
       dateMap.set(hold.hold_date, []);
     }
@@ -85,27 +99,31 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
     holdDate.setHours(0, 0, 0, 0);
 
     if (holdDate.getTime() === today.getTime()) {
-      return 'Today';
+      return "Today";
     }
 
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     if (holdDate.getTime() === tomorrow.getTime()) {
-      return 'Tomorrow';
+      return "Tomorrow";
     }
 
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
   return (
     <div className="space-y-6 sticky top-24 h-fit">
-      <div className={`border-2 rounded-2xl shadow-xl overflow-hidden ${theme.container}`}>
+      <div
+        className={`border-2 rounded-2xl shadow-xl overflow-hidden ${theme.container}`}
+      >
         <div className={`border-b-2 p-4 ${theme.header.background}`}>
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-lg ${theme.header.iconBadge}`}>
               <Calendar className="text-white" size={20} />
             </div>
-            <h2 className={`text-lg font-bold ${theme.header.title}`}>Upcoming Schedule</h2>
+            <h2 className={`text-lg font-bold ${theme.header.title}`}>
+              Upcoming Schedule
+            </h2>
           </div>
         </div>
 
@@ -113,7 +131,11 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
           {/* Always show Next Up for Hold (All Shifts) */}
           {nextUpAllShifts.length > 0 && (
             <div>
-              <h3 className={`text-sm font-bold uppercase tracking-wide mb-2 ${theme.sectionTitle}`}>Next Up for Hold (All Shifts)</h3>
+              <h3
+                className={`text-sm font-bold uppercase tracking-wide mb-2 ${theme.sectionTitle}`}
+              >
+                Next Up for Hold (All Shifts)
+              </h3>
               <div className="space-y-2">
                 {nextUpAllShifts.map((ff, index) => (
                   <div
@@ -126,37 +148,51 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                          index === 0
-                            ? theme.rotation.nextUp.numberBadge
-                            : theme.rotation.others.numberBadge
-                        }`}>
+                        <span
+                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                            index === 0
+                              ? theme.rotation.nextUp.numberBadge
+                              : theme.rotation.others.numberBadge
+                          }`}
+                        >
                           {index + 1}
                         </span>
                         <div>
                           <div className="flex items-center gap-2">
-                            <p className={`font-semibold text-sm ${
-                              index === 0 ? theme.rotation.nextUp.name : theme.rotation.others.name
-                            }`}>
+                            <p
+                              className={`font-semibold text-sm ${
+                                index === 0
+                                  ? theme.rotation.nextUp.name
+                                  : theme.rotation.others.name
+                              }`}
+                            >
                               {ff.name}
                             </p>
-                            <span className={`px-2 py-0.5 text-xs font-bold rounded ${
-                              ff.shift === 'A'
-                                ? 'bg-green-900/70 text-green-300'
-                                : ff.shift === 'B'
-                                ? 'bg-red-900/70 text-red-300'
-                                : 'bg-gray-900/70 text-gray-300'
-                            }`}>
+                            <span
+                              className={`px-2 py-0.5 text-xs font-bold rounded ${
+                                ff.shift === "A"
+                                  ? "bg-green-900/70 text-green-300"
+                                  : ff.shift === "B"
+                                  ? "bg-red-900/70 text-red-300"
+                                  : "bg-gray-900/70 text-gray-300"
+                              }`}
+                            >
                               {ff.shift}
                             </span>
                           </div>
                           {ff.fire_station && (
-                            <p className={`text-xs ${theme.holdCard.stationText}`}>Station #{ff.fire_station}</p>
+                            <p
+                              className={`text-xs ${theme.holdCard.stationText}`}
+                            >
+                              Station #{ff.fire_station}
+                            </p>
                           )}
                         </div>
                       </div>
                       {index === 0 && (
-                        <span className={`px-2 py-0.5 text-xs font-bold rounded ${theme.rotation.nextUp.badge}`}>
+                        <span
+                          className={`px-2 py-0.5 text-xs font-bold rounded ${theme.rotation.nextUp.badge}`}
+                        >
                           Next Up
                         </span>
                       )}
@@ -170,7 +206,9 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
           {/* Current Shift Rotation (5 positions) */}
           {currentShiftRotation.length > 0 && (
             <div className={`pt-4 border-t-2 ${theme.divider}`}>
-              <h3 className={`text-sm font-bold uppercase tracking-wide mb-2 ${theme.sectionTitle}`}>
+              <h3
+                className={`text-sm font-bold uppercase tracking-wide mb-2 ${theme.sectionTitle}`}
+              >
                 Shift {currentShift} Rotation (Next 5)
               </h3>
               <div className="space-y-2">
@@ -185,26 +223,38 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                          index === 0
-                            ? theme.rotation.nextUp.numberBadge
-                            : theme.rotation.others.numberBadge
-                        }`}>
+                        <span
+                          className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                            index === 0
+                              ? theme.rotation.nextUp.numberBadge
+                              : theme.rotation.others.numberBadge
+                          }`}
+                        >
                           {index + 1}
                         </span>
                         <div>
-                          <p className={`font-semibold text-sm ${
-                            index === 0 ? theme.rotation.nextUp.name : theme.rotation.others.name
-                          }`}>
+                          <p
+                            className={`font-semibold text-sm ${
+                              index === 0
+                                ? theme.rotation.nextUp.name
+                                : theme.rotation.others.name
+                            }`}
+                          >
                             {ff.name}
                           </p>
                           {ff.fire_station && (
-                            <p className={`text-xs ${theme.holdCard.stationText}`}>Station #{ff.fire_station}</p>
+                            <p
+                              className={`text-xs ${theme.holdCard.stationText}`}
+                            >
+                              Station #{ff.fire_station}
+                            </p>
                           )}
                         </div>
                       </div>
                       {index === 0 && (
-                        <span className={`px-2 py-0.5 text-xs font-bold rounded ${theme.rotation.nextUp.badge}`}>
+                        <span
+                          className={`px-2 py-0.5 text-xs font-bold rounded ${theme.rotation.nextUp.badge}`}
+                        >
                           Next Up
                         </span>
                       )}
@@ -218,31 +268,50 @@ export function Sidebar({ firefighters, scheduledHolds, isDarkMode = true, curre
           {/* Scheduled Holds */}
           {displayedHolds.length > 0 && (
             <div className={`pt-4 border-t-2 ${theme.divider}`}>
-              <h3 className={`text-sm font-bold uppercase tracking-wide mb-2 ${theme.sectionTitle}`}>Scheduled Holds</h3>
+              <h3
+                className={`text-sm font-bold uppercase tracking-wide mb-2 ${theme.sectionTitle}`}
+              >
+                Scheduled Holds
+              </h3>
               <div className="space-y-3">
-                {displayedHolds.map(group => (
+                {displayedHolds.map((group) => (
                   <div
                     key={group.date}
                     className={`border rounded-lg p-3 transition-colors ${theme.holdCard.background} ${theme.holdCard.hover}`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className={`px-2 py-0.5 text-xs font-bold rounded ${theme.holdCard.dateBadge}`}>
+                      <span
+                        className={`px-2 py-0.5 text-xs font-bold rounded ${theme.holdCard.dateBadge}`}
+                      >
                         {formatDate(group.date)}
                       </span>
                       {group.holds.length > 1 && (
-                        <span className={`px-2 py-0.5 text-xs font-bold rounded flex items-center gap-1 ${theme.holdCard.countBadge}`}>
+                        <span
+                          className={`px-2 py-0.5 text-xs font-bold rounded flex items-center gap-1 ${theme.holdCard.countBadge}`}
+                        >
                           <Users size={12} />
                           {group.holds.length}
                         </span>
                       )}
                     </div>
                     <div className="space-y-1.5">
-                      {group.holds.map(hold => (
-                        <div key={hold.id} className="flex items-start justify-between">
+                      {group.holds.map((hold) => (
+                        <div
+                          key={hold.id}
+                          className="flex items-start justify-between"
+                        >
                           <div className="flex-1">
-                            <p className={`font-semibold text-sm ${theme.holdCard.firefighterName}`}>{hold.firefighter_name}</p>
+                            <p
+                              className={`font-semibold text-sm ${theme.holdCard.firefighterName}`}
+                            >
+                              {hold.firefighter_name}
+                            </p>
                             {hold.fire_station && (
-                              <p className={`text-xs ${theme.holdCard.stationText}`}>Station #{hold.fire_station}</p>
+                              <p
+                                className={`text-xs ${theme.holdCard.stationText}`}
+                              >
+                                Station #{hold.fire_station}
+                              </p>
                             )}
                           </div>
                         </div>

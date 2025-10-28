@@ -1,5 +1,5 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Bug } from 'lucide-react';
+import { Component, ErrorInfo, ReactNode } from "react";
+import { AlertTriangle, RefreshCw, Bug } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -34,7 +34,13 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.error(`ErrorBoundary caught error in ${this.props.componentName || 'component'}:`, error, errorInfo);
+    console.error(
+      `ErrorBoundary caught error in ${
+        this.props.componentName || "component"
+      }:`,
+      error,
+      errorInfo
+    );
 
     this.setState({
       error,
@@ -50,7 +56,9 @@ export class ErrorBoundary extends Component<Props, State> {
     const { hasError } = this.state;
 
     if (hasError && resetKeys && prevProps.resetKeys) {
-      const hasResetKeyChanged = resetKeys.some((key, index) => key !== prevProps.resetKeys![index]);
+      const hasResetKeyChanged = resetKeys.some(
+        (key, index) => key !== prevProps.resetKeys![index]
+      );
 
       if (hasResetKeyChanged) {
         this.resetErrorBoundary();
@@ -68,7 +76,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   handleReport = (): void => {
     const { error, errorInfo } = this.state;
-    const componentName = this.props.componentName || 'Unknown Component';
+    const componentName = this.props.componentName || "Unknown Component";
 
     const reportData = {
       component: componentName,
@@ -79,10 +87,12 @@ export class ErrorBoundary extends Component<Props, State> {
       userAgent: navigator.userAgent,
     };
 
-    console.log('Error Report:', reportData);
+    console.log("Error Report:", reportData);
 
     // In production, you would send this to an error tracking service like Sentry
-    alert('Error report logged to console. In production, this would be sent to error tracking service.');
+    alert(
+      "Error report logged to console. In production, this would be sent to error tracking service."
+    );
   };
 
   render(): ReactNode {
@@ -106,14 +116,16 @@ export class ErrorBoundary extends Component<Props, State> {
                   Something went wrong
                 </h2>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {componentName ? `Error in ${componentName}` : 'An error occurred'}
+                  {componentName
+                    ? `Error in ${componentName}`
+                    : "An error occurred"}
                 </p>
               </div>
             </div>
 
             <div className="bg-red-50 dark:bg-red-900/20 rounded-md p-3 mb-4">
               <p className="text-sm text-red-800 dark:text-red-300 font-mono break-words">
-                {error?.message || 'Unknown error'}
+                {error?.message || "Unknown error"}
               </p>
             </div>
 
@@ -139,7 +151,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </button>
             </div>
 
-            {process.env.NODE_ENV === 'development' && error?.stack && (
+            {import.meta.env.DEV && error?.stack && (
               <details className="mt-4">
                 <summary className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-gray-200">
                   Stack Trace (Development Only)

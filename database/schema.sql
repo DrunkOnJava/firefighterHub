@@ -28,6 +28,10 @@ CREATE TABLE IF NOT EXISTS firefighters (
     is_bls BOOLEAN DEFAULT false,
     is_als BOOLEAN DEFAULT false,
 
+    -- 72-hour rule tracking
+    hours_worked_this_period INTEGER NOT NULL DEFAULT 0,
+    last_hours_reset_date TIMESTAMP WITH TIME ZONE,
+
     -- Timestamps
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
@@ -42,31 +46,46 @@ CREATE INDEX IF NOT EXISTS idx_firefighters_station ON firefighters(fire_station
 -- Create index on is_active for faster queries
 CREATE INDEX IF NOT EXISTS idx_firefighters_active ON firefighters(is_active);
 
+-- Create hold_status enum for status field
+CREATE TYPE hold_status AS ENUM ('scheduled', 'completed', 'skipped');
+
+-- Create hold_duration enum for duration field
+CREATE TYPE hold_duration AS ENUM ('12h', '24h');
+
 -- Create scheduled_holds table for tracking hold schedules
 CREATE TABLE IF NOT EXISTS scheduled_holds (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     firefighter_id UUID NOT NULL REFERENCES firefighters(id) ON DELETE CASCADE,
-    scheduled_date DATE NOT NULL,
-    is_completed BOOLEAN NOT NULL DEFAULT false,
-    completed_at TIMESTAMP WITH TIME ZONE,
+    firefighter_name VARCHAR(255) NOT NULL,  -- Denormalized for history/performance
+    hold_date TIMESTAMP WITH TIME ZONE NOT NULL,  -- Renamed from scheduled_date
+    status hold_status NOT NULL DEFAULT 'scheduled',  -- Replaced is_completed boolean
+    shift VARCHAR(1) NOT NULL CHECK (shift IN ('A', 'B', 'C')),
+    fire_station VARCHAR(255),  -- Where the hold is taking place
+    lent_to_shift VARCHAR(1) CHECK (lent_to_shift IN ('A', 'B', 'C')),  -- Which shift is this FF being lent to
+    notes TEXT,  -- For skipped holds or special instructions
+    duration hold_duration NOT NULL DEFAULT '24h',  -- 12 hours or 24 hours
+    start_time TIME NOT NULL DEFAULT '07:00:00',  -- Hold start time, defaults to 07:00
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-
-    -- Ensure one scheduled hold per firefighter per date
-    UNIQUE(firefighter_id, scheduled_date)
+    completed_at TIMESTAMP WITH TIME ZONE
 );
 
--- Create index on scheduled_holds for faster queries
-CREATE INDEX IF NOT EXISTS idx_scheduled_holds_date ON scheduled_holds(scheduled_date);
+-- Create indexes on scheduled_holds for faster queries
+CREATE INDEX IF NOT EXISTS idx_scheduled_holds_date ON scheduled_holds(hold_date);
 CREATE INDEX IF NOT EXISTS idx_scheduled_holds_firefighter ON scheduled_holds(firefighter_id);
+CREATE INDEX IF NOT EXISTS idx_scheduled_holds_status ON scheduled_holds(status);
+CREATE INDEX IF NOT EXISTS idx_scheduled_holds_shift ON scheduled_holds(shift);
+CREATE INDEX IF NOT EXISTS idx_scheduled_holds_station ON scheduled_holds(fire_station);
+CREATE INDEX IF NOT EXISTS idx_scheduled_holds_shift_date ON scheduled_holds(shift, hold_date);
 
 -- Create activity_log table for tracking changes
 CREATE TABLE IF NOT EXISTS activity_log (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     firefighter_id UUID REFERENCES firefighters(id) ON DELETE SET NULL,
+    firefighter_name VARCHAR(255) NOT NULL,
     action_type VARCHAR(50) NOT NULL,
-    description TEXT NOT NULL,
-    performed_by VARCHAR(255),
+    details TEXT,
+    shift VARCHAR(1) CHECK (shift IN ('A', 'B', 'C')),
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 

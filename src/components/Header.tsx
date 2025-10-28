@@ -41,20 +41,20 @@ export function Header({
           : "border-slate-300 bg-white/95"
       }`}
     >
-      <div className="px-3 sm:px-6 py-3 sm:py-4">
+      <div className="px-4 sm:px-6 py-2.5 sm:py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
             <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-20 h-20 sm:w-24 sm:h-24"
+                className="w-12 h-12 sm:w-14 sm:h-14"
               />
             </div>
             <div className="min-w-0">
               <h1
-                className={`text-lg sm:text-2xl font-bold truncate ${
+                className={`text-xl sm:text-2xl font-bold truncate ${
                   isDarkMode ? "text-white" : "text-slate-900"
                 }`}
               >

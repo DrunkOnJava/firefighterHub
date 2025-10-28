@@ -21,6 +21,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Type Definitions
 export type Shift = 'A' | 'B' | 'C';
 
+export type HoldDuration = '12h' | '24h';
+
 export interface Firefighter {
   id: string;
   name: string;
@@ -47,6 +49,10 @@ export interface Firefighter {
   is_bls: boolean; // Basic Life Support
   is_als: boolean; // Advanced Life Support
 
+  // 72-hour rule tracking
+  hours_worked_this_period: number;
+  last_hours_reset_date: string | null;
+
   // Timestamps - TECHNICAL DEBT: Should be Date type but DB returns ISO strings
   created_at: string;
   updated_at: string;
@@ -71,7 +77,10 @@ export interface Database {
           status: 'scheduled' | 'completed' | 'skipped';
           shift: Shift;
           fire_station: string | null;
+          lent_to_shift: Shift | null;
           notes: string | null;
+          duration: HoldDuration;
+          start_time: string; // Time in HH:MM:SS format
           created_at: string;
           updated_at: string;
           completed_at: string | null;
@@ -84,7 +93,7 @@ export interface Database {
           firefighter_name: string;
           action_type: string;
           details: string | null;
-          shift: Shift;
+          shift: Shift | null;
           created_at: string;
         };
       };

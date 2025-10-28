@@ -1,4 +1,4 @@
-import { Firefighter, Shift } from "../lib/supabase";
+import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
 
 export interface ScheduledHold {
   id: string;
@@ -10,6 +10,8 @@ export interface ScheduledHold {
   fire_station: string | null;
   lent_to_shift: Shift | null;
   notes: string | null;
+  duration: HoldDuration;
+  start_time: string;
   created_at: string;
   updated_at: string;
   completed_at: string | null;

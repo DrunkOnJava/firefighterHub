@@ -37,6 +37,7 @@
    - Performance acceptable (< 2s page load)
 
 4. ✅ **Past Date Holds Feature** - User feedback implementation
+
    - Admin users can add holds to past dates retroactively
    - "Add Past Hold" hover prompt on past dates
    - Warning message and "PAST DATE" badge in modal

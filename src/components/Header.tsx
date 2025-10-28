@@ -44,31 +44,25 @@ export function Header({
       <div className="px-3 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
-          <div
-            className={`flex items-center gap-3 sm:gap-4 min-w-0 px-4 py-3 sm:px-6 sm:py-4 rounded-2xl shadow-lg ${
-              isDarkMode
-                ? "bg-gradient-to-br from-gray-800/80 to-gray-900/60 border-2 border-gray-700/60"
-                : "bg-gradient-to-br from-white to-slate-50 border-2 border-slate-300/60 shadow-slate-200"
-            }`}
-          >
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-28 h-28 sm:w-36 sm:h-36 drop-shadow-lg"
+                className="w-20 h-20 sm:w-24 sm:h-24"
               />
             </div>
             <div className="min-w-0">
               <h1
-                className={`text-xl sm:text-3xl font-bold truncate ${
+                className={`text-lg sm:text-2xl font-bold truncate ${
                   isDarkMode ? "text-white" : "text-slate-900"
                 }`}
               >
                 Hold List Manager
               </h1>
               <p
-                className={`text-sm sm:text-base mt-1 hidden sm:block ${
-                  isDarkMode ? "text-gray-300" : "text-slate-600"
+                className={`text-xs sm:text-sm mt-0.5 hidden sm:block ${
+                  isDarkMode ? "text-gray-400" : "text-slate-600"
                 }`}
               >
                 Organize your team's hold rotation schedule

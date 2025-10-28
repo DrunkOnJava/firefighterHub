@@ -49,7 +49,7 @@ export function Header({
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-10 h-10 sm:w-12 sm:h-12"
+                className="w-14 h-14 sm:w-16 sm:h-16"
               />
             </div>
             <div className="min-w-0">

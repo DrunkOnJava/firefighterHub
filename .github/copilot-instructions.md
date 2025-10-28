@@ -15,10 +15,10 @@ FirefighterHub is a **shift rotation and availability management system** for fi
 ```typescript
 // ALWAYS include shift filter in Supabase queries
 const { data } = await supabase
-  .from('firefighters')
-  .select('*')
-  .eq('shift', currentShift)  // ← CRITICAL
-  .eq('is_active', true);
+  .from("firefighters")
+  .select("*")
+  .eq("shift", currentShift) // ← CRITICAL
+  .eq("is_active", true);
 ```
 
 The `currentShift` state lives in `App.tsx` and flows down. Missing this filter causes data leaks between shifts.
@@ -41,22 +41,68 @@ const normalized = recalculatePositions(reordered);
 
 **Don't manually set positions** - use the utility functions.
 
-### 3. Real-Time Sync (Currently Disabled)
+### 3. Real-Time Sync (Re-enabled with Error Handling)
 
-Supabase real-time subscriptions are **DISABLED** in `useFirefighters.ts` and `useScheduledHolds.ts` due to WebSocket stability issues. The code is commented out with:
+Supabase real-time subscriptions are **ENABLED** in `useFirefighters.ts` and `useScheduledHolds.ts` with robust error handling:
+
+**Features:**
+
+- ✅ Exponential backoff retry (1s → 2s → 4s → 8s → 16s → 30s max)
+- ✅ Automatic reconnection on connection loss
+- ✅ Channel-specific subscriptions per shift
+- ✅ Graceful cleanup on component unmount
+- ✅ Console logging for connection status
+
+**Implementation:**
+
+````typescript
+**Implementation:**
 
 ```typescript
-// DISABLED: Real-time subscription causing WebSocket failures in production
-// TODO: Re-enable with proper error handling and backoff strategy
-```
+// Real-time subscription with error handling and auto-reconnect
+const channel = supabase
+  .channel(`firefighters_${currentShift}`)
+  .on('postgres_changes', {
+    event: '*',
+    schema: 'public',
+    table: 'firefighters',
+    filter: `shift=eq.${currentShift}`
+  }, (payload) => {
+    loadFirefighters();
+  })
+  .subscribe((status, err) => {
+    // Handles SUBSCRIBED, CHANNEL_ERROR, TIMED_OUT, CLOSED
+    // Implements exponential backoff on errors
+  });
+````
+
+**Monitoring:**
+
+- Console logs show connection status: `✅ Real-time subscription active`
+- Automatic retry with exponential backoff on failure
+- Max 10 retry attempts before giving up
+- Logs include retry delays and attempt numbers
+
+**Production considerations:**
+
+- Supabase free tier has 200 concurrent connections limit
+- Each tab = 2 channels (firefighters + scheduled_holds)
+- 100 simultaneous users = 200 connections (at limit)
+- Monitor console for connection errors
+
+### 4. Activity Logging
+
+````
 
 **WebSocket Failure Details:**
+
 - **Symptom**: Connections drop after ~5-10 minutes, causing stale data
 - **Cause**: Supabase WebSocket timeout + Vite dev server proxy issues
 - **Impact**: Multi-tab editing shows stale data until manual refresh
 - **Workaround**: Users must refresh browser to see changes from other sessions
 
 **If re-enabling:** Implement:
+
 1. Exponential backoff (start 1s, max 30s between retries)
 2. Connection health checks every 30s with ping/pong
 3. Graceful degradation (show "Connection lost" banner, auto-retry)
@@ -64,6 +110,7 @@ Supabase real-time subscriptions are **DISABLED** in `useFirefighters.ts` and `u
 5. Error boundary to catch subscription crashes
 
 **Production considerations:**
+
 - Supabase free tier has 200 concurrent connections limit
 - Each tab = 2 channels (firefighters + scheduled_holds)
 - 100 simultaneous users = 200 connections (at limit)
@@ -76,11 +123,11 @@ Every mutation (add, delete, complete hold, transfer shift) MUST log to the `act
 ```typescript
 await logActivity(
   firefighterName,
-  'hold_completed', // action_type
+  "hold_completed", // action_type
   `Additional details here`, // details (optional)
   firefighterId // optional
 );
-```
+````
 
 The `logActivity()` function is in `useFirefighters.ts`. It automatically captures `shift` and `created_at`.
 
@@ -90,10 +137,12 @@ The `logActivity()` function is in `useFirefighters.ts`. It automatically captur
 **Known Issue:** This is insecure - anyone can bypass via dev tools
 
 An **unused** but complete authentication system exists:
+
 - `src/contexts/AuthContext.tsx` - Full Supabase Auth integration
 - `src/components/LoginModal.tsx` - Login UI
 
 The hardcoded password `VITE_ADMIN_PASSWORD` (default: "Firerescue") is intentional per legacy requirements. **When replacing admin mode:**
+
 1. Integrate `AuthContext` provider in `App.tsx`
 2. Replace `isAdminMode` checks with `isAdmin` from context
 3. Apply RLS migration in `supabase/migrations/20251022_enable_rls_policies.sql`
@@ -109,11 +158,13 @@ The hardcoded password `VITE_ADMIN_PASSWORD` (default: "Firerescue") is intentio
 ### Type Safety
 
 Import types from `src/lib/supabase.ts`:
+
 ```typescript
-import { Firefighter, Shift, supabase } from '../lib/supabase';
+import { Firefighter, Shift, supabase } from "../lib/supabase";
 ```
 
 **Dates:** Database returns ISO strings, not Date objects. Always parse:
+
 ```typescript
 const lastHold = ff.last_hold_date ? new Date(ff.last_hold_date) : null;
 ```
@@ -134,11 +185,13 @@ pnpm lint         # ESLint check
 ### Database Migrations
 
 **Apply new migrations:**
+
 1. Open Supabase SQL Editor: [Dashboard → SQL Editor]
 2. Paste migration SQL from `supabase/migrations/`
 3. Run query
 
 **Existing migrations:**
+
 - `20251022000000_initial_schema.sql` - Core tables, indexes, RLS setup
 - `20251022_fix_schema_mismatches.sql` - Adds denormalized fields, triggers
 - `20251022_enable_rls_policies.sql` - Full RLS policies (not yet applied)
@@ -159,6 +212,7 @@ Scripts read `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` from `process.env`
 ### Custom Hooks Architecture
 
 Large hooks violate SRP. Example - `useFirefighters.ts` (468 lines) handles:
+
 - Data fetching
 - All mutations (add/delete/complete/transfer/reset)
 - Optimistic updates
@@ -166,11 +220,12 @@ Large hooks violate SRP. Example - `useFirefighters.ts` (468 lines) handles:
 - Real-time sync (disabled)
 
 **Pattern:** When adding features, consider splitting:
+
 ```typescript
 // Proposed refactor (not implemented)
-useFirefightersData()       // Fetching + real-time
-useFirefighterMutations()   // CUD operations
-useActivityLog()            // Logging
+useFirefightersData(); // Fetching + real-time
+useFirefighterMutations(); // CUD operations
+useActivityLog(); // Logging
 ```
 
 ### Modal Components
@@ -196,8 +251,9 @@ Theme objects in `src/utils/theme.ts`, `src/utils/sidebarTheme.ts`, `src/utils/c
 Dark mode state: `isDarkMode` in `App.tsx`, persisted to localStorage
 
 **Apply theme:**
+
 ```typescript
-import { getTheme } from '../utils/theme';
+import { getTheme } from "../utils/theme";
 const theme = getTheme(isDarkMode);
 // Then use theme.background, theme.text, etc.
 ```
@@ -210,13 +266,13 @@ Use `useKeyboardShortcuts` hook (see `src/hooks/useKeyboardShortcuts.ts`):
 const { shortcuts } = useKeyboardShortcuts({
   shortcuts: [
     {
-      key: 'k',
+      key: "k",
       ctrl: true,
       meta: true, // Cmd on macOS
-      description: 'Focus search',
+      description: "Focus search",
       action: () => searchInputRef.current?.focus(),
-    }
-  ]
+    },
+  ],
 });
 ```
 
@@ -287,6 +343,7 @@ The codebase uses structured comments to document known issues:
 ## Next Steps / Active Work
 
 See `TODO.md` for full task list. Current priorities:
+
 1. Apply pending RLS migration for proper security
 2. Refactor large hooks (useFirefighters, useScheduledHolds)
 3. Re-enable real-time sync with proper error handling
@@ -299,6 +356,7 @@ See `TODO.md` for full task list. Current priorities:
 **Status**: ❌ **NO AUTOMATED TESTS EXIST**
 
 The project currently has:
+
 - ✅ TypeScript strict mode (compile-time checks)
 - ✅ ESLint configuration (code quality)
 - ❌ No unit tests (Vitest/Jest not configured)
@@ -309,29 +367,32 @@ The project currently has:
 **To add testing:**
 
 1. **Install Vitest** (recommended for Vite projects):
+
 ```bash
 pnpm add -D vitest @testing-library/react @testing-library/jest-dom @vitest/ui
 ```
 
 2. **Create `vitest.config.ts`**:
+
 ```typescript
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      provider: "v8",
+      reporter: ["text", "json", "html"],
     },
   },
 });
 ```
 
 3. **Add test scripts to `package.json`**:
+
 ```json
 {
   "scripts": {
@@ -354,7 +415,8 @@ export default defineConfig({
 - **Regression Tests** - Hold workflow, add/delete, drag-and-drop
 
 **To run manual tests:**
-1. Review `VERIFICATION_TEST_CHECKLIST.md` 
+
+1. Review `VERIFICATION_TEST_CHECKLIST.md`
 2. Test in admin mode AND read-only mode
 3. Test with multiple browser tabs open
 4. Verify all date displays for timezone consistency
@@ -362,16 +424,19 @@ export default defineConfig({
 ### Key Test Areas
 
 **Rotation Logic** (`src/utils/rotationLogic.ts`):
+
 - Test `moveToBottom()` - firefighter should move to max position + 1
 - Test `recalculatePositions()` - should normalize gaps (0, 1, 2, 3...)
 - Test unavailable firefighters always sorted after available
 
 **Date Handling** (timezone-sensitive):
+
 - All dates stored as ISO strings in UTC
 - Display uses `toLocaleDateString()` with UTC timezone
 - Always parse: `new Date(dateString)` before formatting
 
 **Activity Logging**:
+
 - Every mutation MUST create activity_log entry
 - Verify `firefighter_name`, `action_type`, `shift` are set
 - Check logs via Activity Log modal (sidebar)
@@ -385,6 +450,7 @@ pnpm build        # Production build test (must succeed)
 ```
 
 **Expected output:**
+
 - `typecheck`: ✅ No errors found
 - `lint`: ⚠️ 8 warnings (mostly unused vars in commented code)
 - `build`: ✅ dist/ folder created successfully

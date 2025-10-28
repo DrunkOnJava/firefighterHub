@@ -45,17 +45,11 @@ export function Header({
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div
-              className={`p-2 sm:p-3 rounded-xl shadow-lg flex-shrink-0 ${
-                isDarkMode
-                  ? "bg-gradient-to-br from-orange-500 to-orange-600 shadow-orange-500/20"
-                  : "bg-gradient-to-br from-red-600 to-red-700 shadow-red-500/20"
-              }`}
-            >
+            <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-6 h-6 sm:w-7 sm:h-7"
+                className="w-10 h-10 sm:w-12 sm:h-12"
               />
             </div>
             <div className="min-w-0">

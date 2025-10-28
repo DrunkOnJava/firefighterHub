@@ -41,15 +41,15 @@ export function Header({
           : "border-slate-300 bg-white/95"
       }`}
     >
-      <div className="px-4 sm:px-6 py-2.5 sm:py-3">
+      <div className="px-4 sm:px-6 py-2 sm:py-2.5">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
-          <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+          <div className="flex items-center gap-4 min-w-0 leading-tight">
             <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-12 h-12 sm:w-14 sm:h-14"
+                className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] translate-y-[1px]"
               />
             </div>
             <div className="min-w-0">

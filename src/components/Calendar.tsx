@@ -278,8 +278,16 @@ export function Calendar({
                 } else if (hasCompleted) {
                   dayCellClasses += ` ${theme.dayCells.completed} cursor-pointer`;
                 } else if (day.isPast && !isAdminMode) {
-                  // Past dates are only disabled in read-only mode
-                  dayCellClasses += " cursor-not-allowed opacity-50";
+                  // Past dates in read-only mode: clickable if multiple holds, otherwise disabled
+                  if (multipleHolds) {
+                    dayCellClasses += ` ${
+                      day.isWeekend
+                        ? theme.dayCells.emptyWeekend
+                        : theme.dayCells.emptyWeekday
+                    } cursor-pointer hover:shadow-lg opacity-70`;
+                  } else {
+                    dayCellClasses += " cursor-not-allowed opacity-50";
+                  }
                 } else if (day.isPast && isAdminMode) {
                   // Past dates in admin mode are clickable with slightly reduced opacity
                   dayCellClasses += ` ${
@@ -301,7 +309,9 @@ export function Calendar({
                   <button
                     key={index}
                     onClick={() => handleDayClick(day)}
-                    disabled={!day.isCurrentMonth || !isAdminMode}
+                    disabled={
+                      !day.isCurrentMonth || (!isAdminMode && !multipleHolds)
+                    }
                     className={dayCellClasses}
                   >
                     <div className="flex flex-col h-full">
@@ -336,23 +346,27 @@ export function Calendar({
 
                       {hasHolds ? (
                         <div className="flex-1 flex flex-col justify-center space-y-0.5 sm:space-y-1">
-                          {day.scheduledHolds.slice(0, 2).map((hold) => (
-                            <div key={hold.id} className="mb-1">
-                              <p className="text-white font-bold text-xs sm:text-sm lg:text-base leading-tight break-words">
-                                {hold.firefighter_name}
-                              </p>
-                              {hold.fire_station && (
-                                <p className="text-[10px] sm:text-xs text-white/80 font-semibold">
-                                  Station #{hold.fire_station}
+                          {day.scheduledHolds.slice(0, 2).map((hold) => {
+                            // Show the station where the member was held (not their assigned station)
+                            const heldAtStation = hold.fire_station;
+                            return (
+                              <div key={hold.id} className="mb-1">
+                                <p className="text-white font-bold text-xs sm:text-sm lg:text-base leading-tight break-words">
+                                  {hold.firefighter_name}
                                 </p>
-                              )}
-                              {hold.status === "completed" && (
-                                <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
-                                  DONE
-                                </span>
-                              )}
-                            </div>
-                          ))}
+                                {heldAtStation && (
+                                  <p className="text-[10px] sm:text-xs text-white/80 font-semibold">
+                                    Station #{heldAtStation}
+                                  </p>
+                                )}
+                                {hold.status === "completed" && (
+                                  <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
+                                    DONE
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
                           {day.scheduledHolds.length > 2 && (
                             <p className="text-white text-[10px] sm:text-xs font-semibold opacity-80">
                               +{day.scheduledHolds.length - 2} more
@@ -683,17 +697,19 @@ export function Calendar({
                     ))}
                   </div>
 
-                  <button
-                    onClick={() => {
-                      setShowAddAnother(true);
-                      setSelectedFirefighter(null);
-                      setSelectedStation("");
-                    }}
-                    className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
-                  >
-                    <Plus size={20} />
-                    Add Another Person
-                  </button>
+                  {isAdminMode && (
+                    <button
+                      onClick={() => {
+                        setShowAddAnother(true);
+                        setSelectedFirefighter(null);
+                        setSelectedStation("");
+                      }}
+                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                    >
+                      <Plus size={20} />
+                      Add Another Person
+                    </button>
+                  )}
                 </div>
               ) : selectedFirefighter ? (
                 <div className="space-y-4">

@@ -966,21 +966,23 @@ export function FirefighterList({
                                 </span>
                               )}
                             </span>
-                            <button
-                              onClick={() => {
-                                setSelectedFirefighter(firefighter);
-                                setShowProfileModal(true);
-                              }}
-                              className={`p-1 rounded transition-colors ${
-                                isDarkMode
-                                  ? "hover:bg-gray-700 text-gray-500 hover:text-gray-300"
-                                  : "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
-                              }`}
-                              title="View hold history"
-                              aria-label="View hold history"
-                            >
-                              <History size={14} />
-                            </button>
+                            {isAdminMode && (
+                              <button
+                                onClick={() => {
+                                  setSelectedFirefighter(firefighter);
+                                  setShowProfileModal(true);
+                                }}
+                                className={`p-1 rounded transition-colors ${
+                                  isDarkMode
+                                    ? "hover:bg-gray-700 text-gray-500 hover:text-gray-300"
+                                    : "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                                }`}
+                                title="View hold history"
+                                aria-label="View hold history"
+                              >
+                                <History size={14} />
+                              </button>
+                            )}
                           </div>
                         </td>
                         {isAdminMode && (

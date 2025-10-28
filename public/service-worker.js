@@ -1,4 +1,4 @@
-const CACHE_NAME = "hold-manager-v3";
+const CACHE_NAME = "hold-manager-v4";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -6,6 +6,7 @@ const urlsToCache = [
   // Only cache essential icons to prevent cache bloat
   "/icon-192x192.png",
   "/icon-512x512.png",
+  "/favicon.ico",
 ];
 
 self.addEventListener("install", (event) => {
@@ -33,6 +34,12 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+  // Skip caching for chrome-extension and other non-http(s) schemes
+  const url = new URL(event.request.url);
+  if (url.protocol !== "http:" && url.protocol !== "https:") {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       if (response) {

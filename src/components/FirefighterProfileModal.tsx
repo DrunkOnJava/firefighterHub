@@ -1,9 +1,23 @@
-import { useEffect, useState, useCallback } from 'react';
-import { X, User, Calendar, Building2, Award, Truck, Shield, Clock, Flame, Ship, Mountain, Edit, Save } from 'lucide-react';
-import { Firefighter, supabase, Shift } from '../lib/supabase';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
-import { ShiftBadge } from './ShiftSelector';
+import { useEffect, useState } from "react";
+import {
+  X,
+  User,
+  Calendar,
+  Building2,
+  Award,
+  Truck,
+  Shield,
+  Clock,
+  Flame,
+  Ship,
+  Mountain,
+  Edit,
+  Save,
+} from "lucide-react";
+import { Firefighter, supabase, Shift } from "../lib/supabase";
+import { useFocusTrap } from "../hooks/useFocusTrap";
+import { useFocusReturn } from "../hooks/useFocusReturn";
+import { ShiftBadge } from "./ShiftSelector";
 
 interface HoldRecord {
   id: string;
@@ -25,14 +39,16 @@ export function FirefighterProfileModal({
   isOpen,
   firefighter,
   onClose,
-  isAdminMode = false
+  isAdminMode = false,
 }: FirefighterProfileModalProps) {
   const [holdRecords, setHoldRecords] = useState<HoldRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editedFirefighter, setEditedFirefighter] = useState<Firefighter | null>(null);
+  const [editedFirefighter, setEditedFirefighter] =
+    useState<Firefighter | null>(null);
   const [showAllHolds, setShowAllHolds] = useState(false);
-  const [selectedHoldForDetail, setSelectedHoldForDetail] = useState<HoldRecord | null>(null);
+  const [selectedHoldForDetail, setSelectedHoldForDetail] =
+    useState<HoldRecord | null>(null);
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -52,15 +68,17 @@ export function FirefighterProfileModal({
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from('scheduled_holds')
-          .select('id, hold_date, fire_station, status, completed_at, created_at')
-          .eq('firefighter_id', firefighter!.id)
-          .order('hold_date', { ascending: false });
+          .from("scheduled_holds")
+          .select(
+            "id, hold_date, fire_station, status, completed_at, created_at"
+          )
+          .eq("firefighter_id", firefighter!.id)
+          .order("hold_date", { ascending: false });
 
         if (error) throw error;
         setHoldRecords(data || []);
       } catch (error) {
-        console.error('Error loading hold history:', error);
+        console.error("Error loading hold history:", error);
         setHoldRecords([]);
       } finally {
         setLoading(false);
@@ -68,7 +86,7 @@ export function FirefighterProfileModal({
     }
 
     loadHoldHistory();
-    setEditedFirefighter({...firefighter});
+    setEditedFirefighter({ ...firefighter });
     setIsEditMode(false);
     setShowAllHolds(false);
     setSelectedHoldForDetail(null);
@@ -78,13 +96,13 @@ export function FirefighterProfileModal({
     if (!isOpen) return;
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
   async function handleSave() {
@@ -92,7 +110,7 @@ export function FirefighterProfileModal({
 
     try {
       const { error } = await supabase
-        .from('firefighters')
+        .from("firefighters")
         .update({
           name: editedFirefighter.name,
           fire_station: editedFirefighter.fire_station,
@@ -110,7 +128,7 @@ export function FirefighterProfileModal({
           is_bls: editedFirefighter.is_bls,
           is_als: editedFirefighter.is_als,
         })
-        .eq('id', firefighter.id);
+        .eq("id", firefighter.id);
 
       if (error) throw error;
 
@@ -118,33 +136,47 @@ export function FirefighterProfileModal({
       onClose();
       // Real-time subscription will update the data automatically
     } catch (error) {
-      console.error('Error saving firefighter:', error);
-      alert('Failed to save changes. Please try again.');
+      console.error("Error saving firefighter:", error);
+      alert("Failed to save changes. Please try again.");
     }
   }
 
   if (!isOpen || !firefighter || !editedFirefighter) return null;
 
-  const completedHolds = holdRecords.filter(h => h.status === 'completed').length;
-  const scheduledHolds = holdRecords.filter(h => h.status === 'scheduled').length;
+  const completedHolds = holdRecords.filter(
+    (h) => h.status === "completed"
+  ).length;
+  const scheduledHolds = holdRecords.filter(
+    (h) => h.status === "scheduled"
+  ).length;
 
   const apparatusTypes = [
-    { name: 'Ambulance', key: 'apparatus_ambulance' as const, Icon: Shield },
-    { name: 'Engine', key: 'apparatus_engine' as const, Icon: Flame },
-    { name: 'Truck', key: 'apparatus_truck' as const, Icon: Truck },
-    { name: 'Tanker', key: 'apparatus_tanker' as const, Icon: Truck },
-    { name: 'Brush Truck', key: 'apparatus_brush_truck' as const, Icon: Mountain },
-    { name: 'Boat', key: 'apparatus_boat' as const, Icon: Ship },
-    { name: 'UTV', key: 'apparatus_utv' as const, Icon: Mountain },
-    { name: 'Rescue Squad', key: 'apparatus_rescue_squad' as const, Icon: Shield }
+    { name: "Ambulance", key: "apparatus_ambulance" as const, Icon: Shield },
+    { name: "Engine", key: "apparatus_engine" as const, Icon: Flame },
+    { name: "Truck", key: "apparatus_truck" as const, Icon: Truck },
+    { name: "Tanker", key: "apparatus_tanker" as const, Icon: Truck },
+    {
+      name: "Brush Truck",
+      key: "apparatus_brush_truck" as const,
+      Icon: Mountain,
+    },
+    { name: "Boat", key: "apparatus_boat" as const, Icon: Ship },
+    { name: "UTV", key: "apparatus_utv" as const, Icon: Mountain },
+    {
+      name: "Rescue Squad",
+      key: "apparatus_rescue_squad" as const,
+      Icon: Shield,
+    },
   ];
 
-  const apparatusList = apparatusTypes.filter(item => firefighter[item.key]);
+  const apparatusList = apparatusTypes.filter(
+    (item) => editedFirefighter[item.key]
+  );
 
   const qualifications = [
-    firefighter.is_fto && { label: 'FTO', color: 'amber' },
-    firefighter.is_bls && { label: 'BLS', color: 'emerald' },
-    firefighter.is_als && { label: 'ALS', color: 'cyan' }
+    editedFirefighter.is_fto && { label: "FTO", color: "amber" },
+    editedFirefighter.is_bls && { label: "BLS", color: "emerald" },
+    editedFirefighter.is_als && { label: "ALS", color: "cyan" },
   ].filter(Boolean) as { label: string; color: string }[];
 
   return (
@@ -170,12 +202,20 @@ export function FirefighterProfileModal({
                 <input
                   type="text"
                   value={editedFirefighter.name}
-                  onChange={(e) => setEditedFirefighter({...editedFirefighter, name: e.target.value})}
+                  onChange={(e) =>
+                    setEditedFirefighter({
+                      ...editedFirefighter,
+                      name: e.target.value,
+                    })
+                  }
                   className="text-2xl font-bold bg-gray-700 text-white px-3 py-1 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Firefighter name"
                 />
               ) : (
-                <h2 id="profile-modal-title" className="text-2xl font-bold text-white">
+                <h2
+                  id="profile-modal-title"
+                  className="text-2xl font-bold text-white"
+                >
                   {firefighter.name}
                 </h2>
               )}
@@ -194,10 +234,10 @@ export function FirefighterProfileModal({
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                   isEditMode
-                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                    : 'bg-orange-600 hover:bg-orange-700 text-white'
+                    ? "bg-green-600 hover:bg-green-700 text-white"
+                    : "bg-orange-600 hover:bg-orange-700 text-white"
                 }`}
-                aria-label={isEditMode ? 'Save changes' : 'Edit profile'}
+                aria-label={isEditMode ? "Save changes" : "Edit profile"}
               >
                 {isEditMode ? (
                   <>
@@ -227,12 +267,19 @@ export function FirefighterProfileModal({
             <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar size={16} className="text-blue-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">Shift</span>
+                <span className="text-xs font-semibold text-gray-400 uppercase">
+                  Shift
+                </span>
               </div>
               {isEditMode ? (
                 <select
                   value={editedFirefighter.shift}
-                  onChange={(e) => setEditedFirefighter({...editedFirefighter, shift: e.target.value as Shift})}
+                  onChange={(e) =>
+                    setEditedFirefighter({
+                      ...editedFirefighter,
+                      shift: e.target.value as Shift,
+                    })
+                  }
                   className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold"
                 >
                   <option value="A">Shift A</option>
@@ -247,19 +294,28 @@ export function FirefighterProfileModal({
             <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Building2 size={16} className="text-orange-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">Station</span>
+                <span className="text-xs font-semibold text-gray-400 uppercase">
+                  Station
+                </span>
               </div>
               {isEditMode ? (
                 <input
                   type="text"
-                  value={editedFirefighter.fire_station || ''}
-                  onChange={(e) => setEditedFirefighter({...editedFirefighter, fire_station: e.target.value})}
+                  value={editedFirefighter.fire_station || ""}
+                  onChange={(e) =>
+                    setEditedFirefighter({
+                      ...editedFirefighter,
+                      fire_station: e.target.value,
+                    })
+                  }
                   className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-lg font-bold"
                   placeholder="Station #"
                 />
               ) : (
                 <p className="text-lg font-bold text-white">
-                  {firefighter.fire_station ? `#${firefighter.fire_station}` : 'Not assigned'}
+                  {firefighter.fire_station
+                    ? `#${firefighter.fire_station}`
+                    : "Not assigned"}
                 </p>
               )}
             </div>
@@ -267,29 +323,41 @@ export function FirefighterProfileModal({
             <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Clock size={16} className="text-emerald-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">Last Hold</span>
+                <span className="text-xs font-semibold text-gray-400 uppercase">
+                  Last Hold
+                </span>
               </div>
               <p className="text-sm font-semibold text-white">
                 {firefighter.last_hold_date
-                  ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                      timeZone: 'UTC'
-                    })
-                  : 'Never'}
+                  ? new Date(firefighter.last_hold_date).toLocaleDateString(
+                      "en-US",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        timeZone: "UTC",
+                      }
+                    )
+                  : "Never"}
               </p>
             </div>
 
             <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Award size={16} className="text-amber-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">Cert Level</span>
+                <span className="text-xs font-semibold text-gray-400 uppercase">
+                  Cert Level
+                </span>
               </div>
               {isEditMode ? (
                 <select
-                  value={editedFirefighter.certification_level || ''}
-                  onChange={(e) => setEditedFirefighter({...editedFirefighter, certification_level: e.target.value || null})}
+                  value={editedFirefighter.certification_level || ""}
+                  onChange={(e) =>
+                    setEditedFirefighter({
+                      ...editedFirefighter,
+                      certification_level: e.target.value || null,
+                    })
+                  }
                   className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg border-2 border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold text-sm"
                 >
                   <option value="">None</option>
@@ -300,7 +368,7 @@ export function FirefighterProfileModal({
                 </select>
               ) : (
                 <p className="text-sm font-bold text-amber-100">
-                  {firefighter.certification_level || 'None'}
+                  {firefighter.certification_level || "None"}
                 </p>
               )}
             </div>
@@ -309,7 +377,9 @@ export function FirefighterProfileModal({
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
               <Shield size={16} className="text-sky-400" />
-              <h3 className="text-sm font-bold text-gray-300 uppercase">Qualifications</h3>
+              <h3 className="text-sm font-bold text-gray-300 uppercase">
+                Qualifications
+              </h3>
             </div>
             {isEditMode ? (
               <div className="space-y-2">
@@ -317,28 +387,49 @@ export function FirefighterProfileModal({
                   <input
                     type="checkbox"
                     checked={editedFirefighter.is_fto || false}
-                    onChange={(e) => setEditedFirefighter({...editedFirefighter, is_fto: e.target.checked})}
+                    onChange={(e) =>
+                      setEditedFirefighter({
+                        ...editedFirefighter,
+                        is_fto: e.target.checked,
+                      })
+                    }
                     className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-amber-500 focus:ring-2 focus:ring-amber-500"
                   />
-                  <span className="text-sm font-semibold text-gray-300">FTO (Field Training Officer)</span>
+                  <span className="text-sm font-semibold text-gray-300">
+                    FTO (Field Training Officer)
+                  </span>
                 </label>
                 <label className="flex items-center gap-3 bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-800/50 transition-colors">
                   <input
                     type="checkbox"
                     checked={editedFirefighter.is_bls || false}
-                    onChange={(e) => setEditedFirefighter({...editedFirefighter, is_bls: e.target.checked})}
+                    onChange={(e) =>
+                      setEditedFirefighter({
+                        ...editedFirefighter,
+                        is_bls: e.target.checked,
+                      })
+                    }
                     className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-emerald-500 focus:ring-2 focus:ring-emerald-500"
                   />
-                  <span className="text-sm font-semibold text-gray-300">BLS (Basic Life Support)</span>
+                  <span className="text-sm font-semibold text-gray-300">
+                    BLS (Basic Life Support)
+                  </span>
                 </label>
                 <label className="flex items-center gap-3 bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-800/50 transition-colors">
                   <input
                     type="checkbox"
                     checked={editedFirefighter.is_als || false}
-                    onChange={(e) => setEditedFirefighter({...editedFirefighter, is_als: e.target.checked})}
+                    onChange={(e) =>
+                      setEditedFirefighter({
+                        ...editedFirefighter,
+                        is_als: e.target.checked,
+                      })
+                    }
                     className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-cyan-500 focus:ring-2 focus:ring-cyan-500"
                   />
-                  <span className="text-sm font-semibold text-gray-300">ALS (Advanced Life Support)</span>
+                  <span className="text-sm font-semibold text-gray-300">
+                    ALS (Advanced Life Support)
+                  </span>
                 </label>
               </div>
             ) : qualifications.length > 0 ? (
@@ -347,11 +438,11 @@ export function FirefighterProfileModal({
                   <span
                     key={qual.label}
                     className={`px-3 py-1.5 rounded-lg text-sm font-bold border ${
-                      qual.color === 'amber'
-                        ? 'bg-amber-900/30 text-amber-300 border-amber-700/50'
-                        : qual.color === 'emerald'
-                        ? 'bg-emerald-900/30 text-emerald-300 border-emerald-700/50'
-                        : 'bg-cyan-900/30 text-cyan-300 border-cyan-700/50'
+                      qual.color === "amber"
+                        ? "bg-amber-900/30 text-amber-300 border-amber-700/50"
+                        : qual.color === "emerald"
+                        ? "bg-emerald-900/30 text-emerald-300 border-emerald-700/50"
+                        : "bg-cyan-900/30 text-cyan-300 border-cyan-700/50"
                     }`}
                   >
                     {qual.label}
@@ -366,7 +457,9 @@ export function FirefighterProfileModal({
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
               <Truck size={16} className="text-orange-400" />
-              <h3 className="text-sm font-bold text-gray-300 uppercase">Apparatus Clearances</h3>
+              <h3 className="text-sm font-bold text-gray-300 uppercase">
+                Apparatus Clearances
+              </h3>
             </div>
             <div className="grid grid-cols-2 gap-2">
               {isEditMode ? (
@@ -380,14 +473,18 @@ export function FirefighterProfileModal({
                       <input
                         type="checkbox"
                         checked={editedFirefighter[apparatus.key] || false}
-                        onChange={(e) => setEditedFirefighter({
-                          ...editedFirefighter,
-                          [apparatus.key]: e.target.checked
-                        })}
+                        onChange={(e) =>
+                          setEditedFirefighter({
+                            ...editedFirefighter,
+                            [apparatus.key]: e.target.checked,
+                          })
+                        }
                         className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-orange-500 focus:ring-2 focus:ring-orange-500"
                       />
                       <IconComponent className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-semibold text-gray-300">{apparatus.name}</span>
+                      <span className="text-sm font-semibold text-gray-300">
+                        {apparatus.name}
+                      </span>
                     </label>
                   );
                 })
@@ -400,12 +497,16 @@ export function FirefighterProfileModal({
                       className="bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 flex items-center gap-2"
                     >
                       <IconComponent className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-semibold text-gray-300">{apparatus.name}</span>
+                      <span className="text-sm font-semibold text-gray-300">
+                        {apparatus.name}
+                      </span>
                     </div>
                   );
                 })
               ) : (
-                <p className="text-sm text-gray-500 col-span-2">No apparatus clearances</p>
+                <p className="text-sm text-gray-500 col-span-2">
+                  No apparatus clearances
+                </p>
               )}
             </div>
           </div>
@@ -413,7 +514,9 @@ export function FirefighterProfileModal({
           <div>
             <div className="flex items-center gap-2 mb-3">
               <Calendar size={16} className="text-blue-400" />
-              <h3 className="text-sm font-bold text-gray-300 uppercase">Hold History</h3>
+              <h3 className="text-sm font-bold text-gray-300 uppercase">
+                Hold History
+              </h3>
             </div>
 
             {loading ? (
@@ -424,55 +527,71 @@ export function FirefighterProfileModal({
             ) : holdRecords.length === 0 ? (
               <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 text-center">
                 <Calendar size={32} className="text-gray-600 mx-auto mb-3" />
-                <p className="text-base text-gray-300 font-semibold mb-1">No previous holds</p>
-                <p className="text-xs text-gray-500">This firefighter has not completed any holds yet</p>
+                <p className="text-base text-gray-300 font-semibold mb-1">
+                  No previous holds
+                </p>
+                <p className="text-xs text-gray-500">
+                  This firefighter has not completed any holds yet
+                </p>
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-lg p-3">
-                    <p className="text-2xl font-bold text-emerald-300">{completedHolds}</p>
+                    <p className="text-2xl font-bold text-emerald-300">
+                      {completedHolds}
+                    </p>
                     <p className="text-xs text-gray-400">Completed</p>
                   </div>
                   <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-3">
-                    <p className="text-2xl font-bold text-blue-300">{scheduledHolds}</p>
+                    <p className="text-2xl font-bold text-blue-300">
+                      {scheduledHolds}
+                    </p>
                     <p className="text-xs text-gray-400">Scheduled</p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  {(showAllHolds ? holdRecords : holdRecords.slice(0, 3)).map((record) => (
-                    <button
-                      key={record.id}
-                      onClick={() => setSelectedHoldForDetail(record)}
-                      className="w-full bg-gray-900/50 border border-gray-700 hover:border-gray-600 rounded-lg p-3 flex items-center justify-between transition-colors cursor-pointer"
-                    >
-                      <div className="flex-1 text-left">
-                        <p className="text-sm font-semibold text-white">
-                          {new Date(record.hold_date).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                            timeZone: 'UTC'
-                          })}
-                        </p>
-                        {record.fire_station && (
-                          <p className="text-xs text-gray-400">Station #{record.fire_station}</p>
-                        )}
-                      </div>
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-bold ${
-                          record.status === 'completed'
-                            ? 'bg-emerald-900/30 text-emerald-300 border border-emerald-700/50'
-                            : record.status === 'scheduled'
-                            ? 'bg-blue-900/30 text-blue-300 border border-blue-700/50'
-                            : 'bg-gray-700 text-gray-300'
-                        }`}
+                  {(showAllHolds ? holdRecords : holdRecords.slice(0, 3)).map(
+                    (record) => (
+                      <button
+                        key={record.id}
+                        onClick={() => setSelectedHoldForDetail(record)}
+                        className="w-full bg-gray-900/50 border border-gray-700 hover:border-gray-600 rounded-lg p-3 flex items-center justify-between transition-colors cursor-pointer"
                       >
-                        {record.status.charAt(0).toUpperCase() + record.status.slice(1)}
-                      </span>
-                    </button>
-                  ))}
+                        <div className="flex-1 text-left">
+                          <p className="text-sm font-semibold text-white">
+                            {new Date(record.hold_date).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                                timeZone: "UTC",
+                              }
+                            )}
+                          </p>
+                          {record.fire_station && (
+                            <p className="text-xs text-gray-400">
+                              Station #{record.fire_station}
+                            </p>
+                          )}
+                        </div>
+                        <span
+                          className={`px-2 py-1 rounded text-xs font-bold ${
+                            record.status === "completed"
+                              ? "bg-emerald-900/30 text-emerald-300 border border-emerald-700/50"
+                              : record.status === "scheduled"
+                              ? "bg-blue-900/30 text-blue-300 border border-blue-700/50"
+                              : "bg-gray-700 text-gray-300"
+                          }`}
+                        >
+                          {record.status.charAt(0).toUpperCase() +
+                            record.status.slice(1)}
+                        </span>
+                      </button>
+                    )
+                  )}
                 </div>
 
                 {/* Expand/Collapse Button */}
@@ -481,14 +600,18 @@ export function FirefighterProfileModal({
                     onClick={() => setShowAllHolds(!showAllHolds)}
                     className="w-full mt-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
                   >
-                    {showAllHolds ? `Show Less` : `Show All ${holdRecords.length} Holds`}
+                    {showAllHolds
+                      ? `Show Less`
+                      : `Show All ${holdRecords.length} Holds`}
                   </button>
                 )}
 
                 {/* No Additional History Message */}
                 {showAllHolds && holdRecords.length <= 3 && (
                   <div className="mt-3 bg-gray-900/30 border border-gray-700 rounded-lg p-4 text-center">
-                    <p className="text-sm text-gray-400">No additional hold history</p>
+                    <p className="text-sm text-gray-400">
+                      No additional hold history
+                    </p>
                   </div>
                 )}
               </>
@@ -521,58 +644,77 @@ export function FirefighterProfileModal({
               <div className="space-y-4">
                 {/* Hold Date */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Hold Date</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    Hold Date
+                  </p>
                   <p className="text-2xl font-bold text-white">
-                    {new Date(selectedHoldForDetail.hold_date).toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      month: 'long',
-                      day: 'numeric',
-                      year: 'numeric',
-                      timeZone: 'UTC'
+                    {new Date(
+                      selectedHoldForDetail.hold_date
+                    ).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "UTC",
                     })}
                   </p>
                 </div>
 
                 {/* Firefighter Name */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Firefighter</p>
-                  <p className="text-lg font-semibold text-white">{firefighter?.name}</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    Firefighter
+                  </p>
+                  <p className="text-lg font-semibold text-white">
+                    {firefighter?.name}
+                  </p>
                 </div>
 
                 {/* Station */}
                 {selectedHoldForDetail.fire_station && (
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Station</p>
-                    <p className="text-lg font-semibold text-white">Station #{selectedHoldForDetail.fire_station}</p>
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                      Station
+                    </p>
+                    <p className="text-lg font-semibold text-white">
+                      Station #{selectedHoldForDetail.fire_station}
+                    </p>
                   </div>
                 )}
 
                 {/* Status */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Status</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    Status
+                  </p>
                   <span
                     className={`inline-block px-3 py-1.5 rounded text-sm font-bold ${
-                      selectedHoldForDetail.status === 'completed'
-                        ? 'bg-emerald-900/30 text-emerald-300 border-2 border-emerald-700/50'
-                        : 'bg-blue-900/30 text-blue-300 border-2 border-blue-700/50'
+                      selectedHoldForDetail.status === "completed"
+                        ? "bg-emerald-900/30 text-emerald-300 border-2 border-emerald-700/50"
+                        : "bg-blue-900/30 text-blue-300 border-2 border-blue-700/50"
                     }`}
                   >
-                    {selectedHoldForDetail.status.charAt(0).toUpperCase() + selectedHoldForDetail.status.slice(1)}
+                    {selectedHoldForDetail.status.charAt(0).toUpperCase() +
+                      selectedHoldForDetail.status.slice(1)}
                   </span>
                 </div>
 
                 {/* Completed Date */}
                 {selectedHoldForDetail.completed_at && (
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Completed On</p>
+                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                      Completed On
+                    </p>
                     <p className="text-sm text-gray-300">
-                      {new Date(selectedHoldForDetail.completed_at).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        timeZone: 'UTC'
+                      {new Date(
+                        selectedHoldForDetail.completed_at
+                      ).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                        timeZone: "UTC",
                       })}
                     </p>
                   </div>
@@ -580,13 +722,17 @@ export function FirefighterProfileModal({
 
                 {/* Created Date */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Scheduled On</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    Scheduled On
+                  </p>
                   <p className="text-sm text-gray-300">
-                    {new Date(selectedHoldForDetail.created_at).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                      timeZone: 'UTC'
+                    {new Date(
+                      selectedHoldForDetail.created_at
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "UTC",
                     })}
                   </p>
                 </div>

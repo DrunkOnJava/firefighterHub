@@ -4,11 +4,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { supabase, Firefighter, Shift } from "../lib/supabase";
-import {
-  recalculatePositions,
-  moveToBottom,
-  assignPositions,
-} from "../utils/rotationLogic";
+import { recalculatePositions, assignPositions } from "../utils/rotationLogic";
 import { ToastType } from "./useToast";
 import { useOperationLoading } from "./useOperationLoading";
 
@@ -252,21 +248,36 @@ export function useFirefighters(
     }
   }
 
-  async function completeHold(id: string, holdDate: string, station?: string) {
+  async function completeHold(
+    id: string,
+    holdDate: string,
+    newPosition: number,
+    station?: string
+  ) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter || !firefighter.is_available) return;
 
     const previousFirefighters = [...firefighters];
 
-    let updatedFirefighters = moveToBottom(firefighters, id);
-    updatedFirefighters = updatedFirefighters.map((ff) =>
-      ff.id === id ? { ...ff, last_hold_date: holdDate } : ff
-    );
-    updatedFirefighters = recalculatePositions(updatedFirefighters);
-    setFirefighters(updatedFirefighters);
+    // Move firefighter to specified position (1-indexed from user, convert to 0-indexed)
+    const targetPosition = newPosition - 1;
+
+    // Remove the firefighter from current position
+    const withoutFirefighter = firefighters.filter((ff) => ff.id !== id);
+
+    // Insert at target position
+    const updatedFirefighters = [
+      ...withoutFirefighter.slice(0, targetPosition),
+      { ...firefighter, last_hold_date: holdDate },
+      ...withoutFirefighter.slice(targetPosition),
+    ];
+
+    // Assign positions based on array order (don't use recalculatePositions which sorts!)
+    const normalized = assignPositions(updatedFirefighters);
+    setFirefighters(normalized);
 
     try {
-      for (const ff of updatedFirefighters) {
+      for (const ff of normalized) {
         const updates: { order_position: number; last_hold_date?: string } = {
           order_position: ff.order_position,
         };
@@ -305,14 +316,18 @@ export function useFirefighters(
         day: "numeric",
       });
       const stationMsg = stationToUse ? ` at Station #${stationToUse}` : "";
+      const positionMsg =
+        newPosition === firefighters.length
+          ? "moved to the end of the line"
+          : `moved to position ${newPosition}`;
       showToast(
-        `${firefighter.name} finished their hold${stationMsg} for ${formattedDate} and moved to the end of the line`,
+        `${firefighter.name} finished their hold${stationMsg} for ${formattedDate} and ${positionMsg}`,
         "success"
       );
       await logActivity(
         firefighter.name,
         "completed_hold",
-        `Completed hold and moved to bottom of rotation`,
+        `Completed hold and moved to position ${newPosition}`,
         id
       );
     } catch (error) {

@@ -177,8 +177,9 @@ describe("FirefighterProfileModal", () => {
         expect(screen.queryByText(/loading history/i)).not.toBeInTheDocument();
       });
 
-      // Verify hold records are displayed
-      expect(screen.getByText(/Oct 20, 2025/i)).toBeInTheDocument();
+      // Verify hold records are displayed (may appear multiple times)
+      const holdDates = screen.getAllByText(/Oct 20, 2025/i);
+      expect(holdDates.length).toBeGreaterThan(0);
     });
 
     it("should not reload history when modal stays open", async () => {
@@ -205,8 +206,9 @@ describe("FirefighterProfileModal", () => {
         />
       );
 
-      // History should still be visible without reload
-      expect(screen.getByText(/Oct 20, 2025/i)).toBeInTheDocument();
+      // History should still be visible without reload (may appear multiple times)
+      const holdDates = screen.getAllByText(/Oct 20, 2025/i);
+      expect(holdDates.length).toBeGreaterThan(0);
     });
 
     it("should reset state when modal closes and reopens", async () => {
@@ -306,10 +308,10 @@ describe("FirefighterProfileModal", () => {
         expect(screen.queryByText(/loading history/i)).not.toBeInTheDocument();
       });
 
-      // All dates should be formatted consistently
-      expect(screen.getByText(/Oct 20, 2025/i)).toBeInTheDocument();
-      expect(screen.getByText(/Oct 15, 2025/i)).toBeInTheDocument();
-      expect(screen.getByText(/Nov 5, 2025/i)).toBeInTheDocument();
+      // All dates should be formatted consistently (may appear multiple times)
+      expect(screen.getAllByText(/Oct 20, 2025/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/Oct 15, 2025/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/Nov 5, 2025/i).length).toBeGreaterThan(0);
     });
 
     it("should handle null last_hold_date", () => {
@@ -341,9 +343,10 @@ describe("FirefighterProfileModal", () => {
       );
 
       expect(screen.getByText("John Doe")).toBeInTheDocument();
-      expect(screen.getByText(/shift/i)).toBeInTheDocument();
-      expect(screen.getByText(/station/i)).toBeInTheDocument();
-      expect(screen.getByText(/#1/i)).toBeInTheDocument();
+      // "Shift" appears multiple times, use getAllByText
+      expect(screen.getAllByText(/shift/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/station/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/#1/i).length).toBeGreaterThan(0);
     });
 
     it("should display certification level", () => {
@@ -449,8 +452,9 @@ describe("FirefighterProfileModal", () => {
       // 2 completed, 1 scheduled
       expect(screen.getByText("2")).toBeInTheDocument(); // Completed count
       expect(screen.getByText("1")).toBeInTheDocument(); // Scheduled count
-      expect(screen.getByText("Completed")).toBeInTheDocument();
-      expect(screen.getByText("Scheduled")).toBeInTheDocument();
+      // "Completed" appears multiple times, use getAllByText
+      expect(screen.getAllByText("Completed").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("Scheduled").length).toBeGreaterThan(0);
     });
 
     it("should show 'No previous holds' when history is empty", async () => {
@@ -608,8 +612,9 @@ describe("FirefighterProfileModal", () => {
 
       // Should show detailed date format
       expect(screen.getByText(/Monday, October 20, 2025/i)).toBeInTheDocument();
-      expect(screen.getByText(/Station #1/i)).toBeInTheDocument();
-      expect(screen.getByText(/Completed/i)).toBeInTheDocument();
+      // "Station #1" appears multiple times, use getAllByText
+      expect(screen.getAllByText(/Station #1/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/Completed/i).length).toBeGreaterThan(0);
     });
 
     it("should close detail modal when clicking close button", async () => {

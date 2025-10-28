@@ -44,6 +44,7 @@ describe("CompleteHoldModal", () => {
     it("should not render when isOpen is false", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={false}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -57,6 +58,7 @@ describe("CompleteHoldModal", () => {
     it("should render when isOpen is true", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -73,6 +75,7 @@ describe("CompleteHoldModal", () => {
     it("should not render when firefighter is null", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={null}
           onClose={mockOnClose}
@@ -86,6 +89,7 @@ describe("CompleteHoldModal", () => {
     it("should display firefighter name in modal", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -100,6 +104,7 @@ describe("CompleteHoldModal", () => {
     it("should display informational message about hold completion", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -107,10 +112,10 @@ describe("CompleteHoldModal", () => {
         />
       );
 
-      expect(screen.getByText(/move/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/to the end of the rotation/i)
-      ).toBeInTheDocument();
+      // Should show position selector
+      expect(screen.getByText(/new position/i)).toBeInTheDocument();
+      // Should show recommended option
+      expect(screen.getByText(/bottom.*recommended/i)).toBeInTheDocument();
     });
   });
 
@@ -123,6 +128,7 @@ describe("CompleteHoldModal", () => {
     it("should initialize date picker with today's date", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -142,6 +148,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -163,6 +170,7 @@ describe("CompleteHoldModal", () => {
     it("should set min date to today", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -179,6 +187,7 @@ describe("CompleteHoldModal", () => {
     it("should set max date to 1 year from today", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -197,6 +206,7 @@ describe("CompleteHoldModal", () => {
     it("should reset date when modal reopens", async () => {
       const { rerender } = render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -217,6 +227,7 @@ describe("CompleteHoldModal", () => {
       // Close and reopen modal
       rerender(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={false}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -226,6 +237,7 @@ describe("CompleteHoldModal", () => {
 
       rerender(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -249,6 +261,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={firefighterWithStation}
           onClose={mockOnClose}
@@ -270,6 +283,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={firefighterNoStation}
           onClose={mockOnClose}
@@ -286,6 +300,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -312,6 +327,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -328,6 +344,7 @@ describe("CompleteHoldModal", () => {
       expect(mockOnConfirm).toHaveBeenCalledWith(
         "ff-test-1",
         expect.any(String), // Today's date in ISO format
+        5, // Default position (bottom = totalFirefighters = 5)
         "1" // Station from mockFirefighter
       );
     });
@@ -337,6 +354,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -361,6 +379,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={firefighterNoStation}
           onClose={mockOnClose}
@@ -376,6 +395,7 @@ describe("CompleteHoldModal", () => {
       expect(mockOnConfirm).toHaveBeenCalledWith(
         "ff-no-station",
         expect.any(String),
+        5, // Default position (bottom)
         undefined // No station
       );
     });
@@ -385,6 +405,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -412,6 +433,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -430,7 +452,12 @@ describe("CompleteHoldModal", () => {
       });
       await user.click(completeButton);
 
-      expect(mockOnConfirm).toHaveBeenCalledWith("ff-test-1", testDate, "1");
+      expect(mockOnConfirm).toHaveBeenCalledWith(
+        "ff-test-1",
+        testDate,
+        5, // Default position (bottom)
+        "1"
+      );
     });
   });
 
@@ -440,6 +467,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -459,6 +487,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -476,6 +505,7 @@ describe("CompleteHoldModal", () => {
     it("should call onClose when backdrop is clicked", async () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -499,6 +529,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -520,6 +551,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -537,6 +569,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={false}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -554,6 +587,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -598,6 +632,7 @@ describe("CompleteHoldModal", () => {
     it("should have proper ARIA attributes", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -614,6 +649,7 @@ describe("CompleteHoldModal", () => {
     it("should have accessible title", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -628,6 +664,7 @@ describe("CompleteHoldModal", () => {
     it("should have accessible close button label", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -643,6 +680,7 @@ describe("CompleteHoldModal", () => {
     it("should have labeled form fields", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -660,6 +698,7 @@ describe("CompleteHoldModal", () => {
     it("should indicate disabled state on Complete button", () => {
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -682,6 +721,7 @@ describe("CompleteHoldModal", () => {
 
       render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -719,6 +759,7 @@ describe("CompleteHoldModal", () => {
     it("should handle rapid open/close cycles", async () => {
       const { rerender } = render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={false}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -729,6 +770,7 @@ describe("CompleteHoldModal", () => {
       // Rapid open/close
       rerender(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -738,6 +780,7 @@ describe("CompleteHoldModal", () => {
 
       rerender(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={false}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -747,6 +790,7 @@ describe("CompleteHoldModal", () => {
 
       rerender(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}
@@ -775,6 +819,7 @@ describe("CompleteHoldModal", () => {
 
       const { rerender } = render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={firefighter1}
           onClose={mockOnClose}
@@ -788,6 +833,7 @@ describe("CompleteHoldModal", () => {
       // Change firefighter while modal is open
       rerender(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={firefighter2}
           onClose={mockOnClose}
@@ -806,6 +852,7 @@ describe("CompleteHoldModal", () => {
     it("should clean up event listeners on unmount", () => {
       const { unmount } = render(
         <CompleteHoldModal
+          totalFirefighters={5}
           isOpen={true}
           firefighter={mockFirefighter}
           onClose={mockOnClose}

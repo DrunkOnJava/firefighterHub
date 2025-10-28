@@ -353,7 +353,8 @@ describe('useFirefighters', () => {
       });
 
       const holdDate = '2025-10-27';
-      await result.current.completeHold('ff1', holdDate, '1');
+      // Pass position 2 (user display) which becomes index 1 (internal)
+      await result.current.completeHold('ff1', holdDate, 2);
 
       await waitFor(() => {
         const ffs = result.current.firefighters;
@@ -385,7 +386,7 @@ describe('useFirefighters', () => {
         log => log.firefighter_id === 'ff1' && log.action_type === 'completed_hold'
       );
       expect(activityLog).toBeDefined();
-      expect(activityLog?.details).toContain('bottom of rotation');
+      expect(activityLog?.details).toContain('moved to position 2'); // Position 2 out of 2 firefighters
 
       // Verify toast notification
       expect(mockToast).toHaveBeenCalledWith(
@@ -431,7 +432,7 @@ describe('useFirefighters', () => {
       });
 
       const holdDate = '2025-10-15';
-      await result.current.completeHold('ff1', holdDate);
+      await result.current.completeHold('ff1', holdDate, 1); // position 1 (only one firefighter)
 
       await waitFor(() => {
         expect(result.current.firefighters.length).toBe(1);
@@ -456,7 +457,7 @@ describe('useFirefighters', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      await result.current.completeHold('ff1', '2025-10-27');
+      await result.current.completeHold('ff1', '2025-10-27', 3); // Move to position 3 (bottom)
 
       await waitFor(() => {
         expect(result.current.firefighters.length).toBe(3);
@@ -505,7 +506,7 @@ describe('useFirefighters', () => {
         expect(result.current.loading).toBe(false);
       });
 
-      await result.current.completeHold('ff1', '2025-10-27');
+      await result.current.completeHold('ff1', '2025-10-27', 1); // Try to complete with position 1
 
       // Should not create scheduled_holds entry
       expect(mockDatabase.scheduled_holds).toHaveLength(0);
@@ -530,7 +531,7 @@ describe('useFirefighters', () => {
       // Simulate error on all calls (not just next one)
       simulateError('Database error', false);
 
-      await result.current.completeHold('ff1', '2025-10-27');
+      await result.current.completeHold('ff1', '2025-10-27', 2); // Try to move to position 2
 
       await waitFor(() => {
         // State should be rolled back
@@ -584,7 +585,7 @@ describe('useFirefighters', () => {
       });
 
       // Complete hold with custom station
-      await result.current.completeHold('ff1', '2025-10-27', '5');
+      await result.current.completeHold('ff1', '2025-10-27', 1, '5'); // position 1, station '5'
 
       await waitFor(() => {
         expect(mockDatabase.scheduled_holds.length).toBeGreaterThan(0);

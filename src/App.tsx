@@ -5,30 +5,30 @@
 // 4. Admin mode stored in localStorage is insecure (client-side only, easily bypassed)
 // 5. Large component file (266 lines) - consider breaking into smaller components
 
-import { useEffect, useState, useRef } from 'react';
-import { Shift, Firefighter } from './lib/supabase';
-import { Calendar } from './components/Calendar';
-import { FirefighterList } from './components/FirefighterList';
-import { Sidebar } from './components/Sidebar';
-import { Header } from './components/Header';
-import { HelpModal } from './components/HelpModal';
-import { ActivityLogModal } from './components/ActivityLogModal';
-import { CompleteHoldModal } from './components/CompleteHoldModal';
-import { TransferShiftModal } from './components/TransferShiftModal';
-import { MobileNav } from './components/MobileNav';
-import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
-import { ToastContainer } from './components/Toast';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { KeyboardShortcutsModal } from './components/KeyboardShortcutsModal';
-import { useFirefighters } from './hooks/useFirefighters';
-import { useScheduledHolds } from './hooks/useScheduledHolds';
-import { useToast } from './hooks/useToast';
-import { useAnnounce } from './hooks/useAnnounce';
-import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
+import { useEffect, useState, useRef } from "react";
+import { Shift, Firefighter } from "./lib/supabase";
+import { Calendar } from "./components/Calendar";
+import { FirefighterList } from "./components/FirefighterList";
+import { Sidebar } from "./components/Sidebar";
+import { Header } from "./components/Header";
+import { HelpModal } from "./components/HelpModal";
+import { ActivityLogModal } from "./components/ActivityLogModal";
+import { CompleteHoldModal } from "./components/CompleteHoldModal";
+import { TransferShiftModal } from "./components/TransferShiftModal";
+import { MobileNav } from "./components/MobileNav";
+import { QuickAddFirefighterModal } from "./components/QuickAddFirefighterModal";
+import { ToastContainer } from "./components/Toast";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
+import { useFirefighters } from "./hooks/useFirefighters";
+import { useScheduledHolds } from "./hooks/useScheduledHolds";
+import { useToast } from "./hooks/useToast";
+import { useAnnounce } from "./hooks/useAnnounce";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 
 // CRITICAL SECURITY ISSUE: Hardcoded password - move to environment variable
 // RECOMMENDATION: Use proper Supabase auth with AuthContext (already exists but unused)
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'Firerescue';
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Firerescue";
 
 function App() {
   const [showHelp, setShowHelp] = useState(false);
@@ -38,23 +38,27 @@ function App() {
   const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
-  const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
-  const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
+  const [
+    selectedFirefighterForCompletion,
+    setSelectedFirefighterForCompletion,
+  ] = useState<Firefighter | null>(null);
+  const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] =
+    useState<Firefighter | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   // Default to Shift A
-  const [currentShift, setCurrentShift] = useState<Shift>('A');
+  const [currentShift, setCurrentShift] = useState<Shift>("A");
 
   // ISSUE: Client-side admin mode is insecure - anyone can set localStorage.setItem('isAdminMode', 'true')
   // RECOMMENDATION: Replace with server-side auth using the existing AuthContext
   const [isAdminMode, setIsAdminMode] = useState(() => {
-    const saved = localStorage.getItem('isAdminMode');
-    return saved === 'true';
+    const saved = localStorage.getItem("isAdminMode");
+    return saved === "true";
   });
 
   // FIXED: Dark mode now persists to localStorage (was always resetting to true)
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('isDarkMode');
-    return saved !== 'false'; // Default to true (dark mode) if not set
+    const saved = localStorage.getItem("isDarkMode");
+    return saved !== "false"; // Default to true (dark mode) if not set
   });
 
   const { toasts, showToast, hideToast } = useToast();
@@ -67,16 +71,16 @@ function App() {
   function handleToggleAdminMode(password: string): boolean {
     if (isAdminMode) {
       setIsAdminMode(false);
-      localStorage.setItem('isAdminMode', 'false');
-      showToast('Admin mode disabled', 'info');
+      localStorage.setItem("isAdminMode", "false");
+      showToast("Admin mode disabled", "info");
       return true;
     }
 
     // SECURITY CRITICAL: Hardcoded password check - never do this in production!
     if (password === ADMIN_PASSWORD) {
       setIsAdminMode(true);
-      localStorage.setItem('isAdminMode', 'true');
-      showToast('Admin mode enabled', 'success');
+      localStorage.setItem("isAdminMode", "true");
+      showToast("Admin mode enabled", "success");
       return true;
     }
 
@@ -95,7 +99,7 @@ function App() {
     transferShift,
     resetAll,
     masterReset,
-    reorderFirefighters
+    reorderFirefighters,
   } = useFirefighters(showToast, currentShift);
 
   const {
@@ -103,59 +107,62 @@ function App() {
     loading: holdsLoading,
     scheduleHold,
     removeScheduledHold,
-    markHoldCompleted
+    markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
 
   // Keyboard shortcuts configuration
   const { shortcuts } = useKeyboardShortcuts({
     shortcuts: [
       {
-        key: 'k',
+        key: "k",
         ctrl: true,
         meta: true,
-        description: 'Focus search bar',
+        description: "Focus search bar",
         action: () => {
           searchInputRef.current?.focus();
-          searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+          searchInputRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        },
       },
       {
-        key: 'n',
+        key: "n",
         ctrl: true,
         meta: true,
-        description: 'Quick add firefighter',
+        description: "Quick add firefighter",
         action: () => {
           if (isAdminMode) {
             setShowQuickAdd(true);
           }
         },
-        enabled: isAdminMode
+        enabled: isAdminMode,
       },
       {
-        key: 'e',
+        key: "e",
         ctrl: true,
         meta: true,
-        description: 'Export data',
+        description: "Export data",
         action: () => {
           // Trigger export menu - will be implemented when migrating FirefighterList
-          console.log('Export shortcut pressed');
-        }
+          console.log("Export shortcut pressed");
+        },
       },
       {
-        key: 'h',
+        key: "h",
         ctrl: true,
         meta: true,
-        description: 'Show help',
-        action: () => setShowHelp(true)
+        description: "Show help",
+        action: () => setShowHelp(true),
       },
       {
-        key: '?',
-        description: 'Show keyboard shortcuts',
-        action: () => setShowKeyboardShortcuts(true)
+        key: "?",
+        description: "Show keyboard shortcuts",
+        action: () => setShowKeyboardShortcuts(true),
       },
       {
-        key: 'Escape',
-        description: 'Close modal',
+        key: "Escape",
+        description: "Close modal",
         action: () => {
           setShowHelp(false);
           setShowActivityLog(false);
@@ -163,27 +170,32 @@ function App() {
           setShowCompleteHoldModal(false);
           setShowTransferShiftModal(false);
           setShowKeyboardShortcuts(false);
-        }
-      }
-    ]
+        },
+      },
+    ],
   });
 
   function handleCompleteHoldClick(id: string) {
-    const firefighter = firefighters.find(ff => ff.id === id);
+    const firefighter = firefighters.find((ff) => ff.id === id);
     if (firefighter) {
       setSelectedFirefighterForCompletion(firefighter);
       setShowCompleteHoldModal(true);
     }
   }
 
-  function handleConfirmCompleteHold(firefighterId: string, holdDate: string, station?: string) {
-    completeHold(firefighterId, holdDate, station);
+  function handleConfirmCompleteHold(
+    firefighterId: string,
+    holdDate: string,
+    newPosition: number,
+    station?: string
+  ) {
+    completeHold(firefighterId, holdDate, newPosition, station);
     setShowCompleteHoldModal(false);
     setSelectedFirefighterForCompletion(null);
   }
 
   function handleTransferShiftClick(id: string) {
-    const firefighter = firefighters.find(ff => ff.id === id);
+    const firefighter = firefighters.find((ff) => ff.id === id);
     if (firefighter) {
       setSelectedFirefighterForTransfer(firefighter);
       setShowTransferShiftModal(true);
@@ -196,17 +208,16 @@ function App() {
     setSelectedFirefighterForTransfer(null);
   }
 
-
   // Persist dark mode preference to localStorage
   useEffect(() => {
-    localStorage.setItem('isDarkMode', String(isDarkMode));
+    localStorage.setItem("isDarkMode", String(isDarkMode));
   }, [isDarkMode]);
 
   // ISSUE: Missing 'announce' in dependency array could cause stale closure
   // The announce function is stable from useAnnounce, but ESLint will warn about this
   useEffect(() => {
     if (shiftChangeAnnouncedRef.current) {
-      announce(`Switched to Shift ${currentShift}`, 'polite');
+      announce(`Switched to Shift ${currentShift}`, "polite");
     }
     shiftChangeAnnouncedRef.current = true;
   }, [currentShift, announce]);
@@ -216,18 +227,22 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-xl font-semibold">Loading Hold List Manager...</p>
+          <p className="text-white text-xl font-semibold">
+            Loading Hold List Manager...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${
-      isDarkMode
-        ? 'from-gray-900 via-gray-900 to-gray-800 text-white'
-        : 'from-slate-50 via-slate-50 to-slate-100 text-slate-900'
-    }`}>
+    <div
+      className={`min-h-screen bg-gradient-to-br ${
+        isDarkMode
+          ? "from-gray-900 via-gray-900 to-gray-800 text-white"
+          : "from-slate-50 via-slate-50 to-slate-100 text-slate-900"
+      }`}
+    >
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
@@ -245,27 +260,35 @@ function App() {
           onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
         />
 
-        <main id="main-content" role="main" className="px-3 sm:px-6 py-4 sm:py-8">
+        <main
+          id="main-content"
+          role="main"
+          className="px-3 sm:px-6 py-4 sm:py-8"
+        >
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
             <div className="xl:col-span-9">
               <section aria-labelledby="calendar-heading">
                 <ErrorBoundary componentName="Calendar">
                   <Calendar
-                  firefighters={firefighters}
-                  scheduledHolds={scheduledHolds}
-                  onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                  onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
-                  onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
-                  loading={holdsLoading}
-                  isAdminMode={isAdminMode}
-                  isDarkMode={isDarkMode}
-                  currentShift={currentShift}
-                />
+                    firefighters={firefighters}
+                    scheduledHolds={scheduledHolds}
+                    onScheduleHold={isAdminMode ? scheduleHold : () => {}}
+                    onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
+                    onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
+                    loading={holdsLoading}
+                    isAdminMode={isAdminMode}
+                    isDarkMode={isDarkMode}
+                    currentShift={currentShift}
+                  />
                 </ErrorBoundary>
               </section>
             </div>
 
-            <aside className="xl:col-span-3" role="complementary" aria-label="Team statistics and information">
+            <aside
+              className="xl:col-span-3"
+              role="complementary"
+              aria-label="Team statistics and information"
+            >
               <ErrorBoundary componentName="Sidebar">
                 <Sidebar
                   firefighters={firefighters}
@@ -281,21 +304,21 @@ function App() {
             <section aria-labelledby="roster-heading">
               <ErrorBoundary componentName="FirefighterList">
                 <FirefighterList
-                firefighters={firefighters}
-                deactivatedFirefighters={deactivatedFirefighters}
-                onAdd={addFirefighter}
-                onCompleteHold={handleCompleteHoldClick}
-                onDelete={deleteFirefighter}
-                onDeactivate={deactivateFirefighter}
-                onReactivate={reactivateFirefighter}
-                onTransferShift={handleTransferShiftClick}
-                onResetAll={resetAll}
-                onReorder={reorderFirefighters}
-                currentShift={currentShift}
-                isAdminMode={isAdminMode}
-                isDarkMode={isDarkMode}
-                searchInputRef={searchInputRef}
-              />
+                  firefighters={firefighters}
+                  deactivatedFirefighters={deactivatedFirefighters}
+                  onAdd={addFirefighter}
+                  onCompleteHold={handleCompleteHoldClick}
+                  onDelete={deleteFirefighter}
+                  onDeactivate={deactivateFirefighter}
+                  onReactivate={reactivateFirefighter}
+                  onTransferShift={handleTransferShiftClick}
+                  onResetAll={resetAll}
+                  onReorder={reorderFirefighters}
+                  currentShift={currentShift}
+                  isAdminMode={isAdminMode}
+                  isDarkMode={isDarkMode}
+                  searchInputRef={searchInputRef}
+                />
               </ErrorBoundary>
             </section>
           </div>
@@ -309,7 +332,10 @@ function App() {
         isAdminMode={isAdminMode}
         onToggleAdminMode={handleToggleAdminMode}
       />
-      <ActivityLogModal isOpen={showActivityLog} onClose={() => setShowActivityLog(false)} />
+      <ActivityLogModal
+        isOpen={showActivityLog}
+        onClose={() => setShowActivityLog(false)}
+      />
       <KeyboardShortcutsModal
         isOpen={showKeyboardShortcuts}
         onClose={() => setShowKeyboardShortcuts(false)}
@@ -319,6 +345,7 @@ function App() {
       <CompleteHoldModal
         isOpen={showCompleteHoldModal}
         firefighter={selectedFirefighterForCompletion}
+        totalFirefighters={firefighters.filter((ff) => ff.is_available).length}
         onClose={() => {
           setShowCompleteHoldModal(false);
           setSelectedFirefighterForCompletion(null);
@@ -363,10 +390,7 @@ function App() {
       />
 
       <div role="alert" aria-live="polite" aria-atomic="true">
-        <ToastContainer
-          toasts={toasts}
-          onClose={hideToast}
-        />
+        <ToastContainer toasts={toasts} onClose={hideToast} />
       </div>
     </div>
   );

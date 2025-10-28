@@ -116,7 +116,13 @@ export function Calendar({
   }, [selectedDay]);
 
   function handleDayClick(day: CalendarDay) {
-    if (!day.isCurrentMonth || !isAdminMode) return;
+    // In read-only mode, allow viewing days with holds (especially multiple holds)
+    // In admin mode, allow all days in current month
+    const hasHolds = day.scheduledHolds.length > 0;
+
+    if (!day.isCurrentMonth) return;
+    if (!isAdminMode && !hasHolds) return; // Read-only: must have holds to open
+
     setSelectedDay(day);
     setSelectedFirefighter(null);
     setSelectedStation("");

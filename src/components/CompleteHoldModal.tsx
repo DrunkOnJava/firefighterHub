@@ -1,45 +1,54 @@
-import { useState, useEffect } from 'react';
-import { X, Calendar as CalendarIcon, CheckCircle } from 'lucide-react';
-import { Firefighter } from '../lib/supabase';
-import { StationSelector } from './StationSelector';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
+import { useState, useEffect } from "react";
+import { X, Calendar as CalendarIcon, CheckCircle } from "lucide-react";
+import { Firefighter } from "../lib/supabase";
+import { StationSelector } from "./StationSelector";
+import { useFocusTrap } from "../hooks/useFocusTrap";
+import { useFocusReturn } from "../hooks/useFocusReturn";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
   firefighter: Firefighter | null;
+  totalFirefighters: number; // Total number of firefighters in rotation
   onClose: () => void;
-  onConfirm: (firefighterId: string, holdDate: string, station?: string) => void;
+  onConfirm: (
+    firefighterId: string,
+    holdDate: string,
+    newPosition: number,
+    station?: string
+  ) => void;
 }
 
 export function CompleteHoldModal({
   isOpen,
   firefighter,
+  totalFirefighters,
   onClose,
-  onConfirm
+  onConfirm,
 }: CompleteHoldModalProps) {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedStation, setSelectedStation] = useState('');
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedStation, setSelectedStation] = useState("");
+  const [newPosition, setNewPosition] = useState(totalFirefighters); // Default to bottom (last position)
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
   useEffect(() => {
     if (isOpen && firefighter) {
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date().toISOString().split("T")[0];
       setSelectedDate(today);
-      setSelectedStation(firefighter.fire_station || '');
+      setSelectedStation(firefighter.fire_station || "");
+      setNewPosition(totalFirefighters); // Reset to bottom when modal opens
     }
-  }, [isOpen, firefighter]);
+  }, [isOpen, firefighter, totalFirefighters]);
 
   useEffect(() => {
     function handleEscape(e: KeyboardEvent) {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     }
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
   if (!isOpen || !firefighter) return null;
@@ -47,14 +56,14 @@ export function CompleteHoldModal({
   const handleConfirm = () => {
     if (!selectedDate) return;
     const stationToUse = selectedStation || undefined;
-    onConfirm(firefighter.id, selectedDate, stationToUse);
+    onConfirm(firefighter.id, selectedDate, newPosition, stationToUse);
     onClose();
   };
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 365);
-  const maxDateStr = maxDate.toISOString().split('T')[0];
+  const maxDateStr = maxDate.toISOString().split("T")[0];
 
   return (
     <div
@@ -77,12 +86,13 @@ export function CompleteHoldModal({
           <div className="flex items-center gap-3">
             <CheckCircle className="text-green-400" size={28} />
             <div>
-              <h2 id="complete-hold-title" className="text-2xl font-bold text-white">
+              <h2
+                id="complete-hold-title"
+                className="text-2xl font-bold text-white"
+              >
                 Complete Hold
               </h2>
-              <p className="text-sm text-green-200 mt-1">
-                {firefighter.name}
-              </p>
+              <p className="text-sm text-green-200 mt-1">{firefighter.name}</p>
             </div>
           </div>
           <button
@@ -97,7 +107,8 @@ export function CompleteHoldModal({
         <div className="p-6 space-y-6">
           <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-4">
             <p className="text-sm text-blue-200">
-              This will mark the hold as completed, move <strong>{firefighter.name}</strong> to the end of the rotation, and optionally schedule a calendar entry.
+              This will mark the hold as completed and update{" "}
+              <strong>{firefighter.name}</strong>'s position in the rotation.
             </p>
           </div>
 
@@ -121,6 +132,34 @@ export function CompleteHoldModal({
             onStationChange={setSelectedStation}
             defaultStation={firefighter.fire_station}
           />
+
+          <div className="space-y-3">
+            <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
+              <span>New Position in Rotation</span>
+            </label>
+            <div className="space-y-2">
+              <select
+                value={newPosition}
+                onChange={(e) => setNewPosition(Number(e.target.value))}
+                className="w-full px-4 py-3 bg-gray-900 border-2 border-gray-700 rounded-lg text-white focus:outline-none focus:border-orange-500 transition-colors"
+              >
+                {Array.from({ length: totalFirefighters }, (_, i) => i + 1).map(
+                  (pos) => (
+                    <option key={pos} value={pos}>
+                      Position {pos}
+                      {pos === totalFirefighters
+                        ? " (Bottom - Recommended)"
+                        : ""}
+                    </option>
+                  )
+                )}
+              </select>
+              <p className="text-xs text-gray-400">
+                Default is bottom of the list. Select a different position if
+                needed.
+              </p>
+            </div>
+          </div>
 
           <div className="flex gap-3 pt-4">
             <button

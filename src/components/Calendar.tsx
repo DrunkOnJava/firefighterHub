@@ -8,8 +8,11 @@ import {
   CheckCircle2,
   Trash2,
   Users,
+  Lock,
+  Clock,
 } from "lucide-react";
-import { Firefighter, Shift, supabase } from "../lib/supabase";
+import { Firefighter, Shift, HoldDuration, supabase } from "../lib/supabase";
+import { isHoldLocked } from "../utils/validation";
 import { StationSelector } from "./StationSelector";
 import { ShiftIndicator } from "./ShiftIndicator";
 import { useFocusTrap } from "../hooks/useFocusTrap";
@@ -31,7 +34,9 @@ interface CalendarProps {
   onScheduleHold: (
     holdDate: string,
     firefighter: Firefighter,
-    station?: string
+    station?: string,
+    duration?: HoldDuration,
+    startTime?: string
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
@@ -149,7 +154,9 @@ export function Calendar({
     onScheduleHold(
       formatDateForDB(selectedDay.date),
       selectedFirefighter,
-      stationToUse
+      stationToUse,
+      '24h', // default duration
+      '07:00' // default start time
     );
     setSelectedDay(null);
     setSelectedFirefighter(null);
@@ -353,6 +360,7 @@ export function Calendar({
                       {hasHolds ? (
                         <div className="flex-1 flex flex-col justify-center space-y-0.5 sm:space-y-1">
                           {day.scheduledHolds.slice(0, 2).map((hold) => {
+                            const locked = isHoldLocked(hold);
                             return (
                               <div key={hold.id} className="mb-1">
                                 <p className="text-white font-bold text-xs sm:text-sm lg:text-base leading-tight break-words">
@@ -363,16 +371,30 @@ export function Calendar({
                                     Station #{hold.fire_station}
                                   </p>
                                 )}
+                                {hold.duration && (
+                                  <p className="text-[10px] sm:text-xs text-white/80 font-semibold flex items-center gap-1">
+                                    <Clock size={10} className="sm:w-3 sm:h-3" />
+                                    {hold.duration === '12h' ? '12hr' : '24hr'} Hold
+                                  </p>
+                                )}
                                 {hold.lent_to_shift && (
                                   <p className="text-[10px] sm:text-xs text-blue-300 font-bold flex items-center gap-1">
                                     → {hold.lent_to_shift}-Shift
                                   </p>
                                 )}
-                                {hold.status === "completed" && (
-                                  <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
-                                    DONE
-                                  </span>
-                                )}
+                                <div className="flex items-center gap-1 flex-wrap mt-0.5">
+                                  {hold.status === "completed" && (
+                                    <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
+                                      DONE
+                                    </span>
+                                  )}
+                                  {locked && (
+                                    <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-amber-900/70 text-amber-200 text-[8px] sm:text-xs font-bold rounded">
+                                      <Lock size={10} className="mr-0.5" />
+                                      LOCKED
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             );
                           })}
@@ -535,7 +557,9 @@ export function Calendar({
               {selectedDay.scheduledHolds.length > 0 && !showAddAnother ? (
                 <div className="space-y-4">
                   <div className="space-y-3">
-                    {selectedDay.scheduledHolds.map((hold) => (
+                    {selectedDay.scheduledHolds.map((hold) => {
+                      const locked = isHoldLocked(hold);
+                      return (
                       <div
                         key={hold.id}
                         className="bg-gray-900 border border-gray-700 rounded-lg p-4"
@@ -550,17 +574,32 @@ export function Calendar({
                                 Station #{hold.fire_station}
                               </p>
                             )}
-                            <span
-                              className={`inline-block mt-2 px-2 py-1 rounded text-xs font-bold ${
-                                hold.status === "scheduled"
-                                  ? "bg-sky-900/70 text-sky-300"
-                                  : "bg-emerald-900/70 text-emerald-300"
-                              }`}
-                            >
-                              {hold.status === "scheduled"
-                                ? "SCHEDULED"
-                                : "COMPLETED"}
-                            </span>
+                            {hold.duration && (
+                              <p className="text-sm text-gray-400 mt-1 flex items-center gap-1">
+                                <Clock size={14} />
+                                {hold.duration === '12h' ? '12 Hour' : '24 Hour'} Hold
+                                {hold.start_time && ` • Starts ${hold.start_time}`}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-2 mt-2 flex-wrap">
+                              <span
+                                className={`inline-block px-2 py-1 rounded text-xs font-bold ${
+                                  hold.status === "scheduled"
+                                    ? "bg-sky-900/70 text-sky-300"
+                                    : "bg-emerald-900/70 text-emerald-300"
+                                }`}
+                              >
+                                {hold.status === "scheduled"
+                                  ? "SCHEDULED"
+                                  : "COMPLETED"}
+                              </span>
+                              {locked && (
+                                <span className="inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 text-xs font-bold rounded">
+                                  <Lock size={12} className="mr-1" />
+                                  LOCKED
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
 
@@ -601,31 +640,37 @@ export function Calendar({
                                 </button>
                               )}
 
-                              {/* Edit Button: Always available */}
+                              {/* Edit Button: Disabled for locked holds */}
                               <button
+                                disabled={locked}
                                 onClick={() => {
-                                  setEditingHoldId(hold.id);
-                                  setEditStation(hold.fire_station || "");
+                                  if (!locked) {
+                                    setEditingHoldId(hold.id);
+                                    setEditStation(hold.fire_station || "");
+                                  }
                                 }}
-                                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
-                                title="Edit hold station"
+                                className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2 ${locked ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                title={locked ? "Hold is locked (>1 week old)" : "Edit hold station"}
                               >
-                                <span className="text-sm">Edit</span>
+                                <span className="text-sm">{locked ? 'Locked' : 'Edit'}</span>
                               </button>
 
-                              {/* Cancel Button: Always available (unless legacy 'past-' id) */}
+                              {/* Cancel Button: Disabled for locked holds (unless legacy 'past-' id) */}
                               {!hold.id.startsWith("past-") && (
                                 <button
-                                  onClick={() => setShowDeleteConfirm(hold.id)}
-                                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                                  disabled={locked}
+                                  onClick={() => !locked && setShowDeleteConfirm(hold.id)}
+                                  className={`flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2 ${locked ? 'opacity-50 cursor-not-allowed' : ''}`}
                                   title={
-                                    hold.status === "completed"
+                                    locked
+                                      ? "Hold is locked (>1 week old)"
+                                      : hold.status === "completed"
                                       ? "Cancel completed hold and reset firefighter position"
                                       : "Cancel scheduled hold"
                                   }
                                 >
                                   <Trash2 size={16} />
-                                  <span className="text-sm">Cancel</span>
+                                  <span className="text-sm">{locked ? 'Locked' : 'Cancel'}</span>
                                 </button>
                               )}
                             </div>
@@ -702,7 +747,8 @@ export function Calendar({
                           </div>
                         )}
                       </div>
-                    ))}
+                    );
+                    })}
                   </div>
 
                   {isAdminMode && (

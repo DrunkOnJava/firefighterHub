@@ -4,8 +4,9 @@ import {
   Calendar as CalendarIcon,
   CheckCircle,
   ArrowRight,
+  Clock,
 } from "lucide-react";
-import { Firefighter, Shift } from "../lib/supabase";
+import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
 import { StationSelector } from "./StationSelector";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useFocusReturn } from "../hooks/useFocusReturn";
@@ -20,7 +21,9 @@ interface CompleteHoldModalProps {
     holdDate: string,
     newPosition: number,
     station?: string,
-    lentToShift?: Shift | null
+    lentToShift?: Shift | null,
+    duration?: HoldDuration,
+    startTime?: string
   ) => void;
 }
 
@@ -35,6 +38,8 @@ export function CompleteHoldModal({
   const [selectedStation, setSelectedStation] = useState("");
   const [newPosition, setNewPosition] = useState(totalFirefighters); // Default to bottom (last position)
   const [lentToShift, setLentToShift] = useState<Shift | null>(null); // Which shift is this firefighter being lent to
+  const [duration, setDuration] = useState<HoldDuration>('24h'); // Default to 24 hours
+  const [startTime, setStartTime] = useState('07:00'); // Default to 07:00
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -45,6 +50,8 @@ export function CompleteHoldModal({
       setSelectedStation(firefighter.fire_station || "");
       setNewPosition(totalFirefighters); // Reset to bottom when modal opens
       setLentToShift(null); // Reset lent-to shift
+      setDuration('24h'); // Reset to default 24 hours
+      setStartTime('07:00'); // Reset to default 07:00
     }
   }, [isOpen, firefighter, totalFirefighters]);
 
@@ -69,7 +76,9 @@ export function CompleteHoldModal({
       selectedDate,
       newPosition,
       stationToUse,
-      lentToShift
+      lentToShift,
+      duration,
+      startTime
     );
     onClose();
   };
@@ -172,6 +181,52 @@ export function CompleteHoldModal({
               <p className="text-xs text-gray-400">
                 Select which shift this firefighter is being lent to, if
                 applicable.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label
+              htmlFor="hold-duration"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-300"
+            >
+              <Clock size={18} className="text-purple-400" />
+              <span>Hold Duration</span>
+            </label>
+            <div className="space-y-2">
+              <select
+                id="hold-duration"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value as HoldDuration)}
+                className="w-full px-4 py-3 bg-gray-900 border-2 border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+              >
+                <option value="12h">12 Hours</option>
+                <option value="24h">24 Hours (Default)</option>
+              </select>
+              <p className="text-xs text-gray-400">
+                Length of the hold shift. Most holds are 24 hours.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label
+              htmlFor="start-time"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-300"
+            >
+              <Clock size={18} className="text-purple-400" />
+              <span>Start Time</span>
+            </label>
+            <div className="space-y-2">
+              <input
+                id="start-time"
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                className="w-full px-4 py-3 bg-gray-900 border-2 border-gray-700 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+              />
+              <p className="text-xs text-gray-400">
+                Hold start time (default: 07:00). Member may be called back mid-shift if needed.
               </p>
             </div>
           </div>

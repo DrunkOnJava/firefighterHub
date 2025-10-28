@@ -623,15 +623,6 @@ export function FirefighterList({
                           isDarkMode ? "text-gray-300" : "text-slate-700"
                         }`}
                       >
-                        Apparatus
-                      </th>
-                    )}
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
                         Qualifications
                       </th>
                     )}
@@ -655,26 +646,6 @@ export function FirefighterList({
                 </thead>
                 <tbody className="divide-y divide-gray-700">
                   {filteredAndAdvancedFiltered.map((firefighter, index) => {
-                    const apparatusList = [
-                      {
-                        name: "Ambulance",
-                        enabled: firefighter.apparatus_ambulance,
-                      },
-                      {
-                        name: "Brush Truck",
-                        enabled: firefighter.apparatus_brush_truck,
-                      },
-                      { name: "Engine", enabled: firefighter.apparatus_engine },
-                      { name: "Tanker", enabled: firefighter.apparatus_tanker },
-                      { name: "Truck", enabled: firefighter.apparatus_truck },
-                      { name: "Boat", enabled: firefighter.apparatus_boat },
-                      { name: "UTV", enabled: firefighter.apparatus_utv },
-                      {
-                        name: "Rescue Squad",
-                        enabled: firefighter.apparatus_rescue_squad,
-                      },
-                    ].filter((item) => item.enabled);
-
                     const qualifications = [
                       firefighter.is_fto && "FTO",
                       firefighter.is_bls && "BLS",
@@ -825,81 +796,6 @@ export function FirefighterList({
                               >
                                 {firefighter.certification_level}
                               </span>
-                            ) : (
-                              <span
-                                className={
-                                  isDarkMode
-                                    ? "text-gray-600"
-                                    : "text-slate-400"
-                                }
-                              >
-                                —
-                              </span>
-                            )}
-                          </td>
-                        )}
-                        {isAdminMode && (
-                          <td className="px-4 py-4">
-                            {apparatusList.length > 0 ? (
-                              <div className="flex flex-wrap gap-1">
-                                {apparatusList.map((apparatus) => {
-                                  let colorClass = "";
-                                  switch (apparatus.name) {
-                                    case "Ambulance":
-                                      colorClass = isDarkMode
-                                        ? "bg-red-900/80 text-white border border-red-700"
-                                        : "bg-red-600 text-white";
-                                      break;
-                                    case "Engine":
-                                      colorClass = isDarkMode
-                                        ? "bg-orange-900/70 text-orange-300"
-                                        : "bg-orange-600 text-white";
-                                      break;
-                                    case "Truck":
-                                      colorClass = isDarkMode
-                                        ? "bg-yellow-900/70 text-yellow-300"
-                                        : "bg-yellow-600 text-white";
-                                      break;
-                                    case "Tanker":
-                                      colorClass = isDarkMode
-                                        ? "bg-blue-900/70 text-blue-300"
-                                        : "bg-blue-600 text-white";
-                                      break;
-                                    case "Brush Truck":
-                                      colorClass = isDarkMode
-                                        ? "bg-green-900/70 text-green-300"
-                                        : "bg-green-600 text-white";
-                                      break;
-                                    case "Boat":
-                                      colorClass = isDarkMode
-                                        ? "bg-cyan-900/70 text-cyan-300"
-                                        : "bg-cyan-600 text-white";
-                                      break;
-                                    case "UTV":
-                                      colorClass = isDarkMode
-                                        ? "bg-amber-900/70 text-amber-300"
-                                        : "bg-amber-600 text-white";
-                                      break;
-                                    case "Rescue Squad":
-                                      colorClass = isDarkMode
-                                        ? "bg-rose-900/70 text-rose-300"
-                                        : "bg-rose-600 text-white";
-                                      break;
-                                    default:
-                                      colorClass = isDarkMode
-                                        ? "bg-gray-900/70 text-gray-300"
-                                        : "bg-gray-600 text-white";
-                                  }
-                                  return (
-                                    <span
-                                      key={apparatus.name}
-                                      className={`px-1.5 py-0.5 text-xs font-semibold rounded ${colorClass}`}
-                                    >
-                                      {apparatus.name}
-                                    </span>
-                                  );
-                                })}
-                              </div>
                             ) : (
                               <span
                                 className={

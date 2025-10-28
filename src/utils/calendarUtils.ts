@@ -82,8 +82,9 @@ export function attachScheduledHolds(
   const holdsByDate = new Map<string, ScheduledHold[]>();
 
   holds.forEach((hold) => {
-    // Ensure date string is in YYYY-MM-DD format without time
-    const dateKey = hold.hold_date.split("T")[0];
+    // Parse the hold_date string as a local date to ensure correct matching
+    // Database stores YYYY-MM-DD format, we need to match it to local calendar dates
+    const dateKey = hold.hold_date.split("T")[0]; // Remove any time component
     if (!holdsByDate.has(dateKey)) {
       holdsByDate.set(dateKey, []);
     }
@@ -92,7 +93,7 @@ export function attachScheduledHolds(
 
   firefighters.forEach((ff) => {
     if (ff.last_hold_date) {
-      const dateKey = ff.last_hold_date.split("T")[0];
+      const dateKey = ff.last_hold_date.split("T")[0]; // Remove any time component
       const existingHolds = holdsByDate.get(dateKey) || [];
       const alreadyExists = existingHolds.some(
         (h) => h.firefighter_id === ff.id
@@ -122,13 +123,18 @@ export function attachScheduledHolds(
     }
   });
 
-  return days.map((day) => ({
-    ...day,
-    scheduledHolds: holdsByDate.get(formatDateForDB(day.date)) || [],
-  }));
+  // Match calendar days to holds using local date formatting
+  return days.map((day) => {
+    const dayKey = formatDateForDB(day.date);
+    return {
+      ...day,
+      scheduledHolds: holdsByDate.get(dayKey) || [],
+    };
+  });
 }
 
 export function formatDateForDB(date: Date): string {
+  // Always use local date components to avoid timezone shifts
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");

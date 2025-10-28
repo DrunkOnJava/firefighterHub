@@ -353,16 +353,14 @@ export function Calendar({
                       {hasHolds ? (
                         <div className="flex-1 flex flex-col justify-center space-y-0.5 sm:space-y-1">
                           {day.scheduledHolds.slice(0, 2).map((hold) => {
-                            // Show the station where the member was held (not their assigned station)
-                            const heldAtStation = hold.fire_station;
                             return (
                               <div key={hold.id} className="mb-1">
                                 <p className="text-white font-bold text-xs sm:text-sm lg:text-base leading-tight break-words">
                                   {hold.firefighter_name}
                                 </p>
-                                {heldAtStation && (
+                                {hold.fire_station && (
                                   <p className="text-[10px] sm:text-xs text-white/80 font-semibold">
-                                    Station #{heldAtStation}
+                                    Station #{hold.fire_station}
                                   </p>
                                 )}
                                 {hold.lent_to_shift && (
@@ -591,18 +589,17 @@ export function Calendar({
                           showDeleteConfirm !== hold.id &&
                           editingHoldId !== hold.id && (
                             <div className="flex gap-2 pt-3 border-t border-gray-700">
-                              {/* Complete Button: Only for 'scheduled' and not past */}
-                              {hold.status === "scheduled" &&
-                                !selectedDay.isPast && (
-                                  <button
-                                    onClick={() => handleMarkCompleted(hold)}
-                                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
-                                    title="Mark as completed and move to end of rotation"
-                                  >
-                                    <CheckCircle2 size={16} />
-                                    <span className="text-sm">Complete</span>
-                                  </button>
-                                )}
+                              {/* Complete Button: For 'scheduled' holds (including past dates) */}
+                              {hold.status === "scheduled" && (
+                                <button
+                                  onClick={() => handleMarkCompleted(hold)}
+                                  className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+                                  title="Mark as completed and move to end of rotation"
+                                >
+                                  <CheckCircle2 size={16} />
+                                  <span className="text-sm">Complete</span>
+                                </button>
+                              )}
 
                               {/* Edit Button: Always available */}
                               <button

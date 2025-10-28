@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "vitest.explorer",
+        "ms-playwright.playwright",
+        "bradlc.vscode-tailwindcss",
+        "supabase.supabase-vscode",
+        "usernamehw.errorlens",
+        "orta.vscode-jest",
+        "firsttris.vscode-jest-runner"
+    ],
+    "unwantedRecommendations": []
+}

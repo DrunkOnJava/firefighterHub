@@ -170,13 +170,13 @@ export function FirefighterProfileModal({
   ];
 
   const apparatusList = apparatusTypes.filter(
-    (item) => editedFirefighter[item.key]
+    (item) => editedFirefighter?.[item.key]
   );
 
   const qualifications = [
-    editedFirefighter.is_fto && { label: "FTO", color: "amber" },
-    editedFirefighter.is_bls && { label: "BLS", color: "emerald" },
-    editedFirefighter.is_als && { label: "ALS", color: "cyan" },
+    editedFirefighter?.is_fto && { label: "FTO", color: "amber" },
+    editedFirefighter?.is_bls && { label: "BLS", color: "emerald" },
+    editedFirefighter?.is_als && { label: "ALS", color: "cyan" },
   ].filter(Boolean) as { label: string; color: string }[];
 
   return (

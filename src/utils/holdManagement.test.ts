@@ -234,13 +234,34 @@ describe('Hold Management System', () => {
   });
 
   describe('3. Hold History - Data Tracking', () => {
-    it('R3.1: Hold history preserves completed holds', () => {
-      const firefighter = createMockFirefighter({
-        id: 'ff-1',
-        last_hold_date: '2025-10-20T00:00:00Z',
-      });
+    it('R3.1: Hold history preserves completed holds in calendar', () => {
+      // Test that last_hold_date creates a completed hold entry in calendar
+      const days = [
+        {
+          date: new Date(2025, 9, 20),
+          dayNumber: 20,
+          isCurrentMonth: true,
+          isToday: false,
+          isWeekend: false,
+          isPast: false,
+          scheduledHolds: [],
+        },
+      ];
+      const firefighters = [
+        createMockFirefighter({
+          id: 'ff-1',
+          name: 'John Doe',
+          last_hold_date: '2025-10-20T00:00:00Z',
+        }),
+      ];
 
-      expect(firefighter.last_hold_date).toBe('2025-10-20T00:00:00Z');
+      const result = attachScheduledHolds(days, [], firefighters);
+
+      // Should create a completed hold from last_hold_date
+      expect(result[0].scheduledHolds).toHaveLength(1);
+      expect(result[0].scheduledHolds[0].status).toBe('completed');
+      expect(result[0].scheduledHolds[0].firefighter_name).toBe('John Doe');
+      expect(result[0].scheduledHolds[0].completed_at).toBe('2025-10-20T00:00:00Z');
     });
 
     it('R3.2: Hold list message formats available firefighters', () => {
@@ -297,106 +318,8 @@ describe('Hold Management System', () => {
     });
   });
 
-  describe('4. Admin Operations - Hold Management', () => {
-    it('R4.1: Completed hold status is tracked', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-10-20T00:00:00Z',
-        status: 'completed',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: null,
-        created_at: '2025-10-19T00:00:00Z',
-        updated_at: '2025-10-20T12:00:00Z',
-        completed_at: '2025-10-20T12:00:00Z',
-      };
-
-      expect(hold.status).toBe('completed');
-      expect(hold.completed_at).not.toBeNull();
-    });
-
-    it('R4.2: Scheduled hold status is tracked', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-25T00:00:00Z',
-        status: 'scheduled',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: null,
-        created_at: '2025-11-20T00:00:00Z',
-        updated_at: '2025-11-20T00:00:00Z',
-        completed_at: null,
-      };
-
-      expect(hold.status).toBe('scheduled');
-      expect(hold.completed_at).toBeNull();
-    });
-
-    it('R4.3: Skipped hold status is tracked', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-25T00:00:00Z',
-        status: 'skipped',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: 'Called in sick',
-        created_at: '2025-11-20T00:00:00Z',
-        updated_at: '2025-11-25T00:00:00Z',
-        completed_at: null,
-      };
-
-      expect(hold.status).toBe('skipped');
-      expect(hold.notes).toBe('Called in sick');
-    });
-
-    it('R4.4: Hold can track station assignment', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-25T00:00:00Z',
-        status: 'scheduled',
-        shift: 'A',
-        fire_station: '3',
-        lent_to_shift: null,
-        notes: null,
-        created_at: '2025-11-20T00:00:00Z',
-        updated_at: '2025-11-20T00:00:00Z',
-        completed_at: null,
-      };
-
-      expect(hold.fire_station).toBe('3');
-    });
-
-    it('R4.5: Hold can track lent to shift', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-25T00:00:00Z',
-        status: 'scheduled',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: 'B',
-        notes: 'Covering for B-shift',
-        created_at: '2025-11-20T00:00:00Z',
-        updated_at: '2025-11-20T00:00:00Z',
-        completed_at: null,
-      };
-
-      expect(hold.lent_to_shift).toBe('B');
-      expect(hold.shift).toBe('A');
-    });
-  });
+  // Section 4: Admin Operations - REMOVED (trivial tests replaced)
+  // See src/utils/holdOperations.test.ts for meaningful business logic tests
 
   describe('5. Date Handling - Timezone Safety', () => {
     it('R5.1: formatDateForDB returns YYYY-MM-DD format', () => {
@@ -443,33 +366,33 @@ describe('Hold Management System', () => {
   });
 
   describe('6. Shift-Based Data Isolation', () => {
-    it('R6.1: Firefighters belong to specific shifts', () => {
-      const firefighterA = createMockFirefighter({ shift: 'A' });
-      const firefighterB = createMockFirefighter({ shift: 'B' });
-      const firefighterC = createMockFirefighter({ shift: 'C' });
+    it('R6.1: Auto-schedule respects shift assignments', () => {
+      // Test that auto-scheduling only uses firefighters from correct shift
+      const firefighters = [
+        createMockFirefighter({ id: '1', shift: 'A', order_position: 0, is_available: true }),
+        createMockFirefighter({ id: '2', shift: 'B', order_position: 1, is_available: true }),
+        createMockFirefighter({ id: '3', shift: 'A', order_position: 2, is_available: true }),
+      ];
 
-      expect(firefighterA.shift).toBe('A');
-      expect(firefighterB.shift).toBe('B');
-      expect(firefighterC.shift).toBe('C');
+      // Filter to only Shift A before scheduling
+      const shiftAFirefighters = firefighters.filter(ff => ff.shift === 'A');
+      const schedule = autoScheduleNextHolds(shiftAFirefighters, new Date(2025, 10, 1), 4);
+
+      // All scheduled holds should be for Shift A firefighters only
+      expect(schedule.every(s => s.firefighter.shift === 'A')).toBe(true);
+      expect(schedule).toHaveLength(4);
     });
 
-    it('R6.2: Holds belong to specific shifts', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-25T00:00:00Z',
-        status: 'scheduled',
-        shift: 'B',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: null,
-        created_at: '2025-11-20T00:00:00Z',
-        updated_at: '2025-11-20T00:00:00Z',
-        completed_at: null,
-      };
+    it('R6.2: Hold creation inherits firefighter shift', () => {
+      // Test that holds created for a firefighter inherit their shift
+      const firefighter = createMockFirefighter({ shift: 'B', id: 'ff-1', name: 'John Doe' });
+      const schedule = autoScheduleNextHolds([firefighter], new Date(2025, 10, 1), 3);
 
-      expect(hold.shift).toBe('B');
+      // All holds should have same shift as firefighter
+      schedule.forEach(s => {
+        expect(s.firefighter.shift).toBe('B');
+        expect(s.firefighter.id).toBe('ff-1');
+      });
     });
 
     it('R6.3: Shift filtering maintains data isolation', () => {
@@ -554,69 +477,8 @@ describe('Hold Management System', () => {
     });
   });
 
-  describe('8. Hold Status Workflow', () => {
-    it('R8.1: New hold starts as scheduled', () => {
-      const hold: ScheduledHold = {
-        id: 'new-hold',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-12-01T00:00:00Z',
-        status: 'scheduled',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        completed_at: null,
-      };
-
-      expect(hold.status).toBe('scheduled');
-      expect(hold.completed_at).toBeNull();
-    });
-
-    it('R8.2: Scheduled to completed transition includes completed_at', () => {
-      const completedTime = new Date().toISOString();
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-20T00:00:00Z',
-        status: 'completed',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: null,
-        created_at: '2025-11-15T00:00:00Z',
-        updated_at: completedTime,
-        completed_at: completedTime,
-      };
-
-      expect(hold.status).toBe('completed');
-      expect(hold.completed_at).toBe(completedTime);
-    });
-
-    it('R8.3: Scheduled to skipped transition updates status', () => {
-      const hold: ScheduledHold = {
-        id: 'hold-1',
-        firefighter_id: 'ff-1',
-        firefighter_name: 'John Doe',
-        hold_date: '2025-11-20T00:00:00Z',
-        status: 'skipped',
-        shift: 'A',
-        fire_station: '1',
-        lent_to_shift: null,
-        notes: 'Emergency leave',
-        created_at: '2025-11-15T00:00:00Z',
-        updated_at: '2025-11-20T00:00:00Z',
-        completed_at: null,
-      };
-
-      expect(hold.status).toBe('skipped');
-      expect(hold.notes).toBeTruthy();
-      expect(hold.completed_at).toBeNull();
-    });
-  });
+  // Section 8: Hold Status Workflow - REMOVED (trivial tests replaced)
+  // See src/utils/holdOperations.test.ts for meaningful status transition validation tests
 
   describe('9. Integration - Full Hold Workflow', () => {
     let firefighters: Firefighter[];

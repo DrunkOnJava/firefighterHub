@@ -26,6 +26,11 @@ export default defineConfig({
         "**/mockData.ts",
       ],
     },
+    // Define test environment variables
+    env: {
+      VITE_SUPABASE_URL: "https://test.supabase.co",
+      VITE_SUPABASE_ANON_KEY: "test-anon-key",
+    },
   },
   resolve: {
     alias: {

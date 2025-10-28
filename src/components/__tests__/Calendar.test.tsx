@@ -70,6 +70,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 
@@ -113,6 +114,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
         {
           id: "hold-2",
@@ -126,6 +128,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 
@@ -173,6 +176,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 
@@ -222,6 +226,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
         {
           id: "hold-2",
@@ -235,6 +240,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 
@@ -288,6 +294,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 
@@ -332,6 +339,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
         {
           id: "hold-2",
@@ -345,6 +353,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 
@@ -396,6 +405,7 @@ describe("Calendar Component", () => {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           completed_at: null,
+      lent_to_shift: null,
         },
       ];
 

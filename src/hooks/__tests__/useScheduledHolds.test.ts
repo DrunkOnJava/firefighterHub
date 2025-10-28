@@ -54,6 +54,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-10-27T00:00:00Z',
           updated_at: '2025-10-27T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
       ];
 
@@ -70,6 +71,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-10-27T00:00:00Z',
           updated_at: '2025-10-27T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
       ];
 
@@ -104,6 +106,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-01-01T00:00:00Z',
           updated_at: '2025-01-01T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
         {
           id: 'hold2',
@@ -117,6 +120,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-01-01T00:00:00Z',
           updated_at: '2025-01-01T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
         {
           id: 'hold3',
@@ -130,6 +134,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-01-01T00:00:00Z',
           updated_at: '2025-01-01T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
       ];
 
@@ -160,6 +165,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-10-27T00:00:00Z',
           updated_at: '2025-10-27T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
         {
           id: 'hold2',
@@ -173,6 +179,7 @@ describe('useScheduledHolds', () => {
           created_at: '2025-10-27T00:00:00Z',
           updated_at: '2025-10-27T00:00:00Z',
           completed_at: null,
+          lent_to_shift: null,
         },
       ];
 
@@ -328,6 +335,7 @@ describe('useScheduledHolds', () => {
         created_at: '2025-10-27T00:00:00Z',
         updated_at: '2025-10-27T00:00:00Z',
         completed_at: null,
+          lent_to_shift: null,
       };
 
       setMockScheduledHolds([hold]);
@@ -362,6 +370,7 @@ describe('useScheduledHolds', () => {
         created_at: '2025-10-27T00:00:00Z',
         updated_at: '2025-10-27T00:00:00Z',
         completed_at: null,
+          lent_to_shift: null,
       };
 
       setMockScheduledHolds([hold]);
@@ -397,6 +406,7 @@ describe('useScheduledHolds', () => {
         created_at: '2025-10-27T00:00:00Z',
         updated_at: '2025-10-27T00:00:00Z',
         completed_at: null,
+          lent_to_shift: null,
       };
 
       setMockScheduledHolds([hold]);

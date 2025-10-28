@@ -365,6 +365,11 @@ export function Calendar({
                                     Station #{heldAtStation}
                                   </p>
                                 )}
+                                {hold.lent_to_shift && (
+                                  <p className="text-[10px] sm:text-xs text-blue-300 font-bold flex items-center gap-1">
+                                    → {hold.lent_to_shift}-Shift
+                                  </p>
+                                )}
                                 {hold.status === "completed" && (
                                   <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
                                     DONE

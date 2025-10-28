@@ -202,6 +202,7 @@ export function useScheduledHolds(
       fire_station: stationToUse,
       status: "scheduled",
       shift: currentShift,
+      lent_to_shift: null, // Default to null, can be set later
       notes: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

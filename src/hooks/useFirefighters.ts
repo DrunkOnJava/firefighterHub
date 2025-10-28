@@ -252,7 +252,8 @@ export function useFirefighters(
     id: string,
     holdDate: string,
     newPosition: number,
-    station?: string
+    station?: string,
+    lentToShift?: Shift | null
   ) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter || !firefighter.is_available) return;
@@ -304,6 +305,7 @@ export function useFirefighters(
           status: "completed",
           completed_at: new Date().toISOString(),
           shift: currentShift,
+          lent_to_shift: lentToShift || null,
         });
 
       if (insertError) {

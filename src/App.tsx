@@ -187,9 +187,10 @@ function App() {
     firefighterId: string,
     holdDate: string,
     newPosition: number,
-    station?: string
+    station?: string,
+    lentToShift?: Shift | null
   ) {
-    completeHold(firefighterId, holdDate, newPosition, station);
+    completeHold(firefighterId, holdDate, newPosition, station, lentToShift);
     setShowCompleteHoldModal(false);
     setSelectedFirefighterForCompletion(null);
   }

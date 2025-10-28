@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
-import { X, Calendar as CalendarIcon, CheckCircle } from "lucide-react";
-import { Firefighter } from "../lib/supabase";
+import {
+  X,
+  Calendar as CalendarIcon,
+  CheckCircle,
+  ArrowRight,
+} from "lucide-react";
+import { Firefighter, Shift } from "../lib/supabase";
 import { StationSelector } from "./StationSelector";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useFocusReturn } from "../hooks/useFocusReturn";
@@ -14,7 +19,8 @@ interface CompleteHoldModalProps {
     firefighterId: string,
     holdDate: string,
     newPosition: number,
-    station?: string
+    station?: string,
+    lentToShift?: Shift | null
   ) => void;
 }
 
@@ -28,6 +34,7 @@ export function CompleteHoldModal({
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedStation, setSelectedStation] = useState("");
   const [newPosition, setNewPosition] = useState(totalFirefighters); // Default to bottom (last position)
+  const [lentToShift, setLentToShift] = useState<Shift | null>(null); // Which shift is this firefighter being lent to
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -37,6 +44,7 @@ export function CompleteHoldModal({
       setSelectedDate(today);
       setSelectedStation(firefighter.fire_station || "");
       setNewPosition(totalFirefighters); // Reset to bottom when modal opens
+      setLentToShift(null); // Reset lent-to shift
     }
   }, [isOpen, firefighter, totalFirefighters]);
 
@@ -56,7 +64,13 @@ export function CompleteHoldModal({
   const handleConfirm = () => {
     if (!selectedDate) return;
     const stationToUse = selectedStation || undefined;
-    onConfirm(firefighter.id, selectedDate, newPosition, stationToUse);
+    onConfirm(
+      firefighter.id,
+      selectedDate,
+      newPosition,
+      stationToUse,
+      lentToShift
+    );
     onClose();
   };
 
@@ -134,11 +148,44 @@ export function CompleteHoldModal({
           />
 
           <div className="space-y-3">
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
+            <label
+              htmlFor="lent-to-shift"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-300"
+            >
+              <ArrowRight size={18} className="text-blue-400" />
+              <span>Lent to Shift (Optional)</span>
+            </label>
+            <div className="space-y-2">
+              <select
+                id="lent-to-shift"
+                value={lentToShift || ""}
+                onChange={(e) =>
+                  setLentToShift((e.target.value as Shift | null) || null)
+                }
+                className="w-full px-4 py-3 bg-gray-900 border-2 border-gray-700 rounded-lg text-white focus:outline-none focus:border-blue-500 transition-colors"
+              >
+                <option value="">None (not being lent out)</option>
+                <option value="A">A-Shift</option>
+                <option value="B">B-Shift</option>
+                <option value="C">C-Shift</option>
+              </select>
+              <p className="text-xs text-gray-400">
+                Select which shift this firefighter is being lent to, if
+                applicable.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label
+              htmlFor="new-position"
+              className="flex items-center gap-2 text-sm font-semibold text-gray-300"
+            >
               <span>New Position in Rotation</span>
             </label>
             <div className="space-y-2">
               <select
+                id="new-position"
                 value={newPosition}
                 onChange={(e) => setNewPosition(Number(e.target.value))}
                 className="w-full px-4 py-3 bg-gray-900 border-2 border-gray-700 rounded-lg text-white focus:outline-none focus:border-orange-500 transition-colors"

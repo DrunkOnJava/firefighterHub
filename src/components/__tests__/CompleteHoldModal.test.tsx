@@ -345,7 +345,8 @@ describe("CompleteHoldModal", () => {
         "ff-test-1",
         expect.any(String), // Today's date in ISO format
         5, // Default position (bottom = totalFirefighters = 5)
-        "1" // Station from mockFirefighter
+        "1", // Station from mockFirefighter
+        null // lent_to_shift default is null
       );
     });
 
@@ -396,7 +397,8 @@ describe("CompleteHoldModal", () => {
         "ff-no-station",
         expect.any(String),
         5, // Default position (bottom)
-        undefined // No station
+        undefined, // No station
+        null // lent_to_shift default is null
       );
     });
 
@@ -456,7 +458,8 @@ describe("CompleteHoldModal", () => {
         "ff-test-1",
         testDate,
         5, // Default position (bottom)
-        "1"
+        "1",
+        null // lent_to_shift default is null
       );
     });
   });

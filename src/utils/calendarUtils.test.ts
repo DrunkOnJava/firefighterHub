@@ -239,7 +239,8 @@ describe('calendarUtils', () => {
           notes: null,
           created_at: '2025-10-20T00:00:00Z',
           updated_at: '2025-10-20T00:00:00Z',
-          completed_at: '2025-10-20T00:00:00Z',
+          lent_to_shift: null,
+      completed_at: '2025-10-20T00:00:00Z',
         },
       ];
 

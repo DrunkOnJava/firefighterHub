@@ -2,10 +2,11 @@
 // Consider splitting data fetching, mutations, and real-time sync into separate hooks
 
 import { useEffect, useState, useCallback } from "react";
-import { supabase, Firefighter, Shift } from "../lib/supabase";
+import { supabase, Firefighter, Shift, HoldDuration } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { ToastType } from "./useToast";
 import { moveToBottom, recalculatePositions } from "../utils/rotationLogic";
+import { validate72HourRule } from "../utils/validation";
 
 export function useScheduledHolds(
   showToast: (message: string, type: ToastType) => void,
@@ -189,8 +190,22 @@ export function useScheduledHolds(
   async function scheduleHold(
     holdDate: string,
     firefighter: Firefighter,
-    station?: string
+    station?: string,
+    duration: HoldDuration = '24h',
+    startTime: string = '07:00'
   ) {
+    // Validate 72-hour rule before scheduling
+    const validation = validate72HourRule(firefighter, duration);
+    if (!validation.valid) {
+      showToast(validation.error || 'Cannot schedule hold due to 72-hour rule', "error");
+      return; // Do not schedule the hold
+    }
+
+    // Show warning if approaching 72-hour limit
+    if (validation.warning) {
+      showToast(validation.warning, "info");
+    }
+
     const stationToUse = station || firefighter.fire_station || null;
     const tempId = `temp-${Date.now()}`;
 
@@ -204,6 +219,8 @@ export function useScheduledHolds(
       shift: currentShift,
       lent_to_shift: null, // Default to null, can be set later
       notes: null,
+      duration: duration,
+      start_time: startTime,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       completed_at: null,
@@ -221,6 +238,8 @@ export function useScheduledHolds(
           fire_station: stationToUse,
           status: "scheduled",
           shift: currentShift,
+          duration: duration,
+          start_time: startTime,
         })
         .select()
         .maybeSingle();
@@ -310,11 +329,17 @@ export function useScheduledHolds(
           const updates: {
             order_position: number;
             last_hold_date?: string;
+            hours_worked_this_period?: number;
             updated_at?: string;
           } = { order_position: ff.order_position };
+
           if (ff.id === hold.firefighter_id) {
             updates.last_hold_date = hold.hold_date;
             updates.updated_at = new Date().toISOString();
+
+            // Update hours worked based on hold duration
+            const holdHours = hold.duration === '12h' ? 12 : 24;
+            updates.hours_worked_this_period = (ff.hours_worked_this_period || 0) + holdHours;
           }
 
           const { error: updateError } = await supabase

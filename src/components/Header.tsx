@@ -44,12 +44,18 @@ export function Header({
       <div className="px-3 sm:px-6 py-3 sm:py-4">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div
+            className={`flex items-center gap-2 sm:gap-3 min-w-0 px-3 py-2 sm:px-4 sm:py-3 rounded-xl ${
+              isDarkMode
+                ? "bg-gray-800/60 border border-gray-700/50"
+                : "bg-slate-100/80 border border-slate-300/50"
+            }`}
+          >
             <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-14 h-14 sm:w-16 sm:h-16"
+                className="w-10 h-10 sm:w-12 sm:h-12"
               />
             </div>
             <div className="min-w-0">

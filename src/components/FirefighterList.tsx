@@ -24,6 +24,8 @@ import {
   Filter,
   UserPlus,
   History,
+  Clock,
+  AlertTriangle,
 } from "lucide-react";
 import { exportRosterToCSV, exportRosterToJSON } from "../utils/exportUtils";
 import { useFilters } from "../hooks/useFilters";
@@ -633,6 +635,15 @@ export function FirefighterList({
                     >
                       Last Hold
                     </th>
+                    <th
+                      className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${
+                        isDarkMode
+                          ? "text-gray-400"
+                          : "text-slate-600"
+                      }`}
+                    >
+                      Hours Worked
+                    </th>
                     {isAdminMode && (
                       <th
                         className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
@@ -878,6 +889,22 @@ export function FirefighterList({
                               >
                                 <History size={14} />
                               </button>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-4 py-4 whitespace-nowrap text-center">
+                          <div className="flex flex-col items-center gap-1">
+                            <div className="flex items-center gap-2">
+                              <Clock size={14} className={isDarkMode ? "text-gray-400" : "text-gray-500"} />
+                              <span className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
+                                {firefighter.hours_worked_this_period || 0}h / 72h
+                              </span>
+                            </div>
+                            {(firefighter.hours_worked_this_period || 0) > 60 && (
+                              <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-900/70 text-amber-200 text-[10px] rounded">
+                                <AlertTriangle size={10} className="mr-0.5" />
+                                Near Limit
+                              </span>
                             )}
                           </div>
                         </td>

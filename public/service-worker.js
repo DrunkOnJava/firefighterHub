@@ -1,4 +1,4 @@
-const CACHE_NAME = "hold-manager-v4";
+const CACHE_NAME = "hold-manager-v5";
 const urlsToCache = [
   "/",
   "/index.html",

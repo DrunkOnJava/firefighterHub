@@ -1,11 +1,10 @@
 // TECHNICAL DEBT: Similar to useFirefighters, this hook is large (224 lines) and handles multiple concerns
 // Consider splitting data fetching, mutations, and real-time sync into separate hooks
 
-import { useEffect, useState, useCallback } from "react";
-import { supabase, Firefighter, Shift, HoldDuration } from "../lib/supabase";
+import { useCallback, useEffect, useState } from "react";
+import { Firefighter, HoldDuration, Shift, supabase } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { ToastType } from "./useToast";
-import { moveToBottom } from "../utils/rotationLogic";
 // recalculatePositions removed - not needed after fixing rotation bug
 // validate72HourRule removed - hours worked tracking removed per user feedback
 
@@ -192,8 +191,8 @@ export function useScheduledHolds(
     holdDate: string,
     firefighter: Firefighter,
     station?: string,
-    duration: HoldDuration = '24h',
-    startTime: string = '07:00'
+    duration: HoldDuration = "24h",
+    startTime: string = "07:00"
   ) {
     // REMOVED: 72-hour rule validation - hours worked tracking removed per user feedback
     // User stated: "There is no way to accurately calculate that without manually
@@ -222,26 +221,46 @@ export function useScheduledHolds(
     setScheduledHolds((prev) => [...prev, optimisticHold]);
 
     try {
-      const { data, error } = await supabase
-        .from("scheduled_holds")
-        .insert({
-          firefighter_id: firefighter.id,
-          firefighter_name: firefighter.name,
-          hold_date: holdDate,
-          fire_station: stationToUse,
-          status: "scheduled",
-          shift: currentShift,
-          duration: duration,
-          start_time: startTime,
-        })
-        .select()
-        .maybeSingle();
+      // Call Edge Function (server-side validation with service role)
+      // This is secure: validates auth, enforces business rules, then inserts
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      if (error) throw error;
+      const authHeader = session?.access_token
+        ? `Bearer ${session.access_token}`
+        : `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`;
 
-      if (data) {
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/schedule-hold`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: authHeader,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firefighter_id: firefighter.id,
+            firefighter_name: firefighter.name,
+            hold_date: holdDate,
+            fire_station: stationToUse,
+            shift: currentShift,
+            duration: duration,
+            start_time: startTime,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to schedule hold");
+      }
+
+      const newHold = await response.json();
+
+      if (newHold) {
         setScheduledHolds((prev) =>
-          prev.map((h) => (h.id === tempId ? data : h))
+          prev.map((h) => (h.id === tempId ? newHold : h))
         );
       }
 
@@ -309,25 +328,31 @@ export function useScheduledHolds(
       if (allFirefighters) {
         // ✅ FIX: Properly move firefighter to bottom without re-sorting
         // Step 1: Separate the completed firefighter from the rest
-        const completedFF = allFirefighters.find(ff => ff.id === hold.firefighter_id);
-        const otherFFs = allFirefighters.filter(ff => ff.id !== hold.firefighter_id && ff.is_available);
-        const unavailableFFs = allFirefighters.filter(ff => ff.id !== hold.firefighter_id && !ff.is_available);
+        const completedFF = allFirefighters.find(
+          (ff) => ff.id === hold.firefighter_id
+        );
+        const otherFFs = allFirefighters.filter(
+          (ff) => ff.id !== hold.firefighter_id && ff.is_available
+        );
+        const unavailableFFs = allFirefighters.filter(
+          (ff) => ff.id !== hold.firefighter_id && !ff.is_available
+        );
 
         if (!completedFF) {
-          throw new Error('Firefighter not found');
+          throw new Error("Firefighter not found");
         }
 
         // Step 2: Reassign positions - completed FF goes to the end
         const updatedCompletedFF = {
           ...completedFF,
           last_hold_date: hold.hold_date,
-          order_position: otherFFs.length  // Last position among available
+          order_position: otherFFs.length, // Last position among available
         };
 
         // Step 3: Reassign sequential positions to other available firefighters
         const reorderedOthers = otherFFs.map((ff, index) => ({
           ...ff,
-          order_position: index
+          order_position: index,
         }));
 
         // Step 4: Combine: others first, then completed FF, then unavailable
@@ -336,8 +361,8 @@ export function useScheduledHolds(
           updatedCompletedFF,
           ...unavailableFFs.map((ff, index) => ({
             ...ff,
-            order_position: otherFFs.length + 1 + index
-          }))
+            order_position: otherFFs.length + 1 + index,
+          })),
         ];
 
         for (const ff of updatedFirefighters) {
@@ -349,10 +374,10 @@ export function useScheduledHolds(
 
           if (ff.id === hold.firefighter_id) {
             // ✅ FIX: Ensure date format is consistent (YYYY-MM-DD only, no time)
-            updates.last_hold_date = hold.hold_date.split('T')[0];
+            updates.last_hold_date = hold.hold_date.split("T")[0];
             updates.updated_at = new Date().toISOString();
 
-            console.log('✅ Updating firefighter after hold completion:', {
+            console.log("✅ Updating firefighter after hold completion:", {
               name: ff.name,
               holdDate: hold.hold_date,
               lastHoldDate: updates.last_hold_date,
@@ -367,7 +392,7 @@ export function useScheduledHolds(
 
           if (updateError) {
             console.error("❌ Error updating firefighter:", updateError);
-            throw updateError;  // ✅ FIX: Throw error instead of silently continuing
+            throw updateError; // ✅ FIX: Throw error instead of silently continuing
           }
         }
       }

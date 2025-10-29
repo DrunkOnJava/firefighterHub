@@ -7,7 +7,6 @@ import {
   Plus,
   CheckCircle2,
   Trash2,
-  Users,
   Lock,
   Clock,
 } from "lucide-react";
@@ -362,28 +361,51 @@ export function Calendar({
                       </div>
 
                       {hasHolds ? (
-                        <div className="flex-1 flex flex-col gap-1 overflow-hidden">
-                          {day.scheduledHolds.slice(0, 2).map((hold, holdIndex) => {
+                        <div className="flex-1 flex flex-col gap-0.5 overflow-hidden pl-0">
+                          {day.scheduledHolds.slice(0, 2).map((hold) => {
                             const locked = isHoldLocked(hold);
                             const totalHolds = day.scheduledHolds.length;
+                            const nameLength = hold.firefighter_name.length;
 
-                            // Modern responsive sizing - professional calendar standards
-                            const eventCardClasses = totalHolds >= 2
-                              ? "text-[7px] sm:text-[9px] lg:text-xs"  // Compact for 2+ events
-                              : "text-[9px] sm:text-xs lg:text-sm";      // Comfortable for 1 event
+                            // Dynamic text sizing based on name length AND number of holds
+                            // Prioritize fitting the name over making it large
+                            let nameSizeClasses = "";
 
-                            const iconSize = totalHolds >= 2 ? 8 : 10;
+                            if (totalHolds >= 2) {
+                              // Multiple holds - need compact sizing
+                              if (nameLength <= 8) {
+                                nameSizeClasses = "text-[8px] sm:text-[10px] lg:text-xs";
+                              } else if (nameLength <= 12) {
+                                nameSizeClasses = "text-[7px] sm:text-[9px] lg:text-[11px]";
+                              } else if (nameLength <= 16) {
+                                nameSizeClasses = "text-[6.5px] sm:text-[8px] lg:text-[10px]";
+                              } else {
+                                nameSizeClasses = "text-[6px] sm:text-[7px] lg:text-[9px]";
+                              }
+                            } else {
+                              // Single hold - can be more generous
+                              if (nameLength <= 8) {
+                                nameSizeClasses = "text-[10px] sm:text-xs lg:text-sm";
+                              } else if (nameLength <= 12) {
+                                nameSizeClasses = "text-[9px] sm:text-[11px] lg:text-xs";
+                              } else if (nameLength <= 16) {
+                                nameSizeClasses = "text-[8px] sm:text-[10px] lg:text-[11px]";
+                              } else {
+                                nameSizeClasses = "text-[7px] sm:text-[9px] lg:text-[10px]";
+                              }
+                            }
+
+                            const iconSize = totalHolds >= 2 ? 7 : 9;
 
                             return (
                               <div
                                 key={hold.id}
-                                className="group/event relative min-w-0"
+                                className="group/event relative w-full"
                                 title={`${hold.firefighter_name}${hold.fire_station ? ` - Station #${hold.fire_station}` : ''}${hold.lent_to_shift ? ` → ${hold.lent_to_shift}-Shift` : ''}`}
                               >
-                                {/* Modern event card design */}
+                                {/* Modern event card design - left-aligned with more room */}
                                 <div className={`
-                                  ${eventCardClasses}
-                                  flex items-center gap-1 px-1 py-0.5
+                                  flex items-center gap-0.5 pl-0.5 pr-1 py-0.5
                                   bg-white/10 hover:bg-white/20
                                   rounded transition-colors
                                   border-l-2 ${
@@ -391,25 +413,27 @@ export function Calendar({
                                       ? "border-emerald-400"
                                       : "border-white/40"
                                   }
-                                  overflow-hidden
+                                  w-full overflow-hidden
                                 `}>
-                                  {/* Name - full display without truncation */}
-                                  <span className="flex-1 font-semibold leading-tight whitespace-nowrap">
+                                  {/* Name - dynamically sized, stays on one line */}
+                                  <span className={`${nameSizeClasses} font-semibold leading-tight whitespace-nowrap overflow-hidden block flex-1 text-left`}
+                                    style={{ textOverflow: 'clip' }}
+                                  >
                                     {hold.firefighter_name}
                                   </span>
 
-                                  {/* Status indicators - minimal and elegant */}
+                                  {/* Status indicators - minimal, only show if space allows */}
                                   <div className="flex items-center gap-0.5 flex-shrink-0">
-                                    {hold.fire_station && (
-                                      <span className="text-white/60 text-[8px] lg:text-[10px]">
+                                    {hold.fire_station && nameLength <= 14 && (
+                                      <span className="text-white/60 text-[7px] lg:text-[9px]">
                                         #{hold.fire_station}
                                       </span>
                                     )}
-                                    {locked && (
-                                      <Lock size={iconSize - 2} className="text-amber-300/80" />
+                                    {locked && nameLength <= 16 && (
+                                      <Lock size={iconSize - 1} className="text-amber-300/80" />
                                     )}
-                                    {hold.status === "completed" && (
-                                      <span className="text-emerald-300">✓</span>
+                                    {hold.status === "completed" && nameLength <= 18 && (
+                                      <span className="text-emerald-300 text-[10px]">✓</span>
                                     )}
                                   </div>
                                 </div>

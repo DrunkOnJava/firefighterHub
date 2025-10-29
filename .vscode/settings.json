@@ -1,87 +1,11 @@
 {
-  // ==========================================
-  // 💾 EDITOR SETTINGS
-  // ==========================================
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "explicit"
   },
-  "editor.inlineSuggest.enabled": true,
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": true,
-    "strings": true
-  },
-  "editor.suggest.preview": true,
-  "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": true,
-  "editor.minimap.enabled": false,
-  "editor.stickyScroll.enabled": true,
-
-  // ==========================================
-  // 🤖 AI ASSISTANTS (Copilot, Claude, MCP)
-  // ==========================================
-  "github.copilot.enable": {
-    "*": true,
-    "yaml": true,
-    "plaintext": false,
-    "markdown": true
-  },
-  "github.copilot.editor.enableAutoCompletions": true,
-  "github.copilot.advanced": {
-    "debug.overrideEngine": "gpt-4",
-    "debug.testOverrideProxyUrl": "",
-    "debug.filterLogCategories": []
-  },
-  // Claude/Codeium settings (if installed)
-  "codeium.enableCodeLens": true,
-  "codeium.enableSearch": true,
-
-  // ==========================================
-  // 🎨 TAILWIND CSS
-  // ==========================================
-  "tailwindCSS.experimental.classRegex": [
-    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-  ],
-  "tailwindCSS.emmetCompletions": true,
-  "tailwindCSS.includeLanguages": {
-    "typescript": "javascript",
-    "typescriptreact": "javascript"
-  },
-
-  // ==========================================
-  // ✅ LINTING & VALIDATION
-  // ==========================================
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "eslint.format.enable": false,
-  "eslint.codeActionsOnSave.mode": "all",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.suggest.autoImports": true,
-
-  // ==========================================
-  // 🧪 TESTING (Vitest + Playwright)
-  // ==========================================
-  "testing.automaticallyOpenPeekView": "never",
-  "testing.openTesting": "neverOpen",
-  "vitest.enable": true,
-  "vitest.commandLine": "pnpm run test",
-  "vitest.disableWorkspaceWarning": true,
-  "playwright.reuseBrowser": false,
-  "playwright.showTrace": false,
-  "playwright.env": {},
-
-  // ==========================================
-  // 📁 FILE MANAGEMENT
-  // ==========================================
+  
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
@@ -89,20 +13,7 @@
     "**/.vite": true,
     "**/dist": false
   },
-  "files.watcherExclude": {
-    "**/.git/objects/**": true,
-    "**/.git/subtree-cache/**": true,
-    "**/node_modules/**": true,
-    "**/dist/**": true,
-    "**/coverage/**": true
-  },
-  "files.autoSave": "onFocusChange",
-  "files.trimTrailingWhitespace": true,
-  "files.insertFinalNewline": true,
-
-  // ==========================================
-  // 🔍 SEARCH SETTINGS
-  // ==========================================
+  
   "search.exclude": {
     "**/node_modules": true,
     "**/dist": true,
@@ -112,86 +23,16 @@
     "**/test-results": true,
     "pnpm-lock.yaml": true
   },
-  "search.useIgnoreFiles": true,
-  "search.smartCase": true,
-
-  // ==========================================
-  // 🎨 WORKBENCH UI CUSTOMIZATION
-  // ==========================================
-  "workbench.activityBar.location": "default",
-  "workbench.colorTheme": "Default Dark Modern",
-  "workbench.iconTheme": "vs-minimal",
-  "workbench.sideBar.location": "left",
-  "workbench.panel.defaultLocation": "bottom",
-  "workbench.tree.indent": 16,
-  "workbench.tree.renderIndentGuides": "always",
-
-  // Sidebar visibility (customize what you see)
-  "workbench.view.alwaysShowHeaderActions": true,
-  "workbench.activityBar.iconClickBehavior": "toggle",
-
-  // Panel settings (bottom terminal/output area)
-  "workbench.panel.opensMaximized": "never",
-  "terminal.integrated.defaultProfile.osx": "zsh",
-  "terminal.integrated.fontSize": 13,
-  "terminal.integrated.scrollback": 10000, // ==========================================
-  // 📊 NPM SCRIPTS PANEL
-  // ==========================================
+  
+  "npm.enableScriptExplorer": true,
   "npm.enableRunFromFolder": true,
   "npm.scriptExplorerAction": "run",
-  "npm.scriptExplorerExclude": ["**/node_modules/**"],
-
-  // ==========================================
-  // 🗂️ EXPLORER SORTING
-  // ==========================================
-  "explorer.sortOrder": "type",
-  "explorer.confirmDelete": false,
-  "explorer.confirmDragAndDrop": false,
-  "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.patterns": {
-    "*.ts": "${capture}.test.ts, ${capture}.spec.ts",
-    "*.tsx": "${capture}.test.tsx, ${capture}.spec.tsx, ${capture}.module.css",
-    "package.json": "pnpm-lock.yaml, package-lock.json, yarn.lock",
-    "tsconfig.json": "tsconfig.*.json",
-    "vite.config.ts": "vitest.config.ts, playwright.config.ts",
-    ".env": ".env.*",
-    "README.md": "TODO.md, CHANGELOG.md"
-  },
-
-  // ==========================================
-  // 🗃️ SOURCE CONTROL (Git)
-  // ==========================================
-  "git.autofetch": true,
-  "git.confirmSync": false,
-  "git.enableSmartCommit": true,
-  "git.openRepositoryInParentFolders": "always",
-
-  // ==========================================
-  // 🔧 SUPABASE
-  // ==========================================
-  "supabase.showInlineDocumentation": true,
-
-  // ==========================================
-  // 📝 LANGUAGE-SPECIFIC FORMATTERS
-  // ==========================================
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.wordWrap": "on"
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "testing.automaticallyOpenTestResults": "neverOpen"
+  
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
 }

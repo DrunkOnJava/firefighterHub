@@ -4,7 +4,7 @@ test.describe("Feature Verification Screenshots", () => {
   test("Proof 1: Calendar shows HOLD station instead of member's assigned station", async ({
     page,
   }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
 
@@ -26,7 +26,7 @@ test.describe("Feature Verification Screenshots", () => {
   test("Proof 2: Rotation table has NO apparatus column in admin mode", async ({
     page,
   }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
 
@@ -57,7 +57,7 @@ test.describe("Feature Verification Screenshots", () => {
   test("Proof 3: Complete button appears on PAST DATE holds", async ({
     page,
   }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
 
@@ -122,7 +122,7 @@ test.describe("Feature Verification Screenshots", () => {
   test("Proof 4: Calendar dates and rotation dates are correctly synchronized", async ({
     page,
   }) => {
-    await page.goto("http://localhost:5173");
+    await page.goto("/");
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
 

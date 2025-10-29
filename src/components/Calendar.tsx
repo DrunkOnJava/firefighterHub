@@ -364,37 +364,7 @@ export function Calendar({
                       {hasHolds ? (
                         <div className="flex-1 flex flex-col gap-0.5 overflow-hidden pl-0">
                           {day.scheduledHolds.slice(0, 2).map((hold) => {
-                            const totalHolds = day.scheduledHolds.length;
                             const formattedName = formatCalendarName(hold.firefighter_name);
-                            const nameLength = formattedName.length;
-
-                            // Dynamic text sizing based on name length AND number of holds
-                            // Prioritize fitting the name over making it large
-                            let nameSizeClasses = "";
-
-                            if (totalHolds >= 2) {
-                              // Multiple holds - need compact sizing
-                              if (nameLength <= 8) {
-                                nameSizeClasses = "text-[8px] sm:text-[10px] lg:text-xs";
-                              } else if (nameLength <= 12) {
-                                nameSizeClasses = "text-[7px] sm:text-[9px] lg:text-[11px]";
-                              } else if (nameLength <= 16) {
-                                nameSizeClasses = "text-[6.5px] sm:text-[8px] lg:text-[10px]";
-                              } else {
-                                nameSizeClasses = "text-[6px] sm:text-[7px] lg:text-[9px]";
-                              }
-                            } else {
-                              // Single hold - can be more generous
-                              if (nameLength <= 8) {
-                                nameSizeClasses = "text-[10px] sm:text-xs lg:text-sm";
-                              } else if (nameLength <= 12) {
-                                nameSizeClasses = "text-[9px] sm:text-[11px] lg:text-xs";
-                              } else if (nameLength <= 16) {
-                                nameSizeClasses = "text-[8px] sm:text-[10px] lg:text-[11px]";
-                              } else {
-                                nameSizeClasses = "text-[7px] sm:text-[9px] lg:text-[10px]";
-                              }
-                            }
 
                             return (
                               <div
@@ -402,9 +372,9 @@ export function Calendar({
                                 className="group/event relative w-full"
                                 title={`${hold.firefighter_name}${hold.fire_station ? ` - Station #${hold.fire_station}` : ''}${hold.lent_to_shift ? ` → ${hold.lent_to_shift}-Shift` : ''}`}
                               >
-                                {/* Modern event card design - left-aligned with more room */}
+                                {/* Modern event card design - left-aligned with consistent sizing */}
                                 <div className={`
-                                  flex items-center gap-0.5 pl-0.5 pr-1 py-0.5
+                                  flex items-center gap-1 pl-0.5 pr-1 py-0.5
                                   bg-white/10 hover:bg-white/20
                                   rounded transition-colors
                                   border-l-2 ${
@@ -414,21 +384,19 @@ export function Calendar({
                                   }
                                   w-full overflow-hidden
                                 `}>
-                                  {/* Name - dynamically sized, stays on one line */}
-                                  <span className={`${nameSizeClasses} font-semibold leading-tight whitespace-nowrap overflow-hidden block flex-1 text-left`}
+                                  {/* Name - consistent sizing, stays on one line */}
+                                  <span className="text-[8px] sm:text-[10px] lg:text-xs font-semibold leading-tight whitespace-nowrap overflow-hidden block flex-1 text-left"
                                     style={{ textOverflow: 'clip' }}
                                   >
                                     {formattedName}
                                   </span>
 
-                                  {/* Status indicators - only show station number */}
-                                  <div className="flex items-center gap-0.5 flex-shrink-0">
-                                    {hold.fire_station && nameLength <= 14 && (
-                                      <span className="text-white/60 text-[7px] lg:text-[9px]">
-                                        #{hold.fire_station}
-                                      </span>
-                                    )}
-                                  </div>
+                                  {/* Station indicator - consistent sizing */}
+                                  {hold.fire_station && (
+                                    <span className="text-white/60 text-[7px] sm:text-[9px] lg:text-[11px] font-medium flex-shrink-0">
+                                      #{hold.fire_station}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                             );

@@ -1,7 +1,16 @@
-import { X, Calendar, Users, CheckCircle, TrendingUp, Trash2, Lock, Unlock } from 'lucide-react';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
-import { useEffect, useState } from 'react';
+import {
+  Calendar,
+  CheckCircle,
+  Lock,
+  Trash2,
+  TrendingUp,
+  Unlock,
+  Users,
+  X,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFocusReturn } from "../hooks/useFocusReturn";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -11,9 +20,15 @@ interface HelpModalProps {
   onToggleAdminMode: (password: string) => boolean;
 }
 
-export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggleAdminMode }: HelpModalProps) {
+export function HelpModal({
+  isOpen,
+  onClose,
+  onMasterReset,
+  isAdminMode,
+  onToggleAdminMode,
+}: HelpModalProps) {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
@@ -22,10 +37,10 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
     if (!isOpen) return;
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         if (showPasswordPrompt) {
           setShowPasswordPrompt(false);
-          setPassword('');
+          setPassword("");
           setPasswordError(false);
         } else {
           onClose();
@@ -33,21 +48,21 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose, showPasswordPrompt]);
 
   useEffect(() => {
     if (!isOpen) {
       setShowPasswordPrompt(false);
-      setPassword('');
+      setPassword("");
       setPasswordError(false);
     }
   }, [isOpen]);
 
   function handleAdminToggle() {
     if (isAdminMode) {
-      onToggleAdminMode('');
+      onToggleAdminMode("");
       setShowPasswordPrompt(false);
     } else {
       setShowPasswordPrompt(true);
@@ -59,11 +74,11 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
     const success = onToggleAdminMode(password);
     if (success) {
       setShowPasswordPrompt(false);
-      setPassword('');
+      setPassword("");
       setPasswordError(false);
     } else {
       setPasswordError(true);
-      setPassword('');
+      setPassword("");
     }
   }
 
@@ -87,7 +102,9 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl">
               <Calendar className="text-white" size={24} />
             </div>
-            <h2 id="help-modal-title" className="text-2xl font-bold text-white">How to Use Hold List Manager</h2>
+            <h2 id="help-modal-title" className="text-2xl font-bold text-white">
+              How to Use Hold List Manager
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -103,24 +120,38 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-4">
                 <Calendar className="text-blue-400" size={24} />
-                <h3 className="text-xl font-bold text-white">Calendar Management</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Calendar Management
+                </h3>
               </div>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex gap-3">
                   <span className="text-blue-400 font-bold">•</span>
-                  <span><strong>Schedule holds:</strong> Click any future date on the calendar to assign a firefighter</span>
+                  <span>
+                    <strong>Schedule holds:</strong> Click any future date on
+                    the calendar to assign a firefighter
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-blue-400 font-bold">•</span>
-                  <span><strong>View details:</strong> Click on scheduled holds to view or modify them</span>
+                  <span>
+                    <strong>View details:</strong> Click on scheduled holds to
+                    view or modify them
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-blue-400 font-bold">•</span>
-                  <span><strong>Navigate months:</strong> Use arrow buttons or "Today" button to navigate</span>
+                  <span>
+                    <strong>Navigate months:</strong> Use arrow buttons or
+                    "Today" button to navigate
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-blue-400 font-bold">•</span>
-                  <span><strong>Color coding:</strong> Blue = scheduled, Green = completed, Ring = today</span>
+                  <span>
+                    <strong>Color coding:</strong> Blue = scheduled, Green =
+                    completed, Ring = today
+                  </span>
                 </li>
               </ul>
             </section>
@@ -128,24 +159,38 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-4">
                 <Users className="text-green-400" size={24} />
-                <h3 className="text-xl font-bold text-white">Firefighter Management</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Firefighter Management
+                </h3>
               </div>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex gap-3">
                   <span className="text-green-400 font-bold">•</span>
-                  <span><strong>Add firefighters:</strong> Click "Add Team Member" button and enter name and station</span>
+                  <span>
+                    <strong>Add firefighters:</strong> Click "Add Team Member"
+                    button and enter name and station
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-green-400 font-bold">•</span>
-                  <span><strong>Rotation order:</strong> Firefighters automatically rotate based on their position</span>
+                  <span>
+                    <strong>Rotation order:</strong> Firefighters automatically
+                    rotate based on their position
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-green-400 font-bold">•</span>
-                  <span><strong>Next in line:</strong> The next firefighter is highlighted with "NEXT FOR HOLD" badge</span>
+                  <span>
+                    <strong>Next in line:</strong> The next firefighter is
+                    highlighted with "NEXT FOR HOLD" badge
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-green-400 font-bold">•</span>
-                  <span><strong>On/Off duty:</strong> Toggle availability status - off-duty members skip rotation</span>
+                  <span>
+                    <strong>On/Off duty:</strong> Toggle availability status -
+                    off-duty members skip rotation
+                  </span>
                 </li>
               </ul>
             </section>
@@ -153,24 +198,38 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle className="text-orange-400" size={24} />
-                <h3 className="text-xl font-bold text-white">Completing Holds</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Completing Holds
+                </h3>
               </div>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex gap-3">
                   <span className="text-orange-400 font-bold">•</span>
-                  <span><strong>Complete hold:</strong> Click "Complete Hold" button on firefighter card</span>
+                  <span>
+                    <strong>Complete hold:</strong> Click "Complete Hold" button
+                    on firefighter card
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-orange-400 font-bold">•</span>
-                  <span><strong>Auto-update:</strong> Calendar and scheduled holds update automatically</span>
+                  <span>
+                    <strong>Auto-update:</strong> Calendar and scheduled holds
+                    update automatically
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-orange-400 font-bold">•</span>
-                  <span><strong>Rotation:</strong> Firefighter moves to bottom of rotation after completing hold</span>
+                  <span>
+                    <strong>Rotation:</strong> Firefighter moves to bottom of
+                    rotation after completing hold
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-orange-400 font-bold">•</span>
-                  <span><strong>History:</strong> Last hold date is tracked for each firefighter</span>
+                  <span>
+                    <strong>History:</strong> Last hold date is tracked for each
+                    firefighter
+                  </span>
                 </li>
               </ul>
             </section>
@@ -178,24 +237,38 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-4">
                 <TrendingUp className="text-purple-400" size={24} />
-                <h3 className="text-xl font-bold text-white">Sidebar Features</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Sidebar Features
+                </h3>
               </div>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex gap-3">
                   <span className="text-purple-400 font-bold">•</span>
-                  <span><strong>Overview:</strong> See total, on-duty, and off-duty firefighter counts</span>
+                  <span>
+                    <strong>Overview:</strong> See total, on-duty, and off-duty
+                    firefighter counts
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-purple-400 font-bold">•</span>
-                  <span><strong>Upcoming holds:</strong> View next 7 scheduled holds at a glance</span>
+                  <span>
+                    <strong>Upcoming holds:</strong> View next 7 scheduled holds
+                    at a glance
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-purple-400 font-bold">•</span>
-                  <span><strong>Rotation order:</strong> See who's next in line for holds</span>
+                  <span>
+                    <strong>Rotation order:</strong> See who's next in line for
+                    holds
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-purple-400 font-bold">•</span>
-                  <span><strong>Real-time sync:</strong> All updates happen instantly across the app</span>
+                  <span>
+                    <strong>Real-time sync:</strong> All updates happen
+                    instantly across the app
+                  </span>
                 </li>
               </ul>
             </section>
@@ -203,8 +276,14 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <div className="bg-blue-900/30 border border-blue-700 rounded-xl p-5">
               <h3 className="text-lg font-bold text-white mb-3">Pro Tips</h3>
               <ul className="space-y-2 text-gray-300 text-sm">
-                <li>• The system automatically maintains fair rotation by tracking each firefighter's position</li>
-                <li>• Hold dates can't be double-booked - only one firefighter per day</li>
+                <li>
+                  • The system automatically maintains fair rotation by tracking
+                  each firefighter's position
+                </li>
+                <li>
+                  • Hold dates can't be double-booked - only one firefighter per
+                  day
+                </li>
                 <li>• All changes sync in real-time using Supabase database</li>
                 <li>• Activity log tracks all actions for accountability</li>
               </ul>
@@ -212,20 +291,26 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
 
             <div className="bg-yellow-900/20 border-2 border-yellow-700 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
-                {isAdminMode ? <Unlock className="text-yellow-400" size={24} /> : <Lock className="text-yellow-400" size={24} />}
-                <h3 className="text-lg font-bold text-yellow-300">Admin Mode</h3>
+                {isAdminMode ? (
+                  <Unlock className="text-yellow-400" size={24} />
+                ) : (
+                  <Lock className="text-yellow-400" size={24} />
+                )}
+                <h3 className="text-lg font-bold text-yellow-300">
+                  Admin Mode
+                </h3>
               </div>
               <p className="text-gray-300 text-sm mb-4">
                 {isAdminMode
-                  ? 'Admin mode is currently enabled. You can edit and manage all data.'
-                  : 'Enable admin mode to edit and manage firefighters, schedules, and settings.'}
+                  ? "Admin mode is currently enabled. You can edit and manage all data."
+                  : "Enable admin mode to edit and manage firefighters, schedules, and settings."}
               </p>
               <button
                 onClick={handleAdminToggle}
                 className={`w-full font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 ${
                   isAdminMode
-                    ? 'bg-yellow-900/50 hover:bg-yellow-800/70 border-2 border-yellow-600 text-yellow-200'
-                    : 'bg-yellow-900/50 hover:bg-yellow-800/70 border-2 border-yellow-600 text-yellow-200'
+                    ? "bg-yellow-900/50 hover:bg-yellow-800/70 border-2 border-yellow-600 text-yellow-200"
+                    : "bg-yellow-900/50 hover:bg-yellow-800/70 border-2 border-yellow-600 text-yellow-200"
                 }`}
               >
                 {isAdminMode ? (
@@ -246,10 +331,14 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
               <div className="bg-red-900/20 border-2 border-red-700 rounded-xl p-5">
                 <div className="flex items-center gap-3 mb-3">
                   <Trash2 className="text-red-400" size={24} />
-                  <h3 className="text-lg font-bold text-red-300">Danger Zone</h3>
+                  <h3 className="text-lg font-bold text-red-300">
+                    Danger Zone
+                  </h3>
                 </div>
                 <p className="text-gray-300 text-sm mb-4">
-                  Use this button to completely reset the system and start fresh. This will permanently delete all firefighters, holds, and history from all shifts.
+                  Use this button to completely reset the system and start
+                  fresh. This will permanently delete all firefighters, holds,
+                  and history from all shifts.
                 </p>
                 <button
                   onClick={() => {
@@ -281,7 +370,7 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             onClick={(e) => {
               if (e.target === e.currentTarget) {
                 setShowPasswordPrompt(false);
-                setPassword('');
+                setPassword("");
                 setPasswordError(false);
               }
             }}
@@ -289,7 +378,9 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
             <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-yellow-600 rounded-xl p-6 max-w-md w-full shadow-2xl">
               <div className="flex items-center gap-3 mb-4">
                 <Lock className="text-yellow-400" size={28} />
-                <h3 className="text-xl font-bold text-white">Enter Admin Password</h3>
+                <h3 className="text-xl font-bold text-white">
+                  Enter Admin Password
+                </h3>
               </div>
               <form onSubmit={handlePasswordSubmit} className="space-y-4">
                 <div>
@@ -304,12 +395,14 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
                     autoFocus
                     className={`w-full px-4 py-3 bg-gray-900 border-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                       passwordError
-                        ? 'border-red-600 focus:ring-red-500'
-                        : 'border-gray-600 focus:ring-yellow-500'
+                        ? "border-red-600 focus:ring-red-500"
+                        : "border-gray-600 focus:ring-yellow-500"
                     }`}
                   />
                   {passwordError && (
-                    <p className="text-red-400 text-sm mt-2">Incorrect password. Please try again.</p>
+                    <p className="text-red-400 text-sm mt-2">
+                      Incorrect password. Please try again.
+                    </p>
                   )}
                 </div>
                 <div className="flex gap-3">
@@ -317,7 +410,7 @@ export function HelpModal({ isOpen, onClose, onMasterReset, isAdminMode, onToggl
                     type="button"
                     onClick={() => {
                       setShowPasswordPrompt(false);
-                      setPassword('');
+                      setPassword("");
                       setPasswordError(false);
                     }}
                     className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors"

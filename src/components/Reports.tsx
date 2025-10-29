@@ -11,14 +11,13 @@ import {
   calculateCompletionRate,
   calculateAverageHoldDuration,
   getHoldsInDateRange,
-  calculateTotalHoursWorked,
+  // calculateTotalHoursWorked, // Removed - hours worked metric removed per user feedback
 } from '../utils/metricsCalculations';
 import { MetricCard } from './MetricCard';
 import {
   Calendar,
   CheckCircle,
   Clock,
-  TrendingUp,
   Building2,
   Download,
   Filter,
@@ -60,11 +59,12 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
   // REMOVED: Top firefighter metric per user feedback
   // const topFirefighter = getFirefighterWithMostHolds(filteredHolds, firefighters);
   const topStation = getStationWithMostHolds(filteredHolds);
-  const totalHoursWorked = calculateTotalHoursWorked(
-    filteredHolds,
-    filterActive && dateRange.start ? new Date(dateRange.start) : undefined,
-    filterActive && dateRange.end ? new Date(dateRange.end) : undefined
-  );
+  // REMOVED: Total hours worked metric per user feedback
+  // const totalHoursWorked = calculateTotalHoursWorked(
+  //   filteredHolds,
+  //   filterActive && dateRange.start ? new Date(dateRange.start) : undefined,
+  //   filterActive && dateRange.end ? new Date(dateRange.end) : undefined
+  // );
 
   const completedHolds = filteredHolds.filter(h => h.status === 'completed').length;
 
@@ -75,7 +75,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
       'Total Holds',
       'Completed Holds',
       'Avg Interval (days)',
-      'Hours This Period',
     ];
 
     const rows = metrics.map(m => [
@@ -83,7 +82,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
       m.totalHolds,
       m.completedHolds,
       m.averageIntervalDays,
-      m.hoursWorkedThisPeriod,
     ]);
 
     const csvContent = [
@@ -195,7 +193,7 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
         </div>
 
         {/* Summary Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <MetricCard
             title="Total Holds"
             value={filteredHolds.length}
@@ -219,14 +217,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
             icon={Clock}
             isDarkMode={isDarkMode}
             colorClass="amber"
-          />
-          <MetricCard
-            title="Total Hours"
-            value={totalHoursWorked}
-            subtitle="Hours worked across all holds"
-            icon={TrendingUp}
-            isDarkMode={isDarkMode}
-            colorClass="purple"
           />
         </div>
 
@@ -310,7 +300,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
                   <th className={`p-3 text-right ${textClass}`}>Total Holds</th>
                   <th className={`p-3 text-right ${textClass}`}>Completed</th>
                   <th className={`p-3 text-right ${textClass}`}>Avg Interval (days)</th>
-                  <th className={`p-3 text-right ${textClass}`}>Hours This Period</th>
                 </tr>
               </thead>
               <tbody>
@@ -332,9 +321,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
                     <td className={`p-3 text-right ${textClass}`}>{m.completedHolds}</td>
                     <td className={`p-3 text-right ${textClass}`}>
                       {m.averageIntervalDays || 'N/A'}
-                    </td>
-                    <td className={`p-3 text-right ${textClass}`}>
-                      {m.hoursWorkedThisPeriod}h
                     </td>
                   </tr>
                 ))}

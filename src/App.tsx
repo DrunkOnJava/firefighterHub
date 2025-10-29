@@ -5,36 +5,36 @@
 // 4. Admin mode stored in localStorage is insecure (client-side only, easily bypassed)
 // 5. Large component file (266 lines) - consider breaking into smaller components
 
-import { useEffect, useState, useRef } from "react";
-import { Shift, Firefighter, HoldDuration } from "./lib/supabase";
+import { useEffect, useRef, useState } from "react";
+import { ActivityLogModal } from "./components/ActivityLogModal";
 import { Calendar } from "./components/Calendar";
+import { CompleteHoldModal } from "./components/CompleteHoldModal";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { FirefighterList } from "./components/FirefighterList";
-import { Sidebar } from "./components/Sidebar";
 import { Header } from "./components/Header";
 import { HelpModal } from "./components/HelpModal";
-import { ActivityLogModal } from "./components/ActivityLogModal";
-import { CompleteHoldModal } from "./components/CompleteHoldModal";
-import { TransferShiftModal } from "./components/TransferShiftModal";
+import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
 import { MobileNav } from "./components/MobileNav";
 import { QuickAddFirefighterModal } from "./components/QuickAddFirefighterModal";
-import { ToastContainer } from "./components/Toast";
-import { ErrorBoundary } from "./components/ErrorBoundary";
-import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
 import { Reports } from "./components/Reports";
+import { Sidebar } from "./components/Sidebar";
+import { ToastContainer } from "./components/Toast";
+import { TransferShiftModal } from "./components/TransferShiftModal";
+import { useAnnounce } from "./hooks/useAnnounce";
 import { useFirefighters } from "./hooks/useFirefighters";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useScheduledHolds } from "./hooks/useScheduledHolds";
 import { useToast } from "./hooks/useToast";
-import { useAnnounce } from "./hooks/useAnnounce";
-import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { Firefighter, HoldDuration, Shift } from "./lib/supabase";
 
-type View = 'calendar' | 'reports';
+type View = "calendar" | "reports";
 
 // CRITICAL SECURITY ISSUE: Hardcoded password - move to environment variable
 // RECOMMENDATION: Use proper Supabase auth with AuthContext (already exists but unused)
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Firerescue";
 
 function App() {
-  const [currentView, setCurrentView] = useState<View>('calendar');
+  const [currentView, setCurrentView] = useState<View>("calendar");
   const [showHelp, setShowHelp] = useState(false);
   const [showActivityLog, setShowActivityLog] = useState(false);
   const [showMobileNav, setShowMobileNav] = useState(false);
@@ -196,7 +196,15 @@ function App() {
     duration?: HoldDuration,
     startTime?: string
   ) {
-    completeHold(firefighterId, holdDate, newPosition, station, lentToShift, duration, startTime);
+    completeHold(
+      firefighterId,
+      holdDate,
+      newPosition,
+      station,
+      lentToShift,
+      duration,
+      startTime
+    );
     setShowCompleteHoldModal(false);
     setSelectedFirefighterForCompletion(null);
   }
@@ -272,7 +280,7 @@ function App() {
           role="main"
           className="px-3 sm:px-6 py-4 sm:py-8"
         >
-          {currentView === 'calendar' ? (
+          {currentView === "calendar" ? (
             <>
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
                 <div className="xl:col-span-9">
@@ -282,8 +290,12 @@ function App() {
                         firefighters={firefighters}
                         scheduledHolds={scheduledHolds}
                         onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                        onRemoveHold={isAdminMode ? removeScheduledHold : () => {}}
-                        onMarkCompleted={isAdminMode ? markHoldCompleted : () => {}}
+                        onRemoveHold={
+                          isAdminMode ? removeScheduledHold : () => {}
+                        }
+                        onMarkCompleted={
+                          isAdminMode ? markHoldCompleted : () => {}
+                        }
                         loading={holdsLoading}
                         isAdminMode={isAdminMode}
                         isDarkMode={isDarkMode}

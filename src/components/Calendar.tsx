@@ -244,8 +244,8 @@ export function Calendar({
           </div>
         </div>
 
-        <div className="p-2 sm:p-4 lg:p-6">
-          <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-3 mb-2 sm:mb-3">
+        <div className="p-2 sm:p-4 lg:p-6 max-w-full overflow-x-auto">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-3 mb-2 sm:mb-3 min-w-0">
             {weekDays.map((day) => (
               <div
                 key={day}
@@ -265,7 +265,7 @@ export function Calendar({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-3">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-3 min-w-0">
               {calendarDays.map((day, index) => {
                 const hasHolds = day.scheduledHolds.length > 0;
                 const scheduledHolds = day.scheduledHolds.filter(
@@ -280,7 +280,7 @@ export function Calendar({
 
                 // Determine day cell styling based on state
                 let dayCellClasses =
-                  "min-h-[80px] sm:min-h-[100px] lg:min-h-[140px] p-1.5 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group";
+                  "aspect-[4/5] sm:aspect-square min-h-[60px] max-h-[100px] sm:max-h-[140px] lg:max-h-[180px] p-1.5 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
 
                 if (!day.isCurrentMonth) {
                   dayCellClasses += " cursor-default opacity-30";
@@ -328,9 +328,14 @@ export function Calendar({
                     className={dayCellClasses}
                   >
                     <div className="flex flex-col h-full">
-                      <div className="flex items-start justify-between mb-1 sm:mb-2">
+                      {/* Modern minimal header - Google Calendar inspired */}
+                      <div className="flex items-center justify-between mb-1">
                         <span
-                          className={`text-base sm:text-xl lg:text-2xl font-bold ${
+                          className={`${
+                            hasHolds
+                              ? "text-[11px] sm:text-base lg:text-lg"
+                              : "text-sm sm:text-lg lg:text-xl"
+                          } font-semibold ${
                             hasHolds
                               ? theme.dayCells.dayNumberWithHolds
                               : day.isCurrentMonth && !day.isPast
@@ -340,17 +345,16 @@ export function Calendar({
                         >
                           {day.dayNumber}
                         </span>
-                        <div className="flex flex-col items-end gap-1">
+                        {/* Modern badge indicators */}
+                        <div className="flex items-center gap-1">
                           {day.isToday && day.isCurrentMonth && (
-                            <span
-                              className={`px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-xs font-bold rounded ${theme.dayCells.todayBadge}`}
-                            >
-                              TODAY
-                            </span>
+                            <div
+                              className={`w-1.5 h-1.5 rounded-full ${theme.dayCells.todayBadge.replace('text-', 'bg-')}`}
+                              title="Today"
+                            />
                           )}
                           {multipleHolds && (
-                            <span className="px-1.5 sm:px-2 py-0.5 bg-white/20 text-white text-[8px] sm:text-xs font-bold rounded flex items-center gap-1">
-                              <Users size={10} className="sm:w-3 sm:h-3" />
+                            <span className="text-[8px] sm:text-[10px] font-bold text-white/70">
                               {day.scheduledHolds.length}
                             </span>
                           )}
@@ -358,50 +362,79 @@ export function Calendar({
                       </div>
 
                       {hasHolds ? (
-                        <div className="flex-1 flex flex-col justify-center space-y-0.5 sm:space-y-1">
-                          {day.scheduledHolds.slice(0, 2).map((hold) => {
+                        <div className="flex-1 flex flex-col gap-1 overflow-hidden">
+                          {day.scheduledHolds.slice(0, 2).map((hold, holdIndex) => {
                             const locked = isHoldLocked(hold);
+                            const totalHolds = day.scheduledHolds.length;
+
+                            // Modern responsive sizing - professional calendar standards
+                            const eventCardClasses = totalHolds >= 2
+                              ? "text-[7px] sm:text-[9px] lg:text-xs"  // Compact for 2+ events
+                              : "text-[9px] sm:text-xs lg:text-sm";      // Comfortable for 1 event
+
+                            const iconSize = totalHolds >= 2 ? 8 : 10;
+
                             return (
-                              <div key={hold.id} className="mb-1">
-                                <p className="text-white font-bold text-xs sm:text-sm lg:text-base leading-tight break-words">
-                                  {hold.firefighter_name}
-                                </p>
-                                {hold.fire_station && (
-                                  <p className="text-[10px] sm:text-xs text-white/80 font-semibold">
-                                    Station #{hold.fire_station}
-                                  </p>
-                                )}
-                                {hold.duration && (
-                                  <p className="text-[10px] sm:text-xs text-white/80 font-semibold flex items-center gap-1">
-                                    <Clock size={10} className="sm:w-3 sm:h-3" />
-                                    {hold.duration === '12h' ? '12hr' : '24hr'} Hold
-                                  </p>
-                                )}
-                                {hold.lent_to_shift && (
-                                  <p className="text-[10px] sm:text-xs text-blue-300 font-bold flex items-center gap-1">
-                                    → {hold.lent_to_shift}-Shift
-                                  </p>
-                                )}
-                                <div className="flex items-center gap-1 flex-wrap mt-0.5">
-                                  {hold.status === "completed" && (
-                                    <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-emerald-900/70 text-emerald-200 text-[8px] sm:text-xs font-bold rounded">
-                                      DONE
-                                    </span>
-                                  )}
-                                  {locked && (
-                                    <span className="inline-flex items-center px-1 sm:px-1.5 py-0.5 bg-amber-900/70 text-amber-200 text-[8px] sm:text-xs font-bold rounded">
-                                      <Lock size={10} className="mr-0.5" />
-                                      LOCKED
-                                    </span>
-                                  )}
+                              <div
+                                key={hold.id}
+                                className="group/event relative min-w-0"
+                                title={`${hold.firefighter_name}${hold.fire_station ? ` - Station #${hold.fire_station}` : ''}${hold.lent_to_shift ? ` → ${hold.lent_to_shift}-Shift` : ''}`}
+                              >
+                                {/* Modern event card design */}
+                                <div className={`
+                                  ${eventCardClasses}
+                                  flex items-center gap-1 px-1 py-0.5
+                                  bg-white/10 hover:bg-white/20
+                                  rounded transition-colors
+                                  border-l-2 ${
+                                    hold.status === "completed"
+                                      ? "border-emerald-400"
+                                      : "border-white/40"
+                                  }
+                                  overflow-hidden
+                                `}>
+                                  {/* Name - full display without truncation */}
+                                  <span className="flex-1 font-semibold leading-tight whitespace-nowrap">
+                                    {hold.firefighter_name}
+                                  </span>
+
+                                  {/* Status indicators - minimal and elegant */}
+                                  <div className="flex items-center gap-0.5 flex-shrink-0">
+                                    {hold.fire_station && (
+                                      <span className="text-white/60 text-[8px] lg:text-[10px]">
+                                        #{hold.fire_station}
+                                      </span>
+                                    )}
+                                    {locked && (
+                                      <Lock size={iconSize - 2} className="text-amber-300/80" />
+                                    )}
+                                    {hold.status === "completed" && (
+                                      <span className="text-emerald-300">✓</span>
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             );
                           })}
+
+                          {/* Modern "+X more" indicator */}
                           {day.scheduledHolds.length > 2 && (
-                            <p className="text-white text-[10px] sm:text-xs font-semibold opacity-80">
+                            <button
+                              className="
+                                text-[8px] sm:text-xs font-semibold
+                                text-white/80 hover:text-white
+                                bg-white/5 hover:bg-white/15
+                                rounded px-1.5 py-0.5
+                                transition-all
+                                text-left
+                              "
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDayClick(day);
+                              }}
+                            >
                               +{day.scheduledHolds.length - 2} more
-                            </p>
+                            </button>
                           )}
                         </div>
                       ) : (
@@ -595,8 +628,7 @@ export function Calendar({
                               </span>
                               {locked && (
                                 <span className="inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 text-xs font-bold rounded">
-                                  <Lock size={12} className="mr-1" />
-                                  LOCKED
+                                  <Lock size={12} />
                                 </span>
                               )}
                             </div>
@@ -652,7 +684,7 @@ export function Calendar({
                                 className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2 ${locked ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 title={locked ? "Hold is locked (>1 week old)" : "Edit hold station"}
                               >
-                                <span className="text-sm">{locked ? 'Locked' : 'Edit'}</span>
+                                {locked ? <Lock size={16} /> : <span className="text-sm">Edit</span>}
                               </button>
 
                               {/* Cancel Button: Disabled for locked holds (unless legacy 'past-' id) */}
@@ -669,8 +701,12 @@ export function Calendar({
                                       : "Cancel scheduled hold"
                                   }
                                 >
-                                  <Trash2 size={16} />
-                                  <span className="text-sm">{locked ? 'Locked' : 'Cancel'}</span>
+                                  {locked ? <Lock size={16} /> : (
+                                    <>
+                                      <Trash2 size={16} />
+                                      <span className="text-sm">Cancel</span>
+                                    </>
+                                  )}
                                 </button>
                               )}
                             </div>

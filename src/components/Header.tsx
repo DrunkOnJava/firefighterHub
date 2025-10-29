@@ -1,11 +1,11 @@
 import {
-  HelpCircle,
   Clock,
-  UserPlus,
-  Sun,
+  HelpCircle,
+  Menu,
   Moon,
   Shield,
-  Menu,
+  Sun,
+  UserPlus,
 } from "lucide-react";
 import { Shift } from "../lib/supabase";
 import { ShiftSelector } from "./ShiftSelector";

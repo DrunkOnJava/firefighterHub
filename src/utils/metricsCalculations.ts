@@ -7,12 +7,11 @@ export interface FirefighterMetrics {
   totalHolds: number;
   completedHolds: number;
   averageIntervalDays: number;
-  hoursWorkedThisPeriod: number;
 }
 
 /**
  * Calculate comprehensive metrics per firefighter including total holds,
- * completed holds, average interval between holds, and hours worked.
+ * completed holds, and average interval between holds.
  */
 export function calculateHoldsPerFirefighter(
   holds: ScheduledHold[],
@@ -46,7 +45,6 @@ export function calculateHoldsPerFirefighter(
       totalHolds: ffHolds.length,
       completedHolds: completed.length,
       averageIntervalDays: Math.round(avgInterval * 10) / 10,
-      hoursWorkedThisPeriod: ff.hours_worked_this_period || 0,
     };
   });
 }
@@ -198,23 +196,4 @@ export function getHoldsInDateRange(
     const holdDate = new Date(hold.hold_date);
     return holdDate >= startDate && holdDate <= endDate;
   });
-}
-
-/**
- * Calculate total hours worked across all firefighters in a date range
- */
-export function calculateTotalHoursWorked(
-  holds: ScheduledHold[],
-  startDate?: Date,
-  endDate?: Date
-): number {
-  let filteredHolds = holds.filter(h => h.status === 'completed' && h.duration);
-
-  if (startDate && endDate) {
-    filteredHolds = getHoldsInDateRange(filteredHolds, startDate, endDate);
-  }
-
-  return filteredHolds.reduce((sum, hold) => {
-    return sum + (hold.duration === '12h' ? 12 : 24);
-  }, 0);
 }

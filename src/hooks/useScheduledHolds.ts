@@ -7,7 +7,7 @@ import { ScheduledHold } from "../utils/calendarUtils";
 import { ToastType } from "./useToast";
 import { moveToBottom } from "../utils/rotationLogic";
 // recalculatePositions removed - not needed after fixing rotation bug
-import { validate72HourRule } from "../utils/validation";
+// validate72HourRule removed - hours worked tracking removed per user feedback
 
 export function useScheduledHolds(
   showToast: (message: string, type: ToastType) => void,
@@ -195,17 +195,9 @@ export function useScheduledHolds(
     duration: HoldDuration = '24h',
     startTime: string = '07:00'
   ) {
-    // Validate 72-hour rule before scheduling
-    const validation = validate72HourRule(firefighter, duration);
-    if (!validation.valid) {
-      showToast(validation.error || 'Cannot schedule hold due to 72-hour rule', "error");
-      return; // Do not schedule the hold
-    }
-
-    // Show warning if approaching 72-hour limit
-    if (validation.warning) {
-      showToast(validation.warning, "info");
-    }
+    // REMOVED: 72-hour rule validation - hours worked tracking removed per user feedback
+    // User stated: "There is no way to accurately calculate that without manually
+    // checking through the scheduling program"
 
     const stationToUse = station || firefighter.fire_station || null;
     const tempId = `temp-${Date.now()}`;
@@ -352,7 +344,6 @@ export function useScheduledHolds(
           const updates: {
             order_position: number;
             last_hold_date?: string;
-            hours_worked_this_period?: number;
             updated_at?: string;
           } = { order_position: ff.order_position };
 
@@ -361,16 +352,11 @@ export function useScheduledHolds(
             updates.last_hold_date = hold.hold_date.split('T')[0];
             updates.updated_at = new Date().toISOString();
 
-            // Update hours worked based on hold duration
-            const holdHours = hold.duration === '12h' ? 12 : 24;
-            updates.hours_worked_this_period = (ff.hours_worked_this_period || 0) + holdHours;
-
             console.log('✅ Updating firefighter after hold completion:', {
               name: ff.name,
               holdDate: hold.hold_date,
               lastHoldDate: updates.last_hold_date,
               newPosition: updates.order_position,
-              hoursWorked: updates.hours_worked_this_period
             });
           }
 

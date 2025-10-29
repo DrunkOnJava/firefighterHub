@@ -49,9 +49,11 @@ export interface Firefighter {
   is_bls: boolean; // Basic Life Support
   is_als: boolean; // Advanced Life Support
 
-  // 72-hour rule tracking
-  hours_worked_this_period: number;
-  last_hours_reset_date: string | null;
+  // 72-hour rule tracking - REMOVED per user feedback
+  // Database columns still exist for backward compatibility but are not used in the application
+  // User stated: "There is no way to accurately calculate that without manually checking through the scheduling program"
+  hours_worked_this_period?: number; // Made optional - no longer tracked
+  last_hours_reset_date?: string | null; // Made optional - no longer used
 
   // Timestamps - TECHNICAL DEBT: Should be Date type but DB returns ISO strings
   created_at: string;

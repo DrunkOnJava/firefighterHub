@@ -1,6 +1,6 @@
 {
   "name": "Hold List Manager - Firefighter Rotation",
-  "short_name": "Hold Manager",
+  "short_name": "Hold List",
   "description": "Manage firefighter mandatory hold rotation schedules with shift tracking",
   "start_url": "/",
   "display": "standalone",

@@ -1,0 +1,183 @@
+# https://taskfile.dev
+# Modern task runner - run with: `task <task-name>`
+# Install: brew install go-task/tap/go-task
+
+version: "3"
+
+vars:
+  COVERAGE_DIR: coverage
+  REPORT_DIR: playwright-report
+
+tasks:
+  # ==========================================
+  # 🚀 DEVELOPMENT
+  # ==========================================
+  dev:
+    desc: Start development server
+    cmds:
+      - pnpm run dev
+    interactive: true
+
+  build:
+    desc: Build for production
+    cmds:
+      - pnpm run build
+
+  preview:
+    desc: Preview production build
+    deps: [build]
+    cmds:
+      - pnpm run preview
+    interactive: true
+
+  # ==========================================
+  # 🧪 TESTING
+  # ==========================================
+  test:
+    desc: Run unit tests (watch mode)
+    cmds:
+      - pnpm run test
+    interactive: true
+
+  test:once:
+    desc: Run unit tests once
+    cmds:
+      - pnpm run test:run
+
+  test:ui:
+    desc: Open Vitest UI
+    cmds:
+      - pnpm run test:ui
+    interactive: true
+
+  test:coverage:
+    desc: Generate test coverage report
+    cmds:
+      - pnpm run test:coverage
+      - task: open:coverage
+
+  test:e2e:
+    desc: Run E2E tests (headless)
+    cmds:
+      - pnpm run test:e2e
+
+  test:e2e:ui:
+    desc: Run E2E tests in UI mode
+    cmds:
+      - pnpm run test:e2e:ui
+    interactive: true
+
+  test:e2e:headed:
+    desc: Run E2E tests with browser visible
+    cmds:
+      - pnpm run test:e2e:headed
+
+  test:e2e:debug:
+    desc: Debug E2E tests
+    cmds:
+      - pnpm run test:e2e:debug
+    interactive: true
+
+  test:mobile:
+    desc: Run mobile device tests
+    cmds:
+      - pnpm run test:e2e --project="Mobile Chrome" --project="Mobile Safari"
+
+  test:all:
+    desc: Run all tests (unit + E2E)
+    cmds:
+      - task: test:once
+      - task: test:e2e
+
+  # ==========================================
+  # ✅ CODE QUALITY
+  # ==========================================
+  lint:
+    desc: Lint code with ESLint
+    cmds:
+      - pnpm run lint
+
+  typecheck:
+    desc: Check TypeScript types
+    cmds:
+      - pnpm run typecheck
+
+  quality:
+    desc: Run all quality checks
+    cmds:
+      - task: lint
+      - task: typecheck
+
+  fix:
+    desc: Auto-fix linting issues
+    cmds:
+      - pnpm run lint --fix
+
+  # ==========================================
+  # 📊 REPORTS & DOCUMENTATION
+  # ==========================================
+  open:coverage:
+    desc: Open coverage report in browser
+    cmds:
+      - open {{.COVERAGE_DIR}}/index.html || xdg-open {{.COVERAGE_DIR}}/index.html
+    silent: true
+
+  open:e2e-report:
+    desc: Open E2E test report
+    cmds:
+      - pnpm run test:e2e:report
+
+  open:todo:
+    desc: Open TODO list
+    cmds:
+      - code TODO.md
+    silent: true
+
+  # ==========================================
+  # 🛠️ UTILITIES
+  # ==========================================
+  clean:
+    desc: Clean all build artifacts
+    cmds:
+      - rm -rf dist coverage .vite playwright-report test-results test-artifacts
+
+  clean:deps:
+    desc: Clean and reinstall dependencies
+    cmds:
+      - rm -rf node_modules pnpm-lock.yaml
+      - pnpm install
+
+  icons:
+    desc: Generate PWA icons
+    cmds:
+      - pnpm run generate:icons
+
+  # ==========================================
+  # 🚢 DEPLOYMENT
+  # ==========================================
+  pre-deploy:
+    desc: Run all checks before deployment
+    cmds:
+      - task: quality
+      - task: test:once
+      - task: build
+    silent: false
+
+  verify:
+    desc: Verify installation and setup
+    cmds:
+      - echo "Checking pnpm..."
+      - pnpm --version
+      - echo "Checking Node.js..."
+      - node --version
+      - echo "Checking dependencies..."
+      - pnpm list --depth=0
+
+  # ==========================================
+  # 📋 HELP & INFO
+  # ==========================================
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list-all
+    silent: true

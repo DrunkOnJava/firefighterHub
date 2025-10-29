@@ -1,4 +1,4 @@
-import { Firefighter, HoldDuration } from '../lib/supabase';
+import { Firefighter } from '../lib/supabase';
 import { ScheduledHold } from './calendarUtils';
 
 export interface ValidationResult {
@@ -219,55 +219,15 @@ export function validateHoldNotes(
 }
 
 /**
- * Validates 72-hour rule
- * Rules:
- * - If member has worked >72 hours prior to hold date, they are skipped
- * - If hold would make them exceed 72 hours, they are skipped
- * - Member remains at position #0 when skipped
+ * REMOVED: validate72HourRule function
  *
- * @param firefighter Firefighter to check
- * @param holdDuration Duration of the hold being scheduled (12h or 24h)
- * @returns ValidationResult with warning if would exceed 72 hours
+ * Per user feedback: "There is no way to accurately calculate that without manually
+ * checking through the scheduling program"
+ *
+ * Hours worked tracking has been removed from the application as it cannot be
+ * calculated accurately. Manual verification of work hours should be done through
+ * the external scheduling system.
  */
-export function validate72HourRule(
-  firefighter: Firefighter,
-  holdDuration: HoldDuration
-): ValidationResult {
-  const hoursWorked = firefighter.hours_worked_this_period || 0;
-  const holdHours = holdDuration === '12h' ? 12 : 24;
-  const totalHours = hoursWorked + holdHours;
-
-  // NOTE: Changed from blocking to warning-only per user feedback
-  // User stated: "There is no way to accurately calculate that without manually
-  // checking through the scheduling program"
-  // Hours tracking is informational only and should not block scheduling
-
-  // Warning if already over 72 hours (was blocking before)
-  if (hoursWorked > 72) {
-    return {
-      valid: true,  // ✅ Changed from false to true - allow scheduling
-      warning: `⚠️ ${firefighter.name} has already worked ${hoursWorked} hours this period (exceeds 72-hour limit). Manual verification recommended.`
-    };
-  }
-
-  // Warning if hold would cause them to exceed 72 hours (was blocking before)
-  if (totalHours > 72) {
-    return {
-      valid: true,  // ✅ Changed from false to true - allow scheduling
-      warning: `⚠️ ${firefighter.name} has worked ${hoursWorked} hours. Adding this ${holdDuration} hold would total ${totalHours} hours (exceeds 72-hour limit). Manual verification recommended.`
-    };
-  }
-
-  // Warning if getting close to limit (within 12 hours)
-  if (totalHours > 60) {
-    return {
-      valid: true,
-      warning: `${firefighter.name} will have ${totalHours} hours after this hold (approaching 72-hour limit).`
-    };
-  }
-
-  return { valid: true };
-}
 
 /**
  * Checks if a hold is locked (created more than 1 week ago)

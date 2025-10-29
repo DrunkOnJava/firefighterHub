@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Firefighter } from '../lib/supabase';
+import { useState, useEffect } from 'react';
+import { Firefighter, supabase } from '../lib/supabase';
 import { ScheduledHold } from '../utils/calendarUtils';
 import {
   calculateHoldsPerFirefighter,
@@ -40,6 +40,57 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
     end: '',
   });
   const [filterActive, setFilterActive] = useState(false);
+  const [allHolds, setAllHolds] = useState<ScheduledHold[]>([]);
+
+  // Fetch ALL holds across all shifts for comparison metrics
+  useEffect(() => {
+    async function fetchAllHolds() {
+      try {
+        const today = new Date();
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 3, 0);
+
+        const startStr = startOfMonth.toISOString().split('T')[0];
+        const endStr = endOfMonth.toISOString().split('T')[0];
+
+        const { data, error } = await supabase
+          .from('scheduled_holds')
+          .select('*')
+          // Don't filter by shift - get ALL holds
+          .gte('hold_date', startStr)
+          .lte('hold_date', endStr)
+          .order('hold_date');
+
+        if (error) throw error;
+        setAllHolds(data || []);
+      } catch (error) {
+        console.error('Error fetching all holds:', error);
+      }
+    }
+
+    fetchAllHolds();
+
+    // Subscribe to real-time updates for all shifts
+    const channel = supabase
+      .channel('all_scheduled_holds_reports')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'scheduled_holds',
+        },
+        () => {
+          console.log('🔄 Holds changed, refreshing all holds for reports');
+          fetchAllHolds();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   // Apply date range filter if active
   const filteredHolds = filterActive && dateRange.start && dateRange.end
@@ -51,9 +102,10 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
     : holds;
 
   // Calculate metrics
-  const metrics = calculateHoldsPerFirefighter(filteredHolds, firefighters);
-  // Calculate shift stats from ALL holds for comparison (not filtered)
-  const shiftStats = calculateHoldsByShift(holds);
+  // Use allHolds for per-firefighter metrics to include all shifts
+  const metrics = calculateHoldsPerFirefighter(allHolds, firefighters);
+  // Calculate shift stats from ALL holds for comparison (across all shifts)
+  const shiftStats = calculateHoldsByShift(allHolds);
   // REMOVED: Duration stats per user feedback
   // const durationStats = calculateHoldsByDuration(filteredHolds);
   // REMOVED: Completion rate per user feedback (Completed Holds metric removed)

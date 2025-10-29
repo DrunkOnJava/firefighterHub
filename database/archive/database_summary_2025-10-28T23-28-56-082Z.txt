@@ -1,0 +1,87 @@
+================================================================================
+FIREFIGHTERHUB DATABASE DUMP SUMMARY
+================================================================================
+Generated: 2025-10-28T23:28:56.080Z
+Database: https://tjljndzodowpohusrwhs.supabase.co
+
+--------------------------------------------------------------------------------
+FIREFIGHTERS (59 total)
+--------------------------------------------------------------------------------
+Active: 55 | Available: 59
+By Shift: A=18, B=20, C=21
+
+Name                    | Shift | Station | Active | Available | Last Hold
+--------------------------------------------------------------------------------
+Eric Depollo            | B     | 4       | Yes    | Yes       | Never
+Angel Hernandez         | A     | 2       | Yes    | Yes       | 9/24/2025
+DEAD BEAT               | C     | ADMIN   | No     | Yes       | Never
+Michael Snell           | B     | 1       | Yes    | Yes       | Never
+Stephen Wilocks         | C     | 1       | Yes    | Yes       | 9/7/2025
+Kevin Catlett           | A     | 10      | Yes    | Yes       | 9/26/2025
+Ryan Baldwin            | A     | 8       | Yes    | Yes       | 9/26/2025
+Dominic Cox             | B     | 1       | Yes    | Yes       | 7/17/2025
+Dale Orebaugh           | C     | 8       | Yes    | Yes       | 9/12/2025
+Tony Maiatico           | C     | 6       | Yes    | Yes       | 9/12/2025
+Chris Ramey             | B     | 4       | Yes    | Yes       | 7/17/2025
+Scott Richardson        | A     | 6       | Yes    | Yes       | 9/28/2025
+Collin Cole             | B     | 8       | Yes    | Yes       | 7/21/2025
+Cory McCauley           | A     | 1       | Yes    | Yes       | 10/3/2025
+Bernie Gottholm         | C     | 2       | Yes    | Yes       | 9/14/2025
+Josh Bryson             | A     | 5       | Yes    | Yes       | 10/3/2025
+Jeff Gray               | C     | 5       | Yes    | Yes       | 9/25/2025
+Dylan Garrett           | B     | 3       | Yes    | Yes       | 7/27/2025
+David Settle            | C     | 1       | Yes    | Yes       | 9/30/2025
+Andy Volz               | B     | 6       | Yes    | Yes       | 8/17/2025
+Andrew Feldhauser       | A     | 1       | Yes    | Yes       | 10/5/2025
+Aaron Miller            | B     | 5       | Yes    | Yes       | 8/22/2025
+David Birks             | C     | 3       | Yes    | Yes       | 9/30/2025
+Kiersten Kennedy        | A     | 8       | Yes    | Yes       | 10/5/2025
+Anisa Khan              | C     | 10      | Yes    | Yes       | 10/2/2025
+Bradley Kresge          | B     | 2       | Yes    | Yes       | 8/29/2025
+Noah Myers              | A     | 1       | Yes    | Yes       | 10/7/2025
+Madison Udy             | C     | 6       | Yes    | Yes       | 10/4/2025
+Brandon Oliver          | A     | 2       | Yes    | Yes       | 10/7/2025
+Joe Gallivan            | B     | 1       | Yes    | Yes       | 8/29/2025
+Joey Jock               | C     | 5       | Yes    | Yes       | 10/7/2025
+Andrew Levdahl          | A     | 3       | Yes    | Yes       | 10/10/2025
+Camden Whitacre         | B     | 1       | Yes    | Yes       | 9/11/2025
+Jaden Tipeni            | C     | 2       | Yes    | Yes       | 10/8/2025
+Cassie Unger            | B     | 2       | Yes    | Yes       | 9/29/2025
+Chad Biby               | A     | 6       | Yes    | Yes       | 10/14/2025
+Cayden Baker            | B     | 5       | Yes    | Yes       | 10/1/2025
+Chris Pangle            | A     | 4       | Yes    | Yes       | 10/14/2025
+Jesse Smith             | C     | 1       | Yes    | Yes       | 10/9/2025
+Logan Stewart           | C     | 4       | Yes    | Yes       | 10/9/2025
+Eddie Hammack           | A     | 10      | Yes    | Yes       | 10/14/2025
+Jared Lewis             | B     | 10      | Yes    | Yes       | 10/6/2025
+Madison Whitfield       | C     | 1       | Yes    | Yes       | 10/9/2025
+Ryan Fisher             | A     | 3       | Yes    | Yes       | 10/14/2025
+Michael Foster          | B     | 10      | Yes    | Yes       | 10/6/2025
+Gabe Malone             | B     | 1       | Yes    | Yes       | 10/8/2025
+Jake Walker             | C     | 8       | Yes    | Yes       | 10/11/2025
+Austin Cucciardo        | A     | 4       | Yes    | Yes       | 9/13/2025
+Tim Mawyer              | B     | 3       | Yes    | Yes       | 10/13/2025
+John Smith              | A     | 7       | No     | Yes       | 10/20/2025
+Lisa Wilbanks           | C     | 4       | Yes    | Yes       | 10/11/2025
+Nick Bailey             | C     | 10      | Yes    | Yes       | 10/18/2025
+Michael Good            | B     | 8       | Yes    | Yes       | 10/17/2025
+Josh Muller             | A     | 5       | Yes    | Yes       | 10/21/2025
+Sierra Rollins          | B     | 6       | Yes    | Yes       | 10/17/2025
+Duane Burleigh          | C     | 1       | Yes    | Yes       | Never
+FF 1                    | C     | 7       | No     | Yes       | 10/22/2025
+George Lewis            | C     | 3       | Yes    | Yes       | 10/27/2025
+Matt Geurkink           | B     | N/A     | No     | Yes       | 10/19/2025
+
+--------------------------------------------------------------------------------
+SCHEDULED HOLDS (85 total)
+--------------------------------------------------------------------------------
+Scheduled: 1 | Completed: 84 | Skipped: 0
+
+
+--------------------------------------------------------------------------------
+ACTIVITY LOG (0 total entries)
+--------------------------------------------------------------------------------
+
+================================================================================
+END OF SUMMARY
+================================================================================

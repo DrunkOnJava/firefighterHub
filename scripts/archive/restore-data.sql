@@ -1,0 +1,3657 @@
+-- Database Restore Script
+-- Generated from dump: 2025-10-28T23:28:56.080Z
+-- Firefighters: 59
+-- Scheduled holds: 85
+
+-- Insert firefighters
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'a758bfb1-4fc7-478a-9d33-ef92314deed9',
+      'Eric Depollo',
+      0,
+      true,
+      true,
+      'B',
+      '4',
+      NULL,
+      'Paramedic',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:34:50.852386+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '75556027-6b91-403d-b1f7-cbb10ee57175',
+      'Angel Hernandez',
+      0,
+      true,
+      true,
+      'A',
+      '2',
+      '2025-09-25T00:00:00+00:00',
+      'EMT-A',
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:53.63692+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'f8aeed65-df53-4b14-93bb-7d0b975fc6b3',
+      'DEAD BEAT',
+      0,
+      true,
+      false,
+      'C',
+      'ADMIN',
+      NULL,
+      NULL,
+      true,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T12:30:26.868762+00:00',
+      '2025-10-28T19:41:40.946178+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'd46b55d8-ad8d-42fd-abfd-29e9a11849fc',
+      'Michael Snell',
+      1,
+      true,
+      true,
+      'B',
+      '1',
+      NULL,
+      'EMT',
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T06:27:08.824451+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'e4761d07-2c5f-477f-82d0-d9d91717dfad',
+      'Stephen Wilocks',
+      1,
+      true,
+      true,
+      'C',
+      '1',
+      '2025-09-08T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:26.64437+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '37c62027-8898-4c5e-a33f-e25b4d3d4046',
+      'Kevin Catlett',
+      1,
+      true,
+      true,
+      'A',
+      '10',
+      '2025-09-27T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T08:13:52.025154+00:00',
+      '2025-10-23T03:38:53.75576+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '62cc1d22-4feb-4774-bccf-a898be39bdca',
+      'Ryan Baldwin',
+      2,
+      true,
+      true,
+      'A',
+      '8',
+      '2025-09-27T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:53.867453+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '66d2a23d-df73-4313-a754-9580adf87510',
+      'Dominic Cox',
+      2,
+      true,
+      true,
+      'B',
+      '1',
+      '2025-07-18T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:02.57007+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'a635d61c-41a4-4ccd-b230-14c998a1f1c1',
+      'Dale Orebaugh',
+      2,
+      true,
+      true,
+      'C',
+      '8',
+      '2025-09-13T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:26.849336+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'b97644dd-558b-4c56-b621-f51439695db6',
+      'Tony Maiatico',
+      3,
+      true,
+      true,
+      'C',
+      '6',
+      '2025-09-13T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:27.039683+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'dabaceeb-d1d9-49ad-801b-e926244a2d3d',
+      'Chris Ramey',
+      3,
+      true,
+      true,
+      'B',
+      '4',
+      '2025-07-18T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:02.746238+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '3e4daf2c-96b2-49e1-8a62-b24bc3d5c3bb',
+      'Scott Richardson',
+      3,
+      true,
+      true,
+      'A',
+      '6',
+      '2025-09-29T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:53.969741+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '5f462678-8c53-40e9-91c9-89a023a2648e',
+      'Collin Cole',
+      4,
+      true,
+      true,
+      'B',
+      '8',
+      '2025-07-22T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:02.937791+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'f0c938fb-5288-4eae-86e8-4dd73bd74555',
+      'Cory McCauley',
+      4,
+      true,
+      true,
+      'A',
+      '1',
+      '2025-10-04T00:00:00+00:00',
+      'Paramedic',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.086063+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'a40ce12a-9365-4137-aaeb-0e394ad976c3',
+      'Bernie Gottholm',
+      4,
+      true,
+      true,
+      'C',
+      '2',
+      '2025-09-15T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:27.189466+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'be61f00f-8ffa-45ba-aa66-8e127b5cc1b7',
+      'Josh Bryson',
+      5,
+      true,
+      true,
+      'A',
+      '5',
+      '2025-10-04T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.206098+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '4d09a03f-8104-42b3-8902-1f8de32b449c',
+      'Jeff Gray',
+      5,
+      true,
+      true,
+      'C',
+      '5',
+      '2025-09-26T00:00:00+00:00',
+      'EMT-A',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:27.340177+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'a3d02ce0-944f-4e3a-aaea-3619a5d70a13',
+      'Dylan Garrett',
+      5,
+      true,
+      true,
+      'B',
+      '3',
+      '2025-07-28T00:00:00+00:00',
+      'EMT',
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:03.387666+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '1963b30f-6461-4cd6-9aa5-f14a293ea9ee',
+      'David Settle',
+      6,
+      true,
+      true,
+      'C',
+      '1',
+      '2025-10-01T00:00:00+00:00',
+      'EMT',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:27.544709+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'd45446ed-4244-431c-8c9d-bf8d2e184b45',
+      'Andy Volz',
+      6,
+      true,
+      true,
+      'B',
+      '6',
+      '2025-08-18T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:03.553285+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '91b33991-8daf-4372-a400-33ff0aba5424',
+      'Andrew Feldhauser',
+      6,
+      true,
+      true,
+      'A',
+      '1',
+      '2025-10-06T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.317727+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '9c4c3c92-2b68-49cb-af39-091d27bbb519',
+      'Aaron Miller',
+      7,
+      true,
+      true,
+      'B',
+      '5',
+      '2025-08-23T00:00:00+00:00',
+      'EMT-A',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:02.126898+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '8803253d-6326-4626-8279-bc8580346872',
+      'David Birks',
+      7,
+      true,
+      true,
+      'C',
+      '3',
+      '2025-10-01T00:00:00+00:00',
+      'EMT',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:27.721727+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '10156b50-e327-446f-9f8a-55fee58d1a26',
+      'Kiersten Kennedy',
+      7,
+      true,
+      true,
+      'A',
+      '8',
+      '2025-10-06T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.431543+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '9ae4e49f-17d1-4486-a0c2-7c16d6967409',
+      'Anisa Khan',
+      8,
+      true,
+      true,
+      'C',
+      '10',
+      '2025-10-03T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:27.881457+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '53e36b7e-b961-4ab2-b7fc-b6d1f7d734d3',
+      'Bradley Kresge',
+      8,
+      true,
+      true,
+      'B',
+      '2',
+      '2025-08-30T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:03.721616+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'f8ce1844-022f-4c7b-a856-92e52327149a',
+      'Noah Myers',
+      8,
+      true,
+      true,
+      'A',
+      '1',
+      '2025-10-08T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.544655+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '69ec54e2-c19d-455e-9084-619eb9be70fd',
+      'Madison Udy',
+      9,
+      true,
+      true,
+      'C',
+      '6',
+      '2025-10-05T00:00:00+00:00',
+      'EMT',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:28.03651+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '1082f100-8583-493b-aa7b-a55db82c7587',
+      'Brandon Oliver',
+      9,
+      true,
+      true,
+      'A',
+      '2',
+      '2025-10-08T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.646482+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '0487cb18-26d8-42c0-92c3-94bafac1b346',
+      'Joe Gallivan',
+      9,
+      true,
+      true,
+      'B',
+      '1',
+      '2025-08-30T00:00:00+00:00',
+      'Paramedic',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:03.88655+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '8320d1f2-b938-47eb-ba1c-6f48feed96ee',
+      'Joey Jock',
+      10,
+      true,
+      true,
+      'C',
+      '5',
+      '2025-10-08T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:28.351948+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'cb659f81-4b27-4770-a32c-c328719d6d45',
+      'Andrew Levdahl',
+      10,
+      true,
+      true,
+      'A',
+      '3',
+      '2025-10-11T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.74475+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '866af52e-5ebe-4fc8-b355-51bbf2e5b841',
+      'Camden Whitacre',
+      10,
+      true,
+      true,
+      'B',
+      '1',
+      '2025-09-12T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:04.047456+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'e049dc7a-b24e-493b-b360-6f7bfd3cb4d2',
+      'Jaden Tipeni',
+      11,
+      true,
+      true,
+      'C',
+      '2',
+      '2025-10-09T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:28.617205+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'ff71a94b-0936-4fb9-a42d-b6ea8b987247',
+      'Cassie Unger',
+      11,
+      true,
+      true,
+      'B',
+      '2',
+      '2025-09-30T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:04.208568+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '295e1784-3ffb-44a8-a6cc-56cb80a99f1f',
+      'Chad Biby',
+      11,
+      true,
+      true,
+      'A',
+      '6',
+      '2025-10-15T00:00:00+00:00',
+      'EMT',
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.839209+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '08aefc32-5d16-4d99-8492-993737fde9ba',
+      'Cayden Baker',
+      12,
+      true,
+      true,
+      'B',
+      '5',
+      '2025-10-02T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:04.381251+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '7a4d063a-a0ea-428d-9835-71e1936ee130',
+      'Chris Pangle',
+      12,
+      true,
+      true,
+      'A',
+      '4',
+      '2025-10-15T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:54.93672+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '65454ba6-2995-47f8-92f2-bbf5e94ea2ae',
+      'Jesse Smith',
+      12,
+      true,
+      true,
+      'C',
+      '1',
+      '2025-10-10T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:28.812422+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '80016522-1312-4239-9412-5026d403a5fd',
+      'Logan Stewart',
+      13,
+      true,
+      true,
+      'C',
+      '4',
+      '2025-10-10T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:29.00495+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'a76790a6-168d-4e99-bc52-bc54de35bf86',
+      'Eddie Hammack',
+      13,
+      true,
+      true,
+      'A',
+      '10',
+      '2025-10-15T00:00:00+00:00',
+      NULL,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:55.051849+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '48754aaf-f139-4002-a44a-ac9c47ee3a32',
+      'Jared Lewis',
+      13,
+      true,
+      true,
+      'B',
+      '10',
+      '2025-10-07T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:04.530203+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '0f1f22b0-792f-4394-9308-046517f5f6f2',
+      'Madison Whitfield',
+      14,
+      true,
+      true,
+      'C',
+      '1',
+      '2025-10-10T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:29.149419+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '57dafb33-d2bb-468e-8670-abf1634ccafb',
+      'Ryan Fisher',
+      14,
+      true,
+      true,
+      'A',
+      '3',
+      '2025-10-15T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:55.14608+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '7df1dcd2-2393-4944-8f72-c28b4514afd9',
+      'Michael Foster',
+      14,
+      true,
+      true,
+      'B',
+      '10',
+      '2025-10-07T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:04.693491+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'eea43846-d27c-4168-95e3-a2fa543468d0',
+      'Gabe Malone',
+      15,
+      true,
+      true,
+      'B',
+      '1',
+      '2025-10-09T00:00:00+00:00',
+      'EMT',
+      true,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:04.859274+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '4bd65ff8-1601-4f9e-aeae-6ca5d38ecb94',
+      'Jake Walker',
+      15,
+      true,
+      true,
+      'C',
+      '8',
+      '2025-10-12T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:29.308366+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '5d99f418-1774-404a-9ce3-e55aad26556d',
+      'Austin Cucciardo',
+      15,
+      true,
+      true,
+      'A',
+      '4',
+      '2025-09-14T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:55.245328+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'c611a48b-7cbf-4e4c-a7a9-aff8504a8f99',
+      'Tim Mawyer',
+      16,
+      true,
+      true,
+      'B',
+      '3',
+      '2025-10-14T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:05.004314+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'dc1cbc38-3c79-4f51-89a7-8677a0f7ad9f',
+      'John Smith',
+      16,
+      true,
+      false,
+      'A',
+      '7',
+      '2025-10-21T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:55.335786+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '7d554305-53f3-4718-bdac-2f66a6cfabad',
+      'Lisa Wilbanks',
+      16,
+      true,
+      true,
+      'C',
+      '4',
+      '2025-10-12T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:29.46717+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '48f7edf1-faf1-47d0-b4a1-ee6e479d20c3',
+      'Nick Bailey',
+      17,
+      true,
+      true,
+      'C',
+      '10',
+      '2025-10-19T00:00:00+00:00',
+      'Paramedic',
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:29.62777+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'd7402e28-a020-4e5a-9870-5d28f41ee3ae',
+      'Michael Good',
+      17,
+      true,
+      true,
+      'B',
+      '8',
+      '2025-10-18T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:05.159681+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '6d54eb9a-5805-474f-b87c-bab885842831',
+      'Josh Muller',
+      17,
+      true,
+      true,
+      'A',
+      '5',
+      '2025-10-22T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.571086+00:00',
+      '2025-10-23T03:38:55.428933+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '58961078-5b49-4514-bcb8-a7545bbc49ac',
+      'Sierra Rollins',
+      18,
+      true,
+      true,
+      'B',
+      '6',
+      '2025-10-18T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T12:42:05.308243+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '609b1cf9-6cd6-4b73-9fc0-8f9138b9f9fa',
+      'Duane Burleigh',
+      18,
+      true,
+      true,
+      'C',
+      '1',
+      NULL,
+      'EMT',
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-27T12:25:58.438982+00:00',
+      '2025-10-28T19:41:29.776648+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '3cab06ee-ece3-4feb-aebe-c378f0bd3c2d',
+      'FF 1',
+      19,
+      true,
+      false,
+      'C',
+      '7',
+      '2025-10-23T00:00:00+00:00',
+      'EMT-A',
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T11:44:36.862067+00:00',
+      '2025-10-28T19:41:17.340425+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      '25e2dae1-d693-4896-9aab-33b4d310775e',
+      'George Lewis',
+      19,
+      true,
+      true,
+      'C',
+      '3',
+      '2025-10-28T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.986642+00:00',
+      '2025-10-28T19:41:29.931545+00:00'
+    );
+INSERT INTO firefighters (
+      id, name, order_position, is_available, is_active, shift, fire_station,
+      last_hold_date, certification_level,
+      apparatus_ambulance, apparatus_brush_truck, apparatus_engine, apparatus_tanker,
+      apparatus_truck, apparatus_boat, apparatus_utv, apparatus_rescue_squad,
+      is_fto, is_bls, is_als, hours_worked_this_period, last_hours_reset_date,
+      created_at, updated_at
+    ) VALUES (
+      'affc3726-65c8-46e9-86cb-95bca3c5a565',
+      'Matt Geurkink',
+      20,
+      true,
+      false,
+      'B',
+      NULL,
+      '2025-10-20T00:00:00+00:00',
+      'EMT',
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      0,
+      NULL,
+      '2025-10-22T06:27:08.824451+00:00',
+      '2025-10-22T06:27:08.824451+00:00'
+    );
+
+-- Insert scheduled holds
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c1500418-2a18-4a29-a62d-9f08bf28710f',
+      '25e2dae1-d693-4896-9aab-33b4d310775e',
+      'George Lewis',
+      '2025-10-28',
+      'completed'::hold_status,
+      'C',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-28T03:02:33.39252+00:00',
+      '2025-10-28T03:03:04.855207+00:00',
+      '2025-10-28T03:03:04.255+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '0974f47b-ca9d-47a9-b4c1-e52d7a161660',
+      'e4761d07-2c5f-477f-82d0-d9d91717dfad',
+      'Stephen Wilocks',
+      '2025-10-26',
+      'scheduled'::hold_status,
+      'C',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-28T03:01:31.404036+00:00',
+      '2025-10-28T04:51:51.000955+00:00',
+      NULL
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '54dde98c-ccc7-4f74-9e58-583eb57b59f7',
+      '6d54eb9a-5805-474f-b87c-bab885842831',
+      'Josh Muller',
+      '2025-10-22',
+      'completed'::hold_status,
+      'A',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-23T02:07:41.478643+00:00',
+      '2025-10-28T21:47:17.615173+00:00',
+      '2025-10-23T03:38:51.964+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '4e7a953c-af6d-4dcc-a48c-ea8ee3d8627e',
+      '48f7edf1-faf1-47d0-b4a1-ee6e479d20c3',
+      'Nick Bailey',
+      '2025-10-19',
+      'completed'::hold_status,
+      'C',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:15.126656+00:00',
+      '2025-10-22T08:11:15.126656+00:00',
+      '2025-10-19T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c77f0aea-ab85-4c1a-8d8a-4720b3966bf6',
+      '58961078-5b49-4514-bcb8-a7545bbc49ac',
+      'Sierra Rollins',
+      '2025-10-18',
+      'completed'::hold_status,
+      'B',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:49.076283+00:00',
+      '2025-10-22T10:48:49.076283+00:00',
+      '2025-10-18T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '695a2a86-b304-43b4-83f0-6775f36a4ac6',
+      'd7402e28-a020-4e5a-9870-5d28f41ee3ae',
+      'Michael Good',
+      '2025-10-18',
+      'completed'::hold_status,
+      'B',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:48.882974+00:00',
+      '2025-10-22T10:48:48.882974+00:00',
+      '2025-10-18T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'b6918dce-2dbd-4e2a-99db-ad515702a6e3',
+      '57dafb33-d2bb-468e-8670-abf1634ccafb',
+      'Ryan Fisher',
+      '2025-10-15',
+      'completed'::hold_status,
+      'A',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.615991+00:00',
+      '2025-10-22T08:11:12.615991+00:00',
+      '2025-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '9ea1118d-9925-407a-b2e4-00f0d1717246',
+      'a76790a6-168d-4e99-bc52-bc54de35bf86',
+      'Eddie Hammack',
+      '2025-10-15',
+      'completed'::hold_status,
+      'A',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.473481+00:00',
+      '2025-10-22T08:11:12.473481+00:00',
+      '2025-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'ee49a8c3-fdd4-49d6-89e6-03c722e3d001',
+      '7a4d063a-a0ea-428d-9835-71e1936ee130',
+      'Chris Pangle',
+      '2025-10-15',
+      'completed'::hold_status,
+      'A',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.339626+00:00',
+      '2025-10-27T16:36:57.530911+00:00',
+      '2025-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'be715929-a2ca-43db-bcfe-0475422ca771',
+      '295e1784-3ffb-44a8-a6cc-56cb80a99f1f',
+      'Chad Biby',
+      '2025-10-15',
+      'completed'::hold_status,
+      'A',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.196962+00:00',
+      '2025-10-22T08:11:12.196962+00:00',
+      '2025-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '290af96b-26ea-4a42-b8e7-be524866c273',
+      'c611a48b-7cbf-4e4c-a7a9-aff8504a8f99',
+      'Tim Mawyer',
+      '2025-10-14',
+      'completed'::hold_status,
+      'B',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:48.728527+00:00',
+      '2025-10-22T10:48:48.728527+00:00',
+      '2025-10-14T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c13ac591-0562-433a-85ed-417aee7d3ef6',
+      '7d554305-53f3-4718-bdac-2f66a6cfabad',
+      'Lisa Wilbanks',
+      '2025-10-12',
+      'completed'::hold_status,
+      'C',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.999145+00:00',
+      '2025-10-22T08:11:14.999145+00:00',
+      '2025-10-12T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'b9297d06-fe10-46be-95cf-092e0a85a6b9',
+      '4bd65ff8-1601-4f9e-aeae-6ca5d38ecb94',
+      'Jake Walker',
+      '2025-10-12',
+      'completed'::hold_status,
+      'C',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.856624+00:00',
+      '2025-10-22T08:11:14.856624+00:00',
+      '2025-10-12T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'e3712807-6d83-461d-a604-8ed6837011de',
+      'cb659f81-4b27-4770-a32c-c328719d6d45',
+      'Andrew Levdahl',
+      '2025-10-11',
+      'completed'::hold_status,
+      'A',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.063979+00:00',
+      '2025-10-22T08:11:12.063979+00:00',
+      '2025-10-11T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '1b539444-a93c-48b8-bf20-e3e8245bb4bb',
+      '0f1f22b0-792f-4394-9308-046517f5f6f2',
+      'Madison Whitfield',
+      '2025-10-10',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.724+00:00',
+      '2025-10-22T08:11:14.724+00:00',
+      '2025-10-10T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '75d4e6c1-7cc2-4e9e-b424-a00024f64cb0',
+      '80016522-1312-4239-9412-5026d403a5fd',
+      'Logan Stewart',
+      '2025-10-10',
+      'completed'::hold_status,
+      'C',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.592428+00:00',
+      '2025-10-22T08:11:14.592428+00:00',
+      '2025-10-10T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '260157ba-5382-47f3-9565-2dd3c852b513',
+      '65454ba6-2995-47f8-92f2-bbf5e94ea2ae',
+      'Jesse Smith',
+      '2025-10-10',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.460331+00:00',
+      '2025-10-22T08:11:14.460331+00:00',
+      '2025-10-10T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '1167ce54-a6bc-4fef-bb0e-cbabc20185dd',
+      'eea43846-d27c-4168-95e3-a2fa543468d0',
+      'Gabe Malone',
+      '2025-10-09',
+      'completed'::hold_status,
+      'B',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:48.536326+00:00',
+      '2025-10-22T10:48:48.536326+00:00',
+      '2025-10-09T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'e0e20aae-523d-47b5-87a3-0ed6b9d6af37',
+      'e049dc7a-b24e-493b-b360-6f7bfd3cb4d2',
+      'Jaden Tipeni',
+      '2025-10-09',
+      'completed'::hold_status,
+      'C',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.323515+00:00',
+      '2025-10-22T08:11:14.323515+00:00',
+      '2025-10-09T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '310033bb-13e1-43fd-a302-1ab045a594e5',
+      '8320d1f2-b938-47eb-ba1c-6f48feed96ee',
+      'Joey Jock',
+      '2025-10-08',
+      'completed'::hold_status,
+      'C',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.190096+00:00',
+      '2025-10-22T08:11:14.190096+00:00',
+      '2025-10-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '35ded85c-f900-4db4-b2db-47a1eeaca2b8',
+      '1082f100-8583-493b-aa7b-a55db82c7587',
+      'Brandon Oliver',
+      '2025-10-08',
+      'completed'::hold_status,
+      'A',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.935539+00:00',
+      '2025-10-22T08:11:11.935539+00:00',
+      '2025-10-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '6455fecb-96d5-4dcc-b322-f057d0144b8a',
+      'f8ce1844-022f-4c7b-a856-92e52327149a',
+      'Noah Myers',
+      '2025-10-08',
+      'completed'::hold_status,
+      'A',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.749581+00:00',
+      '2025-10-22T08:11:11.749581+00:00',
+      '2025-10-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '355a8a24-9638-4373-8b60-f8d0c153a64f',
+      '7df1dcd2-2393-4944-8f72-c28b4514afd9',
+      'Michael Foster',
+      '2025-10-07',
+      'completed'::hold_status,
+      'B',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:48.389685+00:00',
+      '2025-10-22T10:48:48.389685+00:00',
+      '2025-10-07T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'a6b53cce-9b7d-4b8e-9512-840e250bc05f',
+      '48754aaf-f139-4002-a44a-ac9c47ee3a32',
+      'Jared Lewis',
+      '2025-10-07',
+      'completed'::hold_status,
+      'B',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:48.230075+00:00',
+      '2025-10-22T10:48:48.230075+00:00',
+      '2025-10-07T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '27e8db71-bb86-4fab-a873-6b3fcca84e51',
+      '10156b50-e327-446f-9f8a-55fee58d1a26',
+      'Kiersten Kennedy',
+      '2025-10-06',
+      'completed'::hold_status,
+      'A',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.605182+00:00',
+      '2025-10-22T08:11:11.605182+00:00',
+      '2025-10-06T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'd6aa5c3d-de08-420a-b5cb-563189deea56',
+      '91b33991-8daf-4372-a400-33ff0aba5424',
+      'Andrew Feldhauser',
+      '2025-10-06',
+      'completed'::hold_status,
+      'A',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.462041+00:00',
+      '2025-10-22T08:11:11.462041+00:00',
+      '2025-10-06T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'b5c91b15-32fe-4862-8ad9-b15c4ee38b2e',
+      '69ec54e2-c19d-455e-9084-619eb9be70fd',
+      'Madison Udy',
+      '2025-10-05',
+      'completed'::hold_status,
+      'C',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:14.065277+00:00',
+      '2025-10-22T08:11:14.065277+00:00',
+      '2025-10-05T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '2717f59e-4df4-4a1b-84a2-658ea4ce03f9',
+      'be61f00f-8ffa-45ba-aa66-8e127b5cc1b7',
+      'Josh Bryson',
+      '2025-10-04',
+      'completed'::hold_status,
+      'A',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.323506+00:00',
+      '2025-10-22T08:11:11.323506+00:00',
+      '2025-10-04T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '009c20d6-8530-4536-86b4-d38294054f83',
+      'f0c938fb-5288-4eae-86e8-4dd73bd74555',
+      'Cory McCauley',
+      '2025-10-04',
+      'completed'::hold_status,
+      'A',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.178773+00:00',
+      '2025-10-22T08:11:11.178773+00:00',
+      '2025-10-04T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '4b7ac723-9b23-4761-a4e6-55be98bb9720',
+      '9ae4e49f-17d1-4486-a0c2-7c16d6967409',
+      'Anisa Khan',
+      '2025-10-03',
+      'completed'::hold_status,
+      'C',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.925268+00:00',
+      '2025-10-22T08:11:13.925268+00:00',
+      '2025-10-03T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'bbe5ff5c-c3bc-442d-948d-cb130ed08266',
+      '08aefc32-5d16-4d99-8492-993737fde9ba',
+      'Cayden Baker',
+      '2025-10-02',
+      'completed'::hold_status,
+      'B',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:48.060556+00:00',
+      '2025-10-22T10:48:48.060556+00:00',
+      '2025-10-02T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'f9f2c40b-7f35-4df9-bb8f-3cb66a91d722',
+      '8803253d-6326-4626-8279-bc8580346872',
+      'David Birks',
+      '2025-10-01',
+      'completed'::hold_status,
+      'C',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.773143+00:00',
+      '2025-10-22T08:11:13.773143+00:00',
+      '2025-10-01T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'd1c4f352-60aa-48c5-8c30-e10ba78970c0',
+      '1963b30f-6461-4cd6-9aa5-f14a293ea9ee',
+      'David Settle',
+      '2025-10-01',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.644172+00:00',
+      '2025-10-22T08:11:13.644172+00:00',
+      '2025-10-01T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '6458ecd9-92b6-4eac-b56d-e407f941d6a8',
+      'ff71a94b-0936-4fb9-a42d-b6ea8b987247',
+      'Cassie Unger',
+      '2025-09-30',
+      'completed'::hold_status,
+      'B',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:47.923806+00:00',
+      '2025-10-22T10:48:47.923806+00:00',
+      '2025-09-30T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '5bc97c7b-9d6b-4600-9a60-f80040920b4f',
+      '3e4daf2c-96b2-49e1-8a62-b24bc3d5c3bb',
+      'Scott Richardson',
+      '2025-09-29',
+      'completed'::hold_status,
+      'A',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:11.042012+00:00',
+      '2025-10-22T08:11:11.042012+00:00',
+      '2025-09-29T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '97d5feb3-33b6-443c-822c-73a4bcc0ca85',
+      '37c62027-8898-4c5e-a33f-e25b4d3d4046',
+      'Catlett',
+      '2025-09-27',
+      'completed'::hold_status,
+      'A',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:13:52.171824+00:00',
+      '2025-10-22T08:13:52.171824+00:00',
+      '2025-09-27T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '620af477-2e12-43d4-8608-fd59177b4d24',
+      '62cc1d22-4feb-4774-bccf-a898be39bdca',
+      'Ryan Baldwin',
+      '2025-09-27',
+      'completed'::hold_status,
+      'A',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:10.905257+00:00',
+      '2025-10-22T08:11:10.905257+00:00',
+      '2025-09-27T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '826dde71-c506-4510-99d3-3ef7b88273e1',
+      '4d09a03f-8104-42b3-8902-1f8de32b449c',
+      'Jeff Gray',
+      '2025-09-26',
+      'completed'::hold_status,
+      'C',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.509484+00:00',
+      '2025-10-22T08:11:13.509484+00:00',
+      '2025-09-26T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '697113f0-d46e-49ab-8dad-9bfd0b6a1ec3',
+      '75556027-6b91-403d-b1f7-cbb10ee57175',
+      'Angel Hernandez',
+      '2025-09-25',
+      'completed'::hold_status,
+      'A',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:10.615992+00:00',
+      '2025-10-22T08:11:10.615992+00:00',
+      '2025-09-25T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'a5174347-133b-4a70-b311-49e3f447f56d',
+      'a40ce12a-9365-4137-aaeb-0e394ad976c3',
+      'Bernie Gottholm',
+      '2025-09-15',
+      'completed'::hold_status,
+      'C',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.376836+00:00',
+      '2025-10-22T08:11:13.376836+00:00',
+      '2025-09-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '82452c28-0444-4d37-beeb-96e91cacf4fb',
+      '5d99f418-1774-404a-9ce3-e55aad26556d',
+      'Austin Cucciardo',
+      '2025-09-14',
+      'completed'::hold_status,
+      'A',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.754789+00:00',
+      '2025-10-22T08:11:12.754789+00:00',
+      '2025-09-14T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'e74f9617-97b3-4bfc-901a-b50a93824011',
+      'b97644dd-558b-4c56-b621-f51439695db6',
+      'Tony Maiatico',
+      '2025-09-13',
+      'completed'::hold_status,
+      'C',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.232464+00:00',
+      '2025-10-22T08:11:13.232464+00:00',
+      '2025-09-13T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '662a1d5a-831e-4f62-983a-6ccb6b932985',
+      'a635d61c-41a4-4ccd-b230-14c998a1f1c1',
+      'Dale Orebaugh',
+      '2025-09-13',
+      'completed'::hold_status,
+      'C',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:13.088802+00:00',
+      '2025-10-22T08:11:13.088802+00:00',
+      '2025-09-13T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '6df913ee-311c-4411-b850-7d0af38bc115',
+      '866af52e-5ebe-4fc8-b355-51bbf2e5b841',
+      'Camden Whitacre',
+      '2025-09-12',
+      'completed'::hold_status,
+      'B',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:47.745863+00:00',
+      '2025-10-22T10:48:47.745863+00:00',
+      '2025-09-12T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '04103d6c-c338-42c8-aee6-52fa6f8b48c1',
+      'e4761d07-2c5f-477f-82d0-d9d91717dfad',
+      'Stephen Wilocks',
+      '2025-09-08',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:13:52.406573+00:00',
+      '2025-10-22T08:13:52.406573+00:00',
+      '2025-09-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'fea6b507-906d-40dd-8401-77acb95758da',
+      '25e2dae1-d693-4896-9aab-33b4d310775e',
+      'George Lewis',
+      '2025-09-06',
+      'completed'::hold_status,
+      'C',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:11:12.887612+00:00',
+      '2025-10-22T08:11:12.887612+00:00',
+      '2025-09-06T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '2e42adec-23c4-4098-9a34-d943a8a6db9a',
+      '0487cb18-26d8-42c0-92c3-94bafac1b346',
+      'Joe Gallivan',
+      '2025-08-30',
+      'completed'::hold_status,
+      'B',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:47.503743+00:00',
+      '2025-10-22T10:48:47.503743+00:00',
+      '2025-08-30T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '1903af22-5690-4961-a103-14d2cb338cd8',
+      '53e36b7e-b961-4ab2-b7fc-b6d1f7d734d3',
+      'Bradley Kresge',
+      '2025-08-30',
+      'completed'::hold_status,
+      'B',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:47.321609+00:00',
+      '2025-10-22T10:48:47.321609+00:00',
+      '2025-08-30T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'ed9d066a-fe6b-47ba-88a2-1678ffcc1619',
+      '9c4c3c92-2b68-49cb-af39-091d27bbb519',
+      'Aaron Miller',
+      '2025-08-23',
+      'completed'::hold_status,
+      'B',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:47.140145+00:00',
+      '2025-10-22T10:48:47.140145+00:00',
+      '2025-08-23T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'cb88d4b3-f54f-47f4-b480-8979a1df73bc',
+      'd45446ed-4244-431c-8c9d-bf8d2e184b45',
+      'Andy Volz',
+      '2025-08-18',
+      'completed'::hold_status,
+      'B',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:46.899585+00:00',
+      '2025-10-22T10:48:46.899585+00:00',
+      '2025-08-18T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '01b9dda9-28b8-4e57-89f8-d9aada40b42d',
+      'a3d02ce0-944f-4e3a-aaea-3619a5d70a13',
+      'Dylan Garrett',
+      '2025-07-28',
+      'completed'::hold_status,
+      'B',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:46.641444+00:00',
+      '2025-10-22T10:48:46.641444+00:00',
+      '2025-07-28T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c86db943-85d4-4e06-a865-cf568659f73a',
+      '5f462678-8c53-40e9-91c9-89a023a2648e',
+      'Collin Cole',
+      '2025-07-22',
+      'completed'::hold_status,
+      'B',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:46.426875+00:00',
+      '2025-10-22T10:48:46.426875+00:00',
+      '2025-07-22T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '6bc4ba87-48ae-4484-9b10-06424402128e',
+      'dabaceeb-d1d9-49ad-801b-e926244a2d3d',
+      'Chris Ramey',
+      '2025-07-18',
+      'completed'::hold_status,
+      'B',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:46.189347+00:00',
+      '2025-10-22T10:48:46.189347+00:00',
+      '2025-07-18T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '19abf5a2-e980-450a-9462-cd860c04261f',
+      '66d2a23d-df73-4313-a754-9580adf87510',
+      'Dominic Cox',
+      '2025-07-18',
+      'completed'::hold_status,
+      'B',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T10:48:45.810265+00:00',
+      '2025-10-22T10:48:45.810265+00:00',
+      '2025-07-18T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '551d9a2c-91b9-486a-882a-c727e210c0f5',
+      '57dafb33-d2bb-468e-8670-abf1634ccafb',
+      'Ryan Fisher',
+      '2024-10-15',
+      'completed'::hold_status,
+      'A',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:25.611957+00:00',
+      '2025-10-22T08:06:25.611957+00:00',
+      '2024-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '8d7d0128-04d8-463b-b3c1-3575b38fa94f',
+      'a76790a6-168d-4e99-bc52-bc54de35bf86',
+      'Eddie Hammack',
+      '2024-10-15',
+      'completed'::hold_status,
+      'A',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:25.455774+00:00',
+      '2025-10-22T08:06:25.455774+00:00',
+      '2024-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'f109068f-7f3f-4865-99e5-ed4ad2d491ac',
+      '7a4d063a-a0ea-428d-9835-71e1936ee130',
+      'Chris Pangle',
+      '2024-10-15',
+      'completed'::hold_status,
+      'A',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:25.274816+00:00',
+      '2025-10-22T08:06:25.274816+00:00',
+      '2024-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '7a2c3ff8-7584-4f6c-b54e-60541bc0f653',
+      '295e1784-3ffb-44a8-a6cc-56cb80a99f1f',
+      'Chad Biby',
+      '2024-10-15',
+      'completed'::hold_status,
+      'A',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:25.13129+00:00',
+      '2025-10-22T08:06:25.13129+00:00',
+      '2024-10-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'bf7ea560-dc0b-4262-a795-dfa32609774e',
+      '7d554305-53f3-4718-bdac-2f66a6cfabad',
+      'Lisa Wilbanks',
+      '2024-10-12',
+      'completed'::hold_status,
+      'C',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:28.363058+00:00',
+      '2025-10-22T08:06:28.363058+00:00',
+      '2024-10-12T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '0b4cd393-5c96-4e71-90c0-386abaf5d972',
+      '4bd65ff8-1601-4f9e-aeae-6ca5d38ecb94',
+      'Jake Walker',
+      '2024-10-12',
+      'completed'::hold_status,
+      'C',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:28.211874+00:00',
+      '2025-10-22T08:06:28.211874+00:00',
+      '2024-10-12T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '9d2f94c4-33e8-479f-9f3b-d16cfb2d509c',
+      'cb659f81-4b27-4770-a32c-c328719d6d45',
+      'Andrew Levdahl',
+      '2024-10-11',
+      'completed'::hold_status,
+      'A',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.987415+00:00',
+      '2025-10-22T08:06:24.987415+00:00',
+      '2024-10-11T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '38a92ad4-e4db-4590-bbd1-205d62326c72',
+      '0f1f22b0-792f-4394-9308-046517f5f6f2',
+      'Madison Whitfield',
+      '2024-10-10',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:28.060527+00:00',
+      '2025-10-22T08:06:28.060527+00:00',
+      '2024-10-10T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'a60a97f7-d764-4ec6-80f6-e1497ecd5660',
+      '80016522-1312-4239-9412-5026d403a5fd',
+      'Logan Stewart',
+      '2024-10-10',
+      'completed'::hold_status,
+      'C',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:27.91265+00:00',
+      '2025-10-22T08:06:27.91265+00:00',
+      '2024-10-10T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '2aaff370-8796-440c-b8c4-c1dff3c4c61e',
+      '65454ba6-2995-47f8-92f2-bbf5e94ea2ae',
+      'Jesse Smith',
+      '2024-10-10',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:27.68363+00:00',
+      '2025-10-22T08:06:27.68363+00:00',
+      '2024-10-10T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '10e140ab-c465-46bf-9961-608bc004fe65',
+      'e049dc7a-b24e-493b-b360-6f7bfd3cb4d2',
+      'Jaden Tipeni',
+      '2024-10-09',
+      'completed'::hold_status,
+      'C',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:27.529738+00:00',
+      '2025-10-22T08:06:27.529738+00:00',
+      '2024-10-09T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '4a5affed-45d1-474a-9a85-99ca90316b10',
+      '8320d1f2-b938-47eb-ba1c-6f48feed96ee',
+      'Joey Jock',
+      '2024-10-08',
+      'completed'::hold_status,
+      'C',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:27.282562+00:00',
+      '2025-10-22T08:06:27.282562+00:00',
+      '2024-10-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'e1363bdd-bff0-47ce-801a-ca04da913b58',
+      '1082f100-8583-493b-aa7b-a55db82c7587',
+      'Brandon Oliver',
+      '2024-10-08',
+      'completed'::hold_status,
+      'A',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.839287+00:00',
+      '2025-10-22T08:06:24.839287+00:00',
+      '2024-10-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '1913dc15-07aa-492d-b86f-f32e853c5381',
+      'f8ce1844-022f-4c7b-a856-92e52327149a',
+      'Noah Myers',
+      '2024-10-08',
+      'completed'::hold_status,
+      'A',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.693391+00:00',
+      '2025-10-22T08:06:24.693391+00:00',
+      '2024-10-08T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '315ecbac-75ca-4755-9155-afa281460305',
+      '10156b50-e327-446f-9f8a-55fee58d1a26',
+      'Kiersten Kennedy',
+      '2024-10-06',
+      'completed'::hold_status,
+      'A',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.540235+00:00',
+      '2025-10-22T08:06:24.540235+00:00',
+      '2024-10-06T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '2b36cf00-c4ba-4507-bbaa-f4c3fb8e6f07',
+      '91b33991-8daf-4372-a400-33ff0aba5424',
+      'Andrew Feldhauser',
+      '2024-10-06',
+      'completed'::hold_status,
+      'A',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.392651+00:00',
+      '2025-10-22T08:06:24.392651+00:00',
+      '2024-10-06T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '6a1ad5f0-744f-4891-ab8b-c53062f4f08f',
+      '69ec54e2-c19d-455e-9084-619eb9be70fd',
+      'Madison Udy',
+      '2024-10-05',
+      'completed'::hold_status,
+      'C',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:27.132714+00:00',
+      '2025-10-22T08:06:27.132714+00:00',
+      '2024-10-05T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'b9feb4cf-0981-4a17-9bbd-78d8eeb22818',
+      'be61f00f-8ffa-45ba-aa66-8e127b5cc1b7',
+      'Josh Bryson',
+      '2024-10-04',
+      'completed'::hold_status,
+      'A',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.251992+00:00',
+      '2025-10-22T08:06:24.251992+00:00',
+      '2024-10-04T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '24f72954-14d0-489a-bda1-443058edc11e',
+      'f0c938fb-5288-4eae-86e8-4dd73bd74555',
+      'Cory McCauley',
+      '2024-10-04',
+      'completed'::hold_status,
+      'A',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:24.114015+00:00',
+      '2025-10-22T08:06:24.114015+00:00',
+      '2024-10-04T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c3980467-7344-44f9-8713-3788c4a80e82',
+      '9ae4e49f-17d1-4486-a0c2-7c16d6967409',
+      'Anisa Khan',
+      '2024-10-03',
+      'completed'::hold_status,
+      'C',
+      '10',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.991446+00:00',
+      '2025-10-22T08:06:26.991446+00:00',
+      '2024-10-03T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'f99657cd-c1df-4f4d-8e03-a7f83a3fd797',
+      '8803253d-6326-4626-8279-bc8580346872',
+      'David Birks',
+      '2024-10-01',
+      'completed'::hold_status,
+      'C',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.849714+00:00',
+      '2025-10-22T08:06:26.849714+00:00',
+      '2024-10-01T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '25316798-6b8f-4a69-9e52-b7eb446b2762',
+      '1963b30f-6461-4cd6-9aa5-f14a293ea9ee',
+      'David Settle',
+      '2024-10-01',
+      'completed'::hold_status,
+      'C',
+      '1',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.710296+00:00',
+      '2025-10-22T08:06:26.710296+00:00',
+      '2024-10-01T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '78cdab9a-ad93-42ee-bf8a-4865a52c505e',
+      '3e4daf2c-96b2-49e1-8a62-b24bc3d5c3bb',
+      'Scott Richardson',
+      '2024-09-29',
+      'completed'::hold_status,
+      'A',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:23.967455+00:00',
+      '2025-10-22T08:06:23.967455+00:00',
+      '2024-09-29T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '401e53e0-9ac3-4ec4-9c20-92b1477c6ec8',
+      '62cc1d22-4feb-4774-bccf-a898be39bdca',
+      'Ryan Baldwin',
+      '2024-09-27',
+      'completed'::hold_status,
+      'A',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:23.82508+00:00',
+      '2025-10-22T08:06:23.82508+00:00',
+      '2024-09-27T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c29931ab-3945-4412-a4fb-95fcbe5b4471',
+      '4d09a03f-8104-42b3-8902-1f8de32b449c',
+      'Jeff Gray',
+      '2024-09-26',
+      'completed'::hold_status,
+      'C',
+      '5',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.543938+00:00',
+      '2025-10-22T08:06:26.543938+00:00',
+      '2024-09-26T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '81f7bc65-c573-4d29-9f6f-d8014bc3a63a',
+      '75556027-6b91-403d-b1f7-cbb10ee57175',
+      'Angel Hernandez',
+      '2024-09-25',
+      'completed'::hold_status,
+      'A',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:23.516302+00:00',
+      '2025-10-22T08:06:23.516302+00:00',
+      '2024-09-25T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '43c91dca-642b-41b1-bcda-589af0727751',
+      'a40ce12a-9365-4137-aaeb-0e394ad976c3',
+      'Bernie Gottholm',
+      '2024-09-15',
+      'completed'::hold_status,
+      'C',
+      '2',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.39164+00:00',
+      '2025-10-22T08:06:26.39164+00:00',
+      '2024-09-15T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'c1b8796c-a8e2-4ca0-9ebb-7e7c556c0d5f',
+      '5d99f418-1774-404a-9ce3-e55aad26556d',
+      'Austin Cucciardo',
+      '2024-09-14',
+      'completed'::hold_status,
+      'A',
+      '4',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:25.756408+00:00',
+      '2025-10-22T08:06:25.756408+00:00',
+      '2024-09-14T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      '1ce5565e-bb21-4863-9269-e5f5f459d97d',
+      'b97644dd-558b-4c56-b621-f51439695db6',
+      'Tony Maiatico',
+      '2024-09-13',
+      'completed'::hold_status,
+      'C',
+      '6',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.245166+00:00',
+      '2025-10-22T08:06:26.245166+00:00',
+      '2024-09-13T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'bae09f71-209d-4435-aec3-70e8002a773e',
+      'a635d61c-41a4-4ccd-b230-14c998a1f1c1',
+      'Dale Orebaugh',
+      '2024-09-13',
+      'completed'::hold_status,
+      'C',
+      '8',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:26.096205+00:00',
+      '2025-10-22T08:06:26.096205+00:00',
+      '2024-09-13T23:59:59+00:00'
+    );
+INSERT INTO scheduled_holds (
+      id, firefighter_id, firefighter_name, hold_date, status, shift,
+      fire_station, lent_to_shift, notes, duration, start_time,
+      created_at, updated_at, completed_at
+    ) VALUES (
+      'd2797760-989c-45f1-887e-214cdccc444b',
+      '25e2dae1-d693-4896-9aab-33b4d310775e',
+      'George Lewis',
+      '2024-09-06',
+      'completed'::hold_status,
+      'C',
+      '3',
+      NULL,
+      NULL,
+      '24h'::hold_duration,
+      '07:00:00'::time,
+      '2025-10-22T08:06:25.88894+00:00',
+      '2025-10-22T08:06:25.88894+00:00',
+      '2024-09-06T23:59:59+00:00'
+    );
+
+-- Restore complete

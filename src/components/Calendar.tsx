@@ -22,6 +22,7 @@ import {
   formatMonthYear,
   formatDateForDB,
   getNextAvailableFirefighter,
+  formatCalendarName,
   ScheduledHold,
   CalendarDay,
 } from "../utils/calendarUtils";
@@ -363,9 +364,9 @@ export function Calendar({
                       {hasHolds ? (
                         <div className="flex-1 flex flex-col gap-0.5 overflow-hidden pl-0">
                           {day.scheduledHolds.slice(0, 2).map((hold) => {
-                            const locked = isHoldLocked(hold);
                             const totalHolds = day.scheduledHolds.length;
-                            const nameLength = hold.firefighter_name.length;
+                            const formattedName = formatCalendarName(hold.firefighter_name);
+                            const nameLength = formattedName.length;
 
                             // Dynamic text sizing based on name length AND number of holds
                             // Prioritize fitting the name over making it large
@@ -395,8 +396,6 @@ export function Calendar({
                               }
                             }
 
-                            const iconSize = totalHolds >= 2 ? 7 : 9;
-
                             return (
                               <div
                                 key={hold.id}
@@ -419,21 +418,15 @@ export function Calendar({
                                   <span className={`${nameSizeClasses} font-semibold leading-tight whitespace-nowrap overflow-hidden block flex-1 text-left`}
                                     style={{ textOverflow: 'clip' }}
                                   >
-                                    {hold.firefighter_name}
+                                    {formattedName}
                                   </span>
 
-                                  {/* Status indicators - minimal, only show if space allows */}
+                                  {/* Status indicators - only show station number */}
                                   <div className="flex items-center gap-0.5 flex-shrink-0">
                                     {hold.fire_station && nameLength <= 14 && (
                                       <span className="text-white/60 text-[7px] lg:text-[9px]">
                                         #{hold.fire_station}
                                       </span>
-                                    )}
-                                    {locked && nameLength <= 16 && (
-                                      <Lock size={iconSize - 1} className="text-amber-300/80" />
-                                    )}
-                                    {hold.status === "completed" && nameLength <= 18 && (
-                                      <span className="text-emerald-300 text-[10px]">✓</span>
                                     )}
                                   </div>
                                 </div>

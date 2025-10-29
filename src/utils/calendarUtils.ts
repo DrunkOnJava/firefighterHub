@@ -211,3 +211,23 @@ export function getInitials(name: string): string {
     .substring(0, 2)
     .toUpperCase();
 }
+
+/**
+ * Formats a full name for display on the calendar.
+ * Returns: "J. LastName" format (first initial with period, space, full last name)
+ * Examples: "John Bryson" -> "J. Bryson", "Sarah Jane Richardson" -> "S. Richardson"
+ */
+export function formatCalendarName(fullName: string): string {
+  const parts = fullName.trim().split(/\s+/);
+
+  if (parts.length === 1) {
+    // Single name, just return it
+    return parts[0];
+  }
+
+  // First initial + period + last part (last name)
+  const firstInitial = parts[0][0].toUpperCase();
+  const lastName = parts[parts.length - 1];
+
+  return `${firstInitial}. ${lastName}`;
+}

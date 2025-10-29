@@ -9,6 +9,7 @@ import {
   autoScheduleNextHolds,
   getNextAvailableFirefighter,
   getInitials,
+  formatCalendarName,
   type ScheduledHold,
 } from './calendarUtils';
 import { createMockFirefighter, mockScheduledHolds } from '../test/mockData';
@@ -429,6 +430,42 @@ describe('calendarUtils', () => {
 
     it('handles empty string', () => {
       expect(getInitials('')).toBe('');
+    });
+  });
+
+  describe('formatCalendarName', () => {
+    it('formats two-word name as "First Initial. LastName"', () => {
+      expect(formatCalendarName('John Bryson')).toBe('J. Bryson');
+      expect(formatCalendarName('Nancy Bailey')).toBe('N. Bailey');
+      expect(formatCalendarName('Sarah Richardson')).toBe('S. Richardson');
+    });
+
+    it('handles three-word names (uses last word as last name)', () => {
+      expect(formatCalendarName('John Michael Smith')).toBe('J. Smith');
+      expect(formatCalendarName('Mary Jane Watson')).toBe('M. Watson');
+    });
+
+    it('handles single-word names (returns as-is)', () => {
+      expect(formatCalendarName('Madonna')).toBe('Madonna');
+      expect(formatCalendarName('Prince')).toBe('Prince');
+    });
+
+    it('capitalizes first initial', () => {
+      expect(formatCalendarName('john doe')).toBe('J. doe');
+      expect(formatCalendarName('alice smith')).toBe('A. smith');
+    });
+
+    it('handles extra whitespace', () => {
+      expect(formatCalendarName('  John   Doe  ')).toBe('J. Doe');
+    });
+
+    it('handles hyphenated last names', () => {
+      expect(formatCalendarName('John Smith-Jones')).toBe('J. Smith-Jones');
+    });
+
+    it('preserves last name capitalization', () => {
+      expect(formatCalendarName('John McDonald')).toBe('J. McDonald');
+      expect(formatCalendarName('Sarah O\'Brien')).toBe('S. O\'Brien');
     });
   });
 });

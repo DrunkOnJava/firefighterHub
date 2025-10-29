@@ -5,19 +5,19 @@ import {
   calculateHoldsPerFirefighter,
   // calculateHoldsByStation, // Removed - not used
   calculateHoldsByShift,
-  calculateHoldsByDuration,
+  // calculateHoldsByDuration, // Removed - per user feedback
   // getFirefighterWithMostHolds, // Removed - metric removed per user feedback
   getStationWithMostHolds,
-  calculateCompletionRate,
-  calculateAverageHoldDuration,
+  // calculateCompletionRate, // Removed - per user feedback
+  // calculateAverageHoldDuration, // Removed - per user feedback
   getHoldsInDateRange,
   // calculateTotalHoursWorked, // Removed - hours worked metric removed per user feedback
 } from '../utils/metricsCalculations';
 import { MetricCard } from './MetricCard';
 import {
   Calendar,
-  CheckCircle,
-  Clock,
+  // CheckCircle, // Removed - Completed Holds metric removed per user feedback
+  // Clock, // Removed - Avg Duration metric removed per user feedback
   Building2,
   Download,
   Filter,
@@ -52,10 +52,14 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
 
   // Calculate metrics
   const metrics = calculateHoldsPerFirefighter(filteredHolds, firefighters);
-  const shiftStats = calculateHoldsByShift(filteredHolds);
-  const durationStats = calculateHoldsByDuration(filteredHolds);
-  const completionRate = calculateCompletionRate(filteredHolds);
-  const avgDuration = calculateAverageHoldDuration(filteredHolds);
+  // Calculate shift stats from ALL holds for comparison (not filtered)
+  const shiftStats = calculateHoldsByShift(holds);
+  // REMOVED: Duration stats per user feedback
+  // const durationStats = calculateHoldsByDuration(filteredHolds);
+  // REMOVED: Completion rate per user feedback (Completed Holds metric removed)
+  // const completionRate = calculateCompletionRate(filteredHolds);
+  // REMOVED: Average duration per user feedback
+  // const avgDuration = calculateAverageHoldDuration(filteredHolds);
   // REMOVED: Top firefighter metric per user feedback
   // const topFirefighter = getFirefighterWithMostHolds(filteredHolds, firefighters);
   const topStation = getStationWithMostHolds(filteredHolds);
@@ -66,21 +70,20 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
   //   filterActive && dateRange.end ? new Date(dateRange.end) : undefined
   // );
 
-  const completedHolds = filteredHolds.filter(h => h.status === 'completed').length;
+  // REMOVED: Completed holds count per user feedback
+  // const completedHolds = filteredHolds.filter(h => h.status === 'completed').length;
 
   // Export to CSV
   const handleExportCSV = () => {
     const headers = [
       'Firefighter',
       'Total Holds',
-      'Completed Holds',
       'Avg Interval (days)',
     ];
 
     const rows = metrics.map(m => [
       m.name,
       m.totalHolds,
-      m.completedHolds,
       m.averageIntervalDays,
     ]);
 
@@ -193,7 +196,7 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
         </div>
 
         {/* Summary Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <MetricCard
             title="Total Holds"
             value={filteredHolds.length}
@@ -202,35 +205,8 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
             isDarkMode={isDarkMode}
             colorClass="blue"
           />
-          <MetricCard
-            title="Completed Holds"
-            value={completedHolds}
-            subtitle={`${completionRate}% completion rate`}
-            icon={CheckCircle}
-            isDarkMode={isDarkMode}
-            colorClass="green"
-          />
-          <MetricCard
-            title="Avg Duration"
-            value={`${avgDuration}h`}
-            subtitle={`${durationStats['24h']} are 24h holds`}
-            icon={Clock}
-            isDarkMode={isDarkMode}
-            colorClass="amber"
-          />
-        </div>
-
-        {/* Additional Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* REMOVED: Top Firefighter metric per user feedback
-          <MetricCard
-            title="Top Firefighter"
-            value={topFirefighter?.name || 'N/A'}
-            subtitle={`${topFirefighter?.count || 0} completed holds`}
-            isDarkMode={isDarkMode}
-            colorClass="blue"
-          />
-          */}
+          {/* REMOVED: Completed Holds metric per user feedback */}
+          {/* REMOVED: Avg Duration metric per user feedback */}
           <MetricCard
             title="Top Station"
             value={topStation?.station || 'N/A'}
@@ -239,13 +215,7 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
             isDarkMode={isDarkMode}
             colorClass="green"
           />
-          <MetricCard
-            title="12h vs 24h Holds"
-            value={`${durationStats['12h']} / ${durationStats['24h']}`}
-            subtitle="12-hour vs 24-hour holds"
-            isDarkMode={isDarkMode}
-            colorClass="amber"
-          />
+          {/* REMOVED: 12h vs 24h Holds metric per user feedback */}
         </div>
 
         {/* Shift Breakdown */}
@@ -298,7 +268,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
                 <tr className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
                   <th className={`p-3 text-left ${textClass}`}>Name</th>
                   <th className={`p-3 text-right ${textClass}`}>Total Holds</th>
-                  <th className={`p-3 text-right ${textClass}`}>Completed</th>
                   <th className={`p-3 text-right ${textClass}`}>Avg Interval (days)</th>
                 </tr>
               </thead>
@@ -318,7 +287,6 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
                   >
                     <td className={`p-3 ${textClass}`}>{m.name}</td>
                     <td className={`p-3 text-right ${textClass}`}>{m.totalHolds}</td>
-                    <td className={`p-3 text-right ${textClass}`}>{m.completedHolds}</td>
                     <td className={`p-3 text-right ${textClass}`}>
                       {m.averageIntervalDays || 'N/A'}
                     </td>

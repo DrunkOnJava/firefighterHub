@@ -163,6 +163,8 @@ describe('Hold Management System', () => {
           fire_station: '1',
           lent_to_shift: null,
           notes: null,
+          duration: '24h',
+          start_time: '07:00',
           created_at: '2025-11-14T00:00:00Z',
           updated_at: '2025-11-14T00:00:00Z',
           completed_at: null,

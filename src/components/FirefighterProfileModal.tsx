@@ -18,6 +18,7 @@ import { Firefighter, supabase, Shift } from "../lib/supabase";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { ShiftBadge } from "./ShiftSelector";
+import { formatHoldDate } from "../utils/dateUtils";
 
 interface HoldRecord {
   id: string;
@@ -329,15 +330,7 @@ export function FirefighterProfileModal({
               </div>
               <p className="text-sm font-semibold text-white">
                 {firefighter.last_hold_date
-                  ? new Date(firefighter.last_hold_date).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                        timeZone: "UTC",
-                      }
-                    )
+                  ? formatHoldDate(firefighter.last_hold_date)
                   : "Never"}
               </p>
             </div>
@@ -561,15 +554,7 @@ export function FirefighterProfileModal({
                       >
                         <div className="flex-1 text-left">
                           <p className="text-sm font-semibold text-white">
-                            {new Date(record.hold_date).toLocaleDateString(
-                              "en-US",
-                              {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                                timeZone: "UTC",
-                              }
-                            )}
+                            {formatHoldDate(record.hold_date)}
                           </p>
                           {record.fire_station && (
                             <p className="text-xs text-gray-400">

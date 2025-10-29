@@ -3,10 +3,10 @@ import { Firefighter } from '../lib/supabase';
 import { ScheduledHold } from '../utils/calendarUtils';
 import {
   calculateHoldsPerFirefighter,
-  calculateHoldsByStation,
+  // calculateHoldsByStation, // Removed - not used
   calculateHoldsByShift,
   calculateHoldsByDuration,
-  getFirefighterWithMostHolds,
+  // getFirefighterWithMostHolds, // Removed - metric removed per user feedback
   getStationWithMostHolds,
   calculateCompletionRate,
   calculateAverageHoldDuration,
@@ -22,15 +22,17 @@ import {
   Building2,
   Download,
   Filter,
+  ArrowLeft,
 } from 'lucide-react';
 
 interface ReportsProps {
   firefighters: Firefighter[];
   holds: ScheduledHold[];
   isDarkMode: boolean;
+  onNavigate?: (view: 'calendar' | 'reports') => void;
 }
 
-export function Reports({ firefighters, holds, isDarkMode }: ReportsProps) {
+export function Reports({ firefighters, holds, isDarkMode, onNavigate }: ReportsProps) {
   const [dateRange, setDateRange] = useState<{
     start: string;
     end: string;
@@ -55,7 +57,8 @@ export function Reports({ firefighters, holds, isDarkMode }: ReportsProps) {
   const durationStats = calculateHoldsByDuration(filteredHolds);
   const completionRate = calculateCompletionRate(filteredHolds);
   const avgDuration = calculateAverageHoldDuration(filteredHolds);
-  const topFirefighter = getFirefighterWithMostHolds(filteredHolds, firefighters);
+  // REMOVED: Top firefighter metric per user feedback
+  // const topFirefighter = getFirefighterWithMostHolds(filteredHolds, firefighters);
   const topStation = getStationWithMostHolds(filteredHolds);
   const totalHoursWorked = calculateTotalHoursWorked(
     filteredHolds,
@@ -121,13 +124,25 @@ export function Reports({ firefighters, holds, isDarkMode }: ReportsProps) {
               Comprehensive analytics for hold management
             </p>
           </div>
-          <button
-            onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus-ring"
-          >
-            <Download size={18} />
-            Export CSV
-          </button>
+          <div className="flex items-center gap-3">
+            {onNavigate && (
+              <button
+                onClick={() => onNavigate('calendar')}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors focus-ring"
+                title="Return to Calendar"
+              >
+                <ArrowLeft size={18} />
+                <span className="hidden sm:inline">Back</span>
+              </button>
+            )}
+            <button
+              onClick={handleExportCSV}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus-ring"
+            >
+              <Download size={18} />
+              <span className="hidden sm:inline">Export</span>
+            </button>
+          </div>
         </div>
 
         {/* Date Range Filter */}
@@ -216,7 +231,8 @@ export function Reports({ firefighters, holds, isDarkMode }: ReportsProps) {
         </div>
 
         {/* Additional Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* REMOVED: Top Firefighter metric per user feedback
           <MetricCard
             title="Top Firefighter"
             value={topFirefighter?.name || 'N/A'}
@@ -224,6 +240,7 @@ export function Reports({ firefighters, holds, isDarkMode }: ReportsProps) {
             isDarkMode={isDarkMode}
             colorClass="blue"
           />
+          */}
           <MetricCard
             title="Top Station"
             value={topStation?.station || 'N/A'}
@@ -246,25 +263,37 @@ export function Reports({ firefighters, holds, isDarkMode }: ReportsProps) {
           <h2 className={`text-xl font-semibold ${textClass} mb-4`}>
             Holds by Shift
           </h2>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center">
-              <div className={`text-3xl font-bold ${textClass}`}>
-                {shiftStats.A}
-              </div>
-              <div className={secondaryTextClass}>Shift A</div>
-            </div>
-            <div className="text-center">
-              <div className={`text-3xl font-bold ${textClass}`}>
-                {shiftStats.B}
-              </div>
-              <div className={secondaryTextClass}>Shift B</div>
-            </div>
-            <div className="text-center">
-              <div className={`text-3xl font-bold ${textClass}`}>
-                {shiftStats.C}
-              </div>
-              <div className={secondaryTextClass}>Shift C</div>
-            </div>
+          <div className="space-y-4">
+            {(['A', 'B', 'C'] as const).map(shift => {
+              const count = shiftStats[shift];
+              const total = shiftStats.A + shiftStats.B + shiftStats.C;
+              const percentage = total > 0 ? (count / total) * 100 : 0;
+
+              return (
+                <div key={shift} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className={`text-lg font-semibold ${textClass}`}>
+                      Shift {shift}
+                    </span>
+                    <span className={`text-2xl font-bold ${textClass}`}>
+                      {count}
+                    </span>
+                  </div>
+                  <div className={`w-full ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'} rounded-full h-6 overflow-hidden`}>
+                    <div
+                      className="bg-blue-600 h-6 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+                      style={{ width: `${percentage}%` }}
+                    >
+                      {percentage > 15 && (
+                        <span className="text-xs font-semibold text-white">
+                          {percentage.toFixed(0)}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

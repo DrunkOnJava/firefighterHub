@@ -305,6 +305,7 @@ function App() {
                       isDarkMode={isDarkMode}
                       currentShift={currentShift}
                       onNavigate={setCurrentView}
+                      isAdminMode={isAdminMode}
                     />
                   </ErrorBoundary>
                 </aside>
@@ -339,6 +340,7 @@ function App() {
                 firefighters={firefighters}
                 holds={scheduledHolds}
                 isDarkMode={isDarkMode}
+                onNavigate={setCurrentView}
               />
             </ErrorBoundary>
           )}

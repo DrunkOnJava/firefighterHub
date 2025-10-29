@@ -237,19 +237,24 @@ export function validate72HourRule(
   const holdHours = holdDuration === '12h' ? 12 : 24;
   const totalHours = hoursWorked + holdHours;
 
-  // Check if already over 72 hours
+  // NOTE: Changed from blocking to warning-only per user feedback
+  // User stated: "There is no way to accurately calculate that without manually
+  // checking through the scheduling program"
+  // Hours tracking is informational only and should not block scheduling
+
+  // Warning if already over 72 hours (was blocking before)
   if (hoursWorked > 72) {
     return {
-      valid: false,
-      error: `${firefighter.name} has already worked ${hoursWorked} hours this period (exceeds 72-hour limit). They must be skipped and remain at position #0.`
+      valid: true,  // ✅ Changed from false to true - allow scheduling
+      warning: `⚠️ ${firefighter.name} has already worked ${hoursWorked} hours this period (exceeds 72-hour limit). Manual verification recommended.`
     };
   }
 
-  // Check if hold would cause them to exceed 72 hours
+  // Warning if hold would cause them to exceed 72 hours (was blocking before)
   if (totalHours > 72) {
     return {
-      valid: false,
-      error: `${firefighter.name} has worked ${hoursWorked} hours. Adding this ${holdDuration} hold would total ${totalHours} hours (exceeds 72-hour limit). They must be skipped and remain at position #0.`
+      valid: true,  // ✅ Changed from false to true - allow scheduling
+      warning: `⚠️ ${firefighter.name} has worked ${hoursWorked} hours. Adding this ${holdDuration} hold would total ${totalHours} hours (exceeds 72-hour limit). Manual verification recommended.`
     };
   }
 

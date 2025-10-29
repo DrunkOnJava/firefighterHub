@@ -5,7 +5,8 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase, Firefighter, Shift, HoldDuration } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { ToastType } from "./useToast";
-import { moveToBottom, recalculatePositions } from "../utils/rotationLogic";
+import { moveToBottom } from "../utils/rotationLogic";
+// recalculatePositions removed - not needed after fixing rotation bug
 import { validate72HourRule } from "../utils/validation";
 
 export function useScheduledHolds(
@@ -314,16 +315,38 @@ export function useScheduledHolds(
       if (fetchError) throw fetchError;
 
       if (allFirefighters) {
-        let updatedFirefighters = moveToBottom(
-          allFirefighters,
-          hold.firefighter_id
-        );
-        updatedFirefighters = updatedFirefighters.map((ff) =>
-          ff.id === hold.firefighter_id
-            ? { ...ff, last_hold_date: hold.hold_date }
-            : ff
-        );
-        updatedFirefighters = recalculatePositions(updatedFirefighters);
+        // ✅ FIX: Properly move firefighter to bottom without re-sorting
+        // Step 1: Separate the completed firefighter from the rest
+        const completedFF = allFirefighters.find(ff => ff.id === hold.firefighter_id);
+        const otherFFs = allFirefighters.filter(ff => ff.id !== hold.firefighter_id && ff.is_available);
+        const unavailableFFs = allFirefighters.filter(ff => ff.id !== hold.firefighter_id && !ff.is_available);
+
+        if (!completedFF) {
+          throw new Error('Firefighter not found');
+        }
+
+        // Step 2: Reassign positions - completed FF goes to the end
+        const updatedCompletedFF = {
+          ...completedFF,
+          last_hold_date: hold.hold_date,
+          order_position: otherFFs.length  // Last position among available
+        };
+
+        // Step 3: Reassign sequential positions to other available firefighters
+        const reorderedOthers = otherFFs.map((ff, index) => ({
+          ...ff,
+          order_position: index
+        }));
+
+        // Step 4: Combine: others first, then completed FF, then unavailable
+        const updatedFirefighters = [
+          ...reorderedOthers,
+          updatedCompletedFF,
+          ...unavailableFFs.map((ff, index) => ({
+            ...ff,
+            order_position: otherFFs.length + 1 + index
+          }))
+        ];
 
         for (const ff of updatedFirefighters) {
           const updates: {
@@ -334,12 +357,21 @@ export function useScheduledHolds(
           } = { order_position: ff.order_position };
 
           if (ff.id === hold.firefighter_id) {
-            updates.last_hold_date = hold.hold_date;
+            // ✅ FIX: Ensure date format is consistent (YYYY-MM-DD only, no time)
+            updates.last_hold_date = hold.hold_date.split('T')[0];
             updates.updated_at = new Date().toISOString();
 
             // Update hours worked based on hold duration
             const holdHours = hold.duration === '12h' ? 12 : 24;
             updates.hours_worked_this_period = (ff.hours_worked_this_period || 0) + holdHours;
+
+            console.log('✅ Updating firefighter after hold completion:', {
+              name: ff.name,
+              holdDate: hold.hold_date,
+              lastHoldDate: updates.last_hold_date,
+              newPosition: updates.order_position,
+              hoursWorked: updates.hours_worked_this_period
+            });
           }
 
           const { error: updateError } = await supabase
@@ -348,7 +380,8 @@ export function useScheduledHolds(
             .eq("id", ff.id);
 
           if (updateError) {
-            console.error("Error updating firefighter:", updateError);
+            console.error("❌ Error updating firefighter:", updateError);
+            throw updateError;  // ✅ FIX: Throw error instead of silently continuing
           }
         }
       }

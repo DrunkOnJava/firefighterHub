@@ -27,8 +27,6 @@ export const mockFirefighters: Firefighter[] = [
     is_fto: true,
     is_bls: true,
     is_als: false,
-    hours_worked_this_period: 0,
-    last_hours_reset_date: null,
     hours_worked_this_period: 24,
     last_hours_reset_date: "2025-10-01T00:00:00Z",
     created_at: "2025-01-01T00:00:00Z",
@@ -55,8 +53,6 @@ export const mockFirefighters: Firefighter[] = [
     is_fto: false,
     is_bls: true,
     is_als: false,
-    hours_worked_this_period: 0,
-    last_hours_reset_date: null,
     hours_worked_this_period: 12,
     last_hours_reset_date: "2025-10-01T00:00:00Z",
     created_at: "2025-01-02T00:00:00Z",
@@ -280,8 +276,6 @@ export const createMockFirefighter = (
   is_fto: false,
   is_bls: false,
   is_als: false,
-    hours_worked_this_period: 0,
-    last_hours_reset_date: null,
   hours_worked_this_period: 0,
   last_hours_reset_date: null,
   created_at: new Date().toISOString(),
@@ -340,6 +334,58 @@ export const mockScheduledHolds = [
     completed_at: "2025-10-20T12:00:00Z",
   },
 ];
+
+// Helper function to create valid mock scheduled holds with all required fields
+export function createMockHold(overrides: Partial<typeof mockScheduledHolds[0]> = {}): typeof mockScheduledHolds[0] {
+  return {
+    id: "test-hold-" + Math.random().toString(36).substr(2, 9),
+    firefighter_id: "ff-test",
+    firefighter_name: "Test Firefighter",
+    hold_date: new Date().toISOString().split('T')[0],
+    status: "scheduled" as const,
+    shift: "A" as Shift,
+    fire_station: "1",
+    lent_to_shift: null,
+    notes: null,
+    duration: "24h" as const,
+    start_time: "07:00",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    completed_at: null,
+    ...overrides,
+  };
+}
+
+// Helper function to create valid mock firefighters with all required fields
+export function createMockFirefighterForTest(overrides: Partial<Firefighter> = {}): Firefighter {
+  return {
+    id: "ff-test-" + Math.random().toString(36).substr(2, 9),
+    name: "Test Firefighter",
+    shift: "A" as Shift,
+    is_active: true,
+    is_available: true,
+    order_position: 0,
+    fire_station: "1",
+    last_hold_date: null,
+    certification_level: null,
+    apparatus_ambulance: false,
+    apparatus_brush_truck: false,
+    apparatus_engine: false,
+    apparatus_tanker: false,
+    apparatus_truck: false,
+    apparatus_boat: false,
+    apparatus_utv: false,
+    apparatus_rescue_squad: false,
+    is_fto: false,
+    is_bls: false,
+    is_als: false,
+    hours_worked_this_period: 0,
+    last_hours_reset_date: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    ...overrides,
+  };
+}
 
 // Mock activity log entries
 export const mockActivityLog = [

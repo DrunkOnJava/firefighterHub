@@ -24,11 +24,11 @@ import {
   Filter,
   UserPlus,
   History,
-  Clock,
-  AlertTriangle,
+  // Clock, AlertTriangle - removed (not used after removing hours worked display)
 } from "lucide-react";
 import { exportRosterToCSV, exportRosterToJSON } from "../utils/exportUtils";
 import { useFilters } from "../hooks/useFilters";
+import { formatHoldDate } from "../utils/dateUtils";
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -51,12 +51,12 @@ export function FirefighterList({
   firefighters,
   deactivatedFirefighters = [],
   onAdd,
-  onCompleteHold,
+  onCompleteHold: _onCompleteHold,  // Unused - kept for backwards compatibility
   onDelete,
   onDeactivate,
   onReactivate,
   onTransferShift,
-  onResetAll,
+  onResetAll: _onResetAll,  // Unused - kept for backwards compatibility
   onReorder,
   isAdminMode = false,
   isDarkMode = true,
@@ -635,6 +635,9 @@ export function FirefighterList({
                     >
                       Last Hold
                     </th>
+                    {/* REMOVED: Hours Worked column per user feedback
+                        User stated: "There is no way to accurately calculate that without
+                        manually checking through the scheduling program"
                     <th
                       className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${
                         isDarkMode
@@ -644,6 +647,7 @@ export function FirefighterList({
                     >
                       Hours Worked
                     </th>
+                    */}
                     {isAdminMode && (
                       <th
                         className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
@@ -854,13 +858,7 @@ export function FirefighterList({
                           <div className="flex items-center gap-2">
                             <span>
                               {firefighter.last_hold_date ? (
-                                new Date(
-                                  firefighter.last_hold_date
-                                ).toLocaleDateString("en-US", {
-                                  month: "short",
-                                  day: "numeric",
-                                  year: "numeric",
-                                })
+                                formatHoldDate(firefighter.last_hold_date)
                               ) : (
                                 <span
                                   className={
@@ -892,6 +890,7 @@ export function FirefighterList({
                             )}
                           </div>
                         </td>
+                        {/* REMOVED: Hours Worked data cell - see header comment above
                         <td className="px-4 py-4 whitespace-nowrap text-center">
                           <div className="flex flex-col items-center gap-1">
                             <div className="flex items-center gap-2">
@@ -908,6 +907,7 @@ export function FirefighterList({
                             )}
                           </div>
                         </td>
+                        */}
                         {isAdminMode && (
                           <td className="px-4 py-4 whitespace-nowrap text-right">
                             <div className="flex items-center justify-end gap-1">

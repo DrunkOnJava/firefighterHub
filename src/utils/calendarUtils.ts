@@ -79,7 +79,7 @@ function createCalendarDay(
 export function attachScheduledHolds(
   days: CalendarDay[],
   holds: ScheduledHold[],
-  firefighters: Firefighter[]
+  _firefighters: Firefighter[]  // Unused after removing synthetic holds (kept for API compatibility)
 ): CalendarDay[] {
   const holdsByDate = new Map<string, ScheduledHold[]>();
 
@@ -93,37 +93,33 @@ export function attachScheduledHolds(
     holdsByDate.get(dateKey)!.push(hold);
   });
 
+  // ✅ REMOVED: Synthetic hold creation from last_hold_date
+  // This was causing duplicate holds to appear in member profiles, especially
+  // for firefighters who transferred shifts. The synthetic holds used the
+  // firefighter's CURRENT shift, not the shift at the time of the hold.
+  //
+  // All actual holds are stored in the scheduled_holds table, so we don't
+  // need to create synthetic holds from the last_hold_date field.
+  //
+  // Bug fix: https://github.com/firefighterhub/issues/duplicate-holds
+
+  /*
   firefighters.forEach((ff) => {
     if (ff.last_hold_date) {
-      const dateKey = ff.last_hold_date.split("T")[0]; // Remove any time component
+      const dateKey = ff.last_hold_date.split("T")[0];
       const existingHolds = holdsByDate.get(dateKey) || [];
       const alreadyExists = existingHolds.some(
         (h) => h.firefighter_id === ff.id
       );
 
       if (!alreadyExists) {
-        const pastHold: ScheduledHold = {
-          id: `past-${ff.id}`,
-          firefighter_id: ff.id,
-          firefighter_name: ff.name,
-          hold_date: ff.last_hold_date,
-          status: "completed",
-          shift: ff.shift,
-          fire_station: ff.fire_station,
-          lent_to_shift: null, // Past holds don't track lent-to shift
-          notes: null,
-          created_at: ff.last_hold_date,
-          updated_at: ff.last_hold_date,
-          completed_at: ff.last_hold_date,
-        };
-
-        if (!holdsByDate.has(dateKey)) {
-          holdsByDate.set(dateKey, []);
-        }
+        // Creates synthetic past hold - REMOVED to fix duplicates
+        const pastHold: ScheduledHold = { ... };
         holdsByDate.get(dateKey)!.push(pastHold);
       }
     }
   });
+  */
 
   // Match calendar days to holds using local date formatting
   return days.map((day) => {

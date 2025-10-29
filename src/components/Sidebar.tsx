@@ -12,6 +12,7 @@ interface SidebarProps {
   isDarkMode?: boolean;
   currentShift: Shift;
   onNavigate?: (view: View) => void;
+  isAdminMode?: boolean;
 }
 
 interface GroupedHold {
@@ -25,6 +26,7 @@ export function Sidebar({
   isDarkMode = true,
   currentShift,
   onNavigate,
+  isAdminMode = false,
 }: SidebarProps) {
   const theme = getSidebarTheme(isDarkMode);
   const [allShiftFirefighters, setAllShiftFirefighters] = useState<
@@ -128,14 +130,16 @@ export function Sidebar({
             <Calendar size={18} />
             <span className="hidden sm:inline">Calendar</span>
           </button>
-          <button
-            onClick={() => onNavigate('reports')}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors focus-ring"
-            title="View Reports"
-          >
-            <BarChart3 size={18} />
-            <span className="hidden sm:inline">Reports</span>
-          </button>
+          {isAdminMode && (
+            <button
+              onClick={() => onNavigate('reports')}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors focus-ring"
+              title="View Reports"
+            >
+              <BarChart3 size={18} />
+              <span className="hidden sm:inline">Reports</span>
+            </button>
+          )}
         </div>
       )}
 

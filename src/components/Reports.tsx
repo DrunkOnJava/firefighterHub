@@ -44,6 +44,8 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
 
   // Fetch ALL holds across all shifts for comparison metrics
   useEffect(() => {
+    let mounted = true;
+
     async function fetchAllHolds() {
       try {
         const today = new Date();
@@ -61,10 +63,20 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
           .lte('hold_date', endStr)
           .order('hold_date');
 
-        if (error) throw error;
-        setAllHolds(data || []);
+        if (error) {
+          console.error('Error fetching all holds:', error);
+          // Fall back to using the holds prop if fetch fails
+          if (mounted) setAllHolds(holds);
+          return;
+        }
+
+        if (mounted) {
+          setAllHolds(data || []);
+        }
       } catch (error) {
         console.error('Error fetching all holds:', error);
+        // Fall back to using the holds prop if fetch fails
+        if (mounted) setAllHolds(holds);
       }
     }
 
@@ -85,12 +97,20 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
           fetchAllHolds();
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === 'CHANNEL_ERROR') {
+          console.error('❌ Reports: Real-time subscription error');
+        } else if (status === 'SUBSCRIBED') {
+          console.log('✅ Reports: Real-time subscription active');
+        }
+      });
 
     return () => {
+      mounted = false;
       supabase.removeChannel(channel);
+      console.log('🛑 Reports: Unsubscribed from real-time updates');
     };
-  }, []);
+  }, [holds]);
 
   // Apply date range filter if active
   const filteredHolds = filterActive && dateRange.start && dateRange.end

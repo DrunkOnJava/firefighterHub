@@ -328,12 +328,12 @@ export function Calendar({
                     className={dayCellClasses}
                   >
                     <div className="flex flex-col h-full">
-                      {/* Modern minimal header - Google Calendar inspired */}
-                      <div className="flex items-center justify-between mb-1">
+                      {/* Compact header for 4-name layout */}
+                      <div className="flex items-center justify-between mb-0.5">
                         <span
                           className={`${
                             hasHolds
-                              ? "text-sm sm:text-base lg:text-lg"
+                              ? "text-xs sm:text-sm lg:text-base"
                               : "text-base sm:text-xl lg:text-2xl"
                           } font-semibold ${
                             hasHolds
@@ -362,8 +362,8 @@ export function Calendar({
                       </div>
 
                       {hasHolds ? (
-                        <div className="flex-1 flex flex-col gap-0.5 overflow-hidden pl-0">
-                          {day.scheduledHolds.slice(0, 2).map((hold) => {
+                        <div className="flex-1 flex flex-col gap-[2px] overflow-hidden pl-0">
+                          {day.scheduledHolds.slice(0, 4).map((hold) => {
                             const formattedName = formatCalendarName(hold.firefighter_name);
 
                             return (
@@ -372,10 +372,10 @@ export function Calendar({
                                 className="group/event relative w-full"
                                 title={`${hold.firefighter_name}${hold.fire_station ? ` - Station #${hold.fire_station}` : ''}${hold.lent_to_shift ? ` → ${hold.lent_to_shift}-Shift` : ''}`}
                               >
-                                {/* Modern event card design - improved spacing and sizing */}
+                                {/* Compact card design for 4 names */}
                                 <div className={`
-                                  flex items-center justify-between gap-1.5
-                                  px-1.5 py-1
+                                  flex items-center justify-between gap-1
+                                  px-1 py-0.5
                                   bg-white/10 hover:bg-white/20
                                   rounded transition-colors
                                   border-l-2 ${
@@ -385,14 +385,14 @@ export function Calendar({
                                   }
                                   w-full
                                 `}>
-                                  {/* Name - improved sizing for readability */}
-                                  <span className="text-[11px] sm:text-xs lg:text-sm font-semibold leading-tight truncate flex-1 text-left">
+                                  {/* Name - compact sizing for 4 lines */}
+                                  <span className="text-[9px] sm:text-[10px] lg:text-xs font-semibold leading-tight truncate flex-1 text-left">
                                     {formattedName}
                                   </span>
 
-                                  {/* Station indicator - improved sizing */}
+                                  {/* Station indicator - compact sizing */}
                                   {hold.fire_station && (
-                                    <span className="text-white/70 text-[10px] sm:text-[11px] lg:text-xs font-medium flex-shrink-0">
+                                    <span className="text-white/70 text-[8px] sm:text-[9px] lg:text-[10px] font-medium flex-shrink-0">
                                       #{hold.fire_station}
                                     </span>
                                   )}
@@ -401,14 +401,14 @@ export function Calendar({
                             );
                           })}
 
-                          {/* Modern "+X more" indicator */}
-                          {day.scheduledHolds.length > 2 && (
+                          {/* Compact "+X more" indicator */}
+                          {day.scheduledHolds.length > 4 && (
                             <button
                               className="
-                                text-[10px] sm:text-[11px] lg:text-xs font-semibold
+                                text-[9px] sm:text-[10px] lg:text-xs font-semibold
                                 text-white/80 hover:text-white
                                 bg-white/5 hover:bg-white/15
-                                rounded px-1.5 py-0.5
+                                rounded px-1 py-0.5
                                 transition-all
                                 text-left
                               "
@@ -417,7 +417,7 @@ export function Calendar({
                                 handleDayClick(day);
                               }}
                             >
-                              +{day.scheduledHolds.length - 2} more
+                              +{day.scheduledHolds.length - 4} more
                             </button>
                           )}
                         </div>

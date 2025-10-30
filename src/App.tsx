@@ -20,6 +20,7 @@ import { Reports } from "./components/Reports";
 import { Sidebar } from "./components/Sidebar";
 import { ToastContainer } from "./components/Toast";
 import { TransferShiftModal } from "./components/TransferShiftModal";
+import { UpdateNotification } from "./components/UpdateNotification";
 import { useAnnounce } from "./hooks/useAnnounce";
 import { useFirefighters } from "./hooks/useFirefighters";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
@@ -426,6 +427,9 @@ function App() {
       <div role="alert" aria-live="polite" aria-atomic="true">
         <ToastContainer toasts={toasts} onClose={hideToast} />
       </div>
+
+      {/* Update notification for new app versions */}
+      <UpdateNotification />
     </div>
   );
 }

@@ -245,7 +245,7 @@ export function Calendar({
         </div>
 
         <div className="p-2 sm:p-4 lg:p-6 max-w-full overflow-x-auto">
-          <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-3 mb-2 sm:mb-3 min-w-0">
+          <div className="grid grid-cols-7 gap-1.5 sm:gap-2 lg:gap-3 mb-2 sm:mb-3 min-w-[350px]">
             {weekDays.map((day) => (
               <div
                 key={day}
@@ -265,7 +265,7 @@ export function Calendar({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-7 gap-1 sm:gap-2 lg:gap-3 min-w-0">
+            <div className="grid grid-cols-7 gap-1.5 sm:gap-2 lg:gap-3 min-w-[350px]">
               {calendarDays.map((day, index) => {
                 const hasHolds = day.scheduledHolds.length > 0;
                 const scheduledHolds = day.scheduledHolds.filter(
@@ -280,7 +280,7 @@ export function Calendar({
 
                 // Determine day cell styling based on state
                 let dayCellClasses =
-                  "aspect-[4/5] sm:aspect-square min-h-[60px] max-h-[100px] sm:max-h-[140px] lg:max-h-[180px] p-1.5 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
+                  "aspect-square min-h-[90px] max-h-[110px] sm:min-h-[120px] sm:max-h-[140px] lg:min-h-[140px] lg:max-h-[160px] xl:min-h-[160px] xl:max-h-[180px] p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
 
                 if (!day.isCurrentMonth) {
                   dayCellClasses += " cursor-default opacity-30";
@@ -333,8 +333,8 @@ export function Calendar({
                         <span
                           className={`${
                             hasHolds
-                              ? "text-[11px] sm:text-base lg:text-lg"
-                              : "text-sm sm:text-lg lg:text-xl"
+                              ? "text-sm sm:text-base lg:text-lg"
+                              : "text-base sm:text-xl lg:text-2xl"
                           } font-semibold ${
                             hasHolds
                               ? theme.dayCells.dayNumberWithHolds
@@ -372,9 +372,10 @@ export function Calendar({
                                 className="group/event relative w-full"
                                 title={`${hold.firefighter_name}${hold.fire_station ? ` - Station #${hold.fire_station}` : ''}${hold.lent_to_shift ? ` → ${hold.lent_to_shift}-Shift` : ''}`}
                               >
-                                {/* Modern event card design - left-aligned with consistent sizing */}
+                                {/* Modern event card design - improved spacing and sizing */}
                                 <div className={`
-                                  flex items-center gap-1 pl-0.5 pr-1 py-0.5
+                                  flex items-center justify-between gap-1.5
+                                  px-1.5 py-1
                                   bg-white/10 hover:bg-white/20
                                   rounded transition-colors
                                   border-l-2 ${
@@ -382,18 +383,16 @@ export function Calendar({
                                       ? "border-emerald-400"
                                       : "border-white/40"
                                   }
-                                  w-full overflow-hidden
+                                  w-full
                                 `}>
-                                  {/* Name - consistent sizing, stays on one line */}
-                                  <span className="text-[8px] sm:text-[10px] lg:text-xs font-semibold leading-tight whitespace-nowrap overflow-hidden block flex-1 text-left"
-                                    style={{ textOverflow: 'clip' }}
-                                  >
+                                  {/* Name - improved sizing for readability */}
+                                  <span className="text-[11px] sm:text-xs lg:text-sm font-semibold leading-tight truncate flex-1 text-left">
                                     {formattedName}
                                   </span>
 
-                                  {/* Station indicator - consistent sizing */}
+                                  {/* Station indicator - improved sizing */}
                                   {hold.fire_station && (
-                                    <span className="text-white/60 text-[7px] sm:text-[9px] lg:text-[11px] font-medium flex-shrink-0">
+                                    <span className="text-white/70 text-[10px] sm:text-[11px] lg:text-xs font-medium flex-shrink-0">
                                       #{hold.fire_station}
                                     </span>
                                   )}
@@ -406,7 +405,7 @@ export function Calendar({
                           {day.scheduledHolds.length > 2 && (
                             <button
                               className="
-                                text-[8px] sm:text-xs font-semibold
+                                text-[10px] sm:text-[11px] lg:text-xs font-semibold
                                 text-white/80 hover:text-white
                                 bg-white/5 hover:bg-white/15
                                 rounded px-1.5 py-0.5

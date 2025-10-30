@@ -120,27 +120,15 @@ export function Sidebar({
   return (
     <div className="space-y-6 sticky top-24 h-fit">
       {/* Navigation Buttons */}
-      {onNavigate && (
-        <div className="flex gap-2">
-          <button
-            onClick={() => onNavigate('calendar')}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors focus-ring"
-            title="View Calendar"
-          >
-            <Calendar size={18} />
-            <span className="hidden sm:inline">Calendar</span>
-          </button>
-          {isAdminMode && (
-            <button
-              onClick={() => onNavigate('reports')}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors focus-ring"
-              title="View Reports"
-            >
-              <BarChart3 size={18} />
-              <span className="hidden sm:inline">Reports</span>
-            </button>
-          )}
-        </div>
+      {onNavigate && isAdminMode && (
+        <button
+          onClick={() => onNavigate('reports')}
+          className="flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors focus-ring w-full"
+          title="View Reports"
+        >
+          <BarChart3 size={18} />
+          <span className="hidden sm:inline">Reports</span>
+        </button>
       )}
 
       <div

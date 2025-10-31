@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hold List Manager Header Variants</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700&family=Barlow+Condensed:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 2rem;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        display: flex;
+        justify-content: center;
+      }
+      main {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(960px, 1fr));
+        gap: 2.5rem;
+        width: 100%;
+        max-width: 1240px;
+      }
+      .variant {
+        width: 960px;
+        min-height: 220px;
+        border-radius: 24px;
+        padding: 28px 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 26px 60px rgba(15, 23, 42, 0.35);
+        border: 1px solid rgba(148, 163, 184, 0.14);
+      }
+      .variant::after {
+        content: attr(data-label);
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        opacity: 0.35;
+        font-weight: 700;
+      }
+      .variant .content {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        z-index: 1;
+        flex: 1;
+      }
+      .variant .logo-wrap {
+        width: 92px;
+        height: 92px;
+        display: grid;
+        place-items: center;
+        border-radius: 20px;
+        background: rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(226, 232, 240, 0.18);
+      }
+      .variant h1 {
+        margin: 0;
+        font-size: 46px;
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+      .variant p {
+        margin: 8px 0 0;
+        font-size: 18px;
+        color: rgba(226, 232, 240, 0.82);
+        max-width: 420px;
+      }
+      .variant .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        z-index: 1;
+      }
+      .variant .primary {
+        padding: 12px 24px;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        color: #0f172a;
+        background: linear-gradient(135deg, #f97316, #fb7185);
+        box-shadow: 0 12px 24px rgba(249, 115, 22, 0.25);
+        cursor: pointer;
+      }
+      .variant .secondary {
+        padding: 10px 24px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(15, 23, 42, 0.2);
+        color: #f8fafc;
+        cursor: pointer;
+      }
+      .variant img {
+        width: 72px;
+        height: 72px;
+      }
+      .variant .stats {
+        display: flex;
+        gap: 22px;
+        margin-top: 18px;
+        font-size: 15px;
+        color: rgba(226, 232, 240, 0.9);
+      }
+      .variant .stats span strong {
+        display: block;
+        font-size: 22px;
+        font-weight: 700;
+        color: #f8fafc;
+      }
+      /* Variant specific styling */
+      #variant-1 {
+        background: radial-gradient(
+            circle at top left,
+            rgba(59, 130, 246, 0.45),
+            transparent 60%
+          ),
+          linear-gradient(135deg, #0f172a, #1e293b);
+      }
+      #variant-1 .logo-wrap {
+        background: linear-gradient(
+          160deg,
+          rgba(96, 165, 250, 0.45),
+          rgba(14, 165, 233, 0.12)
+        );
+      }
+      #variant-2 {
+        background: linear-gradient(160deg, #1f2937, #111827 58%, #0b1120);
+        border: 1px solid rgba(73, 99, 148, 0.32);
+      }
+      #variant-2 .content {
+        gap: 36px;
+      }
+      #variant-2 h1 {
+        font-family: "Manrope", sans-serif;
+        font-size: 44px;
+      }
+      #variant-2 .badge {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: rgba(96, 165, 250, 0.15);
+        color: #f8fafc;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+      #variant-3 {
+        background: linear-gradient(
+            120deg,
+            rgba(15, 118, 110, 0.28),
+            transparent 55%
+          ),
+          linear-gradient(160deg, #0f172a, #1d1f29);
+      }
+      #variant-3 .logo-wrap {
+        background: rgba(14, 165, 233, 0.15);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+      }
+      #variant-3 h1 {
+        font-family: "Barlow Condensed", sans-serif;
+        letter-spacing: 2px;
+        font-size: 52px;
+        text-transform: uppercase;
+      }
+      #variant-3 .actions {
+        align-items: flex-start;
+      }
+      #variant-3 .primary {
+        background: linear-gradient(130deg, #22d3ee, #38bdf8);
+        color: #082f49;
+      }
+      #variant-4 {
+        background: linear-gradient(
+            135deg,
+            rgba(244, 114, 182, 0.25),
+            transparent 55%
+          ),
+          linear-gradient(135deg, #111111, #1c1c24);
+        border: 1px solid rgba(244, 114, 182, 0.3);
+      }
+      #variant-4 .logo-wrap {
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(244, 63, 94, 0.55),
+          rgba(59, 130, 246, 0.35)
+        );
+        border: none;
+      }
+      #variant-4 h1 {
+        font-size: 48px;
+      }
+      #variant-4 .secondary {
+        border: none;
+        background: rgba(244, 114, 182, 0.14);
+        color: #f8fafc;
+      }
+      #variant-5 {
+        background: linear-gradient(
+            145deg,
+            rgba(59, 130, 246, 0.18),
+            transparent 60%
+          ),
+          linear-gradient(135deg, #0f172a, #111827);
+        border: 1px solid rgba(59, 130, 246, 0.28);
+      }
+      #variant-5 .panel {
+        background: rgba(15, 23, 42, 0.55);
+        border-radius: 18px;
+        padding: 16px 20px;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        display: flex;
+        gap: 24px;
+        margin-top: 16px;
+      }
+      #variant-5 .panel strong {
+        display: block;
+        font-size: 20px;
+        color: #f8fafc;
+      }
+      #variant-6 {
+        background: linear-gradient(
+            120deg,
+            rgba(14, 165, 233, 0.18),
+            rgba(14, 116, 144, 0.08)
+          ),
+          linear-gradient(160deg, #030712, #0f172a 65%, #020617);
+        border: 1px solid rgba(56, 189, 248, 0.28);
+        box-shadow: 0 40px 80px rgba(14, 165, 233, 0.2);
+      }
+      #variant-6 h1 {
+        font-size: 50px;
+        text-shadow: 0 18px 34px rgba(56, 189, 248, 0.35);
+      }
+      #variant-6 .glow {
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(34, 211, 238, 0.45),
+          transparent 60%
+        );
+        top: -80px;
+        right: -40px;
+        filter: blur(0px);
+      }
+      #variant-7 {
+        background: linear-gradient(
+            145deg,
+            rgba(248, 250, 252, 0.12),
+            rgba(148, 163, 184, 0.1)
+          ),
+          linear-gradient(160deg, #0b1120, #1f2937);
+        border: 1px solid rgba(226, 232, 240, 0.24);
+      }
+      #variant-7 .content {
+        align-items: flex-start;
+      }
+      #variant-7 .tagline {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-top: 12px;
+      }
+      #variant-7 .actions {
+        align-items: center;
+      }
+      #variant-7 .secondary {
+        background: rgba(148, 163, 184, 0.14);
+        border: 1px solid rgba(226, 232, 240, 0.24);
+      }
+      #variant-8 {
+        background: linear-gradient(
+            120deg,
+            rgba(248, 113, 113, 0.28),
+            transparent 65%
+          ),
+          linear-gradient(150deg, #111827, #030712 72%, #020617);
+        border: 1px solid rgba(248, 113, 113, 0.32);
+      }
+      #variant-8 h1 {
+        font-size: 54px;
+        letter-spacing: -2px;
+      }
+      #variant-8 .metrics {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+      #variant-8 .metrics div {
+        background: rgba(15, 23, 42, 0.45);
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(248, 113, 113, 0.28);
+        font-size: 14px;
+      }
+      #variant-8 .metrics div span {
+        display: block;
+        font-size: 20px;
+        font-weight: 600;
+        color: #fca5a5;
+      }
+      #variant-9 {
+        background: linear-gradient(
+            135deg,
+            rgba(96, 165, 250, 0.22),
+            rgba(59, 130, 246, 0.08)
+          ),
+          linear-gradient(110deg, #020617, #0f172a 68%, #1e293b);
+        border: 1px solid rgba(96, 165, 250, 0.34);
+      }
+      #variant-9 .inner {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 32px;
+        align-items: center;
+      }
+      #variant-9 .inner .divider {
+        width: 1px;
+        height: 110px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(226, 232, 240, 0.3),
+          transparent
+        );
+        justify-self: center;
+      }
+      #variant-9 .inner h2 {
+        margin: 0;
+        font-size: 40px;
+        font-weight: 700;
+      }
+      #variant-10 {
+        background: linear-gradient(
+            150deg,
+            rgba(203, 213, 225, 0.18),
+            rgba(100, 116, 139, 0.08)
+          ),
+          linear-gradient(150deg, #0b1220, #121a2c 70%, #020617);
+        border: 1px solid rgba(148, 163, 184, 0.24);
+      }
+      #variant-10 .badge-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: rgba(226, 232, 240, 0.75);
+      }
+      #variant-10 .badge-row span {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.12);
+        border: 1px solid rgba(226, 232, 240, 0.12);
+      }
+      #variant-10 h1 {
+        margin: 0;
+        font-size: 42px;
+      }
+      #variant-10 .actions {
+        align-items: flex-end;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section id="variant-1" class="variant" data-label="Variant 01">
+        <div class="content">
+          <div class="logo-wrap">
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <h1>Hold List Manager</h1>
+            <p>
+              Coordinate your hold rotation with precision, clarity, and
+              real-time accountability.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Launch Hold Planner</button>
+          <button class="secondary">View Activity Log</button>
+        </div>
+      </section>
+
+      <section id="variant-2" class="variant" data-label="Variant 02">
+        <div class="content">
+          <div class="logo-wrap">
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <div class="badge">Ready for Shift A • Live Sync</div>
+            <h1>Hold List Manager</h1>
+            <p>
+              Stay ahead of staffing gaps with instant insights, shift
+              isolation, and smart rotation tools.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Open Dashboard</button>
+          <button class="secondary">Download Schedule</button>
+        </div>
+      </section>
+
+      <section id="variant-3" class="variant" data-label="Variant 03">
+        <span class="glow" aria-hidden="true"></span>
+        <div class="content">
+          <div class="logo-wrap">
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <h1>Hold Rotation HQ</h1>
+            <p>
+              Full command of holds, apparatus coverage, and readiness stats—all
+              on one tactical dashboard.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Enter Command View</button>
+          <button class="secondary">Quick Assign</button>
+        </div>
+      </section>
+
+      <section id="variant-4" class="variant" data-label="Variant 04">
+        <div class="content">
+          <div class="logo-wrap">
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <h1>Hold List Manager</h1>
+            <p>
+              Modern command styling with emphasis on early conflict detection
+              and responsive reassignments.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Review Conflicts</button>
+          <button class="secondary">Shift Overview</button>
+        </div>
+      </section>
+
+      <section id="variant-5" class="variant" data-label="Variant 05">
+        <div class="content">
+          <div class="logo-wrap">
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <h1>Hold Readiness Center</h1>
+            <p>
+              Rapidly audit availability, certifications, and upcoming holds
+              with confidence.
+            </p>
+            <div class="panel">
+              <div>
+                <strong>8 Ready</strong>
+                On-roster firefighters certified for apparatus coverage.
+              </div>
+              <div>
+                <strong>3 Holds</strong>
+                Pending review for 24-hour coverage gaps.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Launch Readiness Check</button>
+          <button class="secondary">Share Shift Brief</button>
+        </div>
+      </section>
+
+      <section id="variant-6" class="variant" data-label="Variant 06">
+        <span class="glow" aria-hidden="true"></span>
+        <div class="content">
+          <div class="logo-wrap">
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <h1>Hold Command Center</h1>
+            <p>
+              High-contrast mission control styling with glowing highlights for
+              critical actions.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Synchronize Shift</button>
+          <button class="secondary">Night Mode Guide</button>
+        </div>
+      </section>
+
+      <section id="variant-7" class="variant" data-label="Variant 07">
+        <div class="content">
+          <div>
+            <div
+              class="logo-wrap"
+              style="
+                background: rgba(248, 250, 252, 0.1);
+                border: 1px solid rgba(226, 232, 240, 0.24);
+              "
+            >
+              <img
+                src="../public/icon-192x192.png"
+                alt="FirefighterHub shield"
+              />
+            </div>
+          </div>
+          <div>
+            <h1>Hold List Manager</h1>
+            <p class="tagline">
+              Designed for calm clarity during shift transitions—detailed
+              availability and action shortcuts all within reach.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Open Planner</button>
+          <button class="secondary">View Audit Trail</button>
+        </div>
+      </section>
+
+      <section id="variant-8" class="variant" data-label="Variant 08">
+        <div class="content">
+          <div
+            class="logo-wrap"
+            style="
+              background: rgba(248, 113, 113, 0.12);
+              border: 1px solid rgba(252, 165, 165, 0.25);
+            "
+          >
+            <img src="../public/icon-192x192.png" alt="FirefighterHub shield" />
+          </div>
+          <div>
+            <h1>Hold Scheduling Suite</h1>
+            <p>
+              Bold typography with compact status cards for swift decision
+              making.
+            </p>
+            <div class="metrics">
+              <div>
+                Shift Status
+                <span>Green</span>
+              </div>
+              <div>
+                Holds Today
+                <span>5</span>
+              </div>
+              <div>
+                Conflicts
+                <span>0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Run Shift Briefing</button>
+          <button class="secondary">Export Snapshot</button>
+        </div>
+      </section>
+
+      <section id="variant-9" class="variant" data-label="Variant 09">
+        <div class="content">
+          <div class="inner">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <div
+                class="logo-wrap"
+                style="
+                  background: rgba(59, 130, 246, 0.12);
+                  border: 1px solid rgba(96, 165, 250, 0.3);
+                "
+              >
+                <img
+                  src="../public/icon-192x192.png"
+                  alt="FirefighterHub shield"
+                />
+              </div>
+              <p
+                style="
+                  margin: 0;
+                  font-size: 16px;
+                  color: rgba(226, 232, 240, 0.75);
+                "
+              >
+                Next up: Shift B rotation review
+              </p>
+            </div>
+            <div class="divider" aria-hidden="true"></div>
+            <div>
+              <h2>Hold List Manager</h2>
+              <p>
+                Split layout emphasizing current shift context and the primary
+                call-to-action for the next rotation.
+              </p>
+              <div class="stats">
+                <span><strong>12</strong> Active members</span>
+                <span><strong>4</strong> On standby</span>
+                <span><strong>1</strong> In training</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Prepare Shift B</button>
+          <button class="secondary">Adjust Priorities</button>
+        </div>
+      </section>
+
+      <section id="variant-10" class="variant" data-label="Variant 10">
+        <div class="content">
+          <div>
+            <div class="badge-row">
+              <span>Availability Focused</span>
+              <span>Real-Time Sync</span>
+              <span>Shift Guard</span>
+            </div>
+            <h1>Hold List Manager</h1>
+            <p>
+              Minimalist badge-driven header highlighting mission critical
+              attributes to anchor trust.
+            </p>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary">Start Briefing</button>
+          <button class="secondary">Customize Layout</button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

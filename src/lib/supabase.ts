@@ -4,10 +4,10 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// TECHNICAL DEBT: Environment variables should be validated at startup
-// Currently no error handling if these are undefined
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// FIXED: Environment variables are trimmed to remove any whitespace/newlines
+// This prevents malformed URLs with %0A characters that break WebSocket connections
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
 
 // ISSUE: No validation - app will fail silently if env vars are missing
 if (!supabaseUrl || !supabaseAnonKey) {

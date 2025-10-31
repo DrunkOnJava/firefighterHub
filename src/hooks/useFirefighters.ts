@@ -65,6 +65,8 @@ export function useFirefighters(
     let retryCount = 0;
     let retryTimeout: ReturnType<typeof setTimeout> | null = null;
     let isSubscribed = true;
+    let hasShownErrorToast = false;
+    const MAX_RETRIES = 10; // Maximum retry attempts before giving up
 
     const setupSubscription = () => {
       if (!isSubscribed) return;
@@ -83,21 +85,47 @@ export function useFirefighters(
             console.log("🔄 Firefighters changed:", payload.eventType);
             loadFirefighters();
             retryCount = 0; // Reset retry count on successful message
+            hasShownErrorToast = false; // Reset error toast flag on success
           }
         )
         .subscribe((status, err) => {
           if (status === "SUBSCRIBED") {
             console.log("✅ Real-time subscription active (firefighters)");
             retryCount = 0;
+            hasShownErrorToast = false;
+
+            // Show success toast if we recovered from errors
+            if (retryCount > 0) {
+              showToast("Real-time updates reconnected", "success");
+            }
           } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
             console.warn("⚠️ Real-time subscription error:", status, err);
+
+            // Show user-facing error notification on first failure
+            if (!hasShownErrorToast) {
+              showToast(
+                "Live updates temporarily unavailable. Roster will refresh automatically when connection is restored.",
+                "error"
+              );
+              hasShownErrorToast = true;
+            }
+
+            // Check if we've exceeded maximum retries
+            if (retryCount >= MAX_RETRIES) {
+              console.error(`❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`);
+              showToast(
+                "Unable to establish live updates. Please refresh the page to try again.",
+                "error"
+              );
+              return;
+            }
 
             // Exponential backoff: 1s, 2s, 4s, 8s, 16s, 30s (max)
             const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
             retryCount++;
 
             console.log(
-              `🔄 Retrying in ${delay / 1000}s... (attempt ${retryCount})`
+              `🔄 Retrying in ${delay / 1000}s... (attempt ${retryCount}/${MAX_RETRIES})`
             );
 
             retryTimeout = setTimeout(() => {
@@ -108,7 +136,7 @@ export function useFirefighters(
             }, delay);
           } else if (status === "CLOSED") {
             console.log("🔌 Real-time connection closed");
-            if (isSubscribed && retryCount < 10) {
+            if (isSubscribed && retryCount < MAX_RETRIES) {
               retryTimeout = setTimeout(() => setupSubscription(), 2000);
             }
           }

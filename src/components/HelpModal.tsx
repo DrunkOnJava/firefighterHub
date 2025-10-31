@@ -2,22 +2,27 @@ import {
   Calendar,
   CheckCircle,
   Lock,
+  LogIn,
+  LogOut,
+  Shield,
   Trash2,
   TrendingUp,
-  Unlock,
   Users,
   X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import { useAuth } from "../contexts/AuthContext";
+import type { User } from '@supabase/supabase-js';
 
 interface HelpModalProps {
   isOpen: boolean;
   onClose: () => void;
   onMasterReset: () => void;
   isAdminMode: boolean;
-  onToggleAdminMode: (password: string) => boolean;
+  onShowLogin: () => void;
+  user: User | null;
 }
 
 export function HelpModal({
@@ -25,11 +30,10 @@ export function HelpModal({
   onClose,
   onMasterReset,
   isAdminMode,
-  onToggleAdminMode,
+  onShowLogin,
+  user,
 }: HelpModalProps) {
-  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
-  const [password, setPassword] = useState("");
-  const [passwordError, setPasswordError] = useState(false);
+  const { signOut } = useAuth();
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -38,49 +42,13 @@ export function HelpModal({
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        if (showPasswordPrompt) {
-          setShowPasswordPrompt(false);
-          setPassword("");
-          setPasswordError(false);
-        } else {
-          onClose();
-        }
+        onClose();
       }
     };
 
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose, showPasswordPrompt]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      setShowPasswordPrompt(false);
-      setPassword("");
-      setPasswordError(false);
-    }
-  }, [isOpen]);
-
-  function handleAdminToggle() {
-    if (isAdminMode) {
-      onToggleAdminMode("");
-      setShowPasswordPrompt(false);
-    } else {
-      setShowPasswordPrompt(true);
-    }
-  }
-
-  function handlePasswordSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const success = onToggleAdminMode(password);
-    if (success) {
-      setShowPasswordPrompt(false);
-      setPassword("");
-      setPasswordError(false);
-    } else {
-      setPasswordError(true);
-      setPassword("");
-    }
-  }
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -289,42 +257,66 @@ export function HelpModal({
               </ul>
             </div>
 
-            <div className="bg-yellow-900/20 border-2 border-yellow-700 rounded-xl p-5">
+            {/* Battalion Chief Authentication */}
+            <div className={`border-2 rounded-xl p-5 ${
+              user
+                ? "bg-emerald-900/20 border-emerald-700"
+                : "bg-blue-900/20 border-blue-700"
+            }`}>
               <div className="flex items-center gap-3 mb-3">
-                {isAdminMode ? (
-                  <Unlock className="text-yellow-400" size={24} />
+                {user ? (
+                  <Shield className="text-emerald-400" size={24} />
                 ) : (
-                  <Lock className="text-yellow-400" size={24} />
+                  <Lock className="text-blue-400" size={24} />
                 )}
-                <h3 className="text-lg font-bold text-yellow-300">
-                  Admin Mode
+                <h3 className={`text-lg font-bold ${
+                  user ? "text-emerald-300" : "text-blue-300"
+                }`}>
+                  {user ? "Battalion Chief Mode" : "Battalion Chief Login"}
                 </h3>
               </div>
-              <p className="text-gray-300 text-sm mb-4">
-                {isAdminMode
-                  ? "Admin mode is currently enabled. You can edit and manage all data."
-                  : "Enable admin mode to edit and manage firefighters, schedules, and settings."}
-              </p>
-              <button
-                onClick={handleAdminToggle}
-                className={`w-full font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                  isAdminMode
-                    ? "bg-yellow-900/50 hover:bg-yellow-800/70 border-2 border-yellow-600 text-yellow-200"
-                    : "bg-yellow-900/50 hover:bg-yellow-800/70 border-2 border-yellow-600 text-yellow-200"
-                }`}
-              >
-                {isAdminMode ? (
-                  <>
-                    <Unlock size={20} />
-                    Disable Admin Mode
-                  </>
-                ) : (
-                  <>
-                    <Lock size={20} />
-                    Enable Admin Mode
-                  </>
-                )}
-              </button>
+
+              {user ? (
+                <>
+                  <div className="bg-emerald-950/30 border border-emerald-800 rounded-lg p-3 mb-4">
+                    <p className="text-emerald-200 text-sm font-semibold mb-1">
+                      Logged in as:
+                    </p>
+                    <p className="text-white font-mono text-sm">
+                      {user.email}
+                    </p>
+                  </div>
+                  <p className="text-gray-300 text-sm mb-4">
+                    You have full admin access to assign holds, manage the roster, and override rotation.
+                  </p>
+                  <button
+                    onClick={async () => {
+                      await signOut();
+                      onClose();
+                    }}
+                    className="w-full bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 focus-ring"
+                  >
+                    <LogOut size={20} />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="text-gray-300 text-sm mb-4">
+                    Battalion chiefs can log in to access admin features: assign holds, manage roster, override rotation, and track metrics.
+                  </p>
+                  <button
+                    onClick={() => {
+                      onShowLogin();
+                      onClose();
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 border-2 border-blue-500 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 focus-ring"
+                  >
+                    <LogIn size={20} />
+                    Battalion Chief Login
+                  </button>
+                </>
+              )}
             </div>
 
             {isAdminMode && (
@@ -363,71 +355,6 @@ export function HelpModal({
             Got It!
           </button>
         </div>
-
-        {showPasswordPrompt && (
-          <div
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 rounded-2xl"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                setShowPasswordPrompt(false);
-                setPassword("");
-                setPasswordError(false);
-              }
-            }}
-          >
-            <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-yellow-600 rounded-xl p-6 max-w-md w-full shadow-2xl">
-              <div className="flex items-center gap-3 mb-4">
-                <Lock className="text-yellow-400" size={28} />
-                <h3 className="text-xl font-bold text-white">
-                  Enter Admin Password
-                </h3>
-              </div>
-              <form onSubmit={handlePasswordSubmit} className="space-y-4">
-                <div>
-                  <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setPasswordError(false);
-                    }}
-                    placeholder="Enter password"
-                    autoFocus
-                    className={`w-full px-4 py-3 bg-gray-900 border-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
-                      passwordError
-                        ? "border-red-600 focus:ring-red-500"
-                        : "border-gray-600 focus:ring-yellow-500"
-                    }`}
-                  />
-                  {passwordError && (
-                    <p className="text-red-400 text-sm mt-2">
-                      Incorrect password. Please try again.
-                    </p>
-                  )}
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowPasswordPrompt(false);
-                      setPassword("");
-                      setPasswordError(false);
-                    }}
-                    className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 rounded-lg transition-colors"
-                  >
-                    Unlock
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

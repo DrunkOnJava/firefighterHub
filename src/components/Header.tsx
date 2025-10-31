@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Shift } from "../lib/supabase";
 import { ShiftSelector } from "./ShiftSelector";
+import { ConnectionStatusIndicator, ConnectionStatusDot } from "./ConnectionStatusIndicator";
 
 interface HeaderProps {
   onShowHelp: () => void;
@@ -82,6 +83,9 @@ export function Header({
                   isDarkMode={isDarkMode}
                 />
               </div>
+
+              {/* Connection Status Indicator */}
+              <ConnectionStatusIndicator isDarkMode={isDarkMode} showLabel={false} />
             </div>
 
             {/* Primary Actions */}
@@ -159,6 +163,11 @@ export function Header({
                 <span className="text-xs font-bold">ADMIN</span>
               </div>
             )}
+
+            {/* Mobile Connection Status (Compact) */}
+            <div className="lg:hidden">
+              <ConnectionStatusDot isDarkMode={isDarkMode} />
+            </div>
 
             {/* Mobile Menu Button */}
             <button

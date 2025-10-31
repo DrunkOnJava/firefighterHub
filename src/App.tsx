@@ -1,11 +1,9 @@
-// TECHNICAL DEBT: This file has several critical architectural issues that need addressing:
-// 1. AuthContext and LoginModal exist but are never used - dead code that should be integrated or removed
-// 2. Uses hardcoded password instead of proper Supabase authentication
-// 3. Dark mode preference not persisted to localStorage (always resets to true)
-// 4. Admin mode stored in localStorage is insecure (client-side only, easily bypassed)
-// 5. Large component file (266 lines) - consider breaking into smaller components
+// FIXED: Integrated AuthContext and LoginModal for proper Supabase authentication
+// FIXED: Dark mode now persists to localStorage
+// TECHNICAL DEBT: Large component file (266 lines) - consider breaking into smaller components
 
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "./contexts/AuthContext";
 import { ActivityLogModal } from "./components/ActivityLogModal";
 import { Calendar } from "./components/Calendar";
 import { CompleteHoldModal } from "./components/CompleteHoldModal";
@@ -14,6 +12,7 @@ import { FirefighterList } from "./components/FirefighterList";
 import { Header } from "./components/Header";
 import { HelpModal } from "./components/HelpModal";
 import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
+import { LoginModal } from "./components/LoginModal";
 import { MobileNav } from "./components/MobileNav";
 import { QuickAddFirefighterModal } from "./components/QuickAddFirefighterModal";
 import { Reports } from "./components/Reports";
@@ -30,11 +29,10 @@ import { Firefighter, HoldDuration, Shift } from "./lib/supabase";
 
 type View = "calendar" | "reports";
 
-// CRITICAL SECURITY ISSUE: Hardcoded password - move to environment variable
-// RECOMMENDATION: Use proper Supabase auth with AuthContext (already exists but unused)
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "Firerescue";
-
 function App() {
+  // FIXED: Using proper Supabase authentication instead of hardcoded password
+  const { user, isAdmin: isAuthenticatedAdmin, isLoading: authLoading } = useAuth();
+
   const [currentView, setCurrentView] = useState<View>("calendar");
   const [showHelp, setShowHelp] = useState(false);
   const [showActivityLog, setShowActivityLog] = useState(false);
@@ -43,6 +41,7 @@ function App() {
   const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [
     selectedFirefighterForCompletion,
     setSelectedFirefighterForCompletion,
@@ -53,12 +52,9 @@ function App() {
   // Default to Shift A
   const [currentShift, setCurrentShift] = useState<Shift>("A");
 
-  // ISSUE: Client-side admin mode is insecure - anyone can set localStorage.setItem('isAdminMode', 'true')
-  // RECOMMENDATION: Replace with server-side auth using the existing AuthContext
-  const [isAdminMode, setIsAdminMode] = useState(() => {
-    const saved = localStorage.getItem("isAdminMode");
-    return saved === "true";
-  });
+  // FIXED: Admin mode now based on Supabase authentication
+  // Battalion chiefs who are authenticated have admin access
+  const isAdminMode = isAuthenticatedAdmin;
 
   // FIXED: Dark mode now persists to localStorage (was always resetting to true)
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -70,26 +66,10 @@ function App() {
   const announce = useAnnounce();
   const shiftChangeAnnouncedRef = useRef(false);
 
-  // CRITICAL SECURITY ISSUE: Password comparison in client-side code
-  // This provides NO real security - anyone can read this password from the source code
-  // RECOMMENDATION: Use Supabase authentication or at minimum hash comparison
-  function handleToggleAdminMode(password: string): boolean {
-    if (isAdminMode) {
-      setIsAdminMode(false);
-      localStorage.setItem("isAdminMode", "false");
-      showToast("Admin mode disabled", "info");
-      return true;
-    }
-
-    // SECURITY CRITICAL: Hardcoded password check - never do this in production!
-    if (password === ADMIN_PASSWORD) {
-      setIsAdminMode(true);
-      localStorage.setItem("isAdminMode", "true");
-      showToast("Admin mode enabled", "success");
-      return true;
-    }
-
-    return false;
+  // FIXED: Authentication now handled by Supabase Auth
+  // Battalion chiefs log in with email/password
+  function handleShowLogin() {
+    setShowLoginModal(true);
   }
 
   const {
@@ -229,8 +209,6 @@ function App() {
     localStorage.setItem("isDarkMode", String(isDarkMode));
   }, [isDarkMode]);
 
-  // ISSUE: Missing 'announce' in dependency array could cause stale closure
-  // The announce function is stable from useAnnounce, but ESLint will warn about this
   useEffect(() => {
     if (shiftChangeAnnouncedRef.current) {
       announce(`Switched to Shift ${currentShift}`, "polite");
@@ -238,13 +216,14 @@ function App() {
     shiftChangeAnnouncedRef.current = true;
   }, [currentShift, announce]);
 
-  if (firefightersLoading) {
+  // Show loading state while auth is initializing
+  if (authLoading || firefightersLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white text-xl font-semibold">
-            Loading Hold List Manager...
+            {authLoading ? "Checking authentication..." : "Loading Hold List Manager..."}
           </p>
         </div>
       </div>
@@ -365,7 +344,16 @@ function App() {
         onClose={() => setShowHelp(false)}
         onMasterReset={masterReset}
         isAdminMode={isAdminMode}
-        onToggleAdminMode={handleToggleAdminMode}
+        onShowLogin={handleShowLogin}
+        user={user}
+      />
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={() => {
+          setShowLoginModal(false);
+          showToast("Battalion Chief mode enabled", "success");
+        }}
       />
       <ActivityLogModal
         isOpen={showActivityLog}

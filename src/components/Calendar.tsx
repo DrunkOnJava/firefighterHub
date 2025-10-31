@@ -279,8 +279,9 @@ export function Calendar({
                 const multipleHolds = day.scheduledHolds.length > 1;
 
                 // Determine day cell styling based on state
+                // ACCESSIBILITY: Minimum 44px height for touch targets per WCAG guidelines
                 let dayCellClasses =
-                  "aspect-square min-h-[90px] max-h-[110px] sm:min-h-[120px] sm:max-h-[140px] lg:min-h-[140px] lg:max-h-[160px] xl:min-h-[160px] xl:max-h-[180px] p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
+                  "aspect-square min-h-[110px] min-w-[44px] max-h-[130px] sm:min-h-[120px] sm:max-h-[140px] lg:min-h-[140px] lg:max-h-[160px] xl:min-h-[160px] xl:max-h-[180px] p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
 
                 if (!day.isCurrentMonth) {
                   dayCellClasses += " cursor-default opacity-30";

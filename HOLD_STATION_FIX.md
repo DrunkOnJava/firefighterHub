@@ -1,9 +1,11 @@
 # Quick Fix: Hold Station Issue
 
 ## Problem
+
 Past holds showing firefighter's **assigned station** instead of **actual hold station**.
 
 ## Root Cause
+
 Database trigger `populate_scheduled_holds_metadata()` overwrites `fire_station` field with firefighter's assigned station, even when application sets it explicitly.
 
 ## Fix (3 Steps)
@@ -26,6 +28,7 @@ This stops the trigger from overwriting station data going forward.
 3. Run **each query individually** and note results
 
 **Key Questions:**
+
 - Query 1: How many holds before 10/22 exist?
 - Query 5: How many have matching stations (potentially wrong)?
 
@@ -37,12 +40,12 @@ This stops the trigger from overwriting station data going forward.
 
 ```sql
 -- Option A: Set to NULL (safest - marks as unknown)
-UPDATE scheduled_holds 
+UPDATE scheduled_holds
 SET fire_station = NULL
 WHERE created_at < '2025-10-22'
   AND fire_station = (
-    SELECT fire_station 
-    FROM firefighters 
+    SELECT fire_station
+    FROM firefighters
     WHERE id = scheduled_holds.firefighter_id
   );
 
@@ -57,15 +60,17 @@ WHERE created_at < '2025-10-22'
 After applying Step 1:
 
 **Test New Hold:**
+
 1. Calendar → Click date → Select firefighter
 2. Choose **different** station than their assigned station
 3. Confirm
 4. **Check:** Hold should show chosen station (not assigned)
 
 **Test Complete Hold:**
+
 1. Complete Hold button → Choose date
 2. Change station to something different
-3. Confirm  
+3. Confirm
 4. **Check:** Hold should show chosen station (not assigned)
 
 ---
@@ -73,6 +78,7 @@ After applying Step 1:
 ## Why This Works
 
 **Before fix:**
+
 ```
 User selects Station 3
   ↓
@@ -84,6 +90,7 @@ Database inserts with fire_station = 3
 ```
 
 **After fix:**
+
 ```
 User selects Station 3
   ↓

@@ -14,6 +14,7 @@
 
 1. User clicks "Mark Complete" on calendar hold for "FF 2"
 2. `markHoldCompleted()` in `useScheduledHolds.ts` correctly:
+
    - Updates scheduled_holds table (status = 'completed')
    - Fetches all firefighters for the shift
    - Reorders them: others first, then completed FF at the bottom
@@ -84,16 +85,17 @@ const loadFirefighters = useCallback(async () => {
 **File:** `src/hooks/useFirefighters.ts` (lines 7, 38-41)
 
 **Changes:**
+
 1. Changed import from `recalculatePositions` to `sortFirefighters`
 2. Updated `loadFirefighters()` to use `sortFirefighters()` instead of `recalculatePositions()`
 3. Added explanatory comments about why the change was necessary
 
 **Key Difference:**
 
-| Function | Behavior | Use Case |
-|----------|----------|----------|
+| Function                 | Behavior                                                     | Use Case                                         |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------------------------ |
 | `recalculatePositions()` | Sorts firefighters AND **reassigns positions** 0, 1, 2, 3... | ❌ Should NOT be used when loading from database |
-| `sortFirefighters()` | Sorts firefighters for display, **preserves positions** | ✅ Use when loading from database |
+| `sortFirefighters()`     | Sorts firefighters for display, **preserves positions**      | ✅ Use when loading from database                |
 
 ## Verification
 
@@ -113,11 +115,13 @@ const loadFirefighters = useCallback(async () => {
 ### Expected Behavior
 
 **Before Fix:**
+
 - FF 2 completes hold
 - Toast says "moved to end of rotation"
 - But FF 2 stays in original position (bug!)
 
 **After Fix:**
+
 - FF 2 completes hold
 - Toast says "moved to end of rotation"
 - FF 2 immediately moves to bottom of available list
@@ -126,21 +130,25 @@ const loadFirefighters = useCallback(async () => {
 ### Test Cases
 
 #### Test Case 1: Complete Hold from Calendar
+
 - **Given:** FF at position 2 with scheduled hold
 - **When:** Mark hold as complete from calendar
 - **Then:** FF moves to last position (e.g., position 8 if 8 available firefighters)
 
 #### Test Case 2: Complete Hold from Roster Modal
+
 - **Given:** FF at position 1
 - **When:** Click "Complete Hold" button, set date, confirm
 - **Then:** FF moves to last position
 
 #### Test Case 3: Multiple Rapid Completions
+
 - **Given:** Two FFs with holds
 - **When:** Mark both complete in quick succession
 - **Then:** Both move to bottom, second one becomes last
 
 #### Test Case 4: Real-Time Sync Doesn't Break Order
+
 - **Given:** Two browser tabs open on same shift
 - **When:** Mark hold complete in Tab 1
 - **Then:** Tab 2 should see FF move to bottom (not stay in place)
@@ -150,24 +158,26 @@ const loadFirefighters = useCallback(async () => {
 ### 1. Code Comments Added
 
 Added inline comments explaining:
+
 - Why `sortFirefighters()` instead of `recalculatePositions()`
 - The race condition that was occurring
 - The principle: "trust database positions, only sort for display"
 
 ### 2. Function Naming Clarity
 
-| Function | Purpose | When to Use |
-|----------|---------|-------------|
-| `sortFirefighters()` | Display order only | ✅ When loading from DB |
-| `recalculatePositions()` | Normalize gaps in positions | ⚠️ Only when explicitly needed |
-| `assignPositions()` | Sequential position assignment | ✅ After manual reordering |
-| `moveToBottom()` | Move one FF to end | ✅ For single hold completions |
+| Function                 | Purpose                        | When to Use                    |
+| ------------------------ | ------------------------------ | ------------------------------ |
+| `sortFirefighters()`     | Display order only             | ✅ When loading from DB        |
+| `recalculatePositions()` | Normalize gaps in positions    | ⚠️ Only when explicitly needed |
+| `assignPositions()`      | Sequential position assignment | ✅ After manual reordering     |
+| `moveToBottom()`         | Move one FF to end             | ✅ For single hold completions |
 
 ### 3. Testing Recommendations
 
 **Add E2E Test:**
+
 ```typescript
-test('completing hold moves firefighter to bottom', async ({ page }) => {
+test("completing hold moves firefighter to bottom", async ({ page }) => {
   // 1. Navigate to shift with firefighter at position 2
   // 2. Mark scheduled hold as complete
   // 3. Verify firefighter is now at last position
@@ -177,9 +187,10 @@ test('completing hold moves firefighter to bottom', async ({ page }) => {
 ```
 
 **Add Integration Test:**
+
 ```typescript
-describe('markHoldCompleted', () => {
-  it('moves firefighter to bottom of rotation', async () => {
+describe("markHoldCompleted", () => {
+  it("moves firefighter to bottom of rotation", async () => {
     // Mock Supabase client
     // Call markHoldCompleted
     // Verify database updates put FF at last position
@@ -207,18 +218,21 @@ This would prevent real-time subscription from seeing partial updates.
 ### 5. Real-Time Sync Improvements
 
 **Option A:** Debounce `loadFirefighters()` calls
+
 ```typescript
 const debouncedLoad = useDebounce(loadFirefighters, 500);
 // Use debouncedLoad in subscription instead of direct call
 ```
 
 **Option B:** Optimistic UI updates + server reconciliation
+
 ```typescript
 // Update local state immediately
 // Trust server updates only if timestamp is newer
 ```
 
 **Option C:** Use PostgreSQL's LISTEN/NOTIFY with transaction completion
+
 ```sql
 -- Only notify when full transaction commits
 CREATE OR REPLACE FUNCTION notify_firefighters_updated()
@@ -249,11 +263,13 @@ $$ LANGUAGE plpgsql;
 ## Performance Impact
 
 **Before Fix:**
+
 - Real-time update triggered `recalculatePositions()` on every DB change
 - Unnecessary position recalculation on data fetch
 - Potential for infinite update loops if positions kept changing
 
 **After Fix:**
+
 - Real-time update only sorts for display (no position changes)
 - Database positions are source of truth
 - Cleaner separation between "display order" and "data mutations"
@@ -267,9 +283,10 @@ If this fix causes issues:
 const sorted = recalculatePositions(activeData || []);
 
 // Or hybrid approach:
-const sorted = activeData.length !== new Set(activeData.map(ff => ff.order_position)).size
-  ? recalculatePositions(activeData) // Only if gaps/duplicates exist
-  : sortFirefighters(activeData);    // Otherwise preserve positions
+const sorted =
+  activeData.length !== new Set(activeData.map((ff) => ff.order_position)).size
+    ? recalculatePositions(activeData) // Only if gaps/duplicates exist
+    : sortFirefighters(activeData); // Otherwise preserve positions
 ```
 
 ## Lessons Learned

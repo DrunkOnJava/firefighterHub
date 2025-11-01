@@ -48,13 +48,14 @@
   }
 
   *:focus-visible {
-    outline: 3px solid #3B82F6;
+    outline: 3px solid #3b82f6;
     outline-offset: 2px;
     border-radius: 4px;
   }
 
   /* WCAG 2.1 Target Size: Minimum 44x44px for all interactive elements */
-  button:not(:disabled), a:not(.skip-link) {
+  button:not(:disabled),
+  a:not(.skip-link) {
     min-height: 44px;
     min-width: 44px;
   }
@@ -101,7 +102,7 @@
 
 @layer utilities {
   .font-dyslexia {
-    font-family: 'Lexend', system-ui, -apple-system, sans-serif;
+    font-family: "Lexend", system-ui, -apple-system, sans-serif;
     letter-spacing: 0.05em;
     word-spacing: 0.15em;
   }
@@ -116,27 +117,27 @@
   /* These colors have been tested for accessibility on gray-900 (#111827) background */
 
   .text-gray-accessible {
-    color: #D1D5DB; /* gray-300 - 8.59:1 contrast ratio ✓ */
+    color: #d1d5db; /* gray-300 - 8.59:1 contrast ratio ✓ */
   }
 
   .text-gray-secondary {
-    color: #9CA3AF; /* gray-400 - 5.74:1 contrast ratio ✓ */
+    color: #9ca3af; /* gray-400 - 5.74:1 contrast ratio ✓ */
   }
 
   .text-green-accessible {
-    color: #86EFAC; /* green-300 - 11.14:1 contrast ratio ✓ */
+    color: #86efac; /* green-300 - 11.14:1 contrast ratio ✓ */
   }
 
   .text-blue-accessible {
-    color: #93C5FD; /* blue-300 - 8.57:1 contrast ratio ✓ */
+    color: #93c5fd; /* blue-300 - 8.57:1 contrast ratio ✓ */
   }
 
   .text-red-accessible {
-    color: #FCA5A5; /* red-300 - 7.35:1 contrast ratio ✓ */
+    color: #fca5a5; /* red-300 - 7.35:1 contrast ratio ✓ */
   }
 
   .text-amber-accessible {
-    color: #FCD34D; /* amber-300 - 12.04:1 contrast ratio ✓ */
+    color: #fcd34d; /* amber-300 - 12.04:1 contrast ratio ✓ */
   }
 
   /* WARNING: These colors DO NOT meet WCAG AA on dark backgrounds */

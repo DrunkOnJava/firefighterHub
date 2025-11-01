@@ -2,11 +2,11 @@
 // Consider splitting into: useFirefightersData, useFirefighterMutations, useFirefighterRealtimeSync
 // Currently 465 lines handling: data fetching, mutations, optimistic updates, logging, and real-time sync
 
-import { useEffect, useState, useCallback } from "react";
-import { supabase, Firefighter, Shift, HoldDuration } from "../lib/supabase";
+import { useCallback, useEffect, useState } from "react";
+import { Firefighter, HoldDuration, Shift, supabase } from "../lib/supabase";
 import { assignPositions, sortFirefighters } from "../utils/rotationLogic";
-import { ToastType } from "./useToast";
 import { useOperationLoading } from "./useOperationLoading";
+import { ToastType } from "./useToast";
 
 export function useFirefighters(
   showToast: (message: string, type: ToastType) => void,
@@ -115,7 +115,9 @@ export function useFirefighters(
 
             // Check if we've exceeded maximum retries
             if (retryCount >= MAX_RETRIES) {
-              console.error(`❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`);
+              console.error(
+                `❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`
+              );
               showToast(
                 "Unable to establish live updates. Please refresh the page to try again.",
                 "error"
@@ -128,7 +130,9 @@ export function useFirefighters(
             retryCount++;
 
             console.log(
-              `🔄 Retrying in ${delay / 1000}s... (attempt ${retryCount}/${MAX_RETRIES})`
+              `🔄 Retrying in ${
+                delay / 1000
+              }s... (attempt ${retryCount}/${MAX_RETRIES})`
             );
 
             retryTimeout = setTimeout(() => {
@@ -285,8 +289,8 @@ export function useFirefighters(
     newPosition: number,
     station?: string,
     lentToShift?: Shift | null,
-    duration: HoldDuration = '24h',
-    startTime: string = '07:00'
+    duration: HoldDuration = "24h",
+    startTime: string = "07:00"
   ) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter || !firefighter.is_available) return;

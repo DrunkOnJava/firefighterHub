@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { X, Lock, Mail, AlertCircle } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
+import { AlertCircle, Lock, Mail, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useFocusReturn } from "../hooks/useFocusReturn";
+import { useFocusTrap } from "../hooks/useFocusTrap";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -12,8 +12,8 @@ interface LoginModalProps {
 
 export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
   const { signIn } = useAuth();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,7 +26,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
     if (isOpen) {
       triggerElementRef.current = document.activeElement as HTMLElement;
       setError(null);
-      setPassword('');
+      setPassword("");
     }
   }, [isOpen]);
 
@@ -41,23 +41,23 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
       const { error } = await signIn(email, password);
 
       if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          setError('Invalid email or password. Please try again.');
-        } else if (error.message.includes('Email not confirmed')) {
-          setError('Please verify your email address before signing in.');
+        if (error.message.includes("Invalid login credentials")) {
+          setError("Invalid email or password. Please try again.");
+        } else if (error.message.includes("Email not confirmed")) {
+          setError("Please verify your email address before signing in.");
         } else {
-          setError(error.message || 'Failed to sign in. Please try again.');
+          setError(error.message || "Failed to sign in. Please try again.");
         }
         setIsLoading(false);
       } else {
         // Success
-        setEmail('');
-        setPassword('');
+        setEmail("");
+        setPassword("");
         onSuccess?.();
         onClose();
       }
     } catch {
-      setError('An unexpected error occurred. Please try again.');
+      setError("An unexpected error occurred. Please try again.");
       setIsLoading(false);
     }
   };
@@ -87,7 +87,10 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
             <div className="p-2 bg-orange-500/10 rounded-lg">
               <Lock className="w-5 h-5 text-orange-500" />
             </div>
-            <h2 id="login-modal-title" className="text-xl font-semibold text-gray-900 dark:text-white">
+            <h2
+              id="login-modal-title"
+              className="text-xl font-semibold text-gray-900 dark:text-white"
+            >
               Admin Sign In
             </h2>
           </div>
@@ -185,7 +188,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 Signing in...
               </span>
             ) : (
-              'Sign In'
+              "Sign In"
             )}
           </button>
 

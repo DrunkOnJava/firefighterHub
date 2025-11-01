@@ -1,10 +1,12 @@
 # 🚨 URGENT: You're on the Wrong Port! 🚨
 
 ## The Problem
+
 You visited: **http://localhost:5174/**
 But the server is actually running on: **http://localhost:5173/**
 
 ## Solution
+
 1. **Close the tab at port 5174**
 2. **Open a new tab and visit:** http://localhost:5173/
 3. **Do a hard refresh:**
@@ -25,6 +27,7 @@ But the server is actually running on: **http://localhost:5173/**
 ## If You Still See Blue
 
 ### Option 1: Clear Browser Cache
+
 1. Open DevTools (F12)
 2. Go to Application tab
 3. Click "Clear storage"
@@ -32,6 +35,7 @@ But the server is actually running on: **http://localhost:5173/**
 5. Refresh page
 
 ### Option 2: Disable Cache
+
 1. Open DevTools (F12)
 2. Go to Network tab
 3. Check "Disable cache"
@@ -39,6 +43,7 @@ But the server is actually running on: **http://localhost:5173/**
 5. Refresh page
 
 ### Option 3: Hard Refresh (Multiple Times)
+
 Sometimes you need to refresh 2-3 times to clear all cached assets.
 
 ---
@@ -53,6 +58,7 @@ Sometimes you need to refresh 2-3 times to clear all cached assets.
 ```
 
 To verify, check your terminal output - it should say:
+
 ```
 ➜  Local:   http://localhost:5173/
 ```
@@ -62,12 +68,14 @@ To verify, check your terminal output - it should say:
 ## What Was Changed
 
 ### 1. Theme System (Dark Graphite)
+
 - **App background:** `gray-900` → `black` gradient
 - **Cards:** `gray-800` gradient
 - **Text:** Light gray shades
 - **All blue colors:** Replaced with gray
 
 ### 2. Best Practices Applied
+
 - ✅ Constants extracted to `/src/config/constants.ts`
 - ✅ Dark mode hook created `/src/hooks/useDarkMode.ts`
 - ✅ No hardcoded colors in App.tsx
@@ -75,6 +83,7 @@ To verify, check your terminal output - it should say:
 - ✅ Type-safe configuration
 
 ### 3. Files Modified
+
 1. `src/App.tsx` - Uses theme and constants
 2. `src/utils/theme.ts` - Graphite color palette
 3. `src/index.css` - Gray focus rings
@@ -113,7 +122,7 @@ pnpm run dev
 Open your browser console (F12) and run:
 
 ```javascript
-localStorage.getItem('isDarkMode')
+localStorage.getItem("isDarkMode");
 ```
 
 Should return: `"true"` (if you're in dark mode)

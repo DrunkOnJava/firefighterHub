@@ -1,12 +1,15 @@
 # Quick Fix Summary: Rotation Position Bug
 
 ## Problem
+
 "FF 2" on C Shift wasn't moving to bottom of rotation after marking hold complete.
 
 ## Root Cause
+
 `loadFirefighters()` was calling `recalculatePositions()` which **overwrote** the positions that `markHoldCompleted()` had just carefully set in the database.
 
 **Race condition:**
+
 1. Complete hold → Database updates positions correctly
 2. Real-time sync fires → Calls `loadFirefighters()`
 3. `loadFirefighters()` calls `recalculatePositions()` → Re-sorts and reassigns positions
@@ -27,6 +30,7 @@ const sorted = sortFirefighters(activeData || []);
 ```
 
 **Why it works:**
+
 - `recalculatePositions()` = sorts AND **rewrites** positions 0, 1, 2, 3...
 - `sortFirefighters()` = sorts for display only, **preserves** positions
 
@@ -63,6 +67,7 @@ const sorted = sortFirefighters(activeData || []);
 ## Prevention
 
 Added comments in code explaining:
+
 - Why `sortFirefighters()` instead of `recalculatePositions()`
 - The race condition that occurred
 - Database positions are source of truth

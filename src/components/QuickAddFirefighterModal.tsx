@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { X, UserPlus, ChevronDown, ChevronUp } from 'lucide-react';
-import { Shift } from '../lib/supabase';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
+import { ChevronDown, ChevronUp, UserPlus, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFocusReturn } from "../hooks/useFocusReturn";
+import { useFocusTrap } from "../hooks/useFocusTrap";
+import { Shift } from "../lib/supabase";
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;
@@ -34,11 +34,11 @@ export function QuickAddFirefighterModal({
   isOpen,
   currentShift,
   onClose,
-  onAdd
+  onAdd,
 }: QuickAddFirefighterModalProps) {
-  const [name, setName] = useState('');
-  const [station, setStation] = useState('');
-  const [certificationLevel, setCertificationLevel] = useState<string>('');
+  const [name, setName] = useState("");
+  const [station, setStation] = useState("");
+  const [certificationLevel, setCertificationLevel] = useState<string>("");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [apparatusAmbulance, setApparatusAmbulance] = useState(false);
   const [apparatusBrushTruck, setApparatusBrushTruck] = useState(false);
@@ -51,14 +51,14 @@ export function QuickAddFirefighterModal({
   const [isFTO, setIsFTO] = useState(false);
   const [isBLS, setIsBLS] = useState(false);
   const [isALS, setIsALS] = useState(false);
-  const [errors, setErrors] = useState({ name: '' });
+  const [errors, setErrors] = useState({ name: "" });
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
   const resetForm = () => {
-    setName('');
-    setStation('');
-    setCertificationLevel('');
+    setName("");
+    setStation("");
+    setCertificationLevel("");
     setShowAdvanced(false);
     setApparatusAmbulance(false);
     setApparatusBrushTruck(false);
@@ -71,7 +71,7 @@ export function QuickAddFirefighterModal({
     setIsFTO(false);
     setIsBLS(false);
     setIsALS(false);
-    setErrors({ name: '' });
+    setErrors({ name: "" });
   };
 
   useEffect(() => {
@@ -84,25 +84,28 @@ export function QuickAddFirefighterModal({
     if (!isOpen) return;
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
   const validateName = (value: string): boolean => {
     if (!value.trim()) {
-      setErrors(prev => ({ ...prev, name: 'Name is required' }));
+      setErrors((prev) => ({ ...prev, name: "Name is required" }));
       return false;
     }
     if (value.trim().length < 2) {
-      setErrors(prev => ({ ...prev, name: 'Name must be at least 2 characters' }));
+      setErrors((prev) => ({
+        ...prev,
+        name: "Name must be at least 2 characters",
+      }));
       return false;
     }
-    setErrors(prev => ({ ...prev, name: '' }));
+    setErrors((prev) => ({ ...prev, name: "" }));
     return true;
   };
 
@@ -121,12 +124,12 @@ export function QuickAddFirefighterModal({
           truck: apparatusTruck,
           boat: apparatusBoat,
           utv: apparatusUtv,
-          rescueSquad: apparatusRescueSquad
+          rescueSquad: apparatusRescueSquad,
         },
         {
           isFTO,
           isBLS,
-          isALS
+          isALS,
         }
       );
       onClose();
@@ -135,10 +138,25 @@ export function QuickAddFirefighterModal({
 
   if (!isOpen) return null;
 
-  const certificationLevels: string[] = ['', 'EMT', 'EMT-A', 'EMT-I', 'Paramedic'];
-  const hasAnyAdvancedData = apparatusAmbulance || apparatusBrushTruck || apparatusEngine ||
-    apparatusTanker || apparatusTruck || apparatusBoat || apparatusUtv || apparatusRescueSquad ||
-    isFTO || isBLS || isALS;
+  const certificationLevels: string[] = [
+    "",
+    "EMT",
+    "EMT-A",
+    "EMT-I",
+    "Paramedic",
+  ];
+  const hasAnyAdvancedData =
+    apparatusAmbulance ||
+    apparatusBrushTruck ||
+    apparatusEngine ||
+    apparatusTanker ||
+    apparatusTruck ||
+    apparatusBoat ||
+    apparatusUtv ||
+    apparatusRescueSquad ||
+    isFTO ||
+    isBLS ||
+    isALS;
 
   return (
     <div
@@ -161,7 +179,10 @@ export function QuickAddFirefighterModal({
           <div className="flex items-center gap-3">
             <UserPlus className="text-green-400" size={28} />
             <div>
-              <h2 id="quick-add-title" className="text-2xl font-bold text-white">
+              <h2
+                id="quick-add-title"
+                className="text-2xl font-bold text-white"
+              >
                 Add Team Member
               </h2>
               <p className="text-sm text-green-200 mt-1">
@@ -178,10 +199,16 @@ export function QuickAddFirefighterModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="quick-firefighter-name" className="block text-sm font-semibold text-gray-300 mb-2">
+              <label
+                htmlFor="quick-firefighter-name"
+                className="block text-sm font-semibold text-gray-300 mb-2"
+              >
                 Name <span className="text-red-400">*</span>
               </label>
               <input
@@ -197,22 +224,29 @@ export function QuickAddFirefighterModal({
                 required
                 autoFocus
                 aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? 'quick-name-error' : undefined}
+                aria-describedby={errors.name ? "quick-name-error" : undefined}
                 className={`w-full px-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
                   errors.name
-                    ? 'border-red-500 focus:ring-red-500'
-                    : 'border-gray-600 focus:ring-green-500 focus:border-transparent'
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-600 focus:ring-green-500 focus:border-transparent"
                 }`}
               />
               {errors.name && (
-                <p id="quick-name-error" className="text-red-400 text-xs mt-1" role="alert">
+                <p
+                  id="quick-name-error"
+                  className="text-red-400 text-xs mt-1"
+                  role="alert"
+                >
                   {errors.name}
                 </p>
               )}
             </div>
 
             <div>
-              <label htmlFor="quick-firefighter-station" className="block text-sm font-semibold text-gray-300 mb-2">
+              <label
+                htmlFor="quick-firefighter-station"
+                className="block text-sm font-semibold text-gray-300 mb-2"
+              >
                 Station Number
               </label>
               <input
@@ -227,7 +261,10 @@ export function QuickAddFirefighterModal({
           </div>
 
           <div>
-            <label htmlFor="quick-firefighter-certification" className="block text-sm font-semibold text-gray-300 mb-2">
+            <label
+              htmlFor="quick-firefighter-certification"
+              className="block text-sm font-semibold text-gray-300 mb-2"
+            >
               Certification Level
             </label>
             <select
@@ -237,8 +274,10 @@ export function QuickAddFirefighterModal({
               className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
             >
               <option value="">Not specified</option>
-              {certificationLevels.slice(1).map(level => (
-                <option key={level} value={level}>{level}</option>
+              {certificationLevels.slice(1).map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
               ))}
             </select>
           </div>
@@ -251,8 +290,11 @@ export function QuickAddFirefighterModal({
             aria-controls="advanced-options"
           >
             <span className="text-sm font-semibold text-gray-300">
-              Advanced Options {hasAnyAdvancedData && !showAdvanced && (
-                <span className="ml-2 text-xs text-green-400">(configured)</span>
+              Advanced Options{" "}
+              {hasAnyAdvancedData && !showAdvanced && (
+                <span className="ml-2 text-xs text-green-400">
+                  (configured)
+                </span>
               )}
             </span>
             {showAdvanced ? (
@@ -263,7 +305,10 @@ export function QuickAddFirefighterModal({
           </button>
 
           {showAdvanced && (
-            <div id="advanced-options" className="space-y-5 pl-2 border-l-2 border-green-600">
+            <div
+              id="advanced-options"
+              className="space-y-5 pl-2 border-l-2 border-green-600"
+            >
               <div>
                 <label className="block text-sm font-semibold text-gray-300 mb-3">
                   Apparatus Clearances
@@ -336,7 +381,9 @@ export function QuickAddFirefighterModal({
                     <input
                       type="checkbox"
                       checked={apparatusRescueSquad}
-                      onChange={(e) => setApparatusRescueSquad(e.target.checked)}
+                      onChange={(e) =>
+                        setApparatusRescueSquad(e.target.checked)
+                      }
                       className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-green-600 focus:ring-2 focus:ring-green-500"
                     />
                     <span className="text-sm text-gray-300">Rescue Squad</span>
@@ -356,7 +403,9 @@ export function QuickAddFirefighterModal({
                       onChange={(e) => setIsFTO(e.target.checked)}
                       className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
                     />
-                    <span className="text-sm font-semibold text-amber-300">FTO</span>
+                    <span className="text-sm font-semibold text-amber-300">
+                      FTO
+                    </span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer bg-emerald-900/20 px-3 py-2 rounded-lg hover:bg-emerald-900/30 border border-emerald-700/50 transition-colors">
                     <input
@@ -365,7 +414,9 @@ export function QuickAddFirefighterModal({
                       onChange={(e) => setIsBLS(e.target.checked)}
                       className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
                     />
-                    <span className="text-sm font-semibold text-emerald-300">BLS</span>
+                    <span className="text-sm font-semibold text-emerald-300">
+                      BLS
+                    </span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer bg-cyan-900/20 px-3 py-2 rounded-lg hover:bg-cyan-900/30 border border-cyan-700/50 transition-colors">
                     <input
@@ -374,7 +425,9 @@ export function QuickAddFirefighterModal({
                       onChange={(e) => setIsALS(e.target.checked)}
                       className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
                     />
-                    <span className="text-sm font-semibold text-cyan-300">ALS</span>
+                    <span className="text-sm font-semibold text-cyan-300">
+                      ALS
+                    </span>
                   </label>
                 </div>
               </div>

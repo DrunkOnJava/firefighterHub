@@ -69,11 +69,11 @@
 
 @layer components {
   .focus-ring {
-    @apply focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 transition-shadow;
+    @apply focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 transition-shadow;
   }
 
   .skip-link {
-    @apply absolute -top-full left-4 bg-blue-600 text-white px-6 py-3 rounded-lg z-[60] focus:top-4 transition-all font-semibold shadow-2xl;
+    @apply absolute -top-full left-4 bg-gray-700 text-white px-6 py-3 rounded-lg z-[60] focus:top-4 transition-all font-semibold shadow-2xl;
   }
 
   .sr-only {

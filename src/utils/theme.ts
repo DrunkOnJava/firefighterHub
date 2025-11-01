@@ -43,76 +43,76 @@ export interface Theme {
 export function getTheme(isDarkMode: boolean): Theme {
   if (isDarkMode) {
     return {
-      appBackground: 'bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800',
-      cardBackground: 'bg-gradient-to-br from-slate-800 to-slate-850',
-      cardBorder: 'border-slate-700',
-
-      textPrimary: 'text-slate-50',
-      textSecondary: 'text-slate-300',
-      textTertiary: 'text-slate-400',
+      appBackground: 'bg-gradient-to-br from-gray-900 via-gray-900 to-black',
+      cardBackground: 'bg-gradient-to-br from-gray-800 to-gray-850',
+      cardBorder: 'border-gray-700',
+      
+      textPrimary: 'text-gray-50',
+      textSecondary: 'text-gray-300',
+      textTertiary: 'text-gray-400',
 
       button: {
         primary: 'bg-red-700 hover:bg-red-600 text-white shadow-lg shadow-red-900/50',
-        secondary: 'bg-slate-700 hover:bg-slate-600 text-slate-100',
+        secondary: 'bg-gray-700 hover:bg-gray-600 text-gray-100',
         danger: 'bg-red-700 hover:bg-red-600 text-white',
       },
 
       input: {
-        background: 'bg-slate-900',
-        border: 'border-slate-600',
-        text: 'text-slate-100',
-        placeholder: 'placeholder-slate-500',
+        background: 'bg-gray-900',
+        border: 'border-gray-600',
+        text: 'text-gray-100',
+        placeholder: 'placeholder-gray-500',
       },
 
       modal: {
         overlay: 'bg-black/75',
-        background: 'bg-gradient-to-br from-slate-800 to-slate-850',
-        border: 'border-slate-700',
+        background: 'bg-gradient-to-br from-gray-800 to-gray-850',
+        border: 'border-gray-700',
       },
 
       badge: {
         success: 'bg-emerald-950/80 text-emerald-300 border-emerald-800',
         warning: 'bg-amber-950/80 text-amber-300 border-amber-800',
         error: 'bg-red-950/80 text-red-300 border-red-800',
-        info: 'bg-sky-950/80 text-sky-300 border-sky-800',
+        info: 'bg-gray-800/80 text-gray-300 border-gray-700',
       },
     };
   }
 
   // Light mode - Firefighter themed
   return {
-    appBackground: 'bg-gradient-to-br from-slate-50 via-slate-50 to-slate-100',
-    cardBackground: 'bg-white',
-    cardBorder: 'border-slate-300',
+    appBackground: 'bg-gradient-to-br from-gray-800 via-gray-850 to-gray-900',
+    cardBackground: 'bg-gray-800',
+    cardBorder: 'border-gray-700',
 
-    textPrimary: 'text-slate-900',
-    textSecondary: 'text-slate-600',
-    textTertiary: 'text-slate-500',
+    textPrimary: 'text-gray-50',
+    textSecondary: 'text-gray-300',
+    textTertiary: 'text-gray-400',
 
     button: {
       primary: 'bg-red-600 hover:bg-red-700 text-white',
-      secondary: 'bg-slate-200 hover:bg-slate-300 text-slate-900',
+      secondary: 'bg-gray-700 hover:bg-gray-600 text-gray-100',
       danger: 'bg-red-600 hover:bg-red-700 text-white',
     },
 
     input: {
-      background: 'bg-white',
-      border: 'border-slate-300',
-      text: 'text-slate-900',
-      placeholder: 'placeholder-slate-400',
+      background: 'bg-gray-900',
+      border: 'border-gray-600',
+      text: 'text-gray-100',
+      placeholder: 'placeholder-gray-500',
     },
 
     modal: {
-      overlay: 'bg-black/50',
-      background: 'bg-white',
-      border: 'border-slate-300',
+      overlay: 'bg-black/75',
+      background: 'bg-gray-800',
+      border: 'border-gray-700',
     },
 
     badge: {
       success: 'bg-emerald-100 text-emerald-700 border-emerald-400',
       warning: 'bg-amber-100 text-amber-700 border-amber-400',
       error: 'bg-red-100 text-red-700 border-red-400',
-      info: 'bg-blue-100 text-blue-700 border-blue-400',
+      info: 'bg-gray-300 text-gray-800 border-gray-500',
     },
   };
 }

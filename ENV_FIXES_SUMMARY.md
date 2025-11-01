@@ -105,6 +105,23 @@ pnpm run dev
 
 **Status:** ✅ FIXED
 **Date:** 2025-11-01
-**Issue:** Data syncing and WebSocket connection failures
+
+## Issues Resolved
+
+### 1. Data Syncing and WebSocket Connection Failures
 **Root Cause:** Wrong Supabase project credentials in both local and Vercel environments
 **Resolution:** Updated all environment variables to point to correct project (tjljndzodowpohusrwhs)
+
+### 2. Calendar Layout Breaking at Small Screens
+**Root Cause:** Conflicting CSS (aspect-square with min/max heights, min-w causing scroll)
+**Resolution:** Simplified to w-full, auto-rows-fr, removed conflicting constraints
+
+### 3. Duplicate Past Holds (Year Offset)
+**Root Cause:** Database contained 31 duplicate holds from 2024 (same dates as 2025 holds)
+**Resolution:** Created cleanup script to delete all holds before 2025-01-01
+**Example:** Angel Hernandez had Sep 25, 2024 AND Sep 25, 2025 - now only 2025 remains
+
+### 4. Past Hold Station Display
+**Note:** Historical holds (before 10/22) use firefighter's current station since historical
+station transfer data was not available during backfill. This is unavoidable without
+historical records.

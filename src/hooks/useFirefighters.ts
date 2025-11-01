@@ -4,7 +4,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { supabase, Firefighter, Shift, HoldDuration } from "../lib/supabase";
-import { recalculatePositions, assignPositions } from "../utils/rotationLogic";
+import { assignPositions, sortFirefighters } from "../utils/rotationLogic";
 import { ToastType } from "./useToast";
 import { useOperationLoading } from "./useOperationLoading";
 
@@ -35,7 +35,10 @@ export function useFirefighters(
 
       if (activeError) throw activeError;
 
-      const sorted = recalculatePositions(activeData || []);
+      // ✅ FIX: Use sortFirefighters instead of recalculatePositions
+      // recalculatePositions was overwriting positions set by markHoldCompleted
+      // We trust the database positions, just need to sort for display
+      const sorted = sortFirefighters(activeData || []);
       setFirefighters(sorted);
 
       const { data: deactivatedData, error: deactivatedError } = await supabase

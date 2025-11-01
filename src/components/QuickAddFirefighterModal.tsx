@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, UserPlus, ChevronDown, ChevronUp } from 'lucide-react';
-import { Shift, CertificationLevel } from '../lib/supabase';
+import { Shift } from '../lib/supabase';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
 
@@ -135,7 +135,7 @@ export function QuickAddFirefighterModal({
 
   if (!isOpen) return null;
 
-  const certificationLevels: (CertificationLevel | '')[] = ['', 'EMT', 'EMT-A', 'EMT-I', 'Paramedic'];
+  const certificationLevels: string[] = ['', 'EMT', 'EMT-A', 'EMT-I', 'Paramedic'];
   const hasAnyAdvancedData = apparatusAmbulance || apparatusBrushTruck || apparatusEngine ||
     apparatusTanker || apparatusTruck || apparatusBoat || apparatusUtv || apparatusRescueSquad ||
     isFTO || isBLS || isALS;

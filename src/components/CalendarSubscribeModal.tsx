@@ -19,11 +19,10 @@ export function CalendarSubscribeModal({
 }: CalendarSubscribeModalProps) {
   const [selectedShift, setSelectedShift] = useState<Shift | 'ALL'>(currentShift || 'ALL');
   const [copied, setCopied] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
+  const trapRef = useFocusTrap(isOpen);
   const triggerElementRef = useRef<HTMLElement | null>(null);
 
-  useFocusTrap(modalRef, isOpen);
-  useFocusReturn(triggerElementRef, isOpen);
+  useFocusReturn(isOpen);
 
   useEffect(() => {
     if (isOpen) {
@@ -72,7 +71,7 @@ export function CalendarSubscribeModal({
       aria-labelledby="calendar-subscribe-title"
     >
       <div
-        ref={modalRef}
+        ref={trapRef}
         className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl shadow-2xl animate-scale-in ${
           isDarkMode ? 'bg-gray-800' : 'bg-white'
         }`}

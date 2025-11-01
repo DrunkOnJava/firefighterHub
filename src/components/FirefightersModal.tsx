@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { X, Users, Edit2, Save, XCircle } from 'lucide-react';
-import { Firefighter, CertificationLevel, Shift, supabase } from '../lib/supabase';
+import { Firefighter, Shift, supabase } from '../lib/supabase';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
 import { ShiftBadge } from './ShiftSelector';
@@ -135,7 +135,7 @@ export function FirefightersModal({ isOpen, onClose, onUpdate, isAdminMode = fal
 
   if (!isOpen) return null;
 
-  const certificationLevels: (CertificationLevel | '')[] = ['', 'EMT', 'EMT-A', 'EMT-I', 'Paramedic'];
+  const certificationLevels: (string | '')[] = ['', 'EMT', 'EMT-A', 'EMT-I', 'Paramedic'];
   const shifts: Shift[] = ['A', 'B', 'C'];
 
   return (

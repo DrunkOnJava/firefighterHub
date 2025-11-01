@@ -17,11 +17,10 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const modalRef = useRef<HTMLDivElement>(null);
+  const trapRef = useFocusTrap(isOpen);
   const triggerElementRef = useRef<HTMLElement | null>(null);
 
-  useFocusTrap(modalRef, isOpen);
-  useFocusReturn(triggerElementRef, isOpen);
+  useFocusReturn(isOpen);
 
   useEffect(() => {
     if (isOpen) {
@@ -78,7 +77,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
       aria-labelledby="login-modal-title"
     >
       <div
-        ref={modalRef}
+        ref={trapRef}
         className="relative w-full max-w-md mx-4 bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >

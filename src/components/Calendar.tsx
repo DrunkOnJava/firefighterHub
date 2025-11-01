@@ -244,8 +244,8 @@ export function Calendar({
           </div>
         </div>
 
-        <div className="p-2 sm:p-4 lg:p-6 max-w-full overflow-x-auto">
-          <div className="grid grid-cols-7 gap-1.5 sm:gap-2 lg:gap-3 mb-2 sm:mb-3 min-w-[350px]">
+        <div className="p-2 sm:p-4 lg:p-6 w-full">
+          <div className="grid grid-cols-7 gap-1.5 sm:gap-2 lg:gap-3 mb-2 sm:mb-3 w-full">
             {weekDays.map((day) => (
               <div
                 key={day}
@@ -265,7 +265,7 @@ export function Calendar({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-7 gap-1.5 sm:gap-2 lg:gap-3 min-w-[350px]">
+            <div className="grid grid-cols-7 gap-1.5 sm:gap-2 lg:gap-3 w-full auto-rows-fr">
               {calendarDays.map((day, index) => {
                 const hasHolds = day.scheduledHolds.length > 0;
                 const scheduledHolds = day.scheduledHolds.filter(
@@ -280,8 +280,9 @@ export function Calendar({
 
                 // Determine day cell styling based on state
                 // ACCESSIBILITY: Minimum 44px height for touch targets per WCAG guidelines
+                // Use min-h-[44px] for touch accessibility, aspect-square for proportional scaling
                 let dayCellClasses =
-                  "aspect-square min-h-[110px] min-w-[44px] max-h-[130px] sm:min-h-[120px] sm:max-h-[140px] lg:min-h-[140px] lg:max-h-[160px] xl:min-h-[160px] xl:max-h-[180px] p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
+                  "aspect-square w-full min-h-[44px] h-full p-1.5 sm:p-2 lg:p-3 rounded-lg sm:rounded-xl text-left transition-all relative border-2 group overflow-hidden";
 
                 if (!day.isCurrentMonth) {
                   dayCellClasses += " cursor-default opacity-30";

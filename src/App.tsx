@@ -26,6 +26,9 @@ import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
 import { useScheduledHolds } from "./hooks/useScheduledHolds";
 import { useToast } from "./hooks/useToast";
 import { Firefighter, HoldDuration, Shift } from "./lib/supabase";
+import { getTheme } from "./utils/theme";
+import { useDarkMode } from "./hooks/useDarkMode";
+import { LAYOUT, GRID_COLS, SPINNER, A11Y, SCROLL_BEHAVIOR, KEYBOARD_SHORTCUTS } from "./config/constants";
 
 type View = "calendar" | "reports";
 
@@ -56,15 +59,15 @@ function App() {
   // Battalion chiefs who are authenticated have admin access
   const isAdminMode = isAuthenticatedAdmin;
 
-  // FIXED: Dark mode now persists to localStorage (was always resetting to true)
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem("isDarkMode");
-    return saved !== "false"; // Default to true (dark mode) if not set
-  });
+  // BEST PRACTICE: Dark mode with localStorage persistence via custom hook
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const { toasts, showToast, hideToast } = useToast();
   const announce = useAnnounce();
   const shiftChangeAnnouncedRef = useRef(false);
+
+  // Get theme based on current mode
+  const theme = getTheme(isDarkMode);
 
   // FIXED: Authentication now handled by Supabase Auth
   // Battalion chiefs log in with email/password
@@ -95,26 +98,22 @@ function App() {
     markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
 
-  // Keyboard shortcuts configuration
+  // BEST PRACTICE: Keyboard shortcuts configuration using constants
   const { shortcuts } = useKeyboardShortcuts({
     shortcuts: [
       {
-        key: "k",
-        ctrl: true,
-        meta: true,
+        ...KEYBOARD_SHORTCUTS.SEARCH,
         description: "Focus search bar",
         action: () => {
           searchInputRef.current?.focus();
           searchInputRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
+            behavior: SCROLL_BEHAVIOR.SMOOTH,
+            block: SCROLL_BEHAVIOR.CENTER,
           });
         },
       },
       {
-        key: "n",
-        ctrl: true,
-        meta: true,
+        ...KEYBOARD_SHORTCUTS.QUICK_ADD,
         description: "Quick add firefighter",
         action: () => {
           if (isAdminMode) {
@@ -124,9 +123,7 @@ function App() {
         enabled: isAdminMode,
       },
       {
-        key: "e",
-        ctrl: true,
-        meta: true,
+        ...KEYBOARD_SHORTCUTS.EXPORT,
         description: "Export data",
         action: () => {
           // Trigger export menu - will be implemented when migrating FirefighterList
@@ -134,19 +131,17 @@ function App() {
         },
       },
       {
-        key: "h",
-        ctrl: true,
-        meta: true,
+        ...KEYBOARD_SHORTCUTS.HELP,
         description: "Show help",
         action: () => setShowHelp(true),
       },
       {
-        key: "?",
+        ...KEYBOARD_SHORTCUTS.SHORTCUTS_MODAL,
         description: "Show keyboard shortcuts",
         action: () => setShowKeyboardShortcuts(true),
       },
       {
-        key: "Escape",
+        ...KEYBOARD_SHORTCUTS.ESCAPE,
         description: "Close modal",
         action: () => {
           setShowHelp(false);
@@ -204,11 +199,7 @@ function App() {
     setSelectedFirefighterForTransfer(null);
   }
 
-  // Persist dark mode preference to localStorage
-  useEffect(() => {
-    localStorage.setItem("isDarkMode", String(isDarkMode));
-  }, [isDarkMode]);
-
+  // BEST PRACTICE: Announce shift changes for screen readers
   useEffect(() => {
     if (shiftChangeAnnouncedRef.current) {
       announce(`Switched to Shift ${currentShift}`, "polite");
@@ -219,9 +210,9 @@ function App() {
   // Show loading state while auth is initializing
   if (authLoading || firefightersLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 flex items-center justify-center">
+      <div className={`min-h-screen ${theme.appBackground} flex items-center justify-center`}>
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className={`${SPINNER.SIZE} ${SPINNER.BORDER} ${SPINNER.COLOR} ${SPINNER.TRANSPARENT_SIDE} rounded-full ${SPINNER.ANIMATION} mx-auto mb-4`}></div>
           <p className="text-white text-xl font-semibold">
             {authLoading ? "Checking authentication..." : "Loading Hold List Manager..."}
           </p>
@@ -232,17 +223,13 @@ function App() {
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br ${
-        isDarkMode
-          ? "from-gray-900 via-gray-900 to-gray-800 text-white"
-          : "from-slate-50 via-slate-50 to-slate-100 text-slate-900"
-      }`}
+      className={`min-h-screen ${theme.appBackground} ${theme.textPrimary}`}
     >
-      <a href="#main-content" className="skip-link">
+      <a href={`#${A11Y.SKIP_LINK_ID}`} className="skip-link">
         Skip to main content
       </a>
 
-      <div className="max-w-[1920px] mx-auto">
+      <div className={`max-w-[${LAYOUT.MAX_WIDTH}] mx-auto`}>
         <Header
           onShowHelp={() => setShowHelp(true)}
           onShowActivityLog={() => setShowActivityLog(true)}
@@ -252,18 +239,18 @@ function App() {
           currentShift={currentShift}
           onShiftChange={setCurrentShift}
           isDarkMode={isDarkMode}
-          onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+          onToggleDarkMode={toggleDarkMode}
         />
 
         <main
-          id="main-content"
+          id={A11Y.SKIP_LINK_ID}
           role="main"
-          className="px-3 sm:px-6 py-4 sm:py-8"
+          className={`${LAYOUT.PADDING.MOBILE} ${LAYOUT.PADDING.DESKTOP}`}
         >
           {currentView === "calendar" ? (
             <>
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-4 sm:gap-8 mb-8">
-                <div className="xl:col-span-9">
+              <div className={`grid grid-cols-1 xl:grid-cols-12 ${LAYOUT.GRID_GAP.MOBILE} ${LAYOUT.GRID_GAP.DESKTOP} ${LAYOUT.SPACING.SECTION}`}>
+                <div className={GRID_COLS.CALENDAR}>
                   <section aria-labelledby="calendar-heading">
                     <ErrorBoundary componentName="Calendar">
                       <Calendar
@@ -286,7 +273,7 @@ function App() {
                 </div>
 
                 <aside
-                  className="xl:col-span-3"
+                  className={GRID_COLS.SIDEBAR}
                   role="complementary"
                   aria-label="Team statistics and information"
                 >
@@ -303,7 +290,7 @@ function App() {
                 </aside>
               </div>
 
-              <div className="mb-8">
+              <div className={LAYOUT.SPACING.SECTION}>
                 <section aria-labelledby="roster-heading">
                   <ErrorBoundary componentName="FirefighterList">
                     <FirefighterList
@@ -403,7 +390,7 @@ function App() {
         currentShift={currentShift}
         onShiftChange={setCurrentShift}
         isDarkMode={isDarkMode}
-        onToggleDarkMode={() => setIsDarkMode(!isDarkMode)}
+        onToggleDarkMode={toggleDarkMode}
       />
       <QuickAddFirefighterModal
         isOpen={showQuickAdd}

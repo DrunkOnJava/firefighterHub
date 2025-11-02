@@ -1,6 +1,6 @@
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
 import { Toast as ToastType } from '../hooks/useToast';
-import { colors, tokens } from '../styles';
+import { tokens } from '../styles';
 
 export type { ToastType } from '../hooks/useToast';
 

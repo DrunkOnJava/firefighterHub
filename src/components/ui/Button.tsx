@@ -1,6 +1,5 @@
 import { Loader2 } from "lucide-react";
 import { ButtonHTMLAttributes, forwardRef } from "react";
-import { Ripple, useRipple } from "./Ripple";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger" | "success";
@@ -9,8 +8,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-  disableRipple?: boolean;
-  rippleColor?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -25,14 +22,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       className = "",
       disabled,
-      disableRipple = false,
-      rippleColor,
       onClick,
       ...props
     },
     ref
   ) => {
-    const { ripples, createRipple } = useRipple();
 
     const baseStyles =
       "inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 relative overflow-hidden";
@@ -62,18 +56,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       lg: 20,
     };
 
-    const getRippleColor = () => {
-      if (rippleColor) return rippleColor;
-      switch (variant) {
-        case "primary":
-        case "danger":
-        case "success":
-          return "rgba(255, 255, 255, 0.3)";
-        default:
-          return "rgba(0, 0, 0, 0.1)";
-      }
-    };
-
     return (
       <button
         ref={ref}
@@ -85,17 +67,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ${className}
         `}
         disabled={disabled || isLoading}
-        onClick={(e) => {
-          if (!disableRipple && !disabled && !isLoading) {
-            createRipple(e);
-          }
-          onClick?.(e);
-        }}
+        onClick={onClick}
         {...props}
       >
-        {!disableRipple && (
-          <Ripple ripples={ripples} color={getRippleColor()} />
-        )}
         {isLoading && (
           <Loader2 size={iconSizes[size]} className="animate-spin" />
         )}

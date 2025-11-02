@@ -4,7 +4,7 @@ import { Clock, Award } from 'lucide-react';
 
 interface ActivityEntry {
   id: string;
-  firefighter_name: string;
+  firefighter_name: string | null;
   action_type: string;
   details: string | null;
   created_at: string;
@@ -12,11 +12,11 @@ interface ActivityEntry {
 
 interface CompletedHold {
   id: string;
-  firefighter_name: string;
-  hold_date: string;
+  firefighter_name: string | null;
+  hold_date: string | null;
   fire_station: string | null;
-  completed_at: string;
-  shift: string;
+  completed_at: string | null;
+  shift: string | null;
 }
 
 export function ActivityLog() {
@@ -168,7 +168,7 @@ export function ActivityLog() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="font-bold text-white text-lg">{activity.firefighter_name}</span>
+                        <span className="font-bold text-white text-lg">{activity.firefighter_name || 'Unknown'}</span>
                         <span className={`px-2 py-1 rounded text-xs font-bold border ${getActionColor(activity.action_type)}`}>
                           {formatActionType(activity.action_type)}
                         </span>
@@ -203,28 +203,34 @@ export function ActivityLog() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2">
                       <Award size={18} className="text-amber-400" />
-                      <span className="font-bold text-white text-lg">{hold.firefighter_name}</span>
+                      <span className="font-bold text-white text-lg">{hold.firefighter_name || 'Unknown'}</span>
                       <span className="px-2 py-1 rounded text-xs font-bold border bg-amber-950/70 text-amber-400 border-amber-800">
                         COMPLETED
                       </span>
                     </div>
                     <div className="flex items-center gap-3 mb-2">
-                      <p className="text-sm text-gray-300">
-                        Hold Date: <span className="font-semibold">{new Date(hold.hold_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                      </p>
+                      {hold.hold_date && (
+                        <p className="text-sm text-gray-300">
+                          Hold Date: <span className="font-semibold">{new Date(hold.hold_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        </p>
+                      )}
                       {hold.fire_station && (
                         <p className="text-sm text-gray-300">
                           Station: <span className="font-semibold">#{hold.fire_station}</span>
                         </p>
                       )}
-                      <p className="text-sm text-gray-300">
-                        Shift: <span className="font-semibold">{hold.shift}</span>
-                      </p>
+                      {hold.shift && (
+                        <p className="text-sm text-gray-300">
+                          Shift: <span className="font-semibold">{hold.shift}</span>
+                        </p>
+                      )}
                     </div>
-                    <p className="text-xs text-gray-500 flex items-center gap-1">
-                      <Clock size={12} />
-                      Completed {formatTime(hold.completed_at)}
-                    </p>
+                    {hold.completed_at && (
+                      <p className="text-xs text-gray-500 flex items-center gap-1">
+                        <Clock size={12} />
+                        Completed {formatTime(hold.completed_at)}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

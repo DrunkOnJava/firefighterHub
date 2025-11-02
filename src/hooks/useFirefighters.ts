@@ -175,6 +175,7 @@ export function useFirefighters(
         firefighter_id: firefighterId,
         firefighter_name: firefighterName,
         action_type: actionType,
+        description: details || actionType, // description is required, use details or actionType as fallback
         details: details || null,
         shift: currentShift,
       });
@@ -339,7 +340,8 @@ export function useFirefighters(
         .insert({
           firefighter_id: id,
           firefighter_name: firefighter.name,
-          hold_date: holdDate,
+          scheduled_date: holdDate, // Required field (legacy)
+          hold_date: holdDate, // Newer field for consistency
           fire_station: stationToUse,
           status: "completed",
           completed_at: new Date().toISOString(),

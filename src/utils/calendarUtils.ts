@@ -1,21 +1,8 @@
-import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
+import { Firefighter, Shift, HoldDuration, ScheduledHold as DBScheduledHold } from "../lib/supabase";
 
-export interface ScheduledHold {
-  id: string;
-  firefighter_id: string;
-  firefighter_name: string;
-  hold_date: string;
-  status: "scheduled" | "completed" | "skipped";
-  shift: Shift;
-  fire_station: string | null;
-  lent_to_shift: Shift | null;
-  notes: string | null;
-  duration: HoldDuration;
-  start_time: string;
-  created_at: string;
-  updated_at: string;
-  completed_at: string | null;
-}
+// Re-export database type with convenience type alias
+// This ensures consistency with the actual database schema
+export type ScheduledHold = DBScheduledHold;
 
 export interface CalendarDay {
   date: Date;

@@ -1,108 +1,59 @@
-// TECHNICAL DEBT: This file was completely missing from the project!
-// All 25+ source files import from this path but it didn't exist.
-// This is a CRITICAL missing file that would cause complete build failure.
+/**
+ * Supabase Client Configuration
+ * 
+ * This file initializes the Supabase client with type-safe database types
+ * that are auto-generated from the actual database schema.
+ * 
+ * To regenerate types after schema changes, run: pnpm types:generate
+ */
 
 import { createClient } from '@supabase/supabase-js';
+import { Database } from './database.types';
 
-// FIXED: Environment variables are trimmed to remove any whitespace/newlines
+// Environment variables are trimmed to remove any whitespace/newlines
 // This prevents malformed URLs with %0A characters that break WebSocket connections
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim();
 
-// ISSUE: No validation - app will fail silently if env vars are missing
+// Validate environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
     'Missing Supabase environment variables. Please check your .env file contains VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY'
   );
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create typed Supabase client
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
-// Type Definitions
+// Re-export commonly used types
 export type Shift = 'A' | 'B' | 'C';
-
 export type HoldDuration = '12h' | '24h';
+export type HoldStatus = 'scheduled' | 'completed' | 'skipped';
 
-export interface Firefighter {
-  id: string;
-  name: string;
-  order_position: number;
-  is_available: boolean;
-  is_active: boolean;
-  shift: Shift;
-  fire_station: string | null;
-  last_hold_date: string | null; // TECHNICAL DEBT: Should be Date type, but DB returns string
-  certification_level: string | null;
+// Extract table row types from auto-generated Database type
+// NOTE: Supabase returns generic 'string' types for enum-like columns
+// Our application uses these types directly, accepting that shift/status/duration are strings
+type DBFirefighter = Database['public']['Tables']['firefighters']['Row'];
+type DBScheduledHold = Database['public']['Tables']['scheduled_holds']['Row'];
+type DBActivityLog = Database['public']['Tables']['activity_log']['Row'];
 
-  // Apparatus certifications
-  apparatus_ambulance: boolean;
-  apparatus_brush_truck: boolean;
-  apparatus_engine: boolean;
-  apparatus_tanker: boolean;
-  apparatus_truck: boolean;
-  apparatus_boat: boolean;
-  apparatus_utv: boolean;
-  apparatus_rescue_squad: boolean;
+// Re-export database types as-is
+// The database returns 'string' for shift/status/duration fields, not literal unions
+// TypeScript will accept literal values when creating/updating, but queries return string
+export type Firefighter = DBFirefighter;
+export type ScheduledHold = DBScheduledHold;
+export type ActivityLog = DBActivityLog;
 
-  // Additional certifications
-  is_fto: boolean; // Field Training Officer
-  is_bls: boolean; // Basic Life Support
-  is_als: boolean; // Advanced Life Support
+// Extract insert types for creating new records
+// These are less strict - we can pass literal values and Supabase will accept them
+export type FirefighterInsert = Database['public']['Tables']['firefighters']['Insert'];
+export type ScheduledHoldInsert = Database['public']['Tables']['scheduled_holds']['Insert'];
+export type ActivityLogInsert = Database['public']['Tables']['activity_log']['Insert'];
 
-  // 72-hour rule tracking - REMOVED per user feedback
-  // Database columns still exist for backward compatibility but are not used in the application
-  // User stated: "There is no way to accurately calculate that without manually checking through the scheduling program"
-  hours_worked_this_period?: number; // Made optional - no longer tracked
-  last_hours_reset_date?: string | null; // Made optional - no longer used
+// Extract update types for partial updates  
+export type FirefighterUpdate = Database['public']['Tables']['firefighters']['Update'];
+export type ScheduledHoldUpdate = Database['public']['Tables']['scheduled_holds']['Update'];
+export type ActivityLogUpdate = Database['public']['Tables']['activity_log']['Update'];
 
-  // Timestamps - TECHNICAL DEBT: Should be Date type but DB returns ISO strings
-  created_at: string;
-  updated_at: string;
-}
-
-// TECHNICAL DEBT: Database table structure definition for type safety
-// This should be generated from the database schema automatically
-export interface Database {
-  public: {
-    Tables: {
-      firefighters: {
-        Row: Firefighter;
-        Insert: Omit<Firefighter, 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Omit<Firefighter, 'id' | 'created_at' | 'updated_at'>>;
-      };
-      scheduled_holds: {
-        Row: {
-          id: string;
-          firefighter_id: string;
-          firefighter_name: string;
-          hold_date: string;
-          status: 'scheduled' | 'completed' | 'skipped';
-          shift: Shift;
-          fire_station: string | null;
-          lent_to_shift: Shift | null;
-          notes: string | null;
-          duration: HoldDuration;
-          start_time: string; // Time in HH:MM:SS format
-          created_at: string;
-          updated_at: string;
-          completed_at: string | null;
-        };
-      };
-      activity_log: {
-        Row: {
-          id: string;
-          firefighter_id: string | null;
-          firefighter_name: string;
-          action_type: string;
-          details: string | null;
-          shift: Shift | null;
-          created_at: string;
-        };
-      };
-    };
-  };
-}
-
-// TECHNICAL DEBT: Type-safe Supabase client
-// Consider using Supabase CLI to generate these types automatically
+// Type-safe Supabase client type
 export type TypedSupabaseClient = typeof supabase;

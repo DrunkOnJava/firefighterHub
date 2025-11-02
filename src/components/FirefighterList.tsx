@@ -17,11 +17,13 @@ import {
   CheckSquare,
   Square,
   History,
+  Eye,
 } from "lucide-react";
 import { useFilters } from "../hooks/useFilters";
 import { formatHoldDate } from "../utils/dateUtils";
 import { ConfirmOptions } from "../hooks/useConfirm";
 import { colors, tokens } from "../styles";
+import { exportRosterToCSV, exportRosterToJSON } from "../utils/exportUtils";
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -240,6 +242,8 @@ export function FirefighterList({
     deselectAll();
   }
 
+  // Export handlers - Currently wired through ExportMenu component
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleExportCSV() {
     const filename = exportRosterToCSV(
       firefighters,
@@ -249,6 +253,7 @@ export function FirefighterList({
     console.log(`Exported roster to ${filename}`);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleExportJSON() {
     const filename = exportRosterToJSON(
       firefighters,

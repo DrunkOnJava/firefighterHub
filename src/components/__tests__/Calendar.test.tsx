@@ -12,7 +12,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Calendar } from "../Calendar";
-import { createMockFirefighter } from "../../test/mockData";
+import { createMockFirefighter, createMockHold } from "../../test/mockData";
 import type { Firefighter } from "../../lib/supabase";
 import type { ScheduledHold } from "../../utils/calendarUtils";
 
@@ -58,22 +58,14 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1); // 5 days from now
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "4", // Held at Station 4 (different from assigned Station 1)
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+        }),
       ];
 
       render(
@@ -104,38 +96,22 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1);
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "5", // Held at Station 5
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
-        {
+        }),
+        createMockHold({
           id: "hold-2",
           firefighter_id: "ff-2",
           firefighter_name: "Jane Smith",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "6", // Held at Station 6
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+        }),
       ];
 
       render(
@@ -170,22 +146,14 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1);
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
-          fire_station: null, // No station specified
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+          fire_station: undefined, // No station specified
+        }),
       ];
 
       render(
@@ -222,38 +190,22 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1);
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "1",
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
-        {
+        }),
+        createMockHold({
           id: "hold-2",
           firefighter_id: "ff-2",
           firefighter_name: "Jane Smith",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "2",
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+        }),
       ];
 
       render(
@@ -294,22 +246,14 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1);
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "1",
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+        }),
       ];
 
       render(
@@ -341,38 +285,22 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1);
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "1",
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
-        {
+        }),
+        createMockHold({
           id: "hold-2",
           firefighter_id: "ff-2",
           firefighter_name: "Jane Smith",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "2",
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+        }),
       ];
 
       render(
@@ -411,22 +339,14 @@ describe("Calendar Component", () => {
       holdDate.setDate(today.getDate() + 1);
 
       const scheduledHolds: ScheduledHold[] = [
-        {
+        createMockHold({
           id: "hold-1",
           firefighter_id: "ff-1",
           firefighter_name: "John Doe",
+          scheduled_date: holdDate.toISOString().split("T")[0],
           hold_date: holdDate.toISOString().split("T")[0],
-          status: "scheduled",
-          shift: "A",
           fire_station: "1",
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: null,
-      lent_to_shift: null,
-        },
+        }),
       ];
 
       render(

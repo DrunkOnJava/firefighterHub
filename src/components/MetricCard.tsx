@@ -1,5 +1,5 @@
 import { LucideIcon } from 'lucide-react';
-import { colors, tokens } from '../styles';
+import { tokens } from '../styles';
 
 interface MetricCardProps {
   title: string;

@@ -7,10 +7,12 @@ import { Firefighter, HoldDuration, Shift, supabase } from "../lib/supabase";
 import { assignPositions, sortFirefighters } from "../utils/rotationLogic";
 import { useOperationLoading } from "./useOperationLoading";
 import { ToastType } from "./useToast";
+import { ConfirmOptions } from "./useConfirm";
 
 export function useFirefighters(
   showToast: (message: string, type: ToastType) => void,
-  currentShift: Shift
+  currentShift: Shift,
+  confirmAction?: (options: ConfirmOptions) => Promise<boolean>
 ) {
   const [firefighters, setFirefighters] = useState<Firefighter[]>([]);
   const [deactivatedFirefighters, setDeactivatedFirefighters] = useState<
@@ -381,12 +383,25 @@ export function useFirefighters(
   async function deleteFirefighter(id: string) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter) return;
-    if (
-      !confirm(
-        `Remove ${firefighter.name} from your roster?\n\nTheir hold history will be preserved on the calendar. This cannot be undone.`
-      )
-    )
-      return;
+    
+    // Use confirmAction if provided, otherwise fall back to window.confirm
+    const confirmed = confirmAction
+      ? await confirmAction({
+          title: "Remove Firefighter?",
+          message: `Remove ${firefighter.name} from your roster?`,
+          confirmText: "Remove",
+          cancelText: "Cancel",
+          variant: "danger",
+          consequences: [
+            "Their hold history will be preserved on the calendar",
+            "This action cannot be undone"
+          ]
+        })
+      : confirm(
+          `Remove ${firefighter.name} from your roster?\n\nTheir hold history will be preserved on the calendar. This cannot be undone.`
+        );
+    
+    if (!confirmed) return;
 
     const previousFirefighters = [...firefighters];
     setFirefighters((prev) => prev.filter((ff) => ff.id !== id));
@@ -418,12 +433,24 @@ export function useFirefighters(
   }
 
   async function resetAll() {
-    if (
-      !confirm(
-        "Delete your entire roster?\n\nThis will remove all firefighters and cancel all scheduled holds. This action is permanent."
-      )
-    )
-      return;
+    const confirmed = confirmAction
+      ? await confirmAction({
+          title: "Delete Entire Roster?",
+          message: "This will remove all firefighters and cancel all scheduled holds.",
+          confirmText: "Delete Roster",
+          cancelText: "Cancel",
+          variant: "danger",
+          consequences: [
+            "All firefighters will be removed",
+            "All scheduled holds will be cancelled",
+            "This action is permanent"
+          ]
+        })
+      : confirm(
+          "Delete your entire roster?\n\nThis will remove all firefighters and cancel all scheduled holds. This action is permanent."
+        );
+    
+    if (!confirmed) return;
 
     try {
       const { error } = await supabase
@@ -440,15 +467,42 @@ export function useFirefighters(
   }
 
   async function masterReset() {
-    if (
-      !confirm(
-        "MASTER RESET - WARNING\n\nThis will permanently delete:\n• ALL firefighters from ALL shifts\n• ALL scheduled holds\n• ALL activity logs\n• ALL completed holds\n\nThis action CANNOT be undone!\n\nAre you absolutely sure?"
-      )
-    )
-      return;
+    const firstConfirmed = confirmAction
+      ? await confirmAction({
+          title: "MASTER RESET - WARNING",
+          message: "This will permanently delete ALL data from ALL shifts!",
+          confirmText: "Continue",
+          cancelText: "Cancel",
+          variant: "danger",
+          consequences: [
+            "ALL firefighters from ALL shifts",
+            "ALL scheduled holds",
+            "ALL activity logs",
+            "ALL completed holds",
+            "This action CANNOT be undone!"
+          ]
+        })
+      : confirm(
+          "MASTER RESET - WARNING\n\nThis will permanently delete:\n• ALL firefighters from ALL shifts\n• ALL scheduled holds\n• ALL activity logs\n• ALL completed holds\n\nThis action CANNOT be undone!\n\nAre you absolutely sure?"
+        );
+    
+    if (!firstConfirmed) return;
 
-    if (!confirm("Final confirmation: Delete EVERYTHING and start fresh?"))
-      return;
+    const finalConfirmed = confirmAction
+      ? await confirmAction({
+          title: "Final Confirmation",
+          message: "Delete EVERYTHING and start fresh?",
+          confirmText: "Delete Everything",
+          cancelText: "Cancel",
+          variant: "danger",
+          consequences: [
+            "This is your last chance to cancel",
+            "All data will be permanently deleted"
+          ]
+        })
+      : confirm("Final confirmation: Delete EVERYTHING and start fresh?");
+    
+    if (!finalConfirmed) return;
 
     const previousFirefighters = [...firefighters];
     setFirefighters([]);
@@ -510,12 +564,25 @@ export function useFirefighters(
   async function deactivateFirefighter(id: string) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter) return;
-    if (
-      !confirm(
-        `Deactivate ${firefighter.name}?\n\nThey will be removed from the roster but all their history and completed holds will be preserved.`
-      )
-    )
-      return;
+    
+    const confirmed = confirmAction
+      ? await confirmAction({
+          title: "Deactivate Firefighter?",
+          message: `Deactivate ${firefighter.name}?`,
+          confirmText: "Deactivate",
+          cancelText: "Cancel",
+          variant: "warning",
+          consequences: [
+            "They will be removed from the roster",
+            "All their history and completed holds will be preserved",
+            "They can be reactivated later"
+          ]
+        })
+      : confirm(
+          `Deactivate ${firefighter.name}?\n\nThey will be removed from the roster but all their history and completed holds will be preserved.`
+        );
+    
+    if (!confirmed) return;
 
     const previousFirefighters = [...firefighters];
     setFirefighters((prev) => prev.filter((ff) => ff.id !== id));

@@ -1,4 +1,5 @@
 import { LucideIcon } from 'lucide-react';
+import { colors, tokens } from '../styles';
 
 interface MetricCardProps {
   title: string;
@@ -36,7 +37,15 @@ export function MetricCard({
 
   return (
     <div
-      className={`${bgClass} ${borderClass} rounded-lg p-6 border shadow-sm hover:shadow-md transition-shadow`}
+      className={`
+        ${bgClass} ${borderClass}
+        ${tokens.borders.radius.lg}
+        ${tokens.spacing.card.lg}
+        ${tokens.shadows.sm}
+        ${tokens.transitions.fast}
+        border
+        hover:shadow-md
+      `}
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">

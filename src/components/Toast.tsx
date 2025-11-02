@@ -1,5 +1,6 @@
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
 import { Toast as ToastType } from '../hooks/useToast';
+import { colors, tokens } from '../styles';
 
 export type { ToastType } from '../hooks/useToast';
 
@@ -24,7 +25,17 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
 
   return (
     <div
-      className={`${colors[toast.type]} border-2 rounded-lg shadow-2xl p-4 min-w-[320px] max-w-[500px] backdrop-blur-sm animate-slide-up transition-all duration-300`}
+      className={`
+        ${colors[toast.type]}
+        border-2
+        ${tokens.borders.radius.lg}
+        ${tokens.shadows['2xl']}
+        ${tokens.spacing.card.md}
+        min-w-[320px] max-w-[500px]
+        backdrop-blur-sm
+        animate-slide-up
+        transition-all duration-300
+      `}
       style={{
         transform: `translateY(-${index * 80}px)`,
         opacity: 1 - (index * 0.2)

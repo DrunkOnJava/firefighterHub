@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityLogModal } from "./components/ActivityLogModal";
 import { Calendar } from "./components/Calendar";
 import { CompleteHoldModal } from "./components/CompleteHoldModal";
+import { ConfirmDialog } from "./components/ConfirmDialog";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { FirefighterList } from "./components/FirefighterList";
 import { Header } from "./components/Header";
@@ -29,6 +30,7 @@ import {
 } from "./config/constants";
 import { useAuth } from "./contexts/AuthContext";
 import { useAnnounce } from "./hooks/useAnnounce";
+import { useConfirm } from "./hooks/useConfirm";
 import { useDarkMode } from "./hooks/useDarkMode";
 import { useFirefighters } from "./hooks/useFirefighters";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
@@ -75,6 +77,7 @@ function App() {
 
   const { toasts, showToast, hideToast } = useToast();
   const announce = useAnnounce();
+  const { confirm, confirmState, handleConfirm, handleCancel } = useConfirm();
   const shiftChangeAnnouncedRef = useRef(false);
 
   // Get theme based on current mode
@@ -99,7 +102,7 @@ function App() {
     resetAll,
     masterReset,
     reorderFirefighters,
-  } = useFirefighters(showToast, currentShift);
+  } = useFirefighters(showToast, currentShift, confirm);
 
   const {
     scheduledHolds,
@@ -325,6 +328,7 @@ function App() {
                       isAdminMode={isAdminMode}
                       isDarkMode={isDarkMode}
                       searchInputRef={searchInputRef}
+                      confirmAction={confirm}
                     />
                   </ErrorBoundary>
                 </section>
@@ -419,6 +423,20 @@ function App() {
       <div role="alert" aria-live="polite" aria-atomic="true">
         <ToastContainer toasts={toasts} onClose={hideToast} />
       </div>
+
+      {/* Non-blocking confirmation dialog */}
+      <ConfirmDialog
+        isOpen={confirmState.isOpen}
+        onClose={handleCancel}
+        onConfirm={handleConfirm}
+        title={confirmState.title}
+        message={confirmState.message}
+        confirmText={confirmState.confirmText}
+        cancelText={confirmState.cancelText}
+        variant={confirmState.variant}
+        consequences={confirmState.consequences}
+        isDarkMode={isDarkMode}
+      />
 
       {/* Update notification for new app versions */}
       <UpdateNotification />

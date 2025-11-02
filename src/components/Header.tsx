@@ -10,6 +10,7 @@ import {
 import { Shift } from "../lib/supabase";
 import { ShiftSelector } from "./ShiftSelector";
 import { ConnectionStatusIndicator, ConnectionStatusDot } from "./ConnectionStatusIndicator";
+import { colors, tokens } from "../styles";
 
 interface HeaderProps {
   onShowHelp: () => void;
@@ -36,13 +37,16 @@ export function Header({
 }: HeaderProps) {
   return (
     <header
-      className={`border-b backdrop-blur-sm sticky top-0 z-40 ${
-        isDarkMode
-          ? "border-gray-800 bg-gray-900/95"
+      className={`
+        border-b backdrop-blur-sm sticky top-0
+        ${tokens.zIndex.sticky}
+        ${isDarkMode
+          ? `${colors.structural.border.emphasis} bg-gray-900/95`
           : "border-slate-300 bg-white/95"
-      }`}
+        }
+      `}
     >
-      <div className="px-4 sm:px-6 py-2 sm:py-2.5">
+      <div className={`px-4 sm:px-6 ${tokens.spacing.section.sm}`}>
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
           <div className="flex items-center gap-4 min-w-0 leading-tight">
@@ -55,16 +59,19 @@ export function Header({
             </div>
             <div className="min-w-0">
               <h1
-                className={`text-xl sm:text-2xl font-bold truncate ${
-                  isDarkMode ? "text-white" : "text-slate-900"
-                }`}
+                className={`
+                  text-xl sm:text-2xl font-bold truncate
+                  ${isDarkMode ? colors.structural.text.primary : "text-slate-900"}
+                `}
               >
                 Hold List Manager
               </h1>
               <p
-                className={`text-xs sm:text-sm mt-0.5 hidden sm:block ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
-                }`}
+                className={`
+                  ${tokens.typography.body.small} sm:${tokens.typography.body.secondary}
+                  mt-0.5 hidden sm:block
+                  ${isDarkMode ? colors.structural.text.secondary : "text-slate-600"}
+                `}
               >
                 Organize your team's hold rotation schedule
               </p>
@@ -93,11 +100,16 @@ export function Header({
               {isAdminMode && (
                 <button
                   onClick={onQuickAddFirefighter}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all flex items-center gap-2 shadow-lg focus-ring ${
-                    isDarkMode
-                      ? "bg-green-600 hover:bg-green-700 text-white"
-                      : "bg-green-600 hover:bg-green-700 text-white"
-                  }`}
+                  className={`
+                    px-4 py-2
+                    ${tokens.borders.radius.lg}
+                    ${tokens.shadows.lg}
+                    font-semibold
+                    ${tokens.transitions.fast}
+                    flex items-center gap-2
+                    bg-green-600 hover:bg-green-700 text-white
+                    focus-ring
+                  `}
                   aria-label="Quick add team member"
                 >
                   <UserPlus size={18} />

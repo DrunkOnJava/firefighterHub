@@ -34,10 +34,12 @@ vi.mock('../../lib/supabase', async () => {
 
 describe('useFirefighters', () => {
   const mockToast = vi.fn();
+  const mockConfirmAction = vi.fn<any, Promise<boolean>>();
 
   beforeEach(() => {
     resetMockDatabase();
     mockToast.mockClear();
+    mockConfirmAction.mockClear();
     clearErrorSimulation();
   });
 
@@ -121,7 +123,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters([...shiftAFirefighters, shiftBFirefighter]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -186,7 +188,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -252,7 +254,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -265,7 +267,7 @@ describe('useFirefighters', () => {
     it('should handle empty state (no firefighters)', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -278,7 +280,7 @@ describe('useFirefighters', () => {
     it('should handle error when fetch fails', async () => {
       simulateError('Network error', true);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -346,7 +348,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -425,7 +427,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -451,7 +453,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -500,7 +502,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -520,7 +522,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -578,7 +580,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -611,7 +613,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(existingFirefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -635,7 +637,7 @@ describe('useFirefighters', () => {
     it('should add firefighter with apparatus clearances', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -668,7 +670,7 @@ describe('useFirefighters', () => {
     it('should add firefighter with certifications', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -699,7 +701,7 @@ describe('useFirefighters', () => {
     it('should show optimistic update immediately', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -723,7 +725,7 @@ describe('useFirefighters', () => {
     it('should replace optimistic update with real data', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -743,7 +745,7 @@ describe('useFirefighters', () => {
     it('should rollback optimistic update on error', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -767,7 +769,7 @@ describe('useFirefighters', () => {
     it('should log activity when firefighter added', async () => {
       setMockFirefighters([]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -790,7 +792,7 @@ describe('useFirefighters', () => {
         { id: 'ff1', name: 'First', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
       ]);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -809,7 +811,7 @@ describe('useFirefighters', () => {
 
   describe('deleteFirefighter()', () => {
     it('should delete firefighter after confirmation', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+      mockConfirmAction.mockResolvedValue(true);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'To Delete', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -817,7 +819,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -829,17 +831,15 @@ describe('useFirefighters', () => {
         expect(result.current.firefighters.length).toBe(0);
       });
 
-      expect(confirmSpy).toHaveBeenCalled();
+      expect(mockConfirmAction).toHaveBeenCalled();
       expect(mockToast).toHaveBeenCalledWith(
         'To Delete removed - hold history preserved',
         'success'
       );
-
-      confirmSpy.mockRestore();
     });
 
     it('should NOT delete if user cancels confirmation', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(false);
+      mockConfirmAction.mockResolvedValue(false);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'Keep Me', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -847,7 +847,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -857,13 +857,11 @@ describe('useFirefighters', () => {
 
       // Should still be there
       expect(result.current.firefighters.length).toBe(1);
-      expect(confirmSpy).toHaveBeenCalled();
-
-      confirmSpy.mockRestore();
+      expect(mockConfirmAction).toHaveBeenCalled();
     });
 
     it('should log activity when firefighter deleted', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+      mockConfirmAction.mockResolvedValue(true);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'Activity Test', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -871,7 +869,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -886,11 +884,10 @@ describe('useFirefighters', () => {
         expect(log).toBeDefined();
       });
 
-      confirmSpy.mockRestore();
     });
 
     it('should rollback on error', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+      mockConfirmAction.mockResolvedValue(true);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'Error Test', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -898,7 +895,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -921,7 +918,6 @@ describe('useFirefighters', () => {
 
       // Clear error for subsequent tests
       clearErrorSimulation();
-      confirmSpy.mockRestore();
     });
   });
 
@@ -935,7 +931,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -969,7 +965,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1001,7 +997,7 @@ describe('useFirefighters', () => {
 
   describe('deactivateFirefighter()', () => {
     it('should deactivate firefighter (soft delete)', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+      mockConfirmAction.mockResolvedValue(true);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'Active User', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1009,7 +1005,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1027,11 +1023,10 @@ describe('useFirefighters', () => {
         expect(dbRecord?.is_active).toBe(false);
       });
 
-      confirmSpy.mockRestore();
     });
 
     it('should cancel deactivation if not confirmed', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(false);
+      mockConfirmAction.mockResolvedValue(false);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'Active User', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1039,7 +1034,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1049,13 +1044,12 @@ describe('useFirefighters', () => {
 
       // Should still be there
       expect(result.current.firefighters.length).toBe(1);
-      expect(confirmSpy).toHaveBeenCalled();
+      expect(mockConfirmAction).toHaveBeenCalled();
 
-      confirmSpy.mockRestore();
     });
 
     it('should log activity when firefighter deactivated', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+      mockConfirmAction.mockResolvedValue(true);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'Deactivate Test', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1063,7 +1057,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1078,7 +1072,6 @@ describe('useFirefighters', () => {
         expect(log).toBeDefined();
       });
 
-      confirmSpy.mockRestore();
     });
   });
 
@@ -1091,7 +1084,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1122,7 +1115,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1148,7 +1141,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1175,7 +1168,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1199,7 +1192,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1226,7 +1219,7 @@ describe('useFirefighters', () => {
 
   describe('resetAll()', () => {
     it('should reset all firefighters (ALL SHIFTS) after confirmation', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+      mockConfirmAction.mockResolvedValue(true);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'User 1', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1236,7 +1229,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1249,11 +1242,10 @@ describe('useFirefighters', () => {
         expect(mockDatabase.firefighters.length).toBe(0);
       });
 
-      confirmSpy.mockRestore();
     });
 
     it('should cancel reset if not confirmed', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(false);
+      mockConfirmAction.mockResolvedValue(false);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'User 1', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1261,7 +1253,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1271,17 +1263,16 @@ describe('useFirefighters', () => {
 
       // Should still have firefighters
       expect(result.current.firefighters.length).toBe(1);
-      expect(confirmSpy).toHaveBeenCalled();
+      expect(mockConfirmAction).toHaveBeenCalled();
 
-      confirmSpy.mockRestore();
     });
   });
 
   describe('masterReset()', () => {
     it('should reset all data after double confirmation', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm')
-        .mockReturnValueOnce(true)  // First confirmation
-        .mockReturnValueOnce(true); // Second confirmation
+      mockConfirmAction
+        .mockResolvedValueOnce(true)  // First confirmation
+        .mockResolvedValueOnce(true); // Second confirmation
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'User 1', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1289,7 +1280,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1308,12 +1299,11 @@ describe('useFirefighters', () => {
         expect(mockDatabase.activity_log.length).toBe(0);
       });
 
-      expect(confirmSpy).toHaveBeenCalledTimes(2);
-      confirmSpy.mockRestore();
+      expect(mockConfirmAction).toHaveBeenCalledTimes(2);
     });
 
     it('should cancel on first confirmation denial', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm').mockReturnValue(false);
+      mockConfirmAction.mockResolvedValue(false);
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'User 1', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1321,7 +1311,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1331,15 +1321,14 @@ describe('useFirefighters', () => {
 
       // Should still have data
       expect(mockDatabase.firefighters.length).toBe(1);
-      expect(confirmSpy).toHaveBeenCalledTimes(1);
+      expect(mockConfirmAction).toHaveBeenCalledTimes(1);
 
-      confirmSpy.mockRestore();
     });
 
     it('should cancel on second confirmation denial', async () => {
-      const confirmSpy = vi.spyOn(globalThis, 'confirm')
-        .mockReturnValueOnce(true)   // First confirmation
-        .mockReturnValueOnce(false); // Second confirmation denied
+      mockConfirmAction
+        .mockResolvedValueOnce(true)   // First confirmation
+        .mockResolvedValueOnce(false); // Second confirmation denied
 
       const firefighters: Firefighter[] = [
         { id: 'ff1', name: 'User 1', shift: 'A', is_active: true, is_available: true, order_position: 0, fire_station: null, last_hold_date: null, certification_level: null, apparatus_ambulance: false, apparatus_brush_truck: false, apparatus_engine: false, apparatus_tanker: false, apparatus_truck: false, apparatus_boat: false, apparatus_utv: false, apparatus_rescue_squad: false, is_fto: false, is_bls: false, is_als: false, created_at: '2025-01-01T00:00:00Z', updated_at: '2025-01-01T00:00:00Z' },
@@ -1347,7 +1336,7 @@ describe('useFirefighters', () => {
 
       setMockFirefighters(firefighters);
 
-      const { result } = renderHook(() => useFirefighters(mockToast, 'A'));
+      const { result } = renderHook(() => useFirefighters(mockToast, 'A', mockConfirmAction));
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -1357,9 +1346,8 @@ describe('useFirefighters', () => {
 
       // Should still have data
       expect(mockDatabase.firefighters.length).toBe(1);
-      expect(confirmSpy).toHaveBeenCalledTimes(2);
+      expect(mockConfirmAction).toHaveBeenCalledTimes(2);
 
-      confirmSpy.mockRestore();
     });
   });
 });

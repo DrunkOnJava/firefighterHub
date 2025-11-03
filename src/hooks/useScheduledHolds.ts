@@ -244,6 +244,8 @@ export function useScheduledHolds(
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       completed_at: null,
+      is_completed: false, // Required by database schema
+      scheduled_date: holdDate, // Required by database schema - using hold_date as the scheduled date
     };
 
     setScheduledHolds((prev) => [...prev, optimisticHold]);
@@ -402,7 +404,10 @@ export function useScheduledHolds(
 
           if (ff.id === hold.firefighter_id) {
             // ✅ FIX: Ensure date format is consistent (YYYY-MM-DD only, no time)
-            updates.last_hold_date = hold.hold_date.split("T")[0];
+            // Add null safety check for hold_date (convert null to undefined for type compatibility)
+            updates.last_hold_date = hold.hold_date
+              ? hold.hold_date.split("T")[0]
+              : undefined;
             updates.updated_at = new Date().toISOString();
 
             console.log("✅ Updating firefighter after hold completion:", {

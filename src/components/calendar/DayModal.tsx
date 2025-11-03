@@ -1,25 +1,26 @@
 /**
  * DayModal Component
- * 
+ *
  * Modal for viewing and managing holds for a selected day.
  * Contains:
  * - Modal overlay and container
  * - Day header with date
  * - Conditional rendering: HoldList OR HoldForm
  * - Focus trap and keyboard handling (Escape key)
- * 
+ *
  * Uses design tokens for consistent styling.
  */
 
-import { useState } from 'react';
-import { X } from 'lucide-react';
-import { Firefighter, HoldDuration, Shift } from '../../lib/supabase';
-import { CalendarDay, ScheduledHold } from '../../utils/calendarUtils';
-import { useFocusTrap } from '../../hooks/useFocusTrap';
-import { useFocusReturn } from '../../hooks/useFocusReturn';
-import { HoldList } from './HoldList';
-import { HoldForm } from './HoldForm';
-import { colors, tokens } from '../../styles';
+import { X } from "lucide-react";
+import { useState } from "react";
+import { useFocusReturn } from "../../hooks/useFocusReturn";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
+import { Firefighter, HoldDuration, Shift } from "../../lib/supabase";
+import { tokens } from "../../styles";
+import { CalendarDay, ScheduledHold } from "../../utils/calendarUtils";
+import { getTheme } from "../../utils/theme";
+import { HoldForm } from "./HoldForm";
+import { HoldList } from "./HoldList";
 
 interface DayModalProps {
   isOpen: boolean;
@@ -28,7 +29,13 @@ interface DayModalProps {
   firefighters: Firefighter[];
   selectedFirefighter: Firefighter | null;
   onFirefighterSelect: (ff: Firefighter) => void;
-  onScheduleHold: (holdDate: string, ff: Firefighter, station?: string, duration?: HoldDuration, startTime?: string) => void;
+  onScheduleHold: (
+    holdDate: string,
+    ff: Firefighter,
+    station?: string,
+    duration?: HoldDuration,
+    startTime?: string
+  ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
   isAdminMode?: boolean;
@@ -49,6 +56,7 @@ export function DayModal({
   isAdminMode = false,
   isDarkMode = true,
 }: DayModalProps) {
+  const theme = getTheme(isDarkMode);
   const [selectedStation, setSelectedStation] = useState<string>("");
   const [showAddAnother, setShowAddAnother] = useState(false);
 
@@ -60,11 +68,18 @@ export function DayModal({
   }
 
   const hasHolds = selectedDay.scheduledHolds.length > 0;
-  const isPastDate = selectedDay.date < new Date(new Date().setHours(0, 0, 0, 0));
+  const isPastDate =
+    selectedDay.date < new Date(new Date().setHours(0, 0, 0, 0));
 
-  const handleSchedule = (holdDate: string, ff: Firefighter, station?: string, duration?: HoldDuration, startTime?: string) => {
+  const handleSchedule = (
+    holdDate: string,
+    ff: Firefighter,
+    station?: string,
+    duration?: HoldDuration,
+    startTime?: string
+  ) => {
     onScheduleHold(holdDate, ff, station, duration, startTime);
-    
+
     if (!showAddAnother) {
       onClose();
       setSelectedStation("");
@@ -105,7 +120,7 @@ export function DayModal({
     >
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 ${colors.components.modal.overlay}`}
+        className={`absolute inset-0 ${theme.confirmDialog.overlay}`}
         aria-hidden="true"
       />
 
@@ -114,9 +129,10 @@ export function DayModal({
         ref={modalTrapRef}
         className={`
           relative
-          ${colors.components.modal.background}
-          ${colors.components.modal.border}
-          ${colors.components.modal.shadow}
+          ${theme.modal.background}
+          ${theme.modal.border}
+          border-2
+          ${tokens.shadows.xl}
           ${tokens.borders.radius.xl}
           max-w-md w-full
           max-h-[90vh]
@@ -126,18 +142,20 @@ export function DayModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className={`
-          ${isDarkMode ? 'bg-gradient-to-r from-gray-900 to-gray-800' : 'bg-gradient-to-r from-gray-100 to-gray-200'}
+        <div
+          className={`
+          ${theme.calendar.headerBackground}
           border-b-2
-          ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}
+          ${theme.cardBorder}
           ${tokens.spacing.card.lg}
           flex items-center justify-between
           sticky top-0 z-10
-        `}>
+        `}
+        >
           <div>
             <h3
               id="day-modal-title"
-              className={`${tokens.typography.heading.h3} ${isDarkMode ? colors.structural.text.primary : 'text-gray-900'}`}
+              className={`${tokens.typography.heading.h3} ${theme.textPrimary}`}
             >
               {selectedDay.date.toLocaleDateString("en-US", {
                 weekday: "long",
@@ -145,13 +163,17 @@ export function DayModal({
                 day: "numeric",
               })}
               {isPastDate && (
-                <span className={`ml-2 px-2 py-1 ${tokens.typography.body.small} bg-amber-900/70 text-amber-200 ${tokens.borders.radius.sm} font-semibold`}>
+                <span
+                  className={`ml-2 px-2 py-1 ${tokens.typography.body.small} bg-amber-900/70 text-amber-200 ${tokens.borders.radius.sm} font-semibold`}
+                >
                   PAST DATE
                 </span>
               )}
             </h3>
             {hasHolds && !showAddAnother && (
-              <p className={`${tokens.typography.body.secondary} ${isDarkMode ? colors.structural.text.secondary : 'text-gray-600'} mt-1`}>
+              <p
+                className={`${tokens.typography.body.secondary} ${theme.textSecondary} mt-1`}
+              >
                 {selectedDay.scheduledHolds.length} hold
                 {selectedDay.scheduledHolds.length !== 1 ? "s" : ""} scheduled
               </p>
@@ -162,12 +184,13 @@ export function DayModal({
             className={`
               ${tokens.spacing.section.sm}
               ${tokens.borders.radius.lg}
-              ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-300'}
+              ${theme.modal.background}
+              hover:opacity-80
               ${tokens.transitions.fast}
             `}
             aria-label="Close date dialog"
           >
-            <X size={24} className={isDarkMode ? colors.structural.text.tertiary : 'text-gray-600'} />
+            <X size={24} className={theme.textTertiary} />
           </button>
         </div>
 
@@ -204,4 +227,3 @@ export function DayModal({
     </div>
   );
 }
-

@@ -28,7 +28,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -48,7 +47,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -66,7 +64,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -84,7 +81,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -99,7 +95,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={false}
         />
       );
 
@@ -116,7 +111,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="B"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -134,7 +128,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="C"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -150,7 +143,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -171,7 +163,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -186,7 +177,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="B"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -205,7 +195,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="B"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -222,7 +211,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -239,7 +227,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -256,7 +243,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -275,7 +261,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -296,7 +281,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -314,7 +298,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -332,7 +315,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -355,7 +337,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -372,7 +353,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -386,7 +366,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="B"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -402,7 +381,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -423,7 +401,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -451,7 +428,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -464,7 +440,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="B"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -477,7 +452,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="C"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 
@@ -490,7 +464,6 @@ describe("ShiftSelector", () => {
         <ShiftSelector
           currentShift="A"
           onShiftChange={mockOnShiftChange}
-          isDarkMode={true}
         />
       );
 

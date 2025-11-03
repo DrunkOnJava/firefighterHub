@@ -371,7 +371,6 @@ function App() {
         isOpen={showKeyboardShortcuts}
         onClose={() => setShowKeyboardShortcuts(false)}
         shortcuts={shortcuts}
-        isDarkMode={isDarkMode}
       />
       <CompleteHoldModal
         isOpen={showCompleteHoldModal}

@@ -1,4 +1,5 @@
 import { MapPin } from 'lucide-react';
+import { colors, tokens } from '../styles';
 
 interface StationSelectorProps {
   selectedStation: string;
@@ -17,8 +18,8 @@ export function StationSelector({
 }: StationSelectorProps) {
   return (
     <div className={`space-y-3 ${className}`}>
-      <label className="flex items-center gap-2 text-sm font-semibold text-gray-300">
-        <MapPin size={18} className="text-orange-400" />
+      <label className={`flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary}`}>
+        <MapPin size={18} className={colors.semantic.warning.text} />
         <span>Fire Station (Optional)</span>
       </label>
 
@@ -27,10 +28,10 @@ export function StationSelector({
           type="button"
           onClick={() => onStationChange('')}
           className={`
-            h-14 rounded-lg font-bold text-base transition-all border-2
+            h-14 ${tokens.borders.radius.lg} font-bold text-base transition-all border-2
             ${selectedStation === ''
-              ? 'bg-gray-600 border-gray-500 text-white shadow-lg'
-              : 'bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:border-gray-600'
+              ? `${colors.structural.bg.cardHover} ${colors.structural.border.hover} ${colors.structural.text.primary} ${colors.components.card.shadow}`
+              : `${colors.structural.bg.card} ${colors.structural.border.default} ${colors.structural.text.tertiary} ${colors.interactive.hover.bg} hover:${colors.structural.border.hover}`
             }
           `}
         >
@@ -47,18 +48,18 @@ export function StationSelector({
               type="button"
               onClick={() => onStationChange(station)}
               className={`
-                h-14 rounded-lg font-bold text-lg transition-all border-2 relative
+                h-14 ${tokens.borders.radius.lg} font-bold text-lg transition-all border-2 relative
                 ${isSelected
-                  ? 'bg-gradient-to-br from-orange-500 to-orange-600 border-orange-400 text-white shadow-lg shadow-orange-500/30 scale-105'
+                  ? `${colors.semantic.warning.gradient} ${colors.semantic.warning.border} text-white ${colors.semantic.warning.shadow} scale-105`
                   : isDefault
-                  ? 'bg-blue-900/40 border-blue-600 text-blue-200 hover:bg-blue-800/50 hover:border-blue-500'
-                  : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 hover:border-gray-600'
+                  ? `bg-blue-900/40 ${colors.semantic.primary.border} text-blue-200 hover:bg-blue-800/50 hover:border-blue-500`
+                  : `${colors.structural.bg.card} ${colors.structural.border.default} ${colors.structural.text.secondary} ${colors.interactive.hover.bg} hover:${colors.structural.border.hover}`
                 }
               `}
             >
               {station}
               {isDefault && !isSelected && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full border-2 border-gray-900"></span>
+                <span className={`absolute -top-1 -right-1 w-3 h-3 ${colors.semantic.primary.solid} ${tokens.borders.radius.full} border-2 ${colors.structural.border.strong}`}></span>
               )}
             </button>
           );
@@ -66,8 +67,8 @@ export function StationSelector({
       </div>
 
       {defaultStation && selectedStation === '' && (
-        <p className="text-xs text-blue-300 flex items-center gap-1">
-          <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+        <p className={`${tokens.typography.body.small} text-blue-300 flex items-center ${tokens.spacing.gap.xs}`}>
+          <span className={`w-2 h-2 ${colors.semantic.primary.solid} ${tokens.borders.radius.full}`}></span>
           Default station: #{defaultStation}
         </p>
       )}

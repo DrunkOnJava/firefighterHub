@@ -2,6 +2,7 @@ import { X, Clock } from 'lucide-react';
 import { ActivityLog } from './ActivityLog';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
+import { colors, tokens } from '../styles';
 import { useEffect } from 'react';
 
 interface ActivityLogModalProps {
@@ -30,7 +31,7 @@ export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -38,22 +39,22 @@ export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
     >
       <div
         ref={trapRef}
-        className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-scale-in"
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius.xl} max-w-4xl w-full max-h-[90vh] overflow-hidden ${colors.components.modal.shadow} animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 border-b-2 border-gray-700 p-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl">
+        <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between`}>
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <div className={`${colors.semantic.scheduled.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}>
               <Clock className="text-white" size={24} />
             </div>
-            <h2 id="activity-modal-title" className="text-2xl font-bold text-white">Activity Log</h2>
+            <h2 id="activity-modal-title" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>Activity Log</h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring`}
             aria-label="Close activity log dialog"
           >
-            <X size={24} className="text-gray-400" />
+            <X size={24} className={colors.structural.text.secondary} />
           </button>
         </div>
 

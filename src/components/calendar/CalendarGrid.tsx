@@ -1,18 +1,19 @@
 /**
  * CalendarGrid Component
- * 
+ *
  * Renders the calendar grid with:
  * - Weekday headers row
  * - 7x6 grid of day cells
  * - Loading state
- * 
+ *
  * Uses design tokens for consistent spacing and layout.
  */
 
-import { CalendarDay } from '../../utils/calendarUtils';
-import { Shift } from '../../lib/supabase';
-import { DayCell } from './DayCell';
-import { colors, tokens } from '../../styles';
+import { Shift } from "../../lib/supabase";
+import { tokens } from "../../styles";
+import { CalendarDay } from "../../utils/calendarUtils";
+import { getTheme } from "../../utils/theme";
+import { DayCell } from "./DayCell";
 
 interface CalendarGridProps {
   calendarDays: CalendarDay[];
@@ -41,13 +42,15 @@ export function CalendarGrid({
   currentShift,
   isDarkMode = true,
 }: CalendarGridProps) {
+  const theme = getTheme(isDarkMode);
+
   if (loading) {
     return (
       <div className="text-center py-20">
-        <div className={`inline-block animate-spin rounded-full h-12 w-12 border-b-2 ${isDarkMode ? 'border-blue-500' : 'border-blue-600'}`} />
-        <p className={`mt-4 ${isDarkMode ? colors.structural.text.secondary : 'text-gray-600'}`}>
-          Loading calendar...
-        </p>
+        <div
+          className={`inline-block animate-spin rounded-full h-12 w-12 border-b-2 ${theme.calendar.headerText}`}
+        />
+        <p className={`mt-4 ${theme.textSecondary}`}>Loading calendar...</p>
       </div>
     );
   }
@@ -55,14 +58,16 @@ export function CalendarGrid({
   return (
     <div className="w-full">
       {/* Weekday headers */}
-      <div className={`grid grid-cols-7 ${tokens.spacing.gap.sm} ${tokens.spacing.margin.md} w-full`}>
+      <div
+        className={`grid grid-cols-7 ${tokens.spacing.gap.sm} ${tokens.spacing.margin.md} w-full`}
+      >
         {weekDays.map((day) => (
           <div
             key={day}
             className={`
               text-center font-semibold
               ${tokens.typography.body.secondary}
-              ${isDarkMode ? colors.structural.text.secondary : 'text-gray-700'}
+              ${theme.calendar.headerText}
             `}
           >
             <span className="hidden sm:inline">{day}</span>
@@ -72,7 +77,10 @@ export function CalendarGrid({
       </div>
 
       {/* Calendar grid */}
-      <div className={`grid grid-cols-7 ${tokens.spacing.gap.sm} w-full auto-rows-fr`}>
+      <div
+        className={`grid grid-cols-7 ${tokens.spacing.gap.sm} w-full`}
+        style={{ gridAutoRows: "1fr" }}
+      >
         {calendarDays.map((day, index) => (
           <DayCell
             key={index}
@@ -87,4 +95,3 @@ export function CalendarGrid({
     </div>
   );
 }
-

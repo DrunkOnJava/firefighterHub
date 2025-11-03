@@ -5,9 +5,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Firefighter, HoldDuration, Shift, supabase } from "../lib/supabase";
 import { assignPositions, sortFirefighters } from "../utils/rotationLogic";
+import { ConfirmOptions } from "./useConfirm";
 import { useOperationLoading } from "./useOperationLoading";
 import { ToastType } from "./useToast";
-import { ConfirmOptions } from "./useConfirm";
 
 export function useFirefighters(
   showToast: (message: string, type: ToastType) => void,
@@ -66,15 +66,69 @@ export function useFirefighters(
   useEffect(() => {
     loadFirefighters();
 
-    // Real-time subscription with error handling and auto-reconnect
+    /**
+     * Real-time subscription with error handling and auto-reconnect
+     *
+     * Features:
+     * - Exponential backoff retry (1s → 2s → 4s → 8s → 16s → 30s max)
+     * - Automatic reconnection on connection loss
+     * - Toast deduplication to prevent notification spam
+     * - Clean channel cleanup on unmount
+     * - Max 10 retry attempts before giving up
+     *
+     * IMPORTANT: This useEffect depends on `loadFirefighters` and `showToast`.
+     * Both callbacks MUST be wrapped in useCallback to prevent unnecessary
+     * resubscriptions and WebSocket connection churn.
+     *
+     * Example of proper usage in parent component:
+     * ```typescript
+     * const loadFirefighters = useCallback(async () => {
+     *   // fetch logic
+     * }, [currentShift]);
+     *
+     * const showToast = useCallback((message: string, type: ToastType) => {
+     *   toast({ message, type });
+     * }, []);
+     * ```
+     *
+     * Without useCallback wrapping, this subscription will reconnect on every
+     * render, causing excessive WebSocket connections and potential connection
+     * limit issues (200 concurrent on Supabase free tier).
+     */
     let retryCount = 0;
     let retryTimeout: ReturnType<typeof setTimeout> | null = null;
     let isSubscribed = true;
     let hasShownErrorToast = false;
+    let wasConnected = false; // Track if we've ever connected
+    let currentChannel: ReturnType<typeof supabase.channel> | null = null;
     const MAX_RETRIES = 10; // Maximum retry attempts before giving up
+    const lastToastAt: Record<string, number> = {}; // Dedupe toasts
 
-    const setupSubscription = () => {
-      if (!isSubscribed) return;
+    /**
+     * Shows a toast notification with deduplication to prevent spam.
+     * Same message will be suppressed if shown within the debounce window.
+     */
+    const showToastOnce = (
+      message: string,
+      type: ToastType,
+      debounceMs = 10000
+    ) => {
+      const now = Date.now();
+      const lastShown = lastToastAt[message] || 0;
+
+      if (now - lastShown >= debounceMs) {
+        showToast(message, type);
+        lastToastAt[message] = now;
+      }
+    };
+
+    const setupSubscription = async () => {
+      if (!isSubscribed) return null;
+
+      // Ensure any prior channel is gone before creating a new one
+      if (currentChannel) {
+        await supabase.removeChannel(currentChannel);
+      }
 
       const channel = supabase
         .channel(`firefighters_${currentShift}`)
@@ -96,19 +150,25 @@ export function useFirefighters(
         .subscribe((status, err) => {
           if (status === "SUBSCRIBED") {
             console.log("✅ Real-time subscription active (firefighters)");
+            wasConnected = true; // Mark that we've successfully connected
+
+            // Check state BEFORE resetting counters so reconnection toast can fire
+            const hadFailures = retryCount > 0 || hasShownErrorToast;
+
+            // Reset after we've remembered the prior state
             retryCount = 0;
             hasShownErrorToast = false;
 
-            // Show success toast if we recovered from errors
-            if (retryCount > 0) {
-              showToast("Real-time updates reconnected", "success");
+            if (hadFailures) {
+              showToastOnce("Real-time updates reconnected", "success");
             }
           } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+            // Always retry on genuine errors
             console.warn("⚠️ Real-time subscription error:", status, err);
 
             // Show user-facing error notification on first failure
             if (!hasShownErrorToast) {
-              showToast(
+              showToastOnce(
                 "Live updates temporarily unavailable. Roster will refresh automatically when connection is restored.",
                 "error"
               );
@@ -120,7 +180,7 @@ export function useFirefighters(
               console.error(
                 `❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`
               );
-              showToast(
+              showToastOnce(
                 "Unable to establish live updates. Please refresh the page to try again.",
                 "error"
               );
@@ -137,32 +197,78 @@ export function useFirefighters(
               }s... (attempt ${retryCount}/${MAX_RETRIES})`
             );
 
-            retryTimeout = setTimeout(() => {
+            retryTimeout = setTimeout(async () => {
               if (isSubscribed) {
-                supabase.removeChannel(channel);
-                setupSubscription();
+                if (currentChannel) {
+                  await supabase.removeChannel(currentChannel);
+                }
+                currentChannel = await setupSubscription();
               }
             }, delay);
           } else if (status === "CLOSED") {
-            console.log("🔌 Real-time connection closed");
-            if (isSubscribed && retryCount < MAX_RETRIES) {
-              retryTimeout = setTimeout(() => setupSubscription(), 2000);
+            // Only retry on CLOSED if we were previously connected (disconnect scenario)
+            // Ignore CLOSED during initial connection (normal state transition)
+            if (wasConnected) {
+              console.warn("🔌 Real-time connection closed unexpectedly");
+
+              if (!hasShownErrorToast) {
+                showToastOnce(
+                  "Live updates temporarily unavailable. Roster will refresh automatically when connection is restored.",
+                  "error"
+                );
+                hasShownErrorToast = true;
+              }
+
+              if (retryCount < MAX_RETRIES) {
+                const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+                retryCount++;
+
+                console.log(
+                  `🔄 Retrying in ${
+                    delay / 1000
+                  }s... (attempt ${retryCount}/${MAX_RETRIES})`
+                );
+
+                retryTimeout = setTimeout(async () => {
+                  if (isSubscribed) {
+                    if (currentChannel) {
+                      await supabase.removeChannel(currentChannel);
+                    }
+                    currentChannel = await setupSubscription();
+                  }
+                }, delay);
+              } else {
+                console.error(
+                  `❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`
+                );
+                showToastOnce(
+                  "Unable to establish live updates. Please refresh the page to try again.",
+                  "error"
+                );
+              }
+            } else {
+              // CLOSED during initial connection is normal, just log it
+              console.log("🔌 Real-time connection initializing...");
             }
           }
         });
 
+      currentChannel = channel;
       return channel;
     };
 
-    const channel = setupSubscription();
+    // Initialize subscription (async but fire-and-forget is OK here)
+    setupSubscription();
 
     return () => {
       isSubscribed = false;
       if (retryTimeout) clearTimeout(retryTimeout);
-      if (channel) supabase.removeChannel(channel);
+      // Note: removeChannel in cleanup can remain synchronous - useEffect cleanup
+      // cannot be async, and the Promise is safely ignored on unmount
+      if (currentChannel) supabase.removeChannel(currentChannel);
       console.log("🛑 Unsubscribed from firefighters real-time updates");
     };
-  }, [loadFirefighters, currentShift]);
+  }, [loadFirefighters, currentShift, showToast]);
 
   async function logActivity(
     firefighterName: string,
@@ -385,7 +491,7 @@ export function useFirefighters(
   async function deleteFirefighter(id: string) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter) return;
-    
+
     // Use confirmAction if provided, otherwise fall back to window.confirm
     const confirmed = confirmAction
       ? await confirmAction({
@@ -396,13 +502,13 @@ export function useFirefighters(
           variant: "danger",
           consequences: [
             "Their hold history will be preserved on the calendar",
-            "This action cannot be undone"
-          ]
+            "This action cannot be undone",
+          ],
         })
       : confirm(
           `Remove ${firefighter.name} from your roster?\n\nTheir hold history will be preserved on the calendar. This cannot be undone.`
         );
-    
+
     if (!confirmed) return;
 
     const previousFirefighters = [...firefighters];
@@ -438,20 +544,21 @@ export function useFirefighters(
     const confirmed = confirmAction
       ? await confirmAction({
           title: "Delete Entire Roster?",
-          message: "This will remove all firefighters and cancel all scheduled holds.",
+          message:
+            "This will remove all firefighters and cancel all scheduled holds.",
           confirmText: "Delete Roster",
           cancelText: "Cancel",
           variant: "danger",
           consequences: [
             "All firefighters will be removed",
             "All scheduled holds will be cancelled",
-            "This action is permanent"
-          ]
+            "This action is permanent",
+          ],
         })
       : confirm(
           "Delete your entire roster?\n\nThis will remove all firefighters and cancel all scheduled holds. This action is permanent."
         );
-    
+
     if (!confirmed) return;
 
     try {
@@ -481,13 +588,13 @@ export function useFirefighters(
             "ALL scheduled holds",
             "ALL activity logs",
             "ALL completed holds",
-            "This action CANNOT be undone!"
-          ]
+            "This action CANNOT be undone!",
+          ],
         })
       : confirm(
           "MASTER RESET - WARNING\n\nThis will permanently delete:\n• ALL firefighters from ALL shifts\n• ALL scheduled holds\n• ALL activity logs\n• ALL completed holds\n\nThis action CANNOT be undone!\n\nAre you absolutely sure?"
         );
-    
+
     if (!firstConfirmed) return;
 
     const finalConfirmed = confirmAction
@@ -499,11 +606,11 @@ export function useFirefighters(
           variant: "danger",
           consequences: [
             "This is your last chance to cancel",
-            "All data will be permanently deleted"
-          ]
+            "All data will be permanently deleted",
+          ],
         })
       : confirm("Final confirmation: Delete EVERYTHING and start fresh?");
-    
+
     if (!finalConfirmed) return;
 
     const previousFirefighters = [...firefighters];
@@ -566,7 +673,7 @@ export function useFirefighters(
   async function deactivateFirefighter(id: string) {
     const firefighter = firefighters.find((ff) => ff.id === id);
     if (!firefighter) return;
-    
+
     const confirmed = confirmAction
       ? await confirmAction({
           title: "Deactivate Firefighter?",
@@ -577,13 +684,13 @@ export function useFirefighters(
           consequences: [
             "They will be removed from the roster",
             "All their history and completed holds will be preserved",
-            "They can be reactivated later"
-          ]
+            "They can be reactivated later",
+          ],
         })
       : confirm(
           `Deactivate ${firefighter.name}?\n\nThey will be removed from the roster but all their history and completed holds will be preserved.`
         );
-    
+
     if (!confirmed) return;
 
     const previousFirefighters = [...firefighters];
@@ -664,6 +771,7 @@ export function useFirefighters(
   }
 
   async function reactivateFirefighter(id: string, _position: number) {
+    void _position; // Legacy parameter maintained for API compatibility
     const firefighter = deactivatedFirefighters.find((ff) => ff.id === id);
     if (!firefighter) return;
 

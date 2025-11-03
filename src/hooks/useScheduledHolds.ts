@@ -104,7 +104,9 @@ export function useScheduledHolds(
 
             // Check if we've exceeded maximum retries
             if (retryCount >= MAX_RETRIES) {
-              console.error(`❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`);
+              console.error(
+                `❌ Max retries (${MAX_RETRIES}) reached. Stopping reconnection attempts.`
+              );
               showToast(
                 "Unable to establish live updates. Please refresh the page to try again.",
                 "error"
@@ -117,7 +119,9 @@ export function useScheduledHolds(
             retryCount++;
 
             console.log(
-              `🔄 Retrying in ${delay / 1000}s... (attempt ${retryCount}/${MAX_RETRIES})`
+              `🔄 Retrying in ${
+                delay / 1000
+              }s... (attempt ${retryCount}/${MAX_RETRIES})`
             );
 
             retryTimeout = setTimeout(() => {

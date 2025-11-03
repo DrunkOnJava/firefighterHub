@@ -1,43 +1,48 @@
-import { useState, useEffect } from 'react';
-import { Firefighter, supabase } from '../lib/supabase';
-import { ScheduledHold } from '../utils/calendarUtils';
 import {
-  calculateHoldsPerFirefighter,
-  // calculateHoldsByStation, // Removed - not used
-  calculateHoldsByShift,
-  // calculateHoldsByDuration, // Removed - per user feedback
-  // getFirefighterWithMostHolds, // Removed - metric removed per user feedback
-  getStationWithMostHolds,
-  // calculateCompletionRate, // Removed - per user feedback
-  // calculateAverageHoldDuration, // Removed - per user feedback
-  getHoldsInDateRange,
-  // calculateTotalHoursWorked, // Removed - hours worked metric removed per user feedback
-} from '../utils/metricsCalculations';
-import { MetricCard } from './MetricCard';
-import {
-  Calendar,
+  ArrowLeft,
   // CheckCircle, // Removed - Completed Holds metric removed per user feedback
   // Clock, // Removed - Avg Duration metric removed per user feedback
   Building2,
+  Calendar,
   Download,
   Filter,
-  ArrowLeft,
-} from 'lucide-react';
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Firefighter, supabase } from "../lib/supabase";
+import { colors, tokens } from "../styles";
+import { ScheduledHold } from "../utils/calendarUtils";
+import {
+  // calculateHoldsByStation, // Removed - not used
+  calculateHoldsByShift,
+  calculateHoldsPerFirefighter,
+  // calculateCompletionRate, // Removed - per user feedback
+  // calculateAverageHoldDuration, // Removed - per user feedback
+  getHoldsInDateRange,
+  // calculateHoldsByDuration, // Removed - per user feedback
+  // getFirefighterWithMostHolds, // Removed - metric removed per user feedback
+  getStationWithMostHolds,
+} from "../utils/metricsCalculations";
+import { MetricCard } from "./MetricCard";
 
 interface ReportsProps {
   firefighters: Firefighter[];
   holds: ScheduledHold[];
   isDarkMode: boolean;
-  onNavigate?: (view: 'calendar' | 'reports') => void;
+  onNavigate?: (view: "calendar" | "reports") => void;
 }
 
-export function Reports({ firefighters, holds, isDarkMode, onNavigate }: ReportsProps) {
+export function Reports({
+  firefighters,
+  holds,
+  isDarkMode,
+  onNavigate,
+}: ReportsProps) {
   const [dateRange, setDateRange] = useState<{
     start: string;
     end: string;
   }>({
-    start: '',
-    end: '',
+    start: "",
+    end: "",
   });
   const [filterActive, setFilterActive] = useState(false);
   const [allHolds, setAllHolds] = useState<ScheduledHold[]>([]);
@@ -49,22 +54,30 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
     async function fetchAllHolds() {
       try {
         const today = new Date();
-        const startOfMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 3, 0);
+        const startOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() - 1,
+          1
+        );
+        const endOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth() + 3,
+          0
+        );
 
-        const startStr = startOfMonth.toISOString().split('T')[0];
-        const endStr = endOfMonth.toISOString().split('T')[0];
+        const startStr = startOfMonth.toISOString().split("T")[0];
+        const endStr = endOfMonth.toISOString().split("T")[0];
 
         const { data, error } = await supabase
-          .from('scheduled_holds')
-          .select('*')
+          .from("scheduled_holds")
+          .select("*")
           // Don't filter by shift - get ALL holds
-          .gte('hold_date', startStr)
-          .lte('hold_date', endStr)
-          .order('hold_date');
+          .gte("hold_date", startStr)
+          .lte("hold_date", endStr)
+          .order("hold_date");
 
         if (error) {
-          console.error('Error fetching all holds:', error);
+          console.error("Error fetching all holds:", error);
           // Fall back to using the holds prop if fetch fails
           if (mounted) setAllHolds(holds);
           return;
@@ -74,7 +87,7 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
           setAllHolds(data || []);
         }
       } catch (error) {
-        console.error('Error fetching all holds:', error);
+        console.error("Error fetching all holds:", error);
         // Fall back to using the holds prop if fetch fails
         if (mounted) setAllHolds(holds);
       }
@@ -84,42 +97,43 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
 
     // Subscribe to real-time updates for all shifts
     const channel = supabase
-      .channel('all_scheduled_holds_reports')
+      .channel("all_scheduled_holds_reports")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: '*',
-          schema: 'public',
-          table: 'scheduled_holds',
+          event: "*",
+          schema: "public",
+          table: "scheduled_holds",
         },
         () => {
-          console.log('🔄 Holds changed, refreshing all holds for reports');
+          console.log("🔄 Holds changed, refreshing all holds for reports");
           fetchAllHolds();
         }
       )
       .subscribe((status) => {
-        if (status === 'CHANNEL_ERROR') {
-          console.error('❌ Reports: Real-time subscription error');
-        } else if (status === 'SUBSCRIBED') {
-          console.log('✅ Reports: Real-time subscription active');
+        if (status === "CHANNEL_ERROR") {
+          console.error("❌ Reports: Real-time subscription error");
+        } else if (status === "SUBSCRIBED") {
+          console.log("✅ Reports: Real-time subscription active");
         }
       });
 
     return () => {
       mounted = false;
       supabase.removeChannel(channel);
-      console.log('🛑 Reports: Unsubscribed from real-time updates');
+      console.log("🛑 Reports: Unsubscribed from real-time updates");
     };
   }, [holds]);
 
   // Apply date range filter if active
-  const filteredHolds = filterActive && dateRange.start && dateRange.end
-    ? getHoldsInDateRange(
-        holds,
-        new Date(dateRange.start),
-        new Date(dateRange.end)
-      )
-    : holds;
+  const filteredHolds =
+    filterActive && dateRange.start && dateRange.end
+      ? getHoldsInDateRange(
+          holds,
+          new Date(dateRange.start),
+          new Date(dateRange.end)
+        )
+      : holds;
 
   // Calculate metrics
   // Use allHolds for per-firefighter metrics to include all shifts
@@ -147,61 +161,75 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
 
   // Export to CSV
   const handleExportCSV = () => {
-    const headers = [
-      'Firefighter',
-      'Total Holds',
-      'Avg Interval (days)',
-    ];
+    const headers = ["Firefighter", "Total Holds", "Avg Interval (days)"];
 
-    const rows = metrics.map(m => [
+    const rows = metrics.map((m) => [
       m.name,
       m.totalHolds,
       m.averageIntervalDays,
     ]);
 
     const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(',')),
-    ].join('\n');
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `hold-metrics-${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `hold-metrics-${new Date().toISOString().split("T")[0]}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   };
 
-  const bgClass = isDarkMode ? 'bg-gray-900' : 'bg-gray-50';
-  const cardBgClass = isDarkMode ? 'bg-gray-800' : 'bg-white';
-  const borderClass = isDarkMode ? 'border-gray-700' : 'border-gray-200';
-  const textClass = isDarkMode ? 'text-white' : 'text-gray-900';
-  const secondaryTextClass = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-  const inputBgClass = isDarkMode ? 'bg-gray-700' : 'bg-white';
-  const inputBorderClass = isDarkMode ? 'border-gray-600' : 'border-gray-300';
-  const inputTextClass = isDarkMode ? 'text-white' : 'text-gray-900';
-
   return (
-    <div className={`${bgClass} min-h-screen p-6 transition-colors`}>
+    <div
+      className={`
+        min-h-screen ${tokens.spacing.card.xl}
+        ${tokens.transitions.fast}
+        ${isDarkMode ? colors.structural.bg.app : "bg-gray-50"}
+      `}
+    >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
+        <div
+          className={`${tokens.spacing.margin.xl} flex items-center justify-between`}
+        >
           <div>
-            <h1 className={`text-3xl font-bold ${textClass} mb-2`}>
+            <h1
+              className={`
+                ${tokens.typography.heading.h1}
+                ${tokens.spacing.margin.sm}
+                ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
+              `}
+            >
               Hold Metrics Dashboard
             </h1>
-            <p className={secondaryTextClass}>
+            <p
+              className={
+                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
+              }
+            >
               Comprehensive analytics for hold management
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
             {onNavigate && (
               <button
-                onClick={() => onNavigate('calendar')}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors focus-ring"
+                onClick={() => onNavigate("calendar")}
+                className={`
+                  flex items-center ${tokens.spacing.gap.sm}
+                  ${tokens.spacing.card.md}
+                  ${colors.interactive.button.default}
+                  ${colors.interactive.hover.bg}
+                  text-white
+                  ${tokens.borders.radius.lg}
+                  ${tokens.transitions.fast}
+                  focus-ring
+                `}
                 title="Return to Calendar"
               >
                 <ArrowLeft size={18} />
@@ -210,7 +238,16 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
             )}
             <button
               onClick={handleExportCSV}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus-ring"
+              className={`
+                flex items-center ${tokens.spacing.gap.sm}
+                ${tokens.spacing.card.md}
+                ${colors.semantic.scheduled.gradient}
+                ${colors.semantic.scheduled.hover}
+                text-white
+                ${tokens.borders.radius.lg}
+                ${tokens.transitions.fast}
+                focus-ring
+              `}
             >
               <Download size={18} />
               <span className="hidden sm:inline">Export</span>
@@ -219,47 +256,126 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
         </div>
 
         {/* Date Range Filter */}
-        <div className={`${cardBgClass} ${borderClass} border rounded-lg p-4 mb-6`}>
+        <div
+          className={`
+            border ${tokens.borders.radius.lg}
+            ${tokens.spacing.card.md}
+            ${tokens.spacing.margin.xl}
+            ${
+              isDarkMode
+                ? `${colors.structural.bg.card} ${colors.structural.border.default}`
+                : "bg-white border-gray-200"
+            }
+          `}
+        >
           <div className="flex items-center gap-4 flex-wrap">
-            <div className="flex items-center gap-2">
-              <Filter size={18} className={secondaryTextClass} />
-              <span className={`font-medium ${textClass}`}>Date Range Filter:</span>
+            <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
+              <Filter
+                size={18}
+                className={
+                  isDarkMode
+                    ? colors.structural.text.secondary
+                    : "text-gray-600"
+                }
+              />
+              <span
+                className={`
+                  ${tokens.typography.weight.medium}
+                  ${
+                    isDarkMode
+                      ? colors.structural.text.primary
+                      : "text-gray-900"
+                  }
+                `}
+              >
+                Date Range Filter:
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <label className={secondaryTextClass}>From:</label>
+            <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
+              <label
+                className={
+                  isDarkMode
+                    ? colors.structural.text.secondary
+                    : "text-gray-600"
+                }
+              >
+                From:
+              </label>
               <input
                 type="date"
                 value={dateRange.start}
-                onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
-                className={`px-3 py-1 ${inputBgClass} ${inputBorderClass} ${inputTextClass} border rounded focus-ring`}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, start: e.target.value })
+                }
+                className={`
+                  px-3 py-1 border ${tokens.borders.radius.md}
+                  focus-ring
+                  ${
+                    isDarkMode
+                      ? `${colors.components.input.default}`
+                      : "bg-white border-gray-300 text-gray-900"
+                  }
+                `}
               />
             </div>
-            <div className="flex items-center gap-2">
-              <label className={secondaryTextClass}>To:</label>
+            <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
+              <label
+                className={
+                  isDarkMode
+                    ? colors.structural.text.secondary
+                    : "text-gray-600"
+                }
+              >
+                To:
+              </label>
               <input
                 type="date"
                 value={dateRange.end}
-                onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
-                className={`px-3 py-1 ${inputBgClass} ${inputBorderClass} ${inputTextClass} border rounded focus-ring`}
+                onChange={(e) =>
+                  setDateRange({ ...dateRange, end: e.target.value })
+                }
+                className={`
+                  px-3 py-1 border ${tokens.borders.radius.md}
+                  focus-ring
+                  ${
+                    isDarkMode
+                      ? `${colors.components.input.default}`
+                      : "bg-white border-gray-300 text-gray-900"
+                  }
+                `}
               />
             </div>
             <button
               onClick={() => setFilterActive(!filterActive)}
-              className={`px-4 py-2 rounded transition-colors focus-ring ${
-                filterActive
-                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                  : 'bg-gray-600 text-white hover:bg-gray-700'
-              }`}
+              className={`
+                ${tokens.spacing.card.md}
+                ${tokens.borders.radius.md}
+                ${tokens.transitions.fast}
+                focus-ring
+                ${
+                  filterActive
+                    ? `${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white`
+                    : `${colors.interactive.button.default} ${colors.interactive.hover.bg} text-white`
+                }
+              `}
             >
-              {filterActive ? 'Filter Active' : 'Apply Filter'}
+              {filterActive ? "Filter Active" : "Apply Filter"}
             </button>
             {filterActive && (
               <button
                 onClick={() => {
                   setFilterActive(false);
-                  setDateRange({ start: '', end: '' });
+                  setDateRange({ start: "", end: "" });
                 }}
-                className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors focus-ring"
+                className={`
+                  ${tokens.spacing.card.md}
+                  ${colors.interactive.button.default}
+                  ${colors.interactive.hover.bg}
+                  text-white
+                  ${tokens.borders.radius.md}
+                  ${tokens.transitions.fast}
+                  focus-ring
+                `}
               >
                 Clear Filter
               </button>
@@ -281,7 +397,7 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
           {/* REMOVED: Avg Duration metric per user feedback */}
           <MetricCard
             title="Top Station"
-            value={topStation?.station || 'N/A'}
+            value={topStation?.station || "N/A"}
             subtitle={`${topStation?.count || 0} total holds`}
             icon={Building2}
             isDarkMode={isDarkMode}
@@ -291,12 +407,29 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
         </div>
 
         {/* Shift Breakdown */}
-        <div className={`${cardBgClass} ${borderClass} border rounded-lg p-6 mb-6`}>
-          <h2 className={`text-xl font-semibold ${textClass} mb-4`}>
+        <div
+          className={`
+            border ${tokens.borders.radius.lg}
+            ${tokens.spacing.card.xl}
+            ${tokens.spacing.margin.xl}
+            ${
+              isDarkMode
+                ? `${colors.structural.bg.card} ${colors.structural.border.default}`
+                : "bg-white border-gray-200"
+            }
+          `}
+        >
+          <h2
+            className={`
+              ${tokens.typography.heading.h2}
+              ${tokens.spacing.margin.lg}
+              ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
+            `}
+          >
             Holds by Shift
           </h2>
           <div className="space-y-4">
-            {(['A', 'B', 'C'] as const).map(shift => {
+            {(["A", "B", "C"] as const).map((shift) => {
               const count = shiftStats[shift];
               const total = shiftStats.A + shiftStats.B + shiftStats.C;
               const percentage = total > 0 ? (count / total) * 100 : 0;
@@ -304,20 +437,58 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
               return (
                 <div key={shift} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className={`text-lg font-semibold ${textClass}`}>
+                    <span
+                      className={`
+                        ${tokens.typography.heading.h4}
+                        ${
+                          isDarkMode
+                            ? colors.structural.text.primary
+                            : "text-gray-900"
+                        }
+                      `}
+                    >
                       Shift {shift}
                     </span>
-                    <span className={`text-2xl font-bold ${textClass}`}>
+                    <span
+                      className={`
+                        ${tokens.typography.heading.h1}
+                        ${
+                          isDarkMode
+                            ? colors.structural.text.primary
+                            : "text-gray-900"
+                        }
+                      `}
+                    >
                       {count}
                     </span>
                   </div>
-                  <div className={`w-full ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'} rounded-full h-6 overflow-hidden`}>
+                  <div
+                    className={`
+                      w-full ${tokens.borders.radius.full} h-6 overflow-hidden
+                      ${
+                        isDarkMode
+                          ? colors.structural.bg.surface
+                          : "bg-gray-200"
+                      }
+                    `}
+                  >
                     <div
-                      className="bg-blue-600 h-6 rounded-full transition-all duration-500 flex items-center justify-end pr-2"
+                      className={`
+                        h-6 ${tokens.borders.radius.full}
+                        ${tokens.transitions.fast}
+                        flex items-center justify-end pr-2
+                        ${colors.semantic.scheduled.solid}
+                      `}
                       style={{ width: `${percentage}%` }}
                     >
                       {percentage > 15 && (
-                        <span className="text-xs font-semibold text-white">
+                        <span
+                          className={`
+                            ${tokens.typography.body.small}
+                            ${tokens.typography.weight.semibold}
+                            text-white
+                          `}
+                        >
                           {percentage.toFixed(0)}%
                         </span>
                       )}
@@ -330,37 +501,129 @@ export function Reports({ firefighters, holds, isDarkMode, onNavigate }: Reports
         </div>
 
         {/* Per-Firefighter Metrics Table */}
-        <div className={`${cardBgClass} ${borderClass} border rounded-lg p-6`}>
-          <h2 className={`text-xl font-semibold ${textClass} mb-4`}>
+        <div
+          className={`
+            border ${tokens.borders.radius.lg}
+            ${tokens.spacing.card.xl}
+            ${
+              isDarkMode
+                ? `${colors.structural.bg.card} ${colors.structural.border.default}`
+                : "bg-white border-gray-200"
+            }
+          `}
+        >
+          <h2
+            className={`
+              ${tokens.typography.heading.h2}
+              ${tokens.spacing.margin.lg}
+              ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
+            `}
+          >
             Holds Per Firefighter
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                  <th className={`p-3 text-left ${textClass}`}>Name</th>
-                  <th className={`p-3 text-right ${textClass}`}>Total Holds</th>
-                  <th className={`p-3 text-right ${textClass}`}>Avg Interval (days)</th>
+                <tr
+                  className={
+                    isDarkMode ? colors.structural.bg.surface : "bg-gray-100"
+                  }
+                >
+                  <th
+                    className={`
+                      ${tokens.spacing.section.lg} text-left
+                      ${
+                        isDarkMode
+                          ? colors.structural.text.primary
+                          : "text-gray-900"
+                      }
+                    `}
+                  >
+                    Name
+                  </th>
+                  <th
+                    className={`
+                      ${tokens.spacing.section.lg} text-right
+                      ${
+                        isDarkMode
+                          ? colors.structural.text.primary
+                          : "text-gray-900"
+                      }
+                    `}
+                  >
+                    Total Holds
+                  </th>
+                  <th
+                    className={`
+                      ${tokens.spacing.section.lg} text-right
+                      ${
+                        isDarkMode
+                          ? colors.structural.text.primary
+                          : "text-gray-900"
+                      }
+                    `}
+                  >
+                    Avg Interval (days)
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {metrics.map((m, index) => (
                   <tr
                     key={m.firefighterId}
-                    className={`${
-                      index % 2 === 0
-                        ? isDarkMode
-                          ? 'bg-gray-800'
-                          : 'bg-white'
-                        : isDarkMode
-                        ? 'bg-gray-750'
-                        : 'bg-gray-50'
-                    } ${borderClass} border-b`}
+                    className={`
+                      border-b
+                      ${
+                        index % 2 === 0
+                          ? isDarkMode
+                            ? colors.structural.bg.card
+                            : "bg-white"
+                          : isDarkMode
+                          ? colors.structural.bg.surface
+                          : "bg-gray-50"
+                      }
+                      ${
+                        isDarkMode
+                          ? colors.structural.border.default
+                          : "border-gray-200"
+                      }
+                    `}
                   >
-                    <td className={`p-3 ${textClass}`}>{m.name}</td>
-                    <td className={`p-3 text-right ${textClass}`}>{m.totalHolds}</td>
-                    <td className={`p-3 text-right ${textClass}`}>
-                      {m.averageIntervalDays || 'N/A'}
+                    <td
+                      className={`
+                        ${tokens.spacing.section.lg}
+                        ${
+                          isDarkMode
+                            ? colors.structural.text.primary
+                            : "text-gray-900"
+                        }
+                      `}
+                    >
+                      {m.name}
+                    </td>
+                    <td
+                      className={`
+                        ${tokens.spacing.section.lg} text-right
+                        ${
+                          isDarkMode
+                            ? colors.structural.text.primary
+                            : "text-gray-900"
+                        }
+                      `}
+                    >
+                      {m.totalHolds}
+                    </td>
+                    <td
+                      className={`
+                        ${tokens.spacing.section.lg} text-right
+                        ${
+                          isDarkMode
+                            ? colors.structural.text.primary
+                            : "text-gray-900"
+                        }
+                      `}
+                    >
+                      {m.averageIntervalDays || "N/A"}
                     </td>
                   </tr>
                 ))}

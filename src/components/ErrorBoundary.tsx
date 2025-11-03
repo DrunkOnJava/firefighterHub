@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCw, Bug } from "lucide-react";
+import { colors, tokens } from "../styles";
 
 interface Props {
   children: ReactNode;
@@ -106,16 +107,16 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="flex items-center justify-center min-h-[400px] p-8">
-          <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-red-200 dark:border-red-800">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
-                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+          <div className={`max-w-md w-full ${colors.structural.bg.card} ${tokens.borders.radius.lg} ${colors.components.card.shadow} ${tokens.spacing.card.lg} border ${colors.semantic.error.border}`}>
+            <div className={`flex items-center ${tokens.spacing.gap.md} mb-4`}>
+              <div className={`p-2 ${colors.semantic.error.light} ${tokens.borders.radius.lg}`}>
+                <AlertTriangle className={`w-6 h-6 ${colors.semantic.error.text}`} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <h2 className={`text-lg font-semibold ${colors.structural.text.primary}`}>
                   Something went wrong
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}>
                   {componentName
                     ? `Error in ${componentName}`
                     : "An error occurred"}
@@ -123,28 +124,28 @@ export class ErrorBoundary extends Component<Props, State> {
               </div>
             </div>
 
-            <div className="bg-red-50 dark:bg-red-900/20 rounded-md p-3 mb-4">
-              <p className="text-sm text-red-800 dark:text-red-300 font-mono break-words">
+            <div className={`${colors.semantic.error.light} ${tokens.borders.radius.md} p-3 mb-4`}>
+              <p className={`${tokens.typography.body.secondary} ${colors.semantic.error.text} font-mono break-words`}>
                 {error?.message || "Unknown error"}
               </p>
             </div>
 
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+            <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} mb-4`}>
               This component encountered an error and couldn't render properly.
               You can try reloading or report this issue for investigation.
             </p>
 
-            <div className="flex gap-3">
+            <div className={`flex ${tokens.spacing.gap.md}`}>
               <button
                 onClick={this.resetErrorBoundary}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                className={`flex-1 flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${colors.semantic.primary.solid} ${colors.semantic.primary.hover} text-white ${tokens.borders.radius.lg} font-medium transition-colors`}
               >
                 <RefreshCw className="w-4 h-4" />
                 Try Again
               </button>
               <button
                 onClick={this.handleReport}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium transition-colors"
+                className={`flex-1 flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${colors.components.button.secondary} ${tokens.borders.radius.lg} font-medium transition-colors`}
               >
                 <Bug className="w-4 h-4" />
                 Report Issue
@@ -153,10 +154,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
             {import.meta.env.DEV && error?.stack && (
               <details className="mt-4">
-                <summary className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-gray-200">
+                <summary className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} cursor-pointer hover:${colors.structural.text.primary}`}>
                   Stack Trace (Development Only)
                 </summary>
-                <pre className="mt-2 text-xs bg-gray-100 dark:bg-gray-900 p-3 rounded overflow-x-auto max-h-40 text-gray-800 dark:text-gray-200">
+                <pre className={`mt-2 ${tokens.typography.body.small} ${colors.structural.bg.surface} p-3 rounded overflow-x-auto max-h-40 ${colors.structural.text.primary}`}>
                   {error.stack}
                 </pre>
               </details>

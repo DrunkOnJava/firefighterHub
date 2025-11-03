@@ -5,56 +5,64 @@
  * Ensures robust handling of invalid inputs and unexpected states
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from "vitest";
+import { createMockFirefighter } from "../test/mockData";
 import {
-  autoScheduleNextHolds,
-  getNextAvailableFirefighter,
   attachScheduledHolds,
+  autoScheduleNextHolds,
   formatDateForDB,
+  getNextAvailableFirefighter,
   parseDateStringLocal,
-} from './calendarUtils';
+} from "./calendarUtils";
 import {
-  sortFirefighters,
-  recalculatePositions,
-  moveToBottom,
   formatHoldListMessage,
-} from './rotationLogic';
-import { createMockFirefighter } from '../test/mockData';
+  moveToBottom,
+  recalculatePositions,
+  sortFirefighters,
+} from "./rotationLogic";
 
-describe('Error Handling - Calendar Utils', () => {
-  describe('getNextAvailableFirefighter', () => {
-    it('should return null for null input', () => {
+describe("Error Handling - Calendar Utils", () => {
+  describe("getNextAvailableFirefighter", () => {
+    it("should return null for null input", () => {
       const result = getNextAvailableFirefighter(null as any);
 
       expect(result).toBeNull();
     });
 
-    it('should return null for undefined input', () => {
+    it("should return null for undefined input", () => {
       const result = getNextAvailableFirefighter(undefined as any);
 
       expect(result).toBeNull();
     });
 
-    it('should handle empty array gracefully', () => {
+    it("should handle empty array gracefully", () => {
       const result = getNextAvailableFirefighter([]);
 
       expect(result).toBeNull();
     });
 
-    it('should handle firefighters with corrupted order_position', () => {
+    it("should handle firefighters with corrupted order_position", () => {
       const firefighters = [
-        createMockFirefighter({ id: '1', order_position: NaN as any, is_available: true }),
-        createMockFirefighter({ id: '2', order_position: 1, is_available: true }),
+        createMockFirefighter({
+          id: "1",
+          order_position: NaN as any,
+          is_available: true,
+        }),
+        createMockFirefighter({
+          id: "2",
+          order_position: 1,
+          is_available: true,
+        }),
       ];
 
       // Should still work, sorting NaN to end
       const result = getNextAvailableFirefighter(firefighters);
 
       expect(result).not.toBeNull();
-      expect(result?.id).toBe('2'); // Valid position wins
+      expect(result?.id).toBe("2"); // Valid position wins
     });
 
-    it('should handle all unavailable firefighters', () => {
+    it("should handle all unavailable firefighters", () => {
       const firefighters = [
         createMockFirefighter({ is_available: false }),
         createMockFirefighter({ is_available: false }),
@@ -66,26 +74,26 @@ describe('Error Handling - Calendar Utils', () => {
     });
   });
 
-  describe('autoScheduleNextHolds', () => {
-    it('should return empty array for null firefighters', () => {
+  describe("autoScheduleNextHolds", () => {
+    it("should return empty array for null firefighters", () => {
       const result = autoScheduleNextHolds(null as any, new Date(), 5);
 
       expect(result).toEqual([]);
     });
 
-    it('should return empty array for undefined firefighters', () => {
+    it("should return empty array for undefined firefighters", () => {
       const result = autoScheduleNextHolds(undefined as any, new Date(), 5);
 
       expect(result).toEqual([]);
     });
 
-    it('should return empty array for empty firefighters', () => {
+    it("should return empty array for empty firefighters", () => {
       const result = autoScheduleNextHolds([], new Date(), 5);
 
       expect(result).toEqual([]);
     });
 
-    it('should handle zero days to schedule', () => {
+    it("should handle zero days to schedule", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
       const result = autoScheduleNextHolds(firefighters, new Date(), 0);
@@ -93,7 +101,7 @@ describe('Error Handling - Calendar Utils', () => {
       expect(result).toHaveLength(0);
     });
 
-    it('should handle negative days to schedule', () => {
+    it("should handle negative days to schedule", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
       const result = autoScheduleNextHolds(firefighters, new Date(), -5);
@@ -103,7 +111,7 @@ describe('Error Handling - Calendar Utils', () => {
       expect(result.length).toBeLessThanOrEqual(0);
     });
 
-    it('should handle very large days to schedule (365 days)', () => {
+    it("should handle very large days to schedule (365 days)", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
       const result = autoScheduleNextHolds(firefighters, new Date(), 365);
@@ -113,7 +121,7 @@ describe('Error Handling - Calendar Utils', () => {
       expect(result[364].date).toBeTruthy();
     });
 
-    it('should handle all unavailable firefighters', () => {
+    it("should handle all unavailable firefighters", () => {
       const firefighters = [
         createMockFirefighter({ is_available: false }),
         createMockFirefighter({ is_available: false }),
@@ -124,43 +132,43 @@ describe('Error Handling - Calendar Utils', () => {
       expect(result).toEqual([]);
     });
 
-    it('should handle invalid start date', () => {
+    it("should handle invalid start date", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
       // Should throw or handle gracefully
       expect(() => {
-        autoScheduleNextHolds(firefighters, new Date('invalid'), 5);
+        autoScheduleNextHolds(firefighters, new Date("invalid"), 5);
       }).toThrow();
     });
   });
 
-  describe('formatDateForDB', () => {
-    it('should throw for invalid date', () => {
+  describe("formatDateForDB", () => {
+    it("should throw for invalid date", () => {
       expect(() => {
-        formatDateForDB(new Date('invalid'));
+        formatDateForDB(new Date("invalid"));
       }).toThrow();
     });
 
-    it('should throw for null date', () => {
+    it("should throw for null date", () => {
       expect(() => {
         formatDateForDB(null as any);
       }).toThrow();
     });
 
-    it('should throw for undefined date', () => {
+    it("should throw for undefined date", () => {
       expect(() => {
         formatDateForDB(undefined as any);
       }).toThrow();
     });
 
-    it('should handle dates at epoch boundary', () => {
+    it("should handle dates at epoch boundary", () => {
       const epoch = new Date(0);
       const result = formatDateForDB(epoch);
 
       expect(result).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
 
-    it('should handle far future dates', () => {
+    it("should handle far future dates", () => {
       const future = new Date(9999, 11, 31);
       const result = formatDateForDB(future);
 
@@ -168,52 +176,52 @@ describe('Error Handling - Calendar Utils', () => {
     });
   });
 
-  describe('parseDateStringLocal', () => {
-    it('should throw for malformed date string', () => {
+  describe("parseDateStringLocal", () => {
+    it("should throw for malformed date string", () => {
       expect(() => {
-        parseDateStringLocal('invalid-date');
+        parseDateStringLocal("invalid-date");
       }).toThrow();
     });
 
-    it('should throw for null input', () => {
+    it("should throw for null input", () => {
       expect(() => {
         parseDateStringLocal(null as any);
       }).toThrow();
     });
 
-    it('should throw for undefined input', () => {
+    it("should throw for undefined input", () => {
       expect(() => {
         parseDateStringLocal(undefined as any);
       }).toThrow();
     });
 
-    it('should throw for empty string', () => {
+    it("should throw for empty string", () => {
       expect(() => {
-        parseDateStringLocal('');
+        parseDateStringLocal("");
       }).toThrow();
     });
 
-    it('should throw for incomplete date string', () => {
+    it("should throw for incomplete date string", () => {
       expect(() => {
-        parseDateStringLocal('2025-11');
+        parseDateStringLocal("2025-11");
       }).toThrow();
     });
 
-    it('should handle date string with invalid month', () => {
+    it("should handle date string with invalid month", () => {
       expect(() => {
-        parseDateStringLocal('2025-13-01');
+        parseDateStringLocal("2025-13-01");
       }).toThrow();
     });
 
-    it('should handle date string with invalid day', () => {
+    it("should handle date string with invalid day", () => {
       expect(() => {
-        parseDateStringLocal('2025-11-32');
+        parseDateStringLocal("2025-11-32");
       }).toThrow();
     });
   });
 
-  describe('attachScheduledHolds', () => {
-    it('should handle null holds array', () => {
+  describe("attachScheduledHolds", () => {
+    it("should handle null holds array", () => {
       const days = [
         {
           date: new Date(2025, 10, 15),
@@ -231,7 +239,7 @@ describe('Error Handling - Calendar Utils', () => {
       expect(result[0].scheduledHolds).toHaveLength(0);
     });
 
-    it('should handle null firefighters array', () => {
+    it("should handle null firefighters array", () => {
       const days = [
         {
           date: new Date(2025, 10, 15),
@@ -249,7 +257,7 @@ describe('Error Handling - Calendar Utils', () => {
       expect(result[0].scheduledHolds).toHaveLength(0);
     });
 
-    it('should handle holds with invalid date formats gracefully', () => {
+    it("should handle holds with invalid date formats gracefully", () => {
       const days = [
         {
           date: new Date(2025, 10, 15),
@@ -264,20 +272,22 @@ describe('Error Handling - Calendar Utils', () => {
 
       const holdsWithBadDate = [
         {
-          id: 'bad-1',
-          firefighter_id: 'ff-1',
-          firefighter_name: 'Test',
-          hold_date: 'invalid-date',
-          status: 'scheduled' as const,
-          shift: 'A' as const,
-          fire_station: '1',
+          id: "bad-1",
+          firefighter_id: "ff-1",
+          firefighter_name: "Test",
+          hold_date: "invalid-date",
+          status: "scheduled" as const,
+          shift: "A" as const,
+          fire_station: "1",
           lent_to_shift: null,
           notes: null,
-          duration: '24h' as const,
-          start_time: '07:00',
-          created_at: '',
-          updated_at: '',
+          duration: "24h" as const,
+          start_time: "07:00",
+          created_at: "",
+          updated_at: "",
           completed_at: null,
+          is_completed: false,
+          scheduled_date: "2025-10-15",
         },
       ];
 
@@ -289,20 +299,28 @@ describe('Error Handling - Calendar Utils', () => {
   });
 });
 
-describe('Error Handling - Rotation Logic', () => {
-  describe('moveToBottom', () => {
-    it('should return unchanged array for non-existent ID', () => {
+describe("Error Handling - Rotation Logic", () => {
+  describe("moveToBottom", () => {
+    it("should return unchanged array for non-existent ID", () => {
       const firefighters = [
-        createMockFirefighter({ id: '1', order_position: 0, is_available: true }),
-        createMockFirefighter({ id: '2', order_position: 1, is_available: true }),
+        createMockFirefighter({
+          id: "1",
+          order_position: 0,
+          is_available: true,
+        }),
+        createMockFirefighter({
+          id: "2",
+          order_position: 1,
+          is_available: true,
+        }),
       ];
 
-      const result = moveToBottom(firefighters, 'non-existent');
+      const result = moveToBottom(firefighters, "non-existent");
 
       expect(result).toEqual(firefighters);
     });
 
-    it('should handle null firefighter ID', () => {
+    it("should handle null firefighter ID", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
       const result = moveToBottom(firefighters, null as any);
@@ -310,7 +328,7 @@ describe('Error Handling - Rotation Logic', () => {
       expect(result).toEqual(firefighters);
     });
 
-    it('should handle undefined firefighter ID', () => {
+    it("should handle undefined firefighter ID", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
       const result = moveToBottom(firefighters, undefined as any);
@@ -318,31 +336,35 @@ describe('Error Handling - Rotation Logic', () => {
       expect(result).toEqual(firefighters);
     });
 
-    it('should handle empty firefighters array', () => {
-      const result = moveToBottom([], '1');
+    it("should handle empty firefighters array", () => {
+      const result = moveToBottom([], "1");
 
       expect(result).toEqual([]);
     });
 
-    it('should return unchanged for unavailable firefighter', () => {
+    it("should return unchanged for unavailable firefighter", () => {
       const firefighters = [
-        createMockFirefighter({ id: '1', is_available: false, order_position: 0 }),
+        createMockFirefighter({
+          id: "1",
+          is_available: false,
+          order_position: 0,
+        }),
       ];
 
-      const result = moveToBottom(firefighters, '1');
+      const result = moveToBottom(firefighters, "1");
 
       expect(result).toEqual(firefighters);
     });
   });
 
-  describe('recalculatePositions', () => {
-    it('should handle empty array', () => {
+  describe("recalculatePositions", () => {
+    it("should handle empty array", () => {
       const result = recalculatePositions([]);
 
       expect(result).toEqual([]);
     });
 
-    it('should handle single firefighter', () => {
+    it("should handle single firefighter", () => {
       const firefighters = [
         createMockFirefighter({ order_position: 10, is_available: true }),
       ];
@@ -352,7 +374,7 @@ describe('Error Handling - Rotation Logic', () => {
       expect(result[0].order_position).toBe(0);
     });
 
-    it('should handle all unavailable firefighters', () => {
+    it("should handle all unavailable firefighters", () => {
       const firefighters = [
         createMockFirefighter({ order_position: 0, is_available: false }),
         createMockFirefighter({ order_position: 1, is_available: false }),
@@ -365,7 +387,7 @@ describe('Error Handling - Rotation Logic', () => {
       expect(result[1].order_position).toBe(1);
     });
 
-    it('should handle null in array', () => {
+    it("should handle null in array", () => {
       const firefighters = [
         createMockFirefighter({ order_position: 0, is_available: true }),
         null as any,
@@ -379,14 +401,14 @@ describe('Error Handling - Rotation Logic', () => {
     });
   });
 
-  describe('sortFirefighters', () => {
-    it('should handle empty array', () => {
+  describe("sortFirefighters", () => {
+    it("should handle empty array", () => {
       const result = sortFirefighters([]);
 
       expect(result).toEqual([]);
     });
 
-    it('should handle null/undefined in array', () => {
+    it("should handle null/undefined in array", () => {
       const firefighters = [
         createMockFirefighter({ order_position: 0 }),
         null as any,
@@ -398,10 +420,18 @@ describe('Error Handling - Rotation Logic', () => {
       expect(result).toHaveLength(1);
     });
 
-    it('should handle firefighters with same order_position', () => {
+    it("should handle firefighters with same order_position", () => {
       const firefighters = [
-        createMockFirefighter({ id: '1', order_position: 0, is_available: true }),
-        createMockFirefighter({ id: '2', order_position: 0, is_available: true }),
+        createMockFirefighter({
+          id: "1",
+          order_position: 0,
+          is_available: true,
+        }),
+        createMockFirefighter({
+          id: "2",
+          order_position: 0,
+          is_available: true,
+        }),
       ];
 
       const result = sortFirefighters(firefighters);
@@ -411,28 +441,28 @@ describe('Error Handling - Rotation Logic', () => {
     });
   });
 
-  describe('formatHoldListMessage', () => {
-    it('should handle null firefighters', () => {
+  describe("formatHoldListMessage", () => {
+    it("should handle null firefighters", () => {
       const result = formatHoldListMessage(null as any);
 
-      expect(result).toContain('No firefighters');
+      expect(result).toContain("No firefighters");
     });
 
-    it('should handle undefined firefighters', () => {
+    it("should handle undefined firefighters", () => {
       const result = formatHoldListMessage(undefined as any);
 
-      expect(result).toContain('No firefighters');
+      expect(result).toContain("No firefighters");
     });
 
-    it('should handle empty array', () => {
+    it("should handle empty array", () => {
       const result = formatHoldListMessage([]);
 
-      expect(result).toContain('No firefighters');
+      expect(result).toContain("No firefighters");
     });
 
-    it('should handle firefighters with missing names', () => {
+    it("should handle firefighters with missing names", () => {
       const firefighters = [
-        createMockFirefighter({ name: '', is_available: true }),
+        createMockFirefighter({ name: "", is_available: true }),
       ];
 
       const result = formatHoldListMessage(firefighters);
@@ -441,24 +471,27 @@ describe('Error Handling - Rotation Logic', () => {
       // Should handle empty name gracefully
     });
 
-    it('should handle firefighters with null fire_station', () => {
+    it("should handle firefighters with null fire_station", () => {
       const firefighters = [
-        createMockFirefighter({ fire_station: null as any, is_available: true }),
+        createMockFirefighter({
+          fire_station: null as any,
+          is_available: true,
+        }),
       ];
 
       const result = formatHoldListMessage(firefighters);
 
-      expect(result).toContain('Station #?');
+      expect(result).toContain("Station #?");
     });
 
-    it('should handle firefighters with null last_hold_date', () => {
+    it("should handle firefighters with null last_hold_date", () => {
       const firefighters = [
         createMockFirefighter({ last_hold_date: null, is_available: true }),
       ];
 
       const result = formatHoldListMessage(firefighters);
 
-      expect(result).toContain('Not yet');
+      expect(result).toContain("Not yet");
     });
   });
 });

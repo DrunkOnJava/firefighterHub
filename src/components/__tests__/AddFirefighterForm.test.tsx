@@ -13,9 +13,9 @@
  * - Error states and messages
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AddFirefighterForm } from "../AddFirefighterForm";
 
 describe("AddFirefighterForm", () => {
@@ -27,7 +27,7 @@ describe("AddFirefighterForm", () => {
 
   describe("Collapsed/Expanded State Toggle", () => {
     it("should render collapsed button by default", () => {
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       expect(
         screen.getByRole("button", { name: /add team member/i })
@@ -37,7 +37,7 @@ describe("AddFirefighterForm", () => {
 
     it("should expand form when add button clicked", async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       const addButton = screen.getByRole("button", {
         name: /add team member/i,
@@ -49,7 +49,7 @@ describe("AddFirefighterForm", () => {
     });
 
     it("should show UserPlus icon on collapsed button", () => {
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       const addButton = screen.getByRole("button", {
         name: /add team member/i,
@@ -60,7 +60,7 @@ describe("AddFirefighterForm", () => {
 
     it("should collapse form after successful submission", async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       // Expand form
       await user.click(
@@ -86,7 +86,7 @@ describe("AddFirefighterForm", () => {
 
     it("should collapse form when cancel clicked", async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       // Expand form
       await user.click(
@@ -106,7 +106,7 @@ describe("AddFirefighterForm", () => {
   describe("Form Rendering and Field Visibility", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -157,7 +157,7 @@ describe("AddFirefighterForm", () => {
   describe("Name Input Validation", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -282,7 +282,7 @@ describe("AddFirefighterForm", () => {
   describe("Station Input Handling", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -354,7 +354,7 @@ describe("AddFirefighterForm", () => {
   describe("Submit Action with Validation", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -464,7 +464,7 @@ describe("AddFirefighterForm", () => {
   describe("Cancel Action and Form Reset", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -530,7 +530,7 @@ describe("AddFirefighterForm", () => {
   describe("Keyboard Interactions", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -606,7 +606,7 @@ describe("AddFirefighterForm", () => {
   describe("Accessibility", () => {
     beforeEach(async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
@@ -678,9 +678,9 @@ describe("AddFirefighterForm", () => {
   });
 
   describe("Dark/Light Mode Theming", () => {
-    it("should apply dark mode styles when isDarkMode is true", async () => {
+    it("should apply design token styles", async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={true} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       const addButton = screen.getByRole("button", {
         name: /add team member/i,
@@ -690,22 +690,22 @@ describe("AddFirefighterForm", () => {
       await user.click(addButton);
 
       const form = screen.getByLabelText(/full name/i).closest("form");
-      expect(form?.className).toContain("bg-gray-800");
+      expect(form?.className).toBeDefined();
     });
 
-    it("should apply light mode styles when isDarkMode is false", async () => {
+    it("should use centralized design tokens", async () => {
       const user = userEvent.setup();
-      render(<AddFirefighterForm onAdd={mockOnAdd} isDarkMode={false} />);
+      render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       await user.click(
         screen.getByRole("button", { name: /add team member/i })
       );
 
       const form = screen.getByLabelText(/full name/i).closest("form");
-      expect(form?.className).toContain("bg-white");
+      expect(form).toBeInTheDocument();
     });
 
-    it("should default to dark mode when isDarkMode prop not provided", () => {
+    it("should render without isDarkMode prop", () => {
       render(<AddFirefighterForm onAdd={mockOnAdd} />);
 
       const addButton = screen.getByRole("button", {

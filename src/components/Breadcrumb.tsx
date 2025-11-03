@@ -1,4 +1,5 @@
 import { ChevronRight, Home } from 'lucide-react';
+import { colors, tokens } from '../styles';
 
 interface BreadcrumbItem {
   label: string;
@@ -15,11 +16,11 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
 
   return (
     <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex items-center gap-2 text-sm">
+      <ol className={`flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.body.secondary}`}>
         <li>
           <a
             href="/"
-            className="flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors focus-ring rounded px-2 py-1"
+            className={`flex items-center gap-1.5 ${colors.structural.text.tertiary} hover:${colors.structural.text.primary} transition-colors focus-ring rounded px-2 py-1`}
             aria-label="Home"
           >
             <Home size={16} />
@@ -27,21 +28,21 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
           </a>
         </li>
         {items.map((item, index) => (
-          <li key={index} className="flex items-center gap-2">
-            <ChevronRight size={16} className="text-gray-600" aria-hidden="true" />
+          <li key={index} className={`flex items-center ${tokens.spacing.gap.sm}`}>
+            <ChevronRight size={16} className={colors.structural.text.tertiary} aria-hidden="true" />
             {item.active ? (
-              <span className="text-white font-semibold px-2 py-1" aria-current="page">
+              <span className={`${colors.structural.text.primary} font-semibold px-2 py-1`} aria-current="page">
                 {item.label}
               </span>
             ) : item.href ? (
               <a
                 href={item.href}
-                className="text-gray-400 hover:text-white transition-colors focus-ring rounded px-2 py-1"
+                className={`${colors.structural.text.tertiary} hover:${colors.structural.text.primary} transition-colors focus-ring rounded px-2 py-1`}
               >
                 {item.label}
               </a>
             ) : (
-              <span className="text-gray-400 px-2 py-1">{item.label}</span>
+              <span className={`${colors.structural.text.tertiary} px-2 py-1`}>{item.label}</span>
             )}
           </li>
         ))}

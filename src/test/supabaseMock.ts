@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 /**
  * Comprehensive Supabase mock for testing
@@ -20,7 +20,9 @@ export interface MockQueryBuilder {
   single: ReturnType<typeof vi.fn>;
 }
 
-export function createMockQueryBuilder(response: MockSupabaseResponse = { data: [], error: null }): MockQueryBuilder {
+export function createMockQueryBuilder(
+  response: MockSupabaseResponse = { data: [], error: null }
+): MockQueryBuilder {
   const mockEq = vi.fn();
   const mockOrder = vi.fn();
   const mockSelect = vi.fn();
@@ -130,7 +132,11 @@ export function mockSupabaseResponses(
 /**
  * Helper to verify shift filtering was called
  */
-export function expectShiftFilter(mockFrom: any, shift: string, table: string = 'firefighters') {
+export function expectShiftFilter(
+  mockFrom: any,
+  _shift: string,
+  table: string = "firefighters"
+) {
   expect(mockFrom).toHaveBeenCalledWith(table);
   // Note: The actual .eq call verification depends on how the mock is set up
 }
@@ -140,12 +146,12 @@ export function expectShiftFilter(mockFrom: any, shift: string, table: string = 
  */
 export function expectActivityLogged(
   mockFrom: any,
-  actionType: string,
-  firefighterName: string,
-  shift: string
+  _actionType: string,
+  _firefighterName: string,
+  _shift: string
 ) {
   const activityLogCalls = mockFrom.mock.calls.filter(
-    (call: any[]) => call[0] === 'activity_log'
+    (call: any[]) => call[0] === "activity_log"
   );
   expect(activityLogCalls.length).toBeGreaterThan(0);
 }

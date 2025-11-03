@@ -4,6 +4,8 @@
  * Improves perceived performance and user experience
  */
 
+import { colors, tokens } from '../styles';
+
 interface SkeletonProps {
   className?: string;
 }
@@ -12,7 +14,7 @@ interface SkeletonProps {
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
     <div
-      className={`animate-pulse bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%] rounded ${className}`}
+      className={`animate-pulse bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 bg-[length:200%_100%] ${tokens.borders.radius.md} ${className}`}
       style={{
         animation: 'shimmer 2s infinite',
       }}
@@ -23,53 +25,53 @@ export function Skeleton({ className = '' }: SkeletonProps) {
 // Skeleton for calendar grid
 export function CalendarSkeleton() {
   return (
-    <div className="border-2 rounded-2xl shadow-2xl overflow-hidden bg-gray-800 border-gray-700">
+    <div className={`border-2 ${tokens.borders.radius.xl} ${colors.components.card.shadow} overflow-hidden ${colors.structural.bg.card} ${colors.structural.border.default}`}>
       {/* Header */}
-      <div className="border-b-2 p-6 bg-gray-850 border-gray-700">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <Skeleton className="w-12 h-12 rounded-xl" />
+      <div className={`border-b-2 ${tokens.spacing.card.lg} ${colors.structural.bg.surface} ${colors.structural.border.default}`}>
+        <div className={`flex items-center justify-between mb-6`}>
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <Skeleton className={`w-12 h-12 ${tokens.borders.radius.xl}`} />
             <div>
               <Skeleton className="w-48 h-7 mb-2" />
               <Skeleton className="w-64 h-4" />
             </div>
           </div>
-          <Skeleton className="w-24 h-10 rounded-lg" />
+          <Skeleton className={`w-24 h-10 ${tokens.borders.radius.lg}`} />
         </div>
 
-        <div className="flex items-center justify-center gap-6">
-          <Skeleton className="w-10 h-10 rounded-lg" />
+        <div className={`flex items-center justify-center ${tokens.spacing.gap.lg}`}>
+          <Skeleton className={`w-10 h-10 ${tokens.borders.radius.lg}`} />
           <Skeleton className="w-64 h-9" />
-          <Skeleton className="w-10 h-10 rounded-lg" />
+          <Skeleton className={`w-10 h-10 ${tokens.borders.radius.lg}`} />
         </div>
       </div>
 
       {/* Calendar Grid */}
-      <div className="p-6">
+      <div className={tokens.spacing.card.lg}>
         {/* Weekday headers */}
-        <div className="grid grid-cols-7 gap-2 mb-3">
+        <div className={`grid grid-cols-7 ${tokens.spacing.gap.sm} mb-3`}>
           {[...Array(7)].map((_, i) => (
-            <Skeleton key={i} className="h-10 rounded-lg" />
+            <Skeleton key={i} className={`h-10 ${tokens.borders.radius.lg}`} />
           ))}
         </div>
 
         {/* Calendar days */}
-        <div className="grid grid-cols-7 gap-2">
+        <div className={`grid grid-cols-7 ${tokens.spacing.gap.sm}`}>
           {[...Array(35)].map((_, i) => (
-            <Skeleton key={i} className="h-32 rounded-xl" />
+            <Skeleton key={i} className={`h-32 ${tokens.borders.radius.xl}`} />
           ))}
         </div>
       </div>
 
       {/* Footer */}
-      <div className="border-t-2 p-6 bg-gray-850 border-gray-700">
+      <div className={`border-t-2 ${tokens.spacing.card.lg} ${colors.structural.bg.surface} ${colors.structural.border.default}`}>
         <div className="flex items-center justify-between">
-          <div className="flex gap-6">
+          <div className={`flex ${tokens.spacing.gap.lg}`}>
             <Skeleton className="w-32 h-6" />
             <Skeleton className="w-32 h-6" />
             <Skeleton className="w-24 h-6" />
           </div>
-          <Skeleton className="w-40 h-10 rounded-lg" />
+          <Skeleton className={`w-40 h-10 ${tokens.borders.radius.lg}`} />
         </div>
       </div>
     </div>
@@ -79,36 +81,36 @@ export function CalendarSkeleton() {
 // Skeleton for firefighter list
 export function FirefighterListSkeleton() {
   return (
-    <div className="border-2 rounded-2xl shadow-2xl overflow-hidden bg-gray-800 border-gray-700">
+    <div className={`border-2 ${tokens.borders.radius.xl} ${colors.components.card.shadow} overflow-hidden ${colors.structural.bg.card} ${colors.structural.border.default}`}>
       {/* Header */}
-      <div className="border-b-2 p-6 bg-gray-850 border-gray-700">
+      <div className={`border-b-2 ${tokens.spacing.card.lg} ${colors.structural.bg.surface} ${colors.structural.border.default}`}>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Skeleton className="w-12 h-12 rounded-xl" />
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <Skeleton className={`w-12 h-12 ${tokens.borders.radius.xl}`} />
             <Skeleton className="w-48 h-7" />
           </div>
-          <Skeleton className="w-32 h-10 rounded-lg" />
+          <Skeleton className={`w-32 h-10 ${tokens.borders.radius.lg}`} />
         </div>
       </div>
 
       {/* List items */}
-      <div className="p-4">
+      <div className={tokens.spacing.card.md}>
         {[...Array(8)].map((_, i) => (
           <div
             key={i}
-            className="flex items-center justify-between p-4 mb-2 rounded-lg bg-gray-850"
+            className={`flex items-center justify-between ${tokens.spacing.card.md} mb-2 ${tokens.borders.radius.lg} ${colors.structural.bg.surface}`}
           >
-            <div className="flex items-center gap-4 flex-1">
+            <div className={`flex items-center ${tokens.spacing.gap.md} flex-1`}>
               <Skeleton className="w-8 h-8 rounded" />
               <div className="flex-1">
                 <Skeleton className="w-48 h-6 mb-2" />
                 <Skeleton className="w-32 h-4" />
               </div>
             </div>
-            <div className="flex gap-2">
-              <Skeleton className="w-10 h-10 rounded-lg" />
-              <Skeleton className="w-10 h-10 rounded-lg" />
-              <Skeleton className="w-10 h-10 rounded-lg" />
+            <div className={`flex ${tokens.spacing.gap.sm}`}>
+              <Skeleton className={`w-10 h-10 ${tokens.borders.radius.lg}`} />
+              <Skeleton className={`w-10 h-10 ${tokens.borders.radius.lg}`} />
+              <Skeleton className={`w-10 h-10 ${tokens.borders.radius.lg}`} />
             </div>
           </div>
         ))}
@@ -122,17 +124,17 @@ export function SidebarSkeleton() {
   return (
     <div className="space-y-6">
       {/* Stats cards */}
-      <div className="border-2 rounded-2xl p-6 bg-gray-800 border-gray-700">
+      <div className={`border-2 ${tokens.borders.radius.xl} ${tokens.spacing.card.lg} ${colors.structural.bg.card} ${colors.structural.border.default}`}>
         <Skeleton className="w-32 h-6 mb-4" />
         <div className="space-y-3">
-          <Skeleton className="w-full h-12 rounded-lg" />
-          <Skeleton className="w-full h-12 rounded-lg" />
-          <Skeleton className="w-full h-12 rounded-lg" />
+          <Skeleton className={`w-full h-12 ${tokens.borders.radius.lg}`} />
+          <Skeleton className={`w-full h-12 ${tokens.borders.radius.lg}`} />
+          <Skeleton className={`w-full h-12 ${tokens.borders.radius.lg}`} />
         </div>
       </div>
 
       {/* Upcoming schedule */}
-      <div className="border-2 rounded-2xl p-6 bg-gray-800 border-gray-700">
+      <div className={`border-2 ${tokens.borders.radius.xl} ${tokens.spacing.card.lg} ${colors.structural.bg.card} ${colors.structural.border.default}`}>
         <Skeleton className="w-40 h-6 mb-4" />
         <div className="space-y-3">
           {[...Array(5)].map((_, i) => (
@@ -153,10 +155,10 @@ export function SidebarSkeleton() {
 // Skeleton for metric cards
 export function MetricCardSkeleton() {
   return (
-    <div className="border-2 rounded-xl p-4 bg-gray-800 border-gray-700">
+    <div className={`border-2 ${tokens.borders.radius.xl} ${tokens.spacing.card.md} ${colors.structural.bg.card} ${colors.structural.border.default}`}>
       <Skeleton className="w-24 h-4 mb-3" />
       <Skeleton className="w-16 h-8 mb-2" />
-      <Skeleton className="w-full h-2 rounded-full" />
+      <Skeleton className={`w-full h-2 ${tokens.borders.radius.full}`} />
     </div>
   );
 }

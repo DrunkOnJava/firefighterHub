@@ -1,12 +1,12 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
+import { colors, tokens } from '../styles';
 
 interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   loadingText?: string;
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'danger' | 'success';
-  isDarkMode?: boolean;
 }
 
 export function LoadingButton({
@@ -14,26 +14,21 @@ export function LoadingButton({
   loadingText,
   children,
   variant = 'primary',
-  isDarkMode = true,
   className = '',
   disabled,
   ...props
 }: LoadingButtonProps) {
   const variantClasses = {
-    primary: isDarkMode
-      ? 'bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white'
-      : 'bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white',
-    secondary: isDarkMode
-      ? 'bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 text-white'
-      : 'bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50 text-gray-900',
-    danger: 'bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white',
-    success: 'bg-green-600 hover:bg-green-700 disabled:bg-green-800 text-white'
+    primary: `${colors.semantic.primary.solid} ${colors.semantic.primary.hover} disabled:bg-blue-800 text-white`,
+    secondary: `${colors.components.button.secondary} disabled:bg-gray-800`,
+    danger: `${colors.semantic.error.solid} ${colors.semantic.error.hover} disabled:bg-red-800 text-white`,
+    success: `${colors.semantic.success.solid} ${colors.semantic.success.hover} disabled:bg-green-800 text-white`
   };
 
   return (
     <button
       className={`
-        relative flex items-center justify-center gap-2 px-4 py-2 rounded-lg
+        relative flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${tokens.borders.radius.lg}
         font-medium transition-all duration-200
         disabled:cursor-not-allowed disabled:opacity-60
         ${variantClasses[variant]}

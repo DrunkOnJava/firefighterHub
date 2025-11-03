@@ -6,14 +6,13 @@
 
 import { Wifi, WifiOff, RefreshCw } from 'lucide-react';
 import { useConnectionStatus } from '../hooks/useConnectionStatus';
+import { colors, tokens } from '../styles';
 
 interface ConnectionStatusIndicatorProps {
-  isDarkMode?: boolean;
   showLabel?: boolean;
 }
 
 export function ConnectionStatusIndicator({
-  isDarkMode = true,
   showLabel = false,
 }: ConnectionStatusIndicatorProps) {
   const { status, retryCount, lastError, isOnline, reconnect } =
@@ -27,9 +26,9 @@ export function ConnectionStatusIndicator({
   const getStatusConfig = () => {
     if (!isOnline) {
       return {
-        color: 'text-red-500',
-        bgColor: 'bg-red-500/10',
-        borderColor: 'border-red-500/20',
+        color: colors.semantic.error.text,
+        bgColor: colors.semantic.error.light,
+        borderColor: colors.semantic.error.border,
         icon: WifiOff,
         label: 'Offline',
         description: 'No internet connection',
@@ -40,9 +39,9 @@ export function ConnectionStatusIndicator({
     switch (status) {
       case 'connected':
         return {
-          color: 'text-green-500',
-          bgColor: 'bg-green-500/10',
-          borderColor: 'border-green-500/20',
+          color: colors.semantic.success.text,
+          bgColor: colors.semantic.success.light,
+          borderColor: colors.semantic.success.border,
           icon: Wifi,
           label: 'Connected',
           description: 'Real-time updates active',
@@ -50,9 +49,9 @@ export function ConnectionStatusIndicator({
         };
       case 'connecting':
         return {
-          color: 'text-yellow-500',
-          bgColor: 'bg-yellow-500/10',
-          borderColor: 'border-yellow-500/20',
+          color: colors.semantic.warning.text,
+          bgColor: colors.semantic.warning.light,
+          borderColor: colors.semantic.warning.border,
           icon: RefreshCw,
           label: 'Reconnecting',
           description: retryCount > 0 ? `Attempt ${retryCount}` : 'Connecting...',
@@ -60,9 +59,9 @@ export function ConnectionStatusIndicator({
         };
       case 'disconnected':
         return {
-          color: 'text-red-500',
-          bgColor: 'bg-red-500/10',
-          borderColor: 'border-red-500/20',
+          color: colors.semantic.error.text,
+          bgColor: colors.semantic.error.light,
+          borderColor: colors.semantic.error.border,
           icon: WifiOff,
           label: 'Disconnected',
           description: lastError || 'Connection lost',
@@ -80,7 +79,7 @@ export function ConnectionStatusIndicator({
       <button
         onClick={status === 'disconnected' ? reconnect : undefined}
         className={`
-          flex items-center gap-2 px-3 py-2 rounded-lg border transition-all
+          flex items-center ${tokens.spacing.gap.sm} px-3 py-2 ${tokens.borders.radius.lg} border transition-all
           ${config.bgColor} ${config.borderColor}
           ${status === 'disconnected' ? 'hover:bg-red-500/20 cursor-pointer' : 'cursor-default'}
           focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
@@ -105,7 +104,7 @@ export function ConnectionStatusIndicator({
 
         {/* Optional Label */}
         {showLabel && (
-          <span className={`text-sm font-medium ${config.color}`}>
+          <span className={`${tokens.typography.body.secondary} font-medium ${config.color}`}>
             {config.label}
           </span>
         )}
@@ -113,7 +112,7 @@ export function ConnectionStatusIndicator({
         {/* Retry Count Badge */}
         {retryCount > 0 && status === 'connecting' && (
           <span
-            className="text-xs font-bold text-yellow-500 bg-yellow-500/20 px-1.5 py-0.5 rounded-full"
+            className={`${tokens.typography.body.small} font-bold ${colors.semantic.warning.text} ${colors.semantic.warning.light} px-1.5 py-0.5 ${tokens.borders.radius.full}`}
             aria-label={`Retry attempt ${retryCount}`}
           >
             {retryCount}
@@ -124,26 +123,22 @@ export function ConnectionStatusIndicator({
       {/* Tooltip on Hover */}
       <div
         className={`
-          absolute top-full right-0 mt-2 w-64 p-3 rounded-lg shadow-xl border-2 z-50
+          absolute top-full right-0 mt-2 w-64 p-3 ${tokens.borders.radius.lg} shadow-xl border-2 z-50
           opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all
-          ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+          ${colors.structural.bg.card} ${colors.structural.border.default}
         `}
         role="tooltip"
       >
-        <div className="flex items-start gap-2">
+        <div className={`flex items-start ${tokens.spacing.gap.sm}`}>
           <Icon size={20} className={config.color} />
           <div className="flex-1">
             <p
-              className={`font-semibold text-sm ${
-                isDarkMode ? 'text-gray-200' : 'text-gray-800'
-              }`}
+              className={`font-semibold ${tokens.typography.body.secondary} ${colors.structural.text.primary}`}
             >
               {config.label}
             </p>
             <p
-              className={`text-xs mt-1 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}
+              className={`${tokens.typography.body.small} mt-1 ${colors.structural.text.tertiary}`}
             >
               {config.description}
             </p>
@@ -151,16 +146,14 @@ export function ConnectionStatusIndicator({
             {/* Detailed Status Info */}
             {!isOnline && (
               <p
-                className={`text-xs mt-2 ${
-                  isDarkMode ? 'text-gray-500' : 'text-gray-500'
-                }`}
+                className={`${tokens.typography.body.small} mt-2 ${colors.structural.text.tertiary}`}
               >
                 Check your internet connection and try again.
               </p>
             )}
 
             {status === 'connecting' && retryCount > 5 && (
-              <p className="text-xs mt-2 text-yellow-500">
+              <p className={`${tokens.typography.body.small} mt-2 ${colors.semantic.warning.text}`}>
                 Taking longer than expected. You may want to refresh the page.
               </p>
             )}
@@ -170,8 +163,8 @@ export function ConnectionStatusIndicator({
               <button
                 onClick={reconnect}
                 className={`
-                  mt-3 w-full px-3 py-2 rounded-lg text-sm font-semibold
-                  bg-blue-600 hover:bg-blue-700 text-white
+                  mt-3 w-full px-3 py-2 ${tokens.borders.radius.lg} ${tokens.typography.body.secondary} font-semibold
+                  ${colors.semantic.primary.solid} ${colors.semantic.primary.hover} text-white
                   transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
                 `}
               >
@@ -186,7 +179,7 @@ export function ConnectionStatusIndicator({
 }
 
 // Compact version for mobile/small spaces
-export function ConnectionStatusDot({ isDarkMode = true }: { isDarkMode?: boolean }) {
+export function ConnectionStatusDot() {
   const { status, isOnline } = useConnectionStatus();
 
   // Don't show if online and connected
@@ -195,14 +188,14 @@ export function ConnectionStatusDot({ isDarkMode = true }: { isDarkMode?: boolea
   }
 
   const getColor = () => {
-    if (!isOnline) return 'bg-red-500';
+    if (!isOnline) return colors.semantic.error.solid;
     switch (status) {
       case 'connected':
-        return 'bg-green-500';
+        return colors.semantic.success.solid;
       case 'connecting':
-        return 'bg-yellow-500';
+        return colors.semantic.warning.solid;
       case 'disconnected':
-        return 'bg-red-500';
+        return colors.semantic.error.solid;
     }
   };
 
@@ -225,16 +218,16 @@ export function ConnectionStatusDot({ isDarkMode = true }: { isDarkMode?: boolea
       aria-label={`Connection: ${getLabel()}`}
     >
       {/* Dot Indicator */}
-      <div className="flex items-center gap-2">
+      <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
         <div className="relative">
           <div
-            className={`w-2 h-2 rounded-full ${getColor()} ${
+            className={`w-2 h-2 ${tokens.borders.radius.full} ${getColor()} ${
               status === 'connecting' ? 'animate-pulse' : ''
             }`}
           />
           {status === 'connecting' && (
             <div
-              className={`absolute inset-0 w-2 h-2 rounded-full ${getColor()} animate-ping opacity-75`}
+              className={`absolute inset-0 w-2 h-2 ${tokens.borders.radius.full} ${getColor()} animate-ping opacity-75`}
             />
           )}
         </div>
@@ -243,9 +236,9 @@ export function ConnectionStatusDot({ isDarkMode = true }: { isDarkMode?: boolea
       {/* Minimal Tooltip */}
       <div
         className={`
-          absolute top-full right-0 mt-1 px-2 py-1 rounded text-xs whitespace-nowrap
+          absolute top-full right-0 mt-1 px-2 py-1 rounded ${tokens.typography.body.small} whitespace-nowrap
           opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all
-          ${isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-gray-700 text-white'}
+          ${colors.structural.bg.card} ${colors.structural.text.primary}
         `}
       >
         {getLabel()}

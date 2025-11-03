@@ -1,11 +1,11 @@
 import { ReactNode, useState, useRef, useEffect } from "react";
+import { colors, tokens } from "../styles";
 
 interface TooltipProps {
   content: string;
   children: ReactNode;
   delay?: number;
   position?: "top" | "bottom" | "left" | "right";
-  isDarkMode?: boolean;
 }
 
 export function Tooltip({
@@ -13,7 +13,6 @@ export function Tooltip({
   children,
   delay = 500,
   position = "top",
-  isDarkMode = true,
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
@@ -73,17 +72,11 @@ export function Tooltip({
           role="tooltip"
         >
           <div
-            className={`px-3 py-2 text-sm font-medium rounded-lg shadow-lg whitespace-nowrap ${
-              isDarkMode
-                ? "bg-gray-900 text-white border border-gray-700"
-                : "bg-slate-800 text-white"
-            }`}
+            className={`px-3 py-2 ${tokens.typography.body.secondary} font-medium ${tokens.borders.radius.lg} shadow-lg whitespace-nowrap ${colors.structural.bg.surface} ${colors.structural.text.primary} border ${colors.structural.border.default}`}
           >
             {content}
             <div
-              className={`absolute w-0 h-0 border-4 ${arrowClasses[position]} ${
-                isDarkMode ? "text-gray-900" : "text-slate-800"
-              }`}
+              className={`absolute w-0 h-0 border-4 ${arrowClasses[position]} ${colors.structural.text.surface}`}
             />
           </div>
         </div>

@@ -1,20 +1,21 @@
 /**
  * RosterHeader Component
- * 
+ *
  * Header section for the firefighter roster with:
  * - Title and description
  * - Add firefighter button (admin only)
  * - View deactivated button
  * - Export menu
  * - Filter toggle
- * 
+ *
  * Uses design tokens for consistent styling.
  */
 
-import { Users, UserPlus, Eye, Filter } from 'lucide-react';
-import { colors, tokens } from '../../styles';
-import { ExportMenu } from './ExportMenu';
-import { Firefighter } from '../../lib/supabase';
+import { Eye, Filter, UserPlus, Users } from "lucide-react";
+import { Firefighter } from "../../lib/supabase";
+import { colors, tokens } from "../../styles";
+import { getTheme } from "../../utils/theme";
+import { ExportMenu } from "./ExportMenu";
 
 interface RosterHeaderProps {
   firefighters: Firefighter[];
@@ -43,15 +44,14 @@ export function RosterHeader({
   activeFilterCount,
   deactivatedCount,
 }: RosterHeaderProps) {
+  const theme = getTheme(isDarkMode);
+
   return (
     <div
       className={`
         border-b-2
         ${tokens.spacing.card.lg}
-        ${isDarkMode 
-          ? 'bg-gradient-to-r from-gray-900 to-gray-800 border-gray-700' 
-          : 'bg-gradient-to-r from-red-50 to-amber-50 border-slate-300'
-        }
+        ${theme.roster.headerGradient} ${theme.roster.headerBorder}
       `}
     >
       <div className="flex items-center justify-between">
@@ -62,10 +62,7 @@ export function RosterHeader({
               ${tokens.spacing.section.md}
               ${tokens.borders.radius.xl}
               ${tokens.shadows.lg}
-              ${isDarkMode 
-                ? 'bg-gradient-to-br from-blue-500 to-blue-600' 
-                : 'bg-gradient-to-br from-blue-600 to-blue-700'
-              }
+              ${theme.roster.headerIconGradient}
             `}
           >
             <Users className="text-white" size={28} />
@@ -75,7 +72,7 @@ export function RosterHeader({
               id="roster-heading"
               className={`
                 ${tokens.typography.heading.h2}
-                ${isDarkMode ? colors.structural.text.primary : 'text-slate-900'}
+                ${theme.roster.headerTitle}
               `}
             >
               Firefighter Roster
@@ -83,7 +80,7 @@ export function RosterHeader({
             <p
               className={`
                 ${tokens.typography.body.primary}
-                ${isDarkMode ? colors.structural.text.secondary : 'text-slate-600'}
+                ${theme.roster.headerDescription}
               `}
             >
               Add and organize your team rotation
@@ -101,10 +98,7 @@ export function RosterHeader({
                 ${tokens.spacing.section.sm}
                 ${tokens.borders.radius.lg}
                 ${tokens.transitions.fast}
-                ${isDarkMode 
-                  ? 'bg-green-700 hover:bg-green-600 text-white' 
-                  : 'bg-green-600 hover:bg-green-700 text-white'
-                }
+                ${theme.button.primary}
               `}
               aria-label="Add team member"
               title="Add team member"
@@ -149,7 +143,8 @@ export function RosterHeader({
             <Filter className="w-4 h-4" />
             Filters
             {activeFilterCount > 0 && (
-              <span className={`
+              <span
+                className={`
                 absolute -top-1 -right-1
                 w-5 h-5
                 ${tokens.borders.radius.full}
@@ -158,7 +153,8 @@ export function RosterHeader({
                 ${tokens.typography.body.small}
                 font-bold
                 flex items-center justify-center
-              `}>
+              `}
+              >
                 {activeFilterCount}
               </span>
             )}
@@ -177,4 +173,3 @@ export function RosterHeader({
     </div>
   );
 }
-

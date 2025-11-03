@@ -1,29 +1,28 @@
 // REFACTORED: Reduced from 1,123 lines to ~400 lines by extracting sub-components
 // Sub-components: RosterHeader, RosterSearchBar, BulkActions, ExportMenu (in ./roster/)
 
-import { useState, useEffect } from "react";
-import { Firefighter, Shift } from "../lib/supabase";
-import { AddFirefighterForm } from "./AddFirefighterForm";
-import { ReactivateModal } from "./ReactivateModal";
-import { FirefighterProfileModal } from "./FirefighterProfileModal";
-import { FilterPanel } from "./FilterPanel";
-import { RosterHeader, RosterSearchBar, BulkActions } from "./roster";
 import {
   ArrowUpDown,
-  Trash2,
-  UserX,
+  CheckSquare,
+  Eye,
+  History,
   Repeat,
   RotateCcw,
-  CheckSquare,
   Square,
-  History,
-  Eye,
+  Trash2,
+  UserX,
 } from "lucide-react";
-import { useFilters } from "../hooks/useFilters";
-import { formatHoldDate } from "../utils/dateUtils";
+import { useEffect, useState } from "react";
 import { ConfirmOptions } from "../hooks/useConfirm";
+import { useFilters } from "../hooks/useFilters";
+import { Firefighter, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
-import { exportRosterToCSV, exportRosterToJSON } from "../utils/exportUtils";
+import { formatHoldDate } from "../utils/dateUtils";
+import { AddFirefighterForm } from "./AddFirefighterForm";
+import { FilterPanel } from "./FilterPanel";
+import { FirefighterProfileModal } from "./FirefighterProfileModal";
+import { ReactivateModal } from "./ReactivateModal";
+import { BulkActions, RosterHeader, RosterSearchBar } from "./roster";
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -47,12 +46,12 @@ export function FirefighterList({
   firefighters,
   deactivatedFirefighters = [],
   onAdd,
-  onCompleteHold: _onCompleteHold,  // Unused - kept for backwards compatibility
+  onCompleteHold: _onCompleteHold, // Unused - kept for backwards compatibility
   onDelete,
   onDeactivate,
   onReactivate,
   onTransferShift,
-  onResetAll: _onResetAll,  // Unused - kept for backwards compatibility
+  onResetAll: _onResetAll, // Unused - kept for backwards compatibility
   onReorder,
   confirmAction,
   currentShift,
@@ -60,6 +59,10 @@ export function FirefighterList({
   isDarkMode = true,
   searchInputRef,
 }: FirefighterListProps) {
+  // Maintain backwards compatibility by ensuring legacy callbacks stay referenced
+  void _onCompleteHold;
+  void _onResetAll;
+
   const [localFirefighters, setLocalFirefighters] =
     useState<Firefighter[]>(firefighters);
   const [draggedId, setDraggedId] = useState<string | null>(null);
@@ -207,13 +210,13 @@ export function FirefighterList({
           variant: "danger",
           consequences: [
             `${selectedIds.size} firefighters will be removed`,
-            "This action cannot be undone"
-          ]
+            "This action cannot be undone",
+          ],
         })
       : confirm(
           `Delete ${selectedIds.size} selected firefighters?\n\nThis action cannot be undone.`
         );
-    
+
     if (!confirmed) return;
 
     selectedIds.forEach((id) => onDelete(id));
@@ -231,37 +234,19 @@ export function FirefighterList({
           consequences: [
             `${selectedIds.size} firefighters will be deactivated`,
             "They can be reactivated later",
-            "All history will be preserved"
-          ]
+            "All history will be preserved",
+          ],
         })
       : confirm(`Deactivate ${selectedIds.size} selected firefighters?`);
-    
+
     if (!confirmed) return;
 
     selectedIds.forEach((id) => onDeactivate(id));
     deselectAll();
   }
 
-  // Export handlers - Currently wired through ExportMenu component
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleExportCSV() {
-    const filename = exportRosterToCSV(
-      firefighters,
-      firefighters[0]?.shift || "ALL"
-    );
-    setShowExportMenu(false);
-    console.log(`Exported roster to ${filename}`);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleExportJSON() {
-    const filename = exportRosterToJSON(
-      firefighters,
-      firefighters[0]?.shift || "ALL"
-    );
-    setShowExportMenu(false);
-    console.log(`Exported roster to ${filename}`);
-  }
+  // Export handlers are wired through ExportMenu component
+  // The menu directly calls exportRosterToCSV/exportRosterToJSON utils
 
   return (
     <div
@@ -269,7 +254,7 @@ export function FirefighterList({
         ${colors.structural.bg.card}
         ${colors.structural.border.default}
         ${tokens.borders.radius.xl}
-        ${tokens.shadows['2xl']}
+        ${tokens.shadows["2xl"]}
         border-2
         overflow-hidden
       `}
@@ -298,7 +283,6 @@ export function FirefighterList({
                 onAdd(name, station);
                 setShowAddForm(false);
               }}
-              isDarkMode={isDarkMode}
             />
           </div>
         )}
@@ -333,20 +317,29 @@ export function FirefighterList({
               border-2 border-dashed
               ${tokens.borders.radius.xl}
               p-12 text-center
-              ${isDarkMode
-                ? `${colors.structural.bg.surface} ${colors.structural.border.subtle}`
-                : "bg-slate-50 border-slate-300"
+              ${
+                isDarkMode
+                  ? `${colors.structural.bg.surface} ${colors.structural.border.subtle}`
+                  : "bg-slate-50 border-slate-300"
               }
             `}
           >
-            <div className={isDarkMode ? colors.structural.text.muted : "text-slate-400"}>
+            <div
+              className={
+                isDarkMode ? colors.structural.text.muted : "text-slate-400"
+              }
+            >
               <History size={64} />
             </div>
             <p
               className={`
                 ${tokens.typography.heading.h4}
                 ${tokens.spacing.margin.sm}
-                ${isDarkMode ? colors.structural.text.secondary : "text-slate-600"}
+                ${
+                  isDarkMode
+                    ? colors.structural.text.secondary
+                    : "text-slate-600"
+                }
               `}
             >
               Your roster is empty
@@ -354,7 +347,11 @@ export function FirefighterList({
             <p
               className={`
                 ${tokens.typography.body.secondary}
-                ${isDarkMode ? colors.structural.text.tertiary : "text-slate-500"}
+                ${
+                  isDarkMode
+                    ? colors.structural.text.tertiary
+                    : "text-slate-500"
+                }
               `}
             >
               Add your first team member to begin scheduling holds
@@ -365,103 +362,103 @@ export function FirefighterList({
             <table className="w-full min-w-max">
               <thead>
                 <tr
-                    className={`border-b-2 ${
-                      isDarkMode
-                        ? "border-gray-700 bg-gray-900/50"
-                        : "border-slate-300 bg-slate-50"
+                  className={`border-b-2 ${
+                    isDarkMode
+                      ? "border-gray-700 bg-gray-900/50"
+                      : "border-slate-300 bg-slate-50"
+                  }`}
+                >
+                  {isAdminMode && (
+                    <th
+                      className={`px-4 py-3 text-center ${
+                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                      }`}
+                    >
+                      <button
+                        onClick={
+                          selectedIds.size ===
+                          filteredAndAdvancedFiltered.length
+                            ? deselectAll
+                            : selectAll
+                        }
+                        className="p-1 hover:bg-gray-700 rounded transition-colors"
+                        aria-label={
+                          selectedIds.size ===
+                          filteredAndAdvancedFiltered.length
+                            ? "Deselect all"
+                            : "Select all"
+                        }
+                      >
+                        {selectedIds.size ===
+                        filteredAndAdvancedFiltered.length ? (
+                          <CheckSquare className="w-5 h-5" />
+                        ) : (
+                          <Square className="w-5 h-5" />
+                        )}
+                      </button>
+                    </th>
+                  )}
+                  <th
+                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      isDarkMode ? "text-gray-300" : "text-slate-700"
                     }`}
                   >
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-center ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
-                        <button
-                          onClick={
-                            selectedIds.size ===
-                            filteredAndAdvancedFiltered.length
-                              ? deselectAll
-                              : selectAll
-                          }
-                          className="p-1 hover:bg-gray-700 rounded transition-colors"
-                          aria-label={
-                            selectedIds.size ===
-                            filteredAndAdvancedFiltered.length
-                              ? "Deselect all"
-                              : "Select all"
-                          }
-                        >
-                          {selectedIds.size ===
-                          filteredAndAdvancedFiltered.length ? (
-                            <CheckSquare className="w-5 h-5" />
-                          ) : (
-                            <Square className="w-5 h-5" />
-                          )}
-                        </button>
-                      </th>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <ArrowUpDown size={14} />
+                      Order
+                    </div>
+                  </th>
+                  <th
+                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                    }`}
+                  >
+                    Name
+                  </th>
+                  {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
-                      <div className="flex items-center gap-2">
-                        <ArrowUpDown size={14} />
-                        Order
-                      </div>
+                      Shift
                     </th>
+                  )}
+                  {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
-                      Name
+                      Station
                     </th>
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
-                        Shift
-                      </th>
-                    )}
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
-                        Station
-                      </th>
-                    )}
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
-                        Cert Level
-                      </th>
-                    )}
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
-                        Qualifications
-                      </th>
-                    )}
+                  )}
+                  {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
-                      Last Hold
+                      Cert Level
                     </th>
-                    {/* REMOVED: Hours Worked column per user feedback
+                  )}
+                  {isAdminMode && (
+                    <th
+                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                      }`}
+                    >
+                      Qualifications
+                    </th>
+                  )}
+                  <th
+                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                    }`}
+                  >
+                    Last Hold
+                  </th>
+                  {/* REMOVED: Hours Worked column per user feedback
                         User stated: "There is no way to accurately calculate that without
                         manually checking through the scheduling program"
                     <th
@@ -474,249 +471,241 @@ export function FirefighterList({
                       Hours Worked
                     </th>
                     */}
-                    {isAdminMode && (
-                      <th
-                        className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
-                        }`}
-                      >
-                        Actions
-                      </th>
-                    )}
+                  {isAdminMode && (
+                    <th
+                      className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
+                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                      }`}
+                    >
+                      Actions
+                    </th>
+                  )}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
-                  {filteredAndAdvancedFiltered.map((firefighter, index) => {
-                    const qualifications = [
-                      firefighter.is_fto && "FTO",
-                      firefighter.is_bls && "BLS",
-                      firefighter.is_als && "ALS",
-                    ].filter((q): q is string => Boolean(q));
+                {filteredAndAdvancedFiltered.map((firefighter, index) => {
+                  const qualifications = [
+                    firefighter.is_fto && "FTO",
+                    firefighter.is_bls && "BLS",
+                    firefighter.is_als && "ALS",
+                  ].filter((q): q is string => Boolean(q));
 
-                    const isNext = nextInRotation?.id === firefighter.id;
+                  const isNext = nextInRotation?.id === firefighter.id;
 
-                    return (
-                      <tr
-                        key={firefighter.id}
-                        draggable={isAdminMode}
-                        onDragStart={(e) => handleDragStart(e, firefighter.id)}
-                        onDragOver={(e) => handleDragOver(e, firefighter.id)}
-                        onDrop={(e) => handleDrop(e, firefighter.id)}
-                        onDragEnd={handleDragEnd}
-                        className={`transition-colors ${
-                          isDarkMode
-                            ? "hover:bg-gray-800/50"
-                            : "hover:bg-slate-50"
-                        } ${draggedId === firefighter.id ? "opacity-50" : ""} ${
-                          dragOverId === firefighter.id
-                            ? isDarkMode
-                              ? "bg-blue-900/20 border-l-4 border-blue-500"
-                              : "bg-blue-50 border-l-4 border-blue-500"
-                            : ""
-                        } ${
-                          isNext
-                            ? isDarkMode
-                              ? "bg-blue-950/30 ring-2 ring-inset ring-blue-500/50"
-                              : "bg-blue-50 ring-2 ring-inset ring-blue-400"
-                            : ""
-                        } ${isAdminMode ? "cursor-move" : ""}`}
+                  return (
+                    <tr
+                      key={firefighter.id}
+                      draggable={isAdminMode}
+                      onDragStart={(e) => handleDragStart(e, firefighter.id)}
+                      onDragOver={(e) => handleDragOver(e, firefighter.id)}
+                      onDrop={(e) => handleDrop(e, firefighter.id)}
+                      onDragEnd={handleDragEnd}
+                      className={`transition-colors ${
+                        isDarkMode
+                          ? "hover:bg-gray-800/50"
+                          : "hover:bg-slate-50"
+                      } ${draggedId === firefighter.id ? "opacity-50" : ""} ${
+                        dragOverId === firefighter.id
+                          ? isDarkMode
+                            ? "bg-blue-900/20 border-l-4 border-blue-500"
+                            : "bg-blue-50 border-l-4 border-blue-500"
+                          : ""
+                      } ${
+                        isNext
+                          ? isDarkMode
+                            ? "bg-blue-950/30 ring-2 ring-inset ring-blue-500/50"
+                            : "bg-blue-50 ring-2 ring-inset ring-blue-400"
+                          : ""
+                      } ${isAdminMode ? "cursor-move" : ""}`}
+                    >
+                      {isAdminMode && (
+                        <td className="px-4 py-4 whitespace-nowrap text-center">
+                          <button
+                            onClick={() => toggleSelection(firefighter.id)}
+                            className={`p-1 rounded transition-colors ${
+                              isDarkMode
+                                ? "hover:bg-gray-700"
+                                : "hover:bg-slate-200"
+                            }`}
+                            aria-label={`Select ${firefighter.name}`}
+                          >
+                            {selectedIds.has(firefighter.id) ? (
+                              <CheckSquare
+                                className={`w-5 h-5 ${
+                                  isDarkMode ? "text-blue-400" : "text-blue-600"
+                                }`}
+                              />
+                            ) : (
+                              <Square
+                                className={`w-5 h-5 ${
+                                  isDarkMode
+                                    ? "text-gray-500"
+                                    : "text-slate-400"
+                                }`}
+                              />
+                            )}
+                          </button>
+                        </td>
+                      )}
+                      <td
+                        className={`px-4 py-4 whitespace-nowrap text-sm ${
+                          isDarkMode ? "text-gray-300" : "text-slate-700"
+                        }`}
                       >
-                        {isAdminMode && (
-                          <td className="px-4 py-4 whitespace-nowrap text-center">
-                            <button
-                              onClick={() => toggleSelection(firefighter.id)}
-                              className={`p-1 rounded transition-colors ${
-                                isDarkMode
-                                  ? "hover:bg-gray-700"
-                                  : "hover:bg-slate-200"
-                              }`}
-                              aria-label={`Select ${firefighter.name}`}
-                            >
-                              {selectedIds.has(firefighter.id) ? (
-                                <CheckSquare
-                                  className={`w-5 h-5 ${
-                                    isDarkMode
-                                      ? "text-blue-400"
-                                      : "text-blue-600"
-                                  }`}
-                                />
-                              ) : (
-                                <Square
-                                  className={`w-5 h-5 ${
-                                    isDarkMode
-                                      ? "text-gray-500"
-                                      : "text-slate-400"
-                                  }`}
-                                />
-                              )}
-                            </button>
-                          </td>
-                        )}
+                        <div className="flex items-center gap-2">
+                          {isNext && (
+                            <span className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded">
+                              NEXT
+                            </span>
+                          )}
+                          <span className="font-bold">{index + 1}</span>
+                        </div>
+                      </td>
+                      <td
+                        className={`px-4 py-4 whitespace-nowrap ${
+                          isDarkMode ? "text-white" : "text-slate-900"
+                        }`}
+                      >
+                        <button
+                          onClick={() => handleViewProfile(firefighter)}
+                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
+                          aria-label={`View profile for ${firefighter.name}`}
+                        >
+                          {firefighter.name}
+                        </button>
+                      </td>
+                      {isAdminMode && (
+                        <td
+                          className={`px-4 py-4 whitespace-nowrap ${
+                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                          }`}
+                        >
+                          <span
+                            className={`inline-flex items-center justify-center px-2 py-1 rounded font-bold text-xs ${
+                              firefighter.shift === "A"
+                                ? "bg-green-900/70 text-green-300"
+                                : firefighter.shift === "B"
+                                ? "bg-red-900/70 text-red-300"
+                                : "bg-gray-900/70 text-gray-300"
+                            }`}
+                          >
+                            Shift {firefighter.shift}
+                          </span>
+                        </td>
+                      )}
+                      {isAdminMode && (
                         <td
                           className={`px-4 py-4 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            {isNext && (
-                              <span className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded">
-                                NEXT
-                              </span>
-                            )}
-                            <span className="font-bold">{index + 1}</span>
-                          </div>
-                        </td>
-                        <td
-                          className={`px-4 py-4 whitespace-nowrap ${
-                            isDarkMode ? "text-white" : "text-slate-900"
-                          }`}
-                        >
-                          <button
-                            onClick={() => handleViewProfile(firefighter)}
-                            className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
-                            aria-label={`View profile for ${firefighter.name}`}
-                          >
-                            {firefighter.name}
-                          </button>
-                        </td>
-                        {isAdminMode && (
-                          <td
-                            className={`px-4 py-4 whitespace-nowrap ${
-                              isDarkMode ? "text-gray-300" : "text-slate-700"
-                            }`}
-                          >
-                            <span
-                              className={`px-2 py-1 rounded font-bold text-xs ${
-                                firefighter.shift === "A"
-                                  ? "bg-green-900/70 text-green-300"
-                                  : firefighter.shift === "B"
-                                  ? "bg-red-900/70 text-red-300"
-                                  : "bg-gray-900/70 text-gray-300"
-                              }`}
-                            >
-                              Shift {firefighter.shift}
+                          {firefighter.fire_station ? (
+                            <span className="font-semibold">
+                              Station #{firefighter.fire_station}
                             </span>
-                          </td>
-                        )}
-                        {isAdminMode && (
-                          <td
-                            className={`px-4 py-4 whitespace-nowrap text-sm ${
-                              isDarkMode ? "text-gray-300" : "text-slate-700"
-                            }`}
-                          >
-                            {firefighter.fire_station ? (
-                              <span className="font-semibold">
-                                Station #{firefighter.fire_station}
-                              </span>
-                            ) : (
-                              <span
-                                className={
-                                  isDarkMode
-                                    ? "text-gray-600"
-                                    : "text-slate-400"
-                                }
-                              >
-                                —
-                              </span>
-                            )}
-                          </td>
-                        )}
-                        {isAdminMode && (
-                          <td
-                            className={`px-4 py-4 whitespace-nowrap text-sm ${
-                              isDarkMode ? "text-gray-300" : "text-slate-700"
-                            }`}
-                          >
-                            {firefighter.certification_level ? (
-                              <span
-                                className={`px-2 py-1 text-xs font-bold rounded ${
-                                  isDarkMode
-                                    ? "bg-amber-900/70 text-amber-100"
-                                    : "bg-amber-100 text-amber-900"
-                                }`}
-                              >
-                                {firefighter.certification_level}
-                              </span>
-                            ) : (
-                              <span
-                                className={
-                                  isDarkMode
-                                    ? "text-gray-600"
-                                    : "text-slate-400"
-                                }
-                              >
-                                —
-                              </span>
-                            )}
-                          </td>
-                        )}
-                        {isAdminMode && (
-                          <td className="px-4 py-4">
-                            {qualifications.length > 0 ? (
-                              <div className="flex flex-wrap gap-1">
-                                {qualifications.map((qual) => (
-                                  <span
-                                    key={qual}
-                                    className="px-1.5 py-0.5 bg-sky-900/70 text-sky-300 text-xs font-semibold rounded"
-                                  >
-                                    {qual}
-                                  </span>
-                                ))}
-                              </div>
-                            ) : (
-                              <span
-                                className={
-                                  isDarkMode
-                                    ? "text-gray-600"
-                                    : "text-slate-400"
-                                }
-                              >
-                                —
-                              </span>
-                            )}
-                          </td>
-                        )}
+                          ) : (
+                            <span
+                              className={
+                                isDarkMode ? "text-gray-600" : "text-slate-400"
+                              }
+                            >
+                              —
+                            </span>
+                          )}
+                        </td>
+                      )}
+                      {isAdminMode && (
                         <td
                           className={`px-4 py-4 whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-gray-400" : "text-slate-600"
+                            isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            <span>
-                              {firefighter.last_hold_date ? (
-                                formatHoldDate(firefighter.last_hold_date)
-                              ) : (
-                                <span
-                                  className={
-                                    isDarkMode
-                                      ? "text-gray-600"
-                                      : "text-slate-400"
-                                  }
-                                >
-                                  Never
-                                </span>
-                              )}
+                          {firefighter.certification_level ? (
+                            <span
+                              className={`px-2 py-1 text-xs font-bold rounded ${
+                                isDarkMode
+                                  ? "bg-amber-900/70 text-amber-100"
+                                  : "bg-amber-100 text-amber-900"
+                              }`}
+                            >
+                              {firefighter.certification_level}
                             </span>
-                            {isAdminMode && (
-                              <button
-                                onClick={() => {
-                                  setSelectedFirefighter(firefighter);
-                                  setShowProfileModal(true);
-                                }}
-                                className={`p-1 rounded transition-colors ${
-                                  isDarkMode
-                                    ? "hover:bg-gray-700 text-gray-500 hover:text-gray-300"
-                                    : "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
-                                }`}
-                                title="View hold history"
-                                aria-label="View hold history"
-                              >
-                                <History size={14} />
-                              </button>
-                            )}
-                          </div>
+                          ) : (
+                            <span
+                              className={
+                                isDarkMode ? "text-gray-600" : "text-slate-400"
+                              }
+                            >
+                              —
+                            </span>
+                          )}
                         </td>
-                        {/* REMOVED: Hours Worked data cell - see header comment above
+                      )}
+                      {isAdminMode && (
+                        <td className="px-4 py-4">
+                          {qualifications.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {qualifications.map((qual) => (
+                                <span
+                                  key={qual}
+                                  className="px-1.5 py-0.5 bg-sky-900/70 text-sky-300 text-xs font-semibold rounded"
+                                >
+                                  {qual}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <span
+                              className={
+                                isDarkMode ? "text-gray-600" : "text-slate-400"
+                              }
+                            >
+                              —
+                            </span>
+                          )}
+                        </td>
+                      )}
+                      <td
+                        className={`px-4 py-4 whitespace-nowrap text-sm ${
+                          isDarkMode ? "text-gray-400" : "text-slate-600"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <span>
+                            {firefighter.last_hold_date ? (
+                              formatHoldDate(firefighter.last_hold_date)
+                            ) : (
+                              <span
+                                className={
+                                  isDarkMode
+                                    ? "text-gray-600"
+                                    : "text-slate-400"
+                                }
+                              >
+                                Never
+                              </span>
+                            )}
+                          </span>
+                          {isAdminMode && (
+                            <button
+                              onClick={() => {
+                                setSelectedFirefighter(firefighter);
+                                setShowProfileModal(true);
+                              }}
+                              className={`p-1 rounded transition-colors ${
+                                isDarkMode
+                                  ? "hover:bg-gray-700 text-gray-500 hover:text-gray-300"
+                                  : "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                              }`}
+                              title="View hold history"
+                              aria-label="View hold history"
+                            >
+                              <History size={14} />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                      {/* REMOVED: Hours Worked data cell - see header comment above
                         <td className="px-4 py-4 whitespace-nowrap text-center">
                           <div className="flex flex-col items-center gap-1">
                             <div className="flex items-center gap-2">
@@ -734,47 +723,47 @@ export function FirefighterList({
                           </div>
                         </td>
                         */}
-                        {isAdminMode && (
-                          <td className="px-4 py-4 whitespace-nowrap text-right">
-                            <div className="flex items-center justify-end gap-1">
-                              <button
-                                onClick={() => onTransferShift(firefighter.id)}
-                                className={`p-1.5 rounded transition-colors focus-ring ${
-                                  isDarkMode
-                                    ? "hover:bg-blue-900/50 text-blue-400"
-                                    : "hover:bg-blue-100 text-blue-600"
-                                }`}
-                                title="Transfer shift"
-                              >
-                                <Repeat size={16} />
-                              </button>
-                              <button
-                                onClick={() => onDeactivate(firefighter.id)}
-                                className={`p-1.5 rounded transition-colors focus-ring ${
-                                  isDarkMode
-                                    ? "hover:bg-gray-700 text-gray-400"
-                                    : "hover:bg-gray-200 text-gray-600"
-                                }`}
-                                title="Deactivate"
-                              >
-                                <UserX size={16} />
-                              </button>
-                              <button
-                                onClick={() => onDelete(firefighter.id)}
-                                className={`p-1.5 rounded transition-colors focus-ring ${
-                                  isDarkMode
-                                    ? "hover:bg-red-900/50 text-red-400"
-                                    : "hover:bg-red-100 text-red-600"
-                                }`}
-                                title="Delete permanently"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </div>
-                          </td>
-                        )}
-                      </tr>
-                    );
+                      {isAdminMode && (
+                        <td className="px-4 py-4 whitespace-nowrap text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <button
+                              onClick={() => onTransferShift(firefighter.id)}
+                              className={`p-1.5 rounded transition-colors focus-ring ${
+                                isDarkMode
+                                  ? "hover:bg-blue-900/50 text-blue-400"
+                                  : "hover:bg-blue-100 text-blue-600"
+                              }`}
+                              title="Transfer shift"
+                            >
+                              <Repeat size={16} />
+                            </button>
+                            <button
+                              onClick={() => onDeactivate(firefighter.id)}
+                              className={`p-1.5 rounded transition-colors focus-ring ${
+                                isDarkMode
+                                  ? "hover:bg-gray-700 text-gray-400"
+                                  : "hover:bg-gray-200 text-gray-600"
+                              }`}
+                              title="Deactivate"
+                            >
+                              <UserX size={16} />
+                            </button>
+                            <button
+                              onClick={() => onDelete(firefighter.id)}
+                              className={`p-1.5 rounded transition-colors focus-ring ${
+                                isDarkMode
+                                  ? "hover:bg-red-900/50 text-red-400"
+                                  : "hover:bg-red-100 text-red-600"
+                              }`}
+                              title="Delete permanently"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  );
                 })}
               </tbody>
             </table>
@@ -793,85 +782,85 @@ export function FirefighterList({
             <div className="space-y-2">
               {deactivatedFirefighters.map((firefighter) => (
                 <div
-                    key={firefighter.id}
-                    className={`rounded-lg p-3 border ${
-                      isDarkMode
-                        ? "bg-gray-800/40 border-gray-700/50 hover:bg-gray-800/60"
-                        : "bg-gray-100 border-gray-300 hover:bg-gray-200"
-                    } transition-colors`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3 flex-1">
-                        <div
-                          className={`w-2 h-2 rounded-full ${
-                            isDarkMode ? "bg-gray-600" : "bg-gray-400"
-                          }`}
-                        />
-                        <div className="flex-1">
-                          <button
-                            onClick={() => {
-                              setSelectedFirefighter(firefighter);
-                              setShowProfileModal(true);
-                            }}
-                            className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
-                              isDarkMode
-                                ? "text-gray-400 hover:text-gray-300"
-                                : "text-gray-600 hover:text-gray-800"
-                            }`}
-                          >
-                            {firefighter.name}
-                          </button>
-                          {firefighter.fire_station && (
-                            <p
-                              className={`text-xs ${
-                                isDarkMode ? "text-gray-500" : "text-gray-500"
-                              }`}
-                            >
-                              Station #{firefighter.fire_station}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
+                  key={firefighter.id}
+                  className={`rounded-lg p-3 border ${
+                    isDarkMode
+                      ? "bg-gray-800/40 border-gray-700/50 hover:bg-gray-800/60"
+                      : "bg-gray-100 border-gray-300 hover:bg-gray-200"
+                  } transition-colors`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          isDarkMode ? "bg-gray-600" : "bg-gray-400"
+                        }`}
+                      />
+                      <div className="flex-1">
                         <button
                           onClick={() => {
                             setSelectedFirefighter(firefighter);
                             setShowProfileModal(true);
                           }}
-                          className={`p-1.5 rounded transition-colors focus-ring ${
+                          className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
                             isDarkMode
-                              ? "hover:bg-blue-900/50 text-blue-400"
-                              : "hover:bg-blue-100 text-blue-600"
+                              ? "text-gray-400 hover:text-gray-300"
+                              : "text-gray-600 hover:text-gray-800"
                           }`}
-                          title="View profile and hold history"
                         >
-                          <Eye size={16} />
+                          {firefighter.name}
                         </button>
-                        <button
-                          onClick={() => {
-                            setSelectedFirefighter(firefighter);
-                            setShowReactivateModal(true);
-                          }}
-                          className={`p-1.5 rounded transition-colors focus-ring ${
-                            isDarkMode
-                              ? "hover:bg-emerald-900/50 text-emerald-400"
-                              : "hover:bg-emerald-100 text-emerald-600"
-                          }`}
-                          title="Reactivate firefighter"
-                        >
-                          <RotateCcw size={16} />
-                        </button>
-                        <span
-                          className={`text-xs px-2 py-1 rounded ${
-                            isDarkMode
-                              ? "bg-gray-700/50 text-gray-500"
-                              : "bg-gray-200 text-gray-600"
-                          }`}
-                        >
-                          Inactive
-                        </span>
+                        {firefighter.fire_station && (
+                          <p
+                            className={`text-xs ${
+                              isDarkMode ? "text-gray-500" : "text-gray-500"
+                            }`}
+                          >
+                            Station #{firefighter.fire_station}
+                          </p>
+                        )}
                       </div>
                     </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          setSelectedFirefighter(firefighter);
+                          setShowProfileModal(true);
+                        }}
+                        className={`p-1.5 rounded transition-colors focus-ring ${
+                          isDarkMode
+                            ? "hover:bg-blue-900/50 text-blue-400"
+                            : "hover:bg-blue-100 text-blue-600"
+                        }`}
+                        title="View profile and hold history"
+                      >
+                        <Eye size={16} />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedFirefighter(firefighter);
+                          setShowReactivateModal(true);
+                        }}
+                        className={`p-1.5 rounded transition-colors focus-ring ${
+                          isDarkMode
+                            ? "hover:bg-emerald-900/50 text-emerald-400"
+                            : "hover:bg-emerald-100 text-emerald-600"
+                        }`}
+                        title="Reactivate firefighter"
+                      >
+                        <RotateCcw size={16} />
+                      </button>
+                      <span
+                        className={`text-xs px-2 py-1 rounded ${
+                          isDarkMode
+                            ? "bg-gray-700/50 text-gray-500"
+                            : "bg-gray-200 text-gray-600"
+                        }`}
+                      >
+                        Inactive
+                      </span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -912,7 +901,6 @@ export function FirefighterList({
         onToggleArrayFilter={toggleArrayFilter}
         onClearAll={clearAllFilters}
         activeFilterCount={activeFilterCount}
-        isDarkMode={isDarkMode}
         availableStations={availableStations}
       />
     </div>

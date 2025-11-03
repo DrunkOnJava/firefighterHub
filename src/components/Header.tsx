@@ -8,9 +8,12 @@ import {
   UserPlus,
 } from "lucide-react";
 import { Shift } from "../lib/supabase";
-import { ShiftSelector } from "./ShiftSelector";
-import { ConnectionStatusIndicator, ConnectionStatusDot } from "./ConnectionStatusIndicator";
 import { colors, tokens } from "../styles";
+import {
+  ConnectionStatusDot,
+  ConnectionStatusIndicator,
+} from "./ConnectionStatusIndicator";
+import { ShiftSelector } from "./ShiftSelector";
 
 interface HeaderProps {
   onShowHelp: () => void;
@@ -40,9 +43,10 @@ export function Header({
       className={`
         border-b backdrop-blur-sm sticky top-0
         ${tokens.zIndex.sticky}
-        ${isDarkMode
-          ? `${colors.structural.border.emphasis} bg-gray-900/95`
-          : "border-slate-300 bg-white/95"
+        ${
+          isDarkMode
+            ? `${colors.structural.border.emphasis} bg-gray-900/95`
+            : "border-slate-300 bg-white/95"
         }
       `}
     >
@@ -61,16 +65,26 @@ export function Header({
               <h1
                 className={`
                   text-xl sm:text-2xl font-bold truncate
-                  ${isDarkMode ? colors.structural.text.primary : "text-slate-900"}
+                  ${
+                    isDarkMode
+                      ? colors.structural.text.primary
+                      : "text-slate-900"
+                  }
                 `}
               >
                 Hold List Manager
               </h1>
               <p
                 className={`
-                  ${tokens.typography.body.small} sm:${tokens.typography.body.secondary}
+                  ${tokens.typography.body.small} sm:${
+                  tokens.typography.body.secondary
+                }
                   mt-0.5 hidden sm:block
-                  ${isDarkMode ? colors.structural.text.secondary : "text-slate-600"}
+                  ${
+                    isDarkMode
+                      ? colors.structural.text.secondary
+                      : "text-slate-600"
+                  }
                 `}
               >
                 Organize your team's hold rotation schedule
@@ -87,12 +101,11 @@ export function Header({
                 <ShiftSelector
                   currentShift={currentShift}
                   onShiftChange={onShiftChange}
-                  isDarkMode={isDarkMode}
                 />
               </div>
 
               {/* Connection Status Indicator */}
-              <ConnectionStatusIndicator isDarkMode={isDarkMode} showLabel={false} />
+              <ConnectionStatusIndicator showLabel={false} />
             </div>
 
             {/* Primary Actions */}
@@ -178,7 +191,7 @@ export function Header({
 
             {/* Mobile Connection Status (Compact) */}
             <div className="lg:hidden">
-              <ConnectionStatusDot isDarkMode={isDarkMode} />
+              <ConnectionStatusDot />
             </div>
 
             {/* Mobile Menu Button */}

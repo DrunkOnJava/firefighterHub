@@ -1,4 +1,4 @@
-import { Firefighter, Shift, HoldDuration, ScheduledHold as DBScheduledHold } from "../lib/supabase";
+import { ScheduledHold as DBScheduledHold, Firefighter } from "../lib/supabase";
 
 // Re-export database type with convenience type alias
 // This ensures consistency with the actual database schema
@@ -66,13 +66,15 @@ function createCalendarDay(
 export function attachScheduledHolds(
   days: CalendarDay[],
   holds: ScheduledHold[],
-  _firefighters: Firefighter[]  // Unused after removing synthetic holds (kept for API compatibility)
+  _firefighters: Firefighter[] // Unused after removing synthetic holds (kept for API compatibility)
 ): CalendarDay[] {
+  void _firefighters;
   const holdsByDate = new Map<string, ScheduledHold[]>();
 
   holds.forEach((hold) => {
     // Parse the hold_date string as a local date to ensure correct matching
     // Database stores YYYY-MM-DD format, we need to match it to local calendar dates
+    if (!hold.hold_date) return; // Skip holds without dates
     const dateKey = hold.hold_date.split("T")[0]; // Remove any time component
     if (!holdsByDate.has(dateKey)) {
       holdsByDate.set(dateKey, []);

@@ -1,83 +1,61 @@
-import { Shift } from '../lib/supabase';
+import { Shift } from "../lib/supabase";
+import { colors, tokens } from "../styles";
 
 interface ShiftSelectorProps {
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
-  isDarkMode?: boolean;
 }
 
 const SHIFT_COLORS = {
   A: {
-    dark: {
-      bg: 'bg-green-700',
-      bgHover: 'hover:bg-green-600',
-      bgInactive: 'bg-green-950/60',
-      border: 'border-green-800',
-      text: 'text-green-300'
-    },
-    light: {
-      bg: 'bg-green-600',
-      bgHover: 'hover:bg-green-700',
-      bgInactive: 'bg-green-100',
-      border: 'border-green-400',
-      text: 'text-green-700'
-    }
+    active: "bg-green-700 text-white shadow-lg",
+    inactive: "bg-green-950/60 text-green-300 hover:bg-green-600",
   },
   B: {
-    dark: {
-      bg: 'bg-red-700',
-      bgHover: 'hover:bg-red-600',
-      bgInactive: 'bg-red-950/60',
-      border: 'border-red-800',
-      text: 'text-red-300'
-    },
-    light: {
-      bg: 'bg-red-600',
-      bgHover: 'hover:bg-red-700',
-      bgInactive: 'bg-red-100',
-      border: 'border-red-400',
-      text: 'text-red-700'
-    }
+    active: "bg-red-700 text-white shadow-lg",
+    inactive: "bg-red-950/60 text-red-300 hover:bg-red-600",
   },
   C: {
-    dark: {
-      bg: 'bg-gray-800',
-      bgHover: 'hover:bg-gray-700',
-      bgInactive: 'bg-gray-950/60',
-      border: 'border-gray-700',
-      text: 'text-gray-300'
-    },
-    light: {
-      bg: 'bg-gray-700',
-      bgHover: 'hover:bg-gray-600',
-      bgInactive: 'bg-gray-200',
-      border: 'border-gray-500',
-      text: 'text-gray-900'
-    }
-  }
+    active: `${colors.structural.bg.card} text-white shadow-lg`,
+    inactive: `bg-gray-950/60 ${colors.structural.text.secondary} ${colors.interactive.hover.bg}`,
+  },
 };
 
-export function ShiftSelector({ currentShift, onShiftChange, isDarkMode = true }: ShiftSelectorProps) {
-  const shifts: Shift[] = ['A', 'B', 'C'];
+const SHIFT_BADGE_COLORS = {
+  A: "bg-green-600 border-2 border-green-800 text-white shadow-sm shadow-green-900/50",
+  B: "bg-red-600 border-2 border-red-800 text-white shadow-sm shadow-red-900/50",
+  C: `bg-gray-700 border-2 border-gray-900 text-white shadow-sm shadow-black/50`,
+};
+
+export function ShiftSelector({
+  currentShift,
+  onShiftChange,
+}: ShiftSelectorProps) {
+  const shifts: Shift[] = ["A", "B", "C"];
 
   return (
-    <div className="flex items-center gap-2">
-      <span className={`text-sm font-semibold hidden sm:inline ${isDarkMode ? 'text-gray-400' : 'text-slate-600'}`}>Shift:</span>
-      <div className={`flex rounded-lg p-1 ${isDarkMode ? 'bg-gray-800' : 'bg-slate-200'}`}>
+    <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
+      <span
+        className={`${tokens.typography.body.secondary} font-semibold hidden sm:inline ${colors.structural.text.tertiary}`}
+      >
+        Shift:
+      </span>
+      <div
+        className={`flex ${tokens.borders.radius.lg} p-1 ${colors.structural.bg.card}`}
+      >
         {shifts.map((shift) => {
-          const colors = isDarkMode ? SHIFT_COLORS[shift].dark : SHIFT_COLORS[shift].light;
           const isActive = currentShift === shift;
+          const colorClasses = isActive
+            ? SHIFT_COLORS[shift].active
+            : SHIFT_COLORS[shift].inactive;
 
           return (
             <button
               key={shift}
               onClick={() => onShiftChange(shift)}
               className={`
-                px-4 py-2 rounded-md transition-all font-bold text-sm focus-ring
-                ${isActive
-                  ? `${colors.bg} text-white shadow-lg`
-                  : `${colors.bgInactive} ${colors.text} ${colors.bgHover}`
-                }
+                px-4 py-2 ${tokens.borders.radius.md} transition-all font-bold ${tokens.typography.body.secondary} focus-ring
+                ${colorClasses}
               `}
               aria-label={`Switch to Shift ${shift}`}
               aria-pressed={isActive}
@@ -91,14 +69,14 @@ export function ShiftSelector({ currentShift, onShiftChange, isDarkMode = true }
   );
 }
 
-export function ShiftBadge({ shift, isDarkMode = true }: { shift: Shift; isDarkMode?: boolean }) {
-  const colors = isDarkMode ? SHIFT_COLORS[shift].dark : SHIFT_COLORS[shift].light;
-
+export function ShiftBadge({ shift }: { shift: Shift }) {
   return (
-    <span className={`
-      inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold
-      ${colors.bgInactive} border ${colors.border} ${colors.text}
-    `}>
+    <span
+      className={`
+      inline-flex items-center justify-center px-2.5 py-0.5 ${tokens.borders.radius.md} ${tokens.typography.body.small} font-bold
+      ${SHIFT_BADGE_COLORS[shift]}
+    `}
+    >
       Shift {shift}
     </span>
   );

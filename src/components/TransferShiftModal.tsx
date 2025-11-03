@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { X, ArrowRightLeft } from 'lucide-react';
-import { Firefighter, Shift } from '../lib/supabase';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
+import { ArrowRightLeft, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useFocusReturn } from "../hooks/useFocusReturn";
+import { useFocusTrap } from "../hooks/useFocusTrap";
+import { Firefighter, Shift } from "../lib/supabase";
+import { colors, tokens } from "../styles";
 
 interface TransferShiftModalProps {
   isOpen: boolean;
@@ -15,29 +16,29 @@ export function TransferShiftModal({
   isOpen,
   firefighter,
   onClose,
-  onConfirm
+  onConfirm,
 }: TransferShiftModalProps) {
-  const [selectedShift, setSelectedShift] = useState<Shift>('A');
+  const [selectedShift, setSelectedShift] = useState<Shift>("A");
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
   useEffect(() => {
     if (isOpen && firefighter) {
-      const shifts: Shift[] = ['A', 'B', 'C'];
-      const otherShifts = shifts.filter(s => s !== firefighter.shift);
+      const shifts: Shift[] = ["A", "B", "C"];
+      const otherShifts = shifts.filter((s) => s !== firefighter.shift);
       setSelectedShift(otherShifts[0]);
     }
   }, [isOpen, firefighter]);
 
   useEffect(() => {
     function handleEscape(e: KeyboardEvent) {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === "Escape" && isOpen) {
         onClose();
       }
     }
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
   if (!isOpen || !firefighter) return null;
@@ -47,12 +48,12 @@ export function TransferShiftModal({
     onClose();
   };
 
-  const shifts: Shift[] = ['A', 'B', 'C'];
-  const availableShifts = shifts.filter(s => s !== firefighter.shift);
+  const shifts: Shift[] = ["A", "B", "C"];
+  const availableShifts = shifts.filter((s) => s !== firefighter.shift);
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -64,39 +65,57 @@ export function TransferShiftModal({
     >
       <div
         ref={trapRef}
-        className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius.xl} ${colors.components.modal.shadow} max-w-lg w-full max-h-[90vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-gradient-to-r from-blue-900/90 to-blue-800/90 backdrop-blur-sm border-b-2 border-blue-700 px-6 py-5 flex items-center justify-between z-10">
-          <div className="flex items-center gap-3">
-            <ArrowRightLeft className="text-blue-400" size={28} />
+        <div
+          className={`sticky top-0 ${colors.semantic.primary.gradient} backdrop-blur-sm border-b-2 ${colors.semantic.primary.border} ${tokens.spacing.card.lg} flex items-center justify-between z-10`}
+        >
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <ArrowRightLeft
+              className={colors.semantic.primary.text}
+              size={28}
+            />
             <div>
-              <h2 id="transfer-shift-title" className="text-2xl font-bold text-white">
+              <h2
+                id="transfer-shift-title"
+                className={`${tokens.typography.heading.h2} text-white`}
+              >
                 Transfer Shift
               </h2>
-              <p className="text-sm text-blue-200 mt-1">
+              <p
+                className={`${tokens.typography.body.small} text-blue-200 mt-1`}
+              >
                 {firefighter.name}
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.lg} transition-colors focus-ring`}
             aria-label="Close dialog"
           >
-            <X size={24} className="text-gray-400" />
+            <X size={24} className={colors.structural.text.secondary} />
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
-          <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-4">
-            <p className="text-sm text-blue-200">
-              Transfer <strong>{firefighter.name}</strong> from <strong>Shift {firefighter.shift}</strong> to a different shift. All history and records will be preserved.
+        <div className={`${tokens.spacing.card.lg} space-y-6`}>
+          <div
+            className={`${colors.semantic.info.light} border ${colors.semantic.info.border} ${tokens.borders.radius.lg} ${tokens.spacing.card.md}`}
+          >
+            <p
+              className={`${tokens.typography.body.secondary} ${colors.semantic.info.text}`}
+            >
+              Transfer <strong>{firefighter.name}</strong> from{" "}
+              <strong>Shift {firefighter.shift}</strong> to a different shift.
+              All history and records will be preserved.
             </p>
           </div>
 
           <div className="space-y-3">
-            <label className="text-sm font-semibold text-gray-300">
+            <label
+              className={`${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary}`}
+            >
               Select New Shift
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -104,10 +123,12 @@ export function TransferShiftModal({
                 <button
                   key={shift}
                   onClick={() => setSelectedShift(shift)}
-                  className={`py-4 px-6 rounded-lg font-bold text-lg transition-all border-2 ${
+                  className={`py-4 px-6 ${
+                    tokens.borders.radius.lg
+                  } font-bold text-lg transition-all border-2 ${
                     selectedShift === shift
-                      ? 'bg-blue-600 border-blue-500 text-white shadow-lg'
-                      : 'bg-gray-700 border-gray-600 text-gray-300 hover:border-gray-500'
+                      ? `${colors.semantic.primary.solid} ${colors.semantic.primary.border} text-white ${colors.semantic.primary.shadow}`
+                      : `${colors.structural.bg.card} ${colors.structural.border.default} ${colors.structural.text.secondary} hover:${colors.structural.border.hover}`
                   }`}
                 >
                   Shift {shift}
@@ -116,16 +137,16 @@ export function TransferShiftModal({
             </div>
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 rounded-lg transition-colors focus-ring"
+              className={`flex-1 ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.lg} transition-colors focus-ring`}
             >
               Cancel
             </button>
             <button
               onClick={handleConfirm}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold py-3 rounded-lg transition-colors shadow-lg focus-ring flex items-center justify-center gap-2"
+              className={`flex-1 ${colors.semantic.primary.gradient} ${colors.semantic.primary.hover} text-white font-bold py-3 ${tokens.borders.radius.lg} transition-colors ${colors.semantic.primary.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm}`}
             >
               <ArrowRightLeft size={20} />
               Transfer

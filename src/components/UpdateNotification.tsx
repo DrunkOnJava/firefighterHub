@@ -1,5 +1,6 @@
 import { RefreshCw, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { colors, tokens } from "../styles";
 
 /**
  * UpdateNotification Component
@@ -74,25 +75,25 @@ export function UpdateNotification() {
 
   return (
     <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 animate-slide-up">
-      <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-4 rounded-lg shadow-2xl border border-orange-400 max-w-md">
-        <div className="flex items-center gap-4">
+      <div className={`${colors.semantic.warning.gradient} text-white ${tokens.spacing.card.lg} ${tokens.borders.radius.lg} shadow-2xl border ${colors.semantic.warning.border} max-w-md`}>
+        <div className={`flex items-center ${tokens.spacing.gap.md}`}>
           <RefreshCw className="w-6 h-6 flex-shrink-0" />
           <div className="flex-1">
-            <p className="font-semibold text-sm">New Update Available!</p>
-            <p className="text-xs text-orange-100 mt-1">
+            <p className={`font-semibold ${tokens.typography.body.secondary}`}>New Update Available!</p>
+            <p className={`${tokens.typography.body.small} text-orange-100 mt-1`}>
               Click reload to get the latest features and fixes
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className={`flex ${tokens.spacing.gap.sm}`}>
             <button
               onClick={handleUpdate}
-              className="bg-white text-orange-600 px-4 py-2 rounded-md font-semibold text-sm hover:bg-orange-50 transition-colors"
+              className={`bg-white ${colors.semantic.warning.text} px-4 py-2 ${tokens.borders.radius.md} font-semibold ${tokens.typography.body.secondary} hover:bg-orange-50 transition-colors`}
             >
               Reload
             </button>
             <button
               onClick={() => setShowUpdate(false)}
-              className="p-2 hover:bg-orange-700 rounded-md transition-colors"
+              className={`p-2 hover:bg-orange-700 ${tokens.borders.radius.md} transition-colors`}
               aria-label="Dismiss update notification"
             >
               <X className="w-4 h-4" />

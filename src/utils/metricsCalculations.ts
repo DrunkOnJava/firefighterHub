@@ -1,5 +1,5 @@
-import { ScheduledHold } from './calendarUtils';
-import { Firefighter } from '../lib/supabase';
+import { Firefighter } from "../lib/supabase";
+import { ScheduledHold } from "./calendarUtils";
 
 export interface FirefighterMetrics {
   firefighterId: string;
@@ -17,27 +17,32 @@ export function calculateHoldsPerFirefighter(
   holds: ScheduledHold[],
   firefighters: Firefighter[]
 ): FirefighterMetrics[] {
-  return firefighters.map(ff => {
-    const ffHolds = holds.filter(h => h.firefighter_id === ff.id);
-    const completed = ffHolds.filter(h => h.status === 'completed');
+  return firefighters.map((ff) => {
+    const ffHolds = holds.filter(
+      (h) => h.firefighter_id === ff.id && h.hold_date !== null
+    );
+    const completed = ffHolds.filter((h) => h.status === "completed");
 
     // Calculate average interval between completed holds
-    const sortedHolds = [...completed].sort(
-      (a, b) => new Date(a.hold_date).getTime() - new Date(b.hold_date).getTime()
-    );
+    const sortedHolds = [...completed].sort((a, b) => {
+      const dateA = a.hold_date ? new Date(a.hold_date).getTime() : 0;
+      const dateB = b.hold_date ? new Date(b.hold_date).getTime() : 0;
+      return dateA - dateB;
+    });
 
     let totalIntervalDays = 0;
     for (let i = 1; i < sortedHolds.length; i++) {
-      const days = (
-        new Date(sortedHolds[i].hold_date).getTime() -
-        new Date(sortedHolds[i - 1].hold_date).getTime()
-      ) / (1000 * 60 * 60 * 24);
-      totalIntervalDays += days;
+      if (sortedHolds[i].hold_date && sortedHolds[i - 1].hold_date) {
+        const days =
+          (new Date(sortedHolds[i].hold_date!).getTime() -
+            new Date(sortedHolds[i - 1].hold_date!).getTime()) /
+          (1000 * 60 * 60 * 24);
+        totalIntervalDays += days;
+      }
     }
 
-    const avgInterval = sortedHolds.length > 1
-      ? totalIntervalDays / (sortedHolds.length - 1)
-      : 0;
+    const avgInterval =
+      sortedHolds.length > 1 ? totalIntervalDays / (sortedHolds.length - 1) : 0;
 
     return {
       firefighterId: ff.id,
@@ -52,9 +57,11 @@ export function calculateHoldsPerFirefighter(
 /**
  * Calculate total holds by station
  */
-export function calculateHoldsByStation(holds: ScheduledHold[]): Map<string, number> {
+export function calculateHoldsByStation(
+  holds: ScheduledHold[]
+): Map<string, number> {
   const stationMap = new Map<string, number>();
-  holds.forEach(hold => {
+  holds.forEach((hold) => {
     if (hold.fire_station) {
       stationMap.set(
         hold.fire_station,
@@ -74,9 +81,9 @@ export function calculateHoldsByShift(holds: ScheduledHold[]): {
   C: number;
 } {
   return {
-    A: holds.filter(h => h.shift === 'A').length,
-    B: holds.filter(h => h.shift === 'B').length,
-    C: holds.filter(h => h.shift === 'C').length,
+    A: holds.filter((h) => h.shift === "A").length,
+    B: holds.filter((h) => h.shift === "B").length,
+    C: holds.filter((h) => h.shift === "C").length,
   };
 }
 
@@ -84,12 +91,12 @@ export function calculateHoldsByShift(holds: ScheduledHold[]): {
  * Calculate holds by duration (12h vs 24h)
  */
 export function calculateHoldsByDuration(holds: ScheduledHold[]): {
-  '12h': number;
-  '24h': number;
+  "12h": number;
+  "24h": number;
 } {
   return {
-    '12h': holds.filter(h => h.duration === '12h').length,
-    '24h': holds.filter(h => h.duration === '24h').length,
+    "12h": holds.filter((h) => h.duration === "12h").length,
+    "24h": holds.filter((h) => h.duration === "24h").length,
   };
 }
 
@@ -101,18 +108,29 @@ export function calculateAverageIntervalBetweenHolds(
   firefighterId: string
 ): number {
   const ffHolds = holds
-    .filter(h => h.firefighter_id === firefighterId && h.status === 'completed')
-    .sort((a, b) => new Date(a.hold_date).getTime() - new Date(b.hold_date).getTime());
+    .filter(
+      (h) =>
+        h.firefighter_id === firefighterId &&
+        h.status === "completed" &&
+        h.hold_date !== null
+    )
+    .sort((a, b) => {
+      const dateA = a.hold_date ? new Date(a.hold_date).getTime() : 0;
+      const dateB = b.hold_date ? new Date(b.hold_date).getTime() : 0;
+      return dateA - dateB;
+    });
 
   if (ffHolds.length < 2) return 0;
 
   let totalIntervalDays = 0;
   for (let i = 1; i < ffHolds.length; i++) {
-    const days = (
-      new Date(ffHolds[i].hold_date).getTime() -
-      new Date(ffHolds[i - 1].hold_date).getTime()
-    ) / (1000 * 60 * 60 * 24);
-    totalIntervalDays += days;
+    if (ffHolds[i].hold_date && ffHolds[i - 1].hold_date) {
+      const days =
+        (new Date(ffHolds[i].hold_date!).getTime() -
+          new Date(ffHolds[i - 1].hold_date!).getTime()) /
+        (1000 * 60 * 60 * 24);
+      totalIntervalDays += days;
+    }
   }
 
   return Math.round((totalIntervalDays / (ffHolds.length - 1)) * 10) / 10;
@@ -148,7 +166,7 @@ export function getStationWithMostHolds(holds: ScheduledHold[]): {
   const stationMap = calculateHoldsByStation(holds);
   if (stationMap.size === 0) return null;
 
-  let maxStation = '';
+  let maxStation = "";
   let maxCount = 0;
 
   stationMap.forEach((count, station) => {
@@ -166,7 +184,7 @@ export function getStationWithMostHolds(holds: ScheduledHold[]): {
  */
 export function calculateCompletionRate(holds: ScheduledHold[]): number {
   if (holds.length === 0) return 0;
-  const completed = holds.filter(h => h.status === 'completed').length;
+  const completed = holds.filter((h) => h.status === "completed").length;
   return Math.round((completed / holds.length) * 100);
 }
 
@@ -174,11 +192,11 @@ export function calculateCompletionRate(holds: ScheduledHold[]): number {
  * Calculate average hold duration across all holds
  */
 export function calculateAverageHoldDuration(holds: ScheduledHold[]): number {
-  const holdsWithDuration = holds.filter(h => h.duration);
+  const holdsWithDuration = holds.filter((h) => h.duration);
   if (holdsWithDuration.length === 0) return 24; // Default to 24h
 
   const totalHours = holdsWithDuration.reduce((sum, hold) => {
-    return sum + (hold.duration === '12h' ? 12 : 24);
+    return sum + (hold.duration === "12h" ? 12 : 24);
   }, 0);
 
   return Math.round((totalHours / holdsWithDuration.length) * 10) / 10;
@@ -192,8 +210,10 @@ export function getHoldsInDateRange(
   startDate: Date,
   endDate: Date
 ): ScheduledHold[] {
-  return holds.filter(hold => {
-    const holdDate = new Date(hold.hold_date);
+  return holds.filter((hold) => {
+    const dateStr = hold.hold_date;
+    if (!dateStr) return false;
+    const holdDate = new Date(dateStr);
     return holdDate >= startDate && holdDate <= endDate;
   });
 }

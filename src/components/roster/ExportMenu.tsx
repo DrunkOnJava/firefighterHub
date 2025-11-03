@@ -1,19 +1,20 @@
 /**
  * ExportMenu Component
- * 
+ *
  * Dropdown menu for exporting roster data in various formats.
  * Features:
  * - Export as CSV
  * - Export as JSON
  * - Click outside to close
- * 
+ *
  * Uses design tokens for consistent styling.
  */
 
-import { Download, FileDown } from 'lucide-react';
-import { Firefighter } from '../../lib/supabase';
-import { exportRosterToCSV, exportRosterToJSON } from '../../utils/exportUtils';
-import { colors, tokens } from '../../styles';
+import { Download, FileDown } from "lucide-react";
+import { Firefighter } from "../../lib/supabase";
+import { colors, tokens } from "../../styles";
+import { exportRosterToCSV, exportRosterToJSON } from "../../utils/exportUtils";
+import { getTheme } from "../../utils/theme";
 
 interface ExportMenuProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ export function ExportMenu({
   currentShift,
   isDarkMode = true,
 }: ExportMenuProps) {
+  const theme = getTheme(isDarkMode);
+
   const handleExportCSV = () => {
     exportRosterToCSV(firefighters, currentShift || "ALL");
     onToggle(); // Close menu after export
@@ -69,10 +72,7 @@ export function ExportMenu({
             border-2
             overflow-hidden
             ${tokens.zIndex.dropdown}
-            ${isDarkMode 
-              ? `${colors.structural.bg.card} ${colors.structural.border.default}` 
-              : 'bg-white border-slate-300'
-            }
+            ${theme.roster.exportMenuBg} ${theme.roster.exportMenuBorder}
           `}
         >
           <button
@@ -83,16 +83,13 @@ export function ExportMenu({
               text-left
               flex items-center gap-3
               ${tokens.transitions.fast}
-              ${isDarkMode 
-                ? 'hover:bg-gray-700 text-white' 
-                : 'hover:bg-slate-50 text-slate-900'
-              }
+              ${theme.roster.exportMenuItemHover}
             `}
           >
             <FileDown className="w-4 h-4" />
             <span className="font-medium">Export as CSV</span>
           </button>
-          
+
           <button
             onClick={handleExportJSON}
             className={`
@@ -102,10 +99,7 @@ export function ExportMenu({
               flex items-center gap-3
               ${tokens.transitions.fast}
               border-t
-              ${isDarkMode 
-                ? 'hover:bg-gray-700 text-white border-gray-700' 
-                : 'hover:bg-slate-50 text-slate-900 border-slate-200'
-              }
+              ${theme.roster.exportMenuItemHover} ${theme.roster.exportMenuItemBorder}
             `}
           >
             <FileDown className="w-4 h-4" />
@@ -116,4 +110,3 @@ export function ExportMenu({
     </div>
   );
 }
-

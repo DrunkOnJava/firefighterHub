@@ -1,7 +1,8 @@
-import { AlertTriangle, Info, Trash2, X } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { AlertTriangle, Info, Trash2, X } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { getTheme } from "../utils/theme";
 
-type ConfirmVariant = 'danger' | 'warning' | 'info';
+type ConfirmVariant = "danger" | "warning" | "info";
 
 interface ConfirmDialogProps {
   isOpen: boolean;
@@ -22,13 +23,14 @@ export function ConfirmDialog({
   onConfirm,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  variant = 'warning',
+  confirmText = "Confirm",
+  cancelText = "Cancel",
+  variant = "warning",
   consequences = [],
-  isDarkMode = true
+  isDarkMode = true,
 }: ConfirmDialogProps) {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
+  const theme = getTheme(isDarkMode);
 
   useEffect(() => {
     if (isOpen) {
@@ -36,20 +38,20 @@ export function ConfirmDialog({
       confirmButtonRef.current?.focus();
 
       // Prevent body scroll when dialog is open
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
 
       // Handle escape key
       const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
           onClose();
         }
       };
 
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
 
       return () => {
-        document.body.style.overflow = '';
-        document.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", handleEscape);
       };
     }
   }, [isOpen, onClose]);
@@ -59,25 +61,25 @@ export function ConfirmDialog({
   const variantConfig = {
     danger: {
       icon: Trash2,
-      iconBg: 'bg-red-100 dark:bg-red-900/30',
-      iconColor: 'text-red-600 dark:text-red-400',
-      buttonBg: 'bg-red-600 hover:bg-red-700',
-      borderColor: 'border-red-200 dark:border-red-800'
+      iconBg: "bg-red-100 dark:bg-red-900/30",
+      iconColor: "text-red-600 dark:text-red-400",
+      buttonBg: "bg-red-600 hover:bg-red-700",
+      borderColor: "border-red-200 dark:border-red-800",
     },
     warning: {
       icon: AlertTriangle,
-      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
-      iconColor: 'text-amber-600 dark:text-amber-400',
-      buttonBg: 'bg-amber-600 hover:bg-amber-700',
-      borderColor: 'border-amber-200 dark:border-amber-800'
+      iconBg: "bg-amber-100 dark:bg-amber-900/30",
+      iconColor: "text-amber-600 dark:text-amber-400",
+      buttonBg: "bg-amber-600 hover:bg-amber-700",
+      borderColor: "border-amber-200 dark:border-amber-800",
     },
     info: {
       icon: Info,
-      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-      iconColor: 'text-blue-600 dark:text-blue-400',
-      buttonBg: 'bg-blue-600 hover:bg-blue-700',
-      borderColor: 'border-blue-200 dark:border-blue-800'
-    }
+      iconBg: "bg-blue-100 dark:bg-blue-900/30",
+      iconColor: "text-blue-600 dark:text-blue-400",
+      buttonBg: "bg-blue-600 hover:bg-blue-700",
+      borderColor: "border-blue-200 dark:border-blue-800",
+    },
   };
 
   const config = variantConfig[variant];
@@ -92,16 +94,14 @@ export function ConfirmDialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className={`absolute inset-0 backdrop-blur-sm ${theme.confirmDialog.overlay}`}
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Dialog */}
       <div
-        className={`relative w-full max-w-md rounded-lg shadow-2xl border ${config.borderColor} ${
-          isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-slate-900'
-        }`}
+        className={`relative w-full max-w-md rounded-lg shadow-2xl border ${config.borderColor} ${theme.confirmDialog.background}`}
         role="alertdialog"
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-description"
@@ -111,8 +111,8 @@ export function ConfirmDialog({
           onClick={onClose}
           className={`absolute top-4 right-4 p-1 rounded-lg transition-colors ${
             isDarkMode
-              ? 'hover:bg-gray-700 text-gray-400 hover:text-white'
-              : 'hover:bg-slate-100 text-slate-400 hover:text-slate-900'
+              ? "hover:bg-gray-700 text-gray-400 hover:text-white"
+              : "hover:bg-slate-100 text-slate-400 hover:text-slate-900"
           }`}
           aria-label="Close dialog"
         >
@@ -129,13 +129,13 @@ export function ConfirmDialog({
             <div className="flex-1">
               <h2
                 id="confirm-dialog-title"
-                className="text-xl font-semibold mb-2"
+                className={`text-xl font-semibold mb-2 ${theme.confirmDialog.title}`}
               >
                 {title}
               </h2>
               <p
                 id="confirm-dialog-description"
-                className={isDarkMode ? 'text-gray-300' : 'text-slate-600'}
+                className={theme.confirmDialog.message}
               >
                 {message}
               </p>
@@ -146,19 +146,19 @@ export function ConfirmDialog({
           {consequences.length > 0 && (
             <div
               className={`mt-4 p-4 rounded-lg ${
-                isDarkMode ? 'bg-gray-900/50' : 'bg-slate-50'
+                isDarkMode ? "bg-gray-900/50" : "bg-slate-50"
               }`}
             >
-              <p className={`text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-slate-700'}`}>
+              <p
+                className={`text-sm font-medium mb-2 ${theme.confirmDialog.message}`}
+              >
                 This action will:
               </p>
               <ul className="space-y-1">
                 {consequences.map((consequence, index) => (
                   <li
                     key={index}
-                    className={`text-sm flex items-start gap-2 ${
-                      isDarkMode ? 'text-gray-400' : 'text-slate-600'
-                    }`}
+                    className={`text-sm flex items-start gap-2 ${theme.textTertiary}`}
                   >
                     <span className="mt-1">•</span>
                     <span>{consequence}</span>
@@ -172,11 +172,7 @@ export function ConfirmDialog({
           <div className="flex gap-3 mt-6">
             <button
               onClick={onClose}
-              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                isDarkMode
-                  ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-900'
-              }`}
+              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${theme.confirmDialog.cancelButton}`}
             >
               {cancelText}
             </button>

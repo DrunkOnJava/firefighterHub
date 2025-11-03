@@ -1,12 +1,23 @@
-import { useMemo, useState } from 'react';
-import { Calendar as CalendarIcon, User, MapPin, CheckCircle2, Clock, Trash2 } from 'lucide-react';
-import { Firefighter } from '../lib/supabase';
-import { ScheduledHold } from '../utils/calendarUtils';
+import {
+  Calendar as CalendarIcon,
+  CheckCircle2,
+  Clock,
+  MapPin,
+  Trash2,
+  User,
+} from "lucide-react";
+import { useMemo, useState } from "react";
+import { Firefighter } from "../lib/supabase";
+import { ScheduledHold } from "../utils/calendarUtils";
 
 interface ListViewProps {
   firefighters: Firefighter[];
   scheduledHolds: ScheduledHold[];
-  onScheduleHold: (holdDate: string, firefighter: Firefighter, station?: string) => void;
+  onScheduleHold: (
+    holdDate: string,
+    firefighter: Firefighter,
+    station?: string
+  ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
   loading: boolean;
@@ -19,7 +30,7 @@ interface HoldEntry {
   dateString: string;
   firefighterName: string;
   fireStation: string | null;
-  status: 'scheduled' | 'completed' | 'skipped';
+  status: "scheduled" | "completed" | "skipped";
   isPast: boolean;
   isToday: boolean;
   hold?: ScheduledHold;
@@ -31,16 +42,20 @@ export function ListView({
   onRemoveHold,
   onMarkCompleted,
   loading,
-  isAdminMode = false
+  isAdminMode = false,
 }: ListViewProps) {
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
+    null
+  );
 
   const holdsList = useMemo(() => {
     const entries: HoldEntry[] = [];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    scheduledHolds.forEach(hold => {
+    scheduledHolds.forEach((hold) => {
+      if (!hold.hold_date) return; // Skip holds without dates
+
       const holdDate = new Date(hold.hold_date);
       holdDate.setHours(0, 0, 0, 0);
 
@@ -48,18 +63,24 @@ export function ListView({
         id: hold.id,
         date: holdDate,
         dateString: hold.hold_date,
-        firefighterName: hold.firefighter_name,
+        firefighterName: hold.firefighter_name || "Unknown",
         fireStation: hold.fire_station,
-        status: hold.status,
+        status: (hold.status || "scheduled") as
+          | "scheduled"
+          | "completed"
+          | "skipped",
         isPast: holdDate < today,
         isToday: holdDate.getTime() === today.getTime(),
-        hold
+        hold,
       });
     });
 
-    firefighters.forEach(ff => {
+    firefighters.forEach((ff) => {
       if (ff.last_hold_date) {
-        const exists = entries.some(e => e.dateString === ff.last_hold_date && e.firefighterName === ff.name);
+        const exists = entries.some(
+          (e) =>
+            e.dateString === ff.last_hold_date && e.firefighterName === ff.name
+        );
         if (!exists) {
           const holdDate = new Date(ff.last_hold_date);
           holdDate.setHours(0, 0, 0, 0);
@@ -70,9 +91,9 @@ export function ListView({
             dateString: ff.last_hold_date,
             firefighterName: ff.name,
             fireStation: ff.fire_station,
-            status: 'completed',
+            status: "completed",
             isPast: holdDate < today,
-            isToday: holdDate.getTime() === today.getTime()
+            isToday: holdDate.getTime() === today.getTime(),
           });
         }
       }
@@ -81,15 +102,15 @@ export function ListView({
     return entries.sort((a, b) => b.date.getTime() - a.date.getTime());
   }, [scheduledHolds, firefighters]);
 
-  const upcomingHolds = holdsList.filter(h => !h.isPast);
-  const pastHolds = holdsList.filter(h => h.isPast);
+  const upcomingHolds = holdsList.filter((h) => !h.isPast);
+  const pastHolds = holdsList.filter((h) => h.isPast);
 
   function formatDate(date: Date): string {
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   }
 
@@ -102,13 +123,13 @@ export function ListView({
     const diffTime = targetDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Tomorrow';
-    if (diffDays === -1) return 'Yesterday';
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Tomorrow";
+    if (diffDays === -1) return "Yesterday";
     if (diffDays > 0 && diffDays <= 7) return `In ${diffDays} days`;
     if (diffDays < 0 && diffDays >= -7) return `${Math.abs(diffDays)} days ago`;
 
-    return '';
+    return "";
   }
 
   function handleRemoveHold(holdId: string) {
@@ -120,17 +141,32 @@ export function ListView({
     const relativeDate = formatRelativeDate(entry.date);
 
     return (
-      <div className={`
+      <div
+        className={`
         bg-gradient-to-br border-2 rounded-xl p-5 transition-all
-        ${entry.status === 'scheduled'
-          ? 'from-blue-900/30 to-blue-800/20 border-blue-600/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20'
-          : 'from-green-900/30 to-green-800/20 border-green-600/50 hover:border-green-500'}
-        ${entry.isToday ? 'ring-4 ring-red-500 ring-offset-2 ring-offset-gray-800 shadow-lg shadow-red-500/30' : ''}
-      `}>
+        ${
+          entry.status === "scheduled"
+            ? "from-blue-900/30 to-blue-800/20 border-blue-600/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20"
+            : "from-green-900/30 to-green-800/20 border-green-600/50 hover:border-green-500"
+        }
+        ${
+          entry.isToday
+            ? "ring-4 ring-red-500 ring-offset-2 ring-offset-gray-800 shadow-lg shadow-red-500/30"
+            : ""
+        }
+      `}
+      >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
-              <CalendarIcon size={20} className={entry.status === 'scheduled' ? 'text-blue-400' : 'text-green-400'} />
+              <CalendarIcon
+                size={20}
+                className={
+                  entry.status === "scheduled"
+                    ? "text-blue-400"
+                    : "text-green-400"
+                }
+              />
               <div>
                 <h3 className="text-xl font-bold text-white">
                   {formatDate(entry.date)}
@@ -144,7 +180,9 @@ export function ListView({
             <div className="flex flex-col gap-2 ml-8">
               <div className="flex items-center gap-2">
                 <User size={18} className="text-gray-400" />
-                <span className="text-lg font-semibold text-white">{entry.firefighterName}</span>
+                <span className="text-lg font-semibold text-white">
+                  {entry.firefighterName}
+                </span>
               </div>
 
               {entry.fireStation && (
@@ -155,20 +193,26 @@ export function ListView({
                     </span>
                   </div>
                   <MapPin size={18} className="text-orange-400" />
-                  <span className="text-lg text-white font-bold">Station #{entry.fireStation}</span>
+                  <span className="text-lg text-white font-bold">
+                    Station #{entry.fireStation}
+                  </span>
                 </div>
               )}
 
               <div className="flex items-center gap-2">
-                {entry.status === 'scheduled' ? (
+                {entry.status === "scheduled" ? (
                   <>
                     <Clock size={18} className="text-blue-400" />
-                    <span className="text-sm text-blue-300 font-semibold">Scheduled</span>
+                    <span className="text-sm text-blue-300 font-semibold">
+                      Scheduled
+                    </span>
                   </>
                 ) : (
                   <>
                     <CheckCircle2 size={18} className="text-green-400" />
-                    <span className="text-sm text-green-300 font-semibold">Completed</span>
+                    <span className="text-sm text-green-300 font-semibold">
+                      Completed
+                    </span>
                   </>
                 )}
               </div>
@@ -199,7 +243,7 @@ export function ListView({
                 </div>
               ) : (
                 <>
-                  {entry.status === 'scheduled' && !entry.isPast && (
+                  {entry.status === "scheduled" && !entry.isPast && (
                     <button
                       onClick={() => onMarkCompleted(entry.hold!)}
                       className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors shadow-lg whitespace-nowrap flex items-center justify-center gap-2"
@@ -208,15 +252,16 @@ export function ListView({
                       Mark Completed
                     </button>
                   )}
-                  {entry.status === 'scheduled' && !entry.id.startsWith('past-') && (
-                    <button
-                      onClick={() => setShowDeleteConfirm(entry.id)}
-                      className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors shadow-lg whitespace-nowrap flex items-center justify-center gap-2"
-                    >
-                      <Trash2 size={16} />
-                      Cancel Hold
-                    </button>
-                  )}
+                  {entry.status === "scheduled" &&
+                    !entry.id.startsWith("past-") && (
+                      <button
+                        onClick={() => setShowDeleteConfirm(entry.id)}
+                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors shadow-lg whitespace-nowrap flex items-center justify-center gap-2"
+                      >
+                        <Trash2 size={16} />
+                        Cancel Hold
+                      </button>
+                    )}
                 </>
               )}
             </div>
@@ -245,8 +290,12 @@ export function ListView({
             <CalendarIcon className="text-white" size={28} />
           </div>
           <div>
-            <h2 id="list-heading" className="text-2xl font-bold text-white">Hold List View</h2>
-            <p className="text-base text-gray-400">All scheduled and completed holds</p>
+            <h2 id="list-heading" className="text-2xl font-bold text-white">
+              Hold List View
+            </h2>
+            <p className="text-base text-gray-400">
+              All scheduled and completed holds
+            </p>
           </div>
         </div>
       </div>
@@ -259,7 +308,7 @@ export function ListView({
               Upcoming Holds ({upcomingHolds.length})
             </h3>
             <div className="space-y-3">
-              {upcomingHolds.map(entry => (
+              {upcomingHolds.map((entry) => (
                 <HoldCard key={entry.id} entry={entry} />
               ))}
             </div>
@@ -269,7 +318,9 @@ export function ListView({
         {upcomingHolds.length === 0 && (
           <div className="text-center py-12">
             <Clock className="text-gray-600 mx-auto mb-4" size={48} />
-            <p className="text-gray-400 text-lg font-semibold">No upcoming holds scheduled</p>
+            <p className="text-gray-400 text-lg font-semibold">
+              No upcoming holds scheduled
+            </p>
             <p className="text-gray-500 text-sm mt-2">
               Switch to calendar view to schedule holds
             </p>
@@ -283,7 +334,7 @@ export function ListView({
               Past Holds ({pastHolds.length})
             </h3>
             <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
-              {pastHolds.map(entry => (
+              {pastHolds.map((entry) => (
                 <HoldCard key={entry.id} entry={entry} />
               ))}
             </div>

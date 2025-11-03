@@ -1,30 +1,31 @@
-import { useEffect, useState } from "react";
 import {
-  X,
-  User,
-  Calendar,
-  Building2,
   Award,
-  Truck,
-  Shield,
+  Building2,
+  Calendar,
   Clock,
-  Flame,
-  Ship,
-  Mountain,
   Edit,
+  Flame,
+  Mountain,
   Save,
+  Shield,
+  Ship,
+  Truck,
+  User,
+  X,
 } from "lucide-react";
-import { Firefighter, supabase, Shift } from "../lib/supabase";
-import { useFocusTrap } from "../hooks/useFocusTrap";
+import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
-import { ShiftBadge } from "./ShiftSelector";
+import { useFocusTrap } from "../hooks/useFocusTrap";
+import { Firefighter, Shift, supabase } from "../lib/supabase";
+import { colors, tokens } from "../styles";
 import { formatHoldDate } from "../utils/dateUtils";
+import { ShiftBadge } from "./ShiftSelector";
 
 interface HoldRecord {
   id: string;
-  hold_date: string;
+  hold_date: string | null;
   fire_station: string | null;
-  status: string;
+  status: string | null;
   completed_at: string | null;
   created_at: string;
 }
@@ -182,7 +183,11 @@ export function FirefighterProfileModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in"
+      className={`
+        fixed inset-0 z-50 flex items-center justify-center
+        ${tokens.spacing.card.md}
+        bg-black/90 animate-fade-in
+      `}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -190,12 +195,28 @@ export function FirefighterProfileModal({
     >
       <div
         ref={trapRef}
-        className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-scale-in"
+        className={`
+          max-w-2xl w-full max-h-[90vh] overflow-hidden
+          ${colors.components.modal.background}
+          ${colors.components.modal.border}
+          ${tokens.borders.radius.xl}
+          ${colors.components.modal.shadow}
+          animate-scale-in
+        `}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 border-b-2 border-gray-700 p-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl">
+        <div
+          className={`
+            border-b-2 ${tokens.spacing.card.xl}
+            flex items-center justify-between
+            ${colors.structural.bg.surface}
+            ${colors.structural.border.default}
+          `}
+        >
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <div
+              className={`${colors.semantic.scheduled.gradient} ${tokens.spacing.section.lg} ${tokens.borders.radius.xl}`}
+            >
               <User className="text-white" size={24} />
             </div>
             <div>
@@ -209,21 +230,32 @@ export function FirefighterProfileModal({
                       name: e.target.value,
                     })
                   }
-                  className="text-2xl font-bold bg-gray-700 text-white px-3 py-1 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={`
+                    ${tokens.typography.heading.h1}
+                    px-3 py-1
+                    ${tokens.borders.radius.lg}
+                    border-2
+                    ${colors.components.input.default}
+                    focus:outline-none focus:ring-2 focus:ring-blue-500
+                  `}
                   placeholder="Firefighter name"
                 />
               ) : (
                 <h2
                   id="profile-modal-title"
-                  className="text-2xl font-bold text-white"
+                  className={`${tokens.typography.heading.h1} ${colors.structural.text.primary}`}
                 >
                   {firefighter.name}
                 </h2>
               )}
-              <p className="text-sm text-gray-400">Firefighter Profile</p>
+              <p
+                className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
+              >
+                Firefighter Profile
+              </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
             {isAdminMode && (
               <button
                 onClick={() => {
@@ -233,11 +265,17 @@ export function FirefighterProfileModal({
                     setIsEditMode(true);
                   }
                 }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  isEditMode
-                    ? "bg-green-600 hover:bg-green-700 text-white"
-                    : "bg-orange-600 hover:bg-orange-700 text-white"
-                }`}
+                className={`
+                  flex items-center ${tokens.spacing.gap.sm}
+                  px-4 py-2 ${tokens.borders.radius.lg}
+                  ${tokens.typography.weight.medium}
+                  ${tokens.transitions.fast}
+                  ${
+                    isEditMode
+                      ? colors.components.button.success
+                      : `${colors.semantic.warning.solid} hover:${colors.semantic.warning.hover} text-white`
+                  }
+                `}
                 aria-label={isEditMode ? "Save changes" : "Edit profile"}
               >
                 {isEditMode ? (
@@ -255,20 +293,38 @@ export function FirefighterProfileModal({
             )}
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+              className={`
+                p-2 ${tokens.borders.radius.lg}
+                ${tokens.transitions.fast}
+                ${colors.structural.text.tertiary}
+                hover:bg-gray-700
+                focus-ring
+              `}
               aria-label="Close profile dialog"
             >
-              <X size={24} className="text-gray-400" />
+              <X size={24} />
             </button>
           </div>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Calendar size={16} className="text-blue-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">
+        <div className={`p-6 overflow-y-auto max-h-[calc(90vh-120px)]`}>
+          <div className={`grid grid-cols-2 ${tokens.spacing.gap.md} mb-6`}>
+            <div
+              className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-4`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.sm} mb-2`}
+              >
+                <Calendar
+                  size={16}
+                  className={`${colors.semantic.primary.solid.replace(
+                    "bg-",
+                    "text-"
+                  )}`}
+                />
+                <span
+                  className={`${tokens.typography.body.small} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} uppercase`}
+                >
                   Shift
                 </span>
               </div>
@@ -281,21 +337,33 @@ export function FirefighterProfileModal({
                       shift: e.target.value as Shift,
                     })
                   }
-                  className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg border-2 border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold"
+                  className={`w-full ${colors.components.input.default} ${tokens.typography.weight.semibold}`}
                 >
                   <option value="A">Shift A</option>
                   <option value="B">Shift B</option>
                   <option value="C">Shift C</option>
                 </select>
               ) : (
-                <ShiftBadge shift={firefighter.shift} />
+                <ShiftBadge shift={firefighter.shift as Shift} />
               )}
             </div>
 
-            <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Building2 size={16} className="text-orange-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">
+            <div
+              className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-4`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.sm} mb-2`}
+              >
+                <Building2
+                  size={16}
+                  className={`${colors.semantic.warning.solid.replace(
+                    "bg-",
+                    "text-"
+                  )}`}
+                />
+                <span
+                  className={`${tokens.typography.body.small} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} uppercase`}
+                >
                   Station
                 </span>
               </div>
@@ -309,11 +377,13 @@ export function FirefighterProfileModal({
                       fire_station: e.target.value,
                     })
                   }
-                  className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg border-2 border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 text-lg font-bold"
+                  className={`w-full ${colors.components.input.default} ${tokens.typography.heading.h2} ${tokens.typography.weight.bold}`}
                   placeholder="Station #"
                 />
               ) : (
-                <p className="text-lg font-bold text-white">
+                <p
+                  className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
+                >
                   {firefighter.fire_station
                     ? `#${firefighter.fire_station}`
                     : "Not assigned"}
@@ -321,24 +391,50 @@ export function FirefighterProfileModal({
               )}
             </div>
 
-            <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Clock size={16} className="text-emerald-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">
+            <div
+              className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-4`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.sm} mb-2`}
+              >
+                <Clock
+                  size={16}
+                  className={`${colors.semantic.success.solid.replace(
+                    "bg-",
+                    "text-"
+                  )}`}
+                />
+                <span
+                  className={`${tokens.typography.body.small} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} uppercase`}
+                >
                   Last Hold
                 </span>
               </div>
-              <p className="text-sm font-semibold text-white">
+              <p
+                className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.primary}`}
+              >
                 {firefighter.last_hold_date
                   ? formatHoldDate(firefighter.last_hold_date)
                   : "Never"}
               </p>
             </div>
 
-            <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Award size={16} className="text-amber-400" />
-                <span className="text-xs font-semibold text-gray-400 uppercase">
+            <div
+              className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-4`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.sm} mb-2`}
+              >
+                <Award
+                  size={16}
+                  className={`${colors.semantic.warning.solid.replace(
+                    "bg-",
+                    "text-"
+                  )}`}
+                />
+                <span
+                  className={`${tokens.typography.body.small} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} uppercase`}
+                >
                   Cert Level
                 </span>
               </div>
@@ -351,7 +447,7 @@ export function FirefighterProfileModal({
                       certification_level: e.target.value || null,
                     })
                   }
-                  className="w-full bg-gray-700 text-white px-3 py-2 rounded-lg border-2 border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold text-sm"
+                  className={`w-full ${colors.components.input.default} ${tokens.typography.weight.bold} ${tokens.typography.body.secondary}`}
                 >
                   <option value="">None</option>
                   <option value="EMT">EMT</option>
@@ -360,7 +456,9 @@ export function FirefighterProfileModal({
                   <option value="Paramedic">Paramedic</option>
                 </select>
               ) : (
-                <p className="text-sm font-bold text-amber-100">
+                <p
+                  className={`${tokens.typography.body.secondary} ${tokens.typography.weight.bold} text-amber-100`}
+                >
                   {firefighter.certification_level || "None"}
                 </p>
               )}
@@ -368,15 +466,25 @@ export function FirefighterProfileModal({
           </div>
 
           <div className="mb-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Shield size={16} className="text-sky-400" />
-              <h3 className="text-sm font-bold text-gray-300 uppercase">
+            <div className={`flex items-center ${tokens.spacing.gap.sm} mb-3`}>
+              <Shield
+                size={16}
+                className={`${colors.semantic.info.solid.replace(
+                  "bg-",
+                  "text-"
+                )}`}
+              />
+              <h3
+                className={`${tokens.typography.body.secondary} ${tokens.typography.weight.bold} ${colors.structural.text.secondary} uppercase`}
+              >
                 Qualifications
               </h3>
             </div>
             {isEditMode ? (
               <div className="space-y-2">
-                <label className="flex items-center gap-3 bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-800/50 transition-colors">
+                <label
+                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                >
                   <input
                     type="checkbox"
                     checked={editedFirefighter.is_fto || false}
@@ -388,11 +496,15 @@ export function FirefighterProfileModal({
                     }
                     className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-amber-500 focus:ring-2 focus:ring-amber-500"
                   />
-                  <span className="text-sm font-semibold text-gray-300">
+                  <span
+                    className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
+                  >
                     FTO (Field Training Officer)
                   </span>
                 </label>
-                <label className="flex items-center gap-3 bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-800/50 transition-colors">
+                <label
+                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                >
                   <input
                     type="checkbox"
                     checked={editedFirefighter.is_bls || false}
@@ -404,11 +516,15 @@ export function FirefighterProfileModal({
                     }
                     className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-emerald-500 focus:ring-2 focus:ring-emerald-500"
                   />
-                  <span className="text-sm font-semibold text-gray-300">
+                  <span
+                    className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
+                  >
                     BLS (Basic Life Support)
                   </span>
                 </label>
-                <label className="flex items-center gap-3 bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-800/50 transition-colors">
+                <label
+                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                >
                   <input
                     type="checkbox"
                     checked={editedFirefighter.is_als || false}
@@ -420,17 +536,21 @@ export function FirefighterProfileModal({
                     }
                     className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-cyan-500 focus:ring-2 focus:ring-cyan-500"
                   />
-                  <span className="text-sm font-semibold text-gray-300">
+                  <span
+                    className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
+                  >
                     ALS (Advanced Life Support)
                   </span>
                 </label>
               </div>
             ) : qualifications.length > 0 ? (
-              <div className="flex gap-2 flex-wrap">
+              <div className={`flex ${tokens.spacing.gap.sm} flex-wrap`}>
                 {qualifications.map((qual) => (
                   <span
                     key={qual.label}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-bold border ${
+                    className={`px-3 py-1.5 ${tokens.borders.radius.lg} ${
+                      tokens.typography.body.secondary
+                    } ${tokens.typography.weight.bold} border ${
                       qual.color === "amber"
                         ? "bg-amber-900/30 text-amber-300 border-amber-700/50"
                         : qual.color === "emerald"
@@ -443,25 +563,37 @@ export function FirefighterProfileModal({
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">No qualifications</p>
+              <p
+                className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}
+              >
+                No qualifications
+              </p>
             )}
           </div>
 
           <div className="mb-6">
-            <div className="flex items-center gap-2 mb-3">
-              <Truck size={16} className="text-orange-400" />
-              <h3 className="text-sm font-bold text-gray-300 uppercase">
+            <div className={`flex items-center ${tokens.spacing.gap.sm} mb-3`}>
+              <Truck
+                size={16}
+                className={`${colors.semantic.warning.solid.replace(
+                  "bg-",
+                  "text-"
+                )}`}
+              />
+              <h3
+                className={`${tokens.typography.body.secondary} ${tokens.typography.weight.bold} ${colors.structural.text.secondary} uppercase`}
+              >
                 Apparatus Clearances
               </h3>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className={`grid grid-cols-2 ${tokens.spacing.gap.sm}`}>
               {isEditMode ? (
                 apparatusTypes.map((apparatus) => {
                   const IconComponent = apparatus.Icon;
                   return (
                     <label
                       key={apparatus.key}
-                      className="bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-800/50 transition-colors"
+                      className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 flex items-center ${tokens.spacing.gap.sm} cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
                     >
                       <input
                         type="checkbox"
@@ -474,8 +606,12 @@ export function FirefighterProfileModal({
                         }
                         className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-orange-500 focus:ring-2 focus:ring-orange-500"
                       />
-                      <IconComponent className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-semibold text-gray-300">
+                      <IconComponent
+                        className={`w-4 h-4 ${colors.structural.text.tertiary}`}
+                      />
+                      <span
+                        className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
+                      >
                         {apparatus.name}
                       </span>
                     </label>
@@ -487,17 +623,23 @@ export function FirefighterProfileModal({
                   return (
                     <div
                       key={apparatus.name}
-                      className="bg-gray-900/50 border border-gray-700 rounded-lg px-3 py-2 flex items-center gap-2"
+                      className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 flex items-center ${tokens.spacing.gap.sm}`}
                     >
-                      <IconComponent className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm font-semibold text-gray-300">
+                      <IconComponent
+                        className={`w-4 h-4 ${colors.structural.text.tertiary}`}
+                      />
+                      <span
+                        className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
+                      >
                         {apparatus.name}
                       </span>
                     </div>
                   );
                 })
               ) : (
-                <p className="text-sm text-gray-500 col-span-2">
+                <p
+                  className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} col-span-2`}
+                >
                   No apparatus clearances
                 </p>
               )}
@@ -505,42 +647,93 @@ export function FirefighterProfileModal({
           </div>
 
           <div>
-            <div className="flex items-center gap-2 mb-3">
-              <Calendar size={16} className="text-blue-400" />
-              <h3 className="text-sm font-bold text-gray-300 uppercase">
+            <div className={`flex items-center ${tokens.spacing.gap.sm} mb-3`}>
+              <Calendar
+                size={16}
+                className={`${colors.semantic.primary.solid.replace(
+                  "bg-",
+                  "text-"
+                )}`}
+              />
+              <h3
+                className={`${tokens.typography.body.secondary} ${tokens.typography.weight.bold} ${colors.structural.text.secondary} uppercase`}
+              >
                 Hold History
               </h3>
             </div>
 
             {loading ? (
-              <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 text-center">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
-                <p className="text-sm text-gray-400">Loading history...</p>
+              <div
+                className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-6 text-center`}
+              >
+                <div
+                  className={`w-8 h-8 border-4 ${colors.semantic.primary.solid.replace(
+                    "bg-",
+                    "border-"
+                  )} border-t-transparent ${
+                    tokens.borders.radius.full
+                  } animate-spin mx-auto mb-2`}
+                ></div>
+                <p
+                  className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}
+                >
+                  Loading history...
+                </p>
               </div>
             ) : holdRecords.length === 0 ? (
-              <div className="bg-gray-900/50 border border-gray-700 rounded-xl p-6 text-center">
-                <Calendar size={32} className="text-gray-600 mx-auto mb-3" />
-                <p className="text-base text-gray-300 font-semibold mb-1">
+              <div
+                className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-6 text-center`}
+              >
+                <Calendar
+                  size={32}
+                  className={`${colors.structural.text.tertiary.replace(
+                    "text-",
+                    ""
+                  )} mx-auto mb-3`}
+                />
+                <p
+                  className={`${tokens.typography.body.primary} ${colors.structural.text.secondary} ${tokens.typography.weight.semibold} mb-1`}
+                >
                   No previous holds
                 </p>
-                <p className="text-xs text-gray-500">
+                <p
+                  className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                >
                   This firefighter has not completed any holds yet
                 </p>
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-lg p-3">
-                    <p className="text-2xl font-bold text-emerald-300">
+                <div
+                  className={`grid grid-cols-2 ${tokens.spacing.gap.md} mb-4`}
+                >
+                  <div
+                    className={`${colors.semantic.success.light} border ${colors.semantic.success.border} ${tokens.borders.radius.lg} p-3`}
+                  >
+                    <p
+                      className={`${tokens.typography.heading.h1} ${tokens.typography.weight.bold} text-emerald-300`}
+                    >
                       {completedHolds}
                     </p>
-                    <p className="text-xs text-gray-400">Completed</p>
+                    <p
+                      className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                    >
+                      Completed
+                    </p>
                   </div>
-                  <div className="bg-blue-900/20 border border-blue-700/50 rounded-lg p-3">
-                    <p className="text-2xl font-bold text-blue-300">
+                  <div
+                    className={`${colors.semantic.scheduled.light} border ${colors.semantic.scheduled.border} ${tokens.borders.radius.lg} p-3`}
+                  >
+                    <p
+                      className={`${tokens.typography.heading.h1} ${tokens.typography.weight.bold} text-blue-300`}
+                    >
                       {scheduledHolds}
                     </p>
-                    <p className="text-xs text-gray-400">Scheduled</p>
+                    <p
+                      className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                    >
+                      Scheduled
+                    </p>
                   </div>
                 </div>
 
@@ -550,29 +743,37 @@ export function FirefighterProfileModal({
                       <button
                         key={record.id}
                         onClick={() => setSelectedHoldForDetail(record)}
-                        className="w-full bg-gray-900/50 border border-gray-700 hover:border-gray-600 rounded-lg p-3 flex items-center justify-between transition-colors cursor-pointer"
+                        className={`w-full ${colors.structural.bg.card} ${colors.structural.border.default} hover:${colors.structural.border.hover} ${tokens.borders.radius.lg} p-3 flex items-center justify-between ${tokens.transitions.fast} cursor-pointer`}
                       >
                         <div className="flex-1 text-left">
-                          <p className="text-sm font-semibold text-white">
+                          <p
+                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.primary}`}
+                          >
                             {formatHoldDate(record.hold_date)}
                           </p>
                           {record.fire_station && (
-                            <p className="text-xs text-gray-400">
+                            <p
+                              className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                            >
                               Station #{record.fire_station}
                             </p>
                           )}
                         </div>
                         <span
-                          className={`px-2 py-1 rounded text-xs font-bold ${
+                          className={`px-2 py-1 ${tokens.borders.radius.md} ${
+                            tokens.typography.body.small
+                          } ${tokens.typography.weight.bold} ${
                             record.status === "completed"
-                              ? "bg-emerald-900/30 text-emerald-300 border border-emerald-700/50"
+                              ? `${colors.semantic.success.light} text-emerald-300 border ${colors.semantic.success.border}`
                               : record.status === "scheduled"
-                              ? "bg-blue-900/30 text-blue-300 border border-blue-700/50"
-                              : "bg-gray-700 text-gray-300"
+                              ? `${colors.semantic.scheduled.light} text-blue-300 border ${colors.semantic.scheduled.border}`
+                              : `${colors.structural.bg.card} ${colors.structural.text.secondary}`
                           }`}
                         >
-                          {record.status.charAt(0).toUpperCase() +
-                            record.status.slice(1)}
+                          {record.status
+                            ? record.status.charAt(0).toUpperCase() +
+                              record.status.slice(1)
+                            : "Unknown"}
                         </span>
                       </button>
                     )
@@ -583,7 +784,7 @@ export function FirefighterProfileModal({
                 {holdRecords.length > 3 && (
                   <button
                     onClick={() => setShowAllHolds(!showAllHolds)}
-                    className="w-full mt-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                    className={`w-full mt-3 ${colors.components.button.secondary} ${tokens.typography.weight.semibold} py-2 px-4 ${tokens.borders.radius.lg} ${tokens.transitions.fast}`}
                   >
                     {showAllHolds
                       ? `Show Less`
@@ -609,18 +810,26 @@ export function FirefighterProfileModal({
       {selectedHoldForDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            className={`absolute inset-0 ${colors.components.modal.overlay} backdrop-blur-sm`}
             onClick={() => setSelectedHoldForDetail(null)}
           />
-          <div className="relative bg-gray-800 rounded-xl shadow-2xl w-full max-w-md border-2 border-gray-700">
-            <div className="border-b-2 border-gray-700 bg-gradient-to-r from-gray-800 to-gray-900 p-4">
+          <div
+            className={`relative ${colors.components.modal.background} ${tokens.borders.radius.xl} ${colors.components.modal.shadow} w-full max-w-md ${colors.components.modal.border}`}
+          >
+            <div
+              className={`border-b-2 ${colors.structural.border.default} ${colors.structural.bg.surface} p-4`}
+            >
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-white">Hold Details</h3>
+                <h3
+                  className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
+                >
+                  Hold Details
+                </h3>
                 <button
                   onClick={() => setSelectedHoldForDetail(null)}
-                  className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+                  className={`p-2 hover:bg-gray-700 ${tokens.borders.radius.lg} ${tokens.transitions.fast}`}
                 >
-                  <X size={24} className="text-gray-400" />
+                  <X size={24} className={colors.structural.text.tertiary} />
                 </button>
               </div>
             </div>
@@ -629,28 +838,38 @@ export function FirefighterProfileModal({
               <div className="space-y-4">
                 {/* Hold Date */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                  <p
+                    className={`${tokens.typography.body.small} ${colors.structural.text.tertiary} uppercase tracking-wide mb-1`}
+                  >
                     Hold Date
                   </p>
-                  <p className="text-2xl font-bold text-white">
-                    {new Date(
-                      selectedHoldForDetail.hold_date
-                    ).toLocaleDateString("en-US", {
-                      weekday: "long",
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                      timeZone: "UTC",
-                    })}
+                  <p
+                    className={`${tokens.typography.heading.h1} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
+                  >
+                    {selectedHoldForDetail.hold_date
+                      ? new Date(
+                          selectedHoldForDetail.hold_date
+                        ).toLocaleDateString("en-US", {
+                          weekday: "long",
+                          month: "long",
+                          day: "numeric",
+                          year: "numeric",
+                          timeZone: "UTC",
+                        })
+                      : "N/A"}
                   </p>
                 </div>
 
                 {/* Firefighter Name */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                  <p
+                    className={`${tokens.typography.body.small} ${colors.structural.text.tertiary} uppercase tracking-wide mb-1`}
+                  >
                     Firefighter
                   </p>
-                  <p className="text-lg font-semibold text-white">
+                  <p
+                    className={`${tokens.typography.heading.h3} ${tokens.typography.weight.semibold} ${colors.structural.text.primary}`}
+                  >
                     {firefighter?.name}
                   </p>
                 </div>
@@ -658,10 +877,14 @@ export function FirefighterProfileModal({
                 {/* Station */}
                 {selectedHoldForDetail.fire_station && (
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    <p
+                      className={`${tokens.typography.body.small} ${colors.structural.text.tertiary} uppercase tracking-wide mb-1`}
+                    >
                       Station
                     </p>
-                    <p className="text-lg font-semibold text-white">
+                    <p
+                      className={`${tokens.typography.heading.h3} ${tokens.typography.weight.semibold} ${colors.structural.text.primary}`}
+                    >
                       Station #{selectedHoldForDetail.fire_station}
                     </p>
                   </div>
@@ -669,28 +892,40 @@ export function FirefighterProfileModal({
 
                 {/* Status */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                  <p
+                    className={`${tokens.typography.body.small} ${colors.structural.text.tertiary} uppercase tracking-wide mb-1`}
+                  >
                     Status
                   </p>
                   <span
-                    className={`inline-block px-3 py-1.5 rounded text-sm font-bold ${
+                    className={`inline-block px-3 py-1.5 ${
+                      tokens.borders.radius.md
+                    } ${tokens.typography.body.secondary} ${
+                      tokens.typography.weight.bold
+                    } ${
                       selectedHoldForDetail.status === "completed"
-                        ? "bg-emerald-900/30 text-emerald-300 border-2 border-emerald-700/50"
-                        : "bg-blue-900/30 text-blue-300 border-2 border-blue-700/50"
+                        ? `${colors.semantic.success.light} text-emerald-300 border-2 ${colors.semantic.success.border}`
+                        : `${colors.semantic.scheduled.light} text-blue-300 border-2 ${colors.semantic.scheduled.border}`
                     }`}
                   >
-                    {selectedHoldForDetail.status.charAt(0).toUpperCase() +
-                      selectedHoldForDetail.status.slice(1)}
+                    {selectedHoldForDetail.status
+                      ? selectedHoldForDetail.status.charAt(0).toUpperCase() +
+                        selectedHoldForDetail.status.slice(1)
+                      : "Unknown"}
                   </span>
                 </div>
 
                 {/* Completed Date */}
                 {selectedHoldForDetail.completed_at && (
                   <div>
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    <p
+                      className={`${tokens.typography.body.small} ${colors.structural.text.tertiary} uppercase tracking-wide mb-1`}
+                    >
                       Completed On
                     </p>
-                    <p className="text-sm text-gray-300">
+                    <p
+                      className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
+                    >
                       {new Date(
                         selectedHoldForDetail.completed_at
                       ).toLocaleDateString("en-US", {
@@ -707,10 +942,14 @@ export function FirefighterProfileModal({
 
                 {/* Created Date */}
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                  <p
+                    className={`${tokens.typography.body.small} ${colors.structural.text.tertiary} uppercase tracking-wide mb-1`}
+                  >
                     Scheduled On
                   </p>
-                  <p className="text-sm text-gray-300">
+                  <p
+                    className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
+                  >
                     {new Date(
                       selectedHoldForDetail.created_at
                     ).toLocaleDateString("en-US", {
@@ -725,7 +964,7 @@ export function FirefighterProfileModal({
 
               <button
                 onClick={() => setSelectedHoldForDetail(null)}
-                className="w-full mt-6 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 rounded-lg transition-colors"
+                className={`w-full mt-6 ${colors.components.button.secondary} ${tokens.typography.weight.semibold} py-3 ${tokens.borders.radius.lg} ${tokens.transitions.fast}`}
               >
                 Close
               </button>

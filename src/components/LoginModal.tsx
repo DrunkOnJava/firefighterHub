@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import { colors, tokens } from "../styles";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -70,7 +71,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+      className={`fixed inset-0 z-50 flex items-center justify-center ${colors.components.modal.overlay}`}
       onClick={handleOverlayClick}
       role="dialog"
       aria-modal="true"
@@ -78,51 +79,51 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
     >
       <div
         ref={trapRef}
-        className="relative w-full max-w-md mx-4 bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden animate-scale-in"
+        className={`relative w-full max-w-md mx-4 ${colors.components.modal.background} ${tokens.borders.radius.lg} ${colors.components.modal.shadow} overflow-hidden animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-orange-500/10 rounded-lg">
-              <Lock className="w-5 h-5 text-orange-500" />
+        <div className={`flex items-center justify-between ${tokens.spacing.card.lg} border-b ${colors.structural.border.default}`}>
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <div className={`p-2 ${colors.semantic.warning.light} ${tokens.borders.radius.md}`}>
+              <Lock className={`w-5 h-5 ${colors.semantic.warning.text}`} />
             </div>
             <h2
               id="login-modal-title"
-              className="text-xl font-semibold text-gray-900 dark:text-white"
+              className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
             >
               Admin Sign In
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors`}
             aria-label="Close login modal"
           >
-            <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            <X className={`w-5 h-5 ${colors.structural.text.secondary}`} />
           </button>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mx-6 mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+          <div className={`mx-6 mt-6 ${tokens.spacing.card.md} ${colors.semantic.error.light} border ${colors.semantic.error.border} ${tokens.borders.radius.md} flex items-start ${tokens.spacing.gap.md}`}>
+            <AlertCircle className={`w-5 h-5 ${colors.semantic.error.text} flex-shrink-0 mt-0.5`} />
+            <p className={`${tokens.typography.body.secondary} ${colors.semantic.error.text}`}>{error}</p>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className={`${tokens.spacing.card.lg} space-y-4`}>
           {/* Email Field */}
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className={`block ${tokens.typography.body.secondary} font-medium ${colors.structural.text.secondary} mb-2`}
             >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${colors.structural.text.tertiary}`} />
               <input
                 type="email"
                 id="email"
@@ -131,7 +132,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 required
                 autoComplete="email"
                 placeholder="admin@example.com"
-                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
                 disabled={isLoading}
               />
             </div>
@@ -141,12 +142,12 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              className={`block ${tokens.typography.body.secondary} font-medium ${colors.structural.text.secondary} mb-2`}
             >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${colors.structural.text.tertiary}`} />
               <input
                 type="password"
                 id="password"
@@ -155,7 +156,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 required
                 autoComplete="current-password"
                 placeholder="Enter your password"
-                className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
                 disabled={isLoading}
               />
             </div>
@@ -165,10 +166,10 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           <button
             type="submit"
             disabled={isLoading || !email || !password}
-            className="w-full py-3 px-4 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-white font-medium rounded-lg transition-colors focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:cursor-not-allowed"
+            className={`w-full py-3 px-4 ${colors.semantic.warning.gradient} ${colors.semantic.warning.hover} disabled:${colors.interactive.button.disabled} text-white font-medium ${tokens.borders.radius.md} transition-colors focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:cursor-not-allowed`}
           >
             {isLoading ? (
-              <span className="flex items-center justify-center gap-2">
+              <span className={`flex items-center justify-center ${tokens.spacing.gap.sm}`}>
                 <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                   <circle
                     className="opacity-25"
@@ -193,7 +194,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           </button>
 
           {/* Help Text */}
-          <p className="text-sm text-gray-500 dark:text-gray-400 text-center mt-4">
+          <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} text-center mt-4`}>
             Only authorized administrators can sign in.
           </p>
         </form>

@@ -1,3 +1,4 @@
+import type { User } from "@supabase/supabase-js";
 import {
   Calendar,
   CheckCircle,
@@ -11,10 +12,10 @@ import {
   X,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
-import { useAuth } from "../contexts/AuthContext";
-import type { User } from '@supabase/supabase-js';
+import { colors, tokens } from "../styles";
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -54,7 +55,7 @@ export function HelpModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -62,60 +63,94 @@ export function HelpModal({
     >
       <div
         ref={trapRef}
-        className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-scale-in"
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius.xl} max-w-3xl w-full max-h-[90vh] overflow-hidden ${colors.components.modal.shadow} animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 border-b-2 border-gray-700 p-6 flex items-center justify-between sticky top-0">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-xl">
+        <div
+          className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between sticky top-0`}
+        >
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <div
+              className={`${colors.semantic.scheduled.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}
+            >
               <Calendar className="text-white" size={24} />
             </div>
-            <h2 id="help-modal-title" className="text-2xl font-bold text-white">
+            <h2
+              id="help-modal-title"
+              className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}
+            >
               How to Use Hold List Manager
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring`}
             aria-label="Close help dialog"
           >
-            <X size={24} className="text-gray-400" />
+            <X size={24} className={colors.structural.text.secondary} />
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
+        <div
+          className={`${tokens.spacing.card.lg} overflow-y-auto max-h-[calc(90vh-100px)]`}
+        >
           <div className="space-y-6 pb-8">
-            <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <Calendar className="text-blue-400" size={24} />
-                <h3 className="text-xl font-bold text-white">
+            <section
+              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
+              >
+                <Calendar
+                  className={colors.semantic.scheduled.text}
+                  size={24}
+                />
+                <h3
+                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                >
                   Calendar Management
                 </h3>
               </div>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex gap-3">
-                  <span className="text-blue-400 font-bold">•</span>
+              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span
+                    className={`${colors.semantic.scheduled.text} font-bold`}
+                  >
+                    •
+                  </span>
                   <span>
                     <strong>Schedule holds:</strong> Click any future date on
                     the calendar to assign a firefighter
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-blue-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span
+                    className={`${colors.semantic.scheduled.text} font-bold`}
+                  >
+                    •
+                  </span>
                   <span>
                     <strong>View details:</strong> Click on scheduled holds to
                     view or modify them
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-blue-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span
+                    className={`${colors.semantic.scheduled.text} font-bold`}
+                  >
+                    •
+                  </span>
                   <span>
                     <strong>Navigate months:</strong> Use arrow buttons or
                     "Today" button to navigate
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-blue-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span
+                    className={`${colors.semantic.scheduled.text} font-bold`}
+                  >
+                    •
+                  </span>
                   <span>
                     <strong>Color coding:</strong> Blue = scheduled, Green =
                     completed, Ring = today
@@ -124,37 +159,51 @@ export function HelpModal({
               </ul>
             </section>
 
-            <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <Users className="text-green-400" size={24} />
-                <h3 className="text-xl font-bold text-white">
+            <section
+              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
+              >
+                <Users className={colors.semantic.success.text} size={24} />
+                <h3
+                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                >
                   Firefighter Management
                 </h3>
               </div>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex gap-3">
-                  <span className="text-green-400 font-bold">•</span>
+              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.success.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Add firefighters:</strong> Click "Add Team Member"
                     button and enter name and station
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-green-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.success.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Rotation order:</strong> Firefighters automatically
                     rotate based on their position
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-green-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.success.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Next in line:</strong> The next firefighter is
                     highlighted with "NEXT FOR HOLD" badge
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-green-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.success.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>On/Off duty:</strong> Toggle availability status -
                     off-duty members skip rotation
@@ -163,37 +212,54 @@ export function HelpModal({
               </ul>
             </section>
 
-            <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <CheckCircle className="text-orange-400" size={24} />
-                <h3 className="text-xl font-bold text-white">
+            <section
+              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
+              >
+                <CheckCircle
+                  className={colors.semantic.warning.text}
+                  size={24}
+                />
+                <h3
+                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                >
                   Completing Holds
                 </h3>
               </div>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex gap-3">
-                  <span className="text-orange-400 font-bold">•</span>
+              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.warning.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Complete hold:</strong> Click "Complete Hold" button
                     on firefighter card
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-orange-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.warning.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Auto-update:</strong> Calendar and scheduled holds
                     update automatically
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-orange-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.warning.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Rotation:</strong> Firefighter moves to bottom of
                     rotation after completing hold
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-orange-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.warning.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>History:</strong> Last hold date is tracked for each
                     firefighter
@@ -202,37 +268,51 @@ export function HelpModal({
               </ul>
             </section>
 
-            <section className="bg-gray-900/50 border border-gray-700 rounded-xl p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <TrendingUp className="text-purple-400" size={24} />
-                <h3 className="text-xl font-bold text-white">
+            <section
+              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
+              >
+                <TrendingUp className={colors.semantic.info.text} size={24} />
+                <h3
+                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                >
                   Sidebar Features
                 </h3>
               </div>
-              <ul className="space-y-3 text-gray-300">
-                <li className="flex gap-3">
-                  <span className="text-purple-400 font-bold">•</span>
+              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.info.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Overview:</strong> See total, on-duty, and off-duty
                     firefighter counts
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-purple-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.info.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Upcoming holds:</strong> View next 7 scheduled holds
                     at a glance
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-purple-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.info.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Rotation order:</strong> See who's next in line for
                     holds
                   </span>
                 </li>
-                <li className="flex gap-3">
-                  <span className="text-purple-400 font-bold">•</span>
+                <li className={`flex ${tokens.spacing.gap.md}`}>
+                  <span className={`${colors.semantic.info.text} font-bold`}>
+                    •
+                  </span>
                   <span>
                     <strong>Real-time sync:</strong> All updates happen
                     instantly across the app
@@ -241,9 +321,17 @@ export function HelpModal({
               </ul>
             </section>
 
-            <div className="bg-blue-900/30 border border-blue-700 rounded-xl p-5">
-              <h3 className="text-lg font-bold text-white mb-3">Pro Tips</h3>
-              <ul className="space-y-2 text-gray-300 text-sm">
+            <div
+              className={`${colors.semantic.scheduled.light} ${colors.semantic.scheduled.border} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
+            >
+              <h3
+                className={`${tokens.typography.heading.h4} ${colors.structural.text.primary} mb-3`}
+              >
+                Pro Tips
+              </h3>
+              <ul
+                className={`space-y-2 ${colors.structural.text.secondary} ${tokens.typography.body.secondary}`}
+              >
                 <li>
                   • The system automatically maintains fair rotation by tracking
                   each firefighter's position
@@ -258,43 +346,62 @@ export function HelpModal({
             </div>
 
             {/* Battalion Chief Authentication */}
-            <div className={`border-2 rounded-xl p-5 ${
-              user
-                ? "bg-emerald-900/20 border-emerald-700"
-                : "bg-blue-900/20 border-blue-700"
-            }`}>
-              <div className="flex items-center gap-3 mb-3">
+            <div
+              className={`border-2 ${tokens.borders.radius.lg} ${
+                tokens.spacing.section.lg
+              } ${
+                user
+                  ? `${colors.semantic.success.light} ${colors.semantic.success.border}`
+                  : `${colors.semantic.scheduled.light} ${colors.semantic.scheduled.border}`
+              }`}
+            >
+              <div
+                className={`flex items-center ${tokens.spacing.gap.md} mb-3`}
+              >
                 {user ? (
-                  <Shield className="text-emerald-400" size={24} />
+                  <Shield className={colors.semantic.success.text} size={24} />
                 ) : (
-                  <Lock className="text-blue-400" size={24} />
+                  <Lock className={colors.semantic.scheduled.text} size={24} />
                 )}
-                <h3 className={`text-lg font-bold ${
-                  user ? "text-emerald-300" : "text-blue-300"
-                }`}>
+                <h3
+                  className={`${tokens.typography.heading.h4} ${
+                    user
+                      ? colors.semantic.success.text
+                      : colors.semantic.scheduled.text
+                  }`}
+                >
                   {user ? "Battalion Chief Mode" : "Battalion Chief Login"}
                 </h3>
               </div>
 
               {user ? (
                 <>
-                  <div className="bg-emerald-950/30 border border-emerald-800 rounded-lg p-3 mb-4">
-                    <p className="text-emerald-200 text-sm font-semibold mb-1">
+                  <div
+                    className={`${colors.semantic.success.light} ${colors.semantic.success.border} border ${tokens.borders.radius.md} ${tokens.spacing.card.sm} mb-4`}
+                  >
+                    <p
+                      className={`${colors.semantic.success.text} ${tokens.typography.body.secondary} font-semibold mb-1`}
+                    >
                       Logged in as:
                     </p>
-                    <p className="text-white font-mono text-sm">
+                    <p
+                      className={`${colors.structural.text.primary} font-mono ${tokens.typography.body.secondary}`}
+                    >
                       {user.email}
                     </p>
                   </div>
-                  <p className="text-gray-300 text-sm mb-4">
-                    You have full admin access to assign holds, manage the roster, and override rotation.
+                  <p
+                    className={`${colors.structural.text.secondary} ${tokens.typography.body.secondary} mb-4`}
+                  >
+                    You have full admin access to assign holds, manage the
+                    roster, and override rotation.
                   </p>
                   <button
                     onClick={async () => {
                       await signOut();
                       onClose();
                     }}
-                    className="w-full bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 focus-ring"
+                    className={`w-full ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.md} flex items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
                   >
                     <LogOut size={20} />
                     Sign Out
@@ -302,15 +409,18 @@ export function HelpModal({
                 </>
               ) : (
                 <>
-                  <p className="text-gray-300 text-sm mb-4">
-                    Battalion chiefs can log in to access admin features: assign holds, manage roster, override rotation, and track metrics.
+                  <p
+                    className={`${colors.structural.text.secondary} ${tokens.typography.body.secondary} mb-4`}
+                  >
+                    Battalion chiefs can log in to access admin features: assign
+                    holds, manage roster, override rotation, and track metrics.
                   </p>
                   <button
                     onClick={() => {
                       onShowLogin();
                       onClose();
                     }}
-                    className="w-full bg-blue-600 hover:bg-blue-700 border-2 border-blue-500 text-white font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 focus-ring"
+                    className={`w-full ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors flex items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
                   >
                     <LogIn size={20} />
                     Battalion Chief Login
@@ -320,14 +430,22 @@ export function HelpModal({
             </div>
 
             {isAdminMode && (
-              <div className="bg-red-900/20 border-2 border-red-700 rounded-xl p-5">
-                <div className="flex items-center gap-3 mb-3">
-                  <Trash2 className="text-red-400" size={24} />
-                  <h3 className="text-lg font-bold text-red-300">
+              <div
+                className={`${colors.semantic.error.light} border-2 ${colors.semantic.error.border} ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
+              >
+                <div
+                  className={`flex items-center ${tokens.spacing.gap.md} mb-3`}
+                >
+                  <Trash2 className={colors.semantic.error.text} size={24} />
+                  <h3
+                    className={`${tokens.typography.heading.h4} ${colors.semantic.error.text}`}
+                  >
                     Danger Zone
                   </h3>
                 </div>
-                <p className="text-gray-300 text-sm mb-4">
+                <p
+                  className={`${colors.structural.text.secondary} ${tokens.typography.body.secondary} mb-4`}
+                >
                   Use this button to completely reset the system and start
                   fresh. This will permanently delete all firefighters, holds,
                   and history from all shifts.
@@ -337,7 +455,7 @@ export function HelpModal({
                     onMasterReset();
                     onClose();
                   }}
-                  className="w-full bg-red-900/50 hover:bg-red-800/70 border-2 border-red-600 text-red-200 font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+                  className={`w-full ${colors.components.button.danger} py-3 ${tokens.borders.radius.md} flex items-center justify-center ${tokens.spacing.gap.sm}`}
                 >
                   <Trash2 size={20} />
                   Master Reset - Delete Everything
@@ -347,10 +465,12 @@ export function HelpModal({
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 border-t-2 border-gray-700 p-5 sticky bottom-0">
+        <div
+          className={`${colors.structural.bg.surface} border-t-2 ${colors.structural.border.default} ${tokens.spacing.section.lg} sticky bottom-0`}
+        >
           <button
             onClick={onClose}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors focus-ring"
+            className={`w-full ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors focus-ring`}
           >
             Got It!
           </button>

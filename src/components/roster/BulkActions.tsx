@@ -1,6 +1,6 @@
 /**
  * BulkActions Component
- * 
+ *
  * Bulk selection and action controls for firefighter roster.
  * Features:
  * - Select all / Deselect all
@@ -8,12 +8,13 @@
  * - Bulk delete button
  * - Bulk deactivate button
  * - Only visible when items are selected
- * 
+ *
  * Uses design tokens for consistent styling.
  */
 
-import { CheckSquare, Square, Trash2, UserX } from 'lucide-react';
-import { colors, tokens } from '../../styles';
+import { CheckSquare, Square, Trash2, UserX } from "lucide-react";
+import { colors, tokens } from "../../styles";
+import { getTheme } from "../../utils/theme";
 
 interface BulkActionsProps {
   selectedCount: number;
@@ -41,13 +42,14 @@ export function BulkActions({
   }
 
   const allSelected = selectedCount === totalCount;
+  const theme = getTheme(isDarkMode);
 
   return (
-    <div 
+    <div
       className={`
         ${tokens.spacing.card.md}
         ${tokens.borders.radius.lg}
-        ${isDarkMode ? 'bg-blue-900/20 border border-blue-800/50' : 'bg-blue-50 border border-blue-200'}
+        ${theme.roster.bulkActionsBg}
         ${tokens.spacing.margin.lg}
       `}
     >
@@ -60,7 +62,7 @@ export function BulkActions({
               flex items-center gap-2
               ${tokens.spacing.section.sm}
               ${tokens.borders.radius.md}
-              ${isDarkMode ? 'hover:bg-blue-800/30' : 'hover:bg-blue-100'}
+              ${theme.roster.bulkActionsHover}
               ${tokens.transitions.fast}
             `}
             aria-label={allSelected ? "Deselect all" : "Select all"}
@@ -68,14 +70,18 @@ export function BulkActions({
             {allSelected ? (
               <CheckSquare className={colors.semantic.info.text} size={18} />
             ) : (
-              <Square className={isDarkMode ? colors.structural.text.secondary : 'text-gray-600'} size={18} />
+              <Square className={theme.roster.bulkSelectIcon} size={18} />
             )}
-            <span className={`${tokens.typography.body.secondary} font-medium ${isDarkMode ? colors.structural.text.primary : 'text-gray-900'}`}>
-              {allSelected ? 'Deselect All' : 'Select All'}
+            <span
+              className={`${tokens.typography.body.secondary} font-medium ${theme.textPrimary}`}
+            >
+              {allSelected ? "Deselect All" : "Select All"}
             </span>
           </button>
-          
-          <span className={`${tokens.typography.body.secondary} font-semibold ${isDarkMode ? colors.semantic.info.text : 'text-blue-700'}`}>
+
+          <span
+            className={`${tokens.typography.body.secondary} font-semibold ${theme.roster.bulkSelectedCount}`}
+          >
             {selectedCount} selected
           </span>
         </div>
@@ -97,7 +103,7 @@ export function BulkActions({
             <UserX size={16} />
             <span className={tokens.typography.body.small}>Deactivate</span>
           </button>
-          
+
           <button
             onClick={onBulkDelete}
             className={`
@@ -118,4 +124,3 @@ export function BulkActions({
     </div>
   );
 }
-

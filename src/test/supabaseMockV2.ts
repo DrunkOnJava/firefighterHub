@@ -1,12 +1,12 @@
 /**
  * Enhanced Supabase Mock v2 for Testing
- * 
+ *
  * Provides a comprehensive mock of the Supabase client for testing hooks and components.
  * Simulates database operations with real data manipulation, chained queries, and error simulation.
  */
 
-import { vi } from 'vitest';
-import type { Firefighter } from '../lib/supabase';
+import { vi } from "vitest";
+import type { Firefighter } from "../lib/supabase";
 
 // In-memory database
 export const mockDatabase = {
@@ -18,7 +18,7 @@ export const mockDatabase = {
 // Error simulation
 export const errorSimulation = {
   enabled: false,
-  message: 'Mock database error',
+  message: "Mock database error",
   nextCallOnly: false,
 };
 
@@ -66,8 +66,12 @@ function checkAndClearError() {
 // Query builder implementation
 class MockQueryBuilder {
   private table: keyof typeof mockDatabase;
-  private filters: Array<{ column: string; value: any; operator: 'eq' | 'neq' | 'gte' | 'lte' | 'gt' | 'lt' }> = [];
-  private selectedColumns = '*';
+  private filters: Array<{
+    column: string;
+    value: any;
+    operator: "eq" | "neq" | "gte" | "lte" | "gt" | "lt";
+  }> = [];
+  // private _selectedColumns = '*'; // Stored but not yet used in mock implementation
   private orderConfig: { column: string; ascending: boolean } | null = null;
   private limitValue: number | null = null;
   private pendingData: any = null;
@@ -76,38 +80,38 @@ class MockQueryBuilder {
     this.table = table;
   }
 
-  select(columns = '*') {
-    this.selectedColumns = columns;
+  select(_columns = "*") {
+    // Column selection not yet implemented in mock
     return this;
   }
 
   eq(column: string, value: any) {
-    this.filters.push({ column, value, operator: 'eq' });
+    this.filters.push({ column, value, operator: "eq" });
     return this;
   }
 
   neq(column: string, value: any) {
-    this.filters.push({ column, value, operator: 'neq' });
+    this.filters.push({ column, value, operator: "neq" });
     return this;
   }
 
   gte(column: string, value: any) {
-    this.filters.push({ column, value, operator: 'gte' });
+    this.filters.push({ column, value, operator: "gte" });
     return this;
   }
 
   lte(column: string, value: any) {
-    this.filters.push({ column, value, operator: 'lte' });
+    this.filters.push({ column, value, operator: "lte" });
     return this;
   }
 
   gt(column: string, value: any) {
-    this.filters.push({ column, value, operator: 'gt' });
+    this.filters.push({ column, value, operator: "gt" });
     return this;
   }
 
   lt(column: string, value: any) {
-    this.filters.push({ column, value, operator: 'lt' });
+    this.filters.push({ column, value, operator: "lt" });
     return this;
   }
 
@@ -125,21 +129,21 @@ class MockQueryBuilder {
   }
 
   private applyFilters(data: any[]): any[] {
-    return data.filter(item => {
-      return this.filters.every(filter => {
+    return data.filter((item) => {
+      return this.filters.every((filter) => {
         const itemValue = item[filter.column];
         switch (filter.operator) {
-          case 'eq':
+          case "eq":
             return itemValue === filter.value;
-          case 'neq':
+          case "neq":
             return itemValue !== filter.value;
-          case 'gte':
+          case "gte":
             return itemValue >= filter.value;
-          case 'lte':
+          case "lte":
             return itemValue <= filter.value;
-          case 'gt':
+          case "gt":
             return itemValue > filter.value;
-          case 'lt':
+          case "lt":
             return itemValue < filter.value;
           default:
             return true;
@@ -202,7 +206,7 @@ class MockQueryBuilder {
 
     const data = this.pendingData ?? this.executeQuery();
     if (data.length === 0) {
-      return { data: null, error: { message: 'No rows found' } };
+      return { data: null, error: { message: "No rows found" } };
     }
     return { data: data[0], error: null };
   }
@@ -223,9 +227,11 @@ class MockQueryBuilder {
     }
 
     const records = Array.isArray(values) ? values : [values];
-    const newRecords = records.map(record => ({
+    const newRecords = records.map((record) => ({
       ...record,
-      id: record.id || `mock-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+      id:
+        record.id ||
+        `mock-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
       created_at: record.created_at || new Date().toISOString(),
       updated_at: record.updated_at || new Date().toISOString(),
     }));
@@ -256,7 +262,7 @@ class MockQueryBuilder {
 
     // Store the update values and return this for chaining .eq()
     const updateData = values;
-    const originalFilters = [...this.filters];
+    // const originalFilters = [...this.filters]; // For debugging/logging if needed
 
     // Create a function to execute the update
     const executeUpdate = () => {
@@ -265,8 +271,8 @@ class MockQueryBuilder {
 
       for (let i = 0; i < data.length; i++) {
         const item = data[i];
-        const matches = this.filters.every(filter => {
-          if (filter.operator === 'eq') {
+        const matches = this.filters.every((filter) => {
+          if (filter.operator === "eq") {
             return item[filter.column] === filter.value;
           } else {
             return item[filter.column] !== filter.value;
@@ -289,7 +295,7 @@ class MockQueryBuilder {
     // Return chainable object
     return {
       eq: (column: string, value: any) => {
-        this.filters.push({ column, value, operator: 'eq' });
+        this.filters.push({ column, value, operator: "eq" });
         return {
           then: async (resolve: any) => resolve(executeUpdate()),
         };
@@ -313,9 +319,9 @@ class MockQueryBuilder {
       const data = mockDatabase[this.table];
       const before = data.length;
 
-      const filtered = data.filter(item => {
-        return !this.filters.every(filter => {
-          if (filter.operator === 'eq') {
+      const filtered = data.filter((item) => {
+        return !this.filters.every((filter) => {
+          if (filter.operator === "eq") {
             return item[filter.column] === filter.value;
           } else {
             return item[filter.column] !== filter.value;
@@ -331,13 +337,13 @@ class MockQueryBuilder {
 
     return {
       eq: (column: string, value: any) => {
-        this.filters.push({ column, value, operator: 'eq' });
+        this.filters.push({ column, value, operator: "eq" });
         return {
           then: async (resolve: any) => resolve(executeDelete()),
         };
       },
       neq: (column: string, value: any) => {
-        this.filters.push({ column, value, operator: 'neq' });
+        this.filters.push({ column, value, operator: "neq" });
         return {
           then: async (resolve: any) => resolve(executeDelete()),
         };

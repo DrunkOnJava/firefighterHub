@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
+import { colors, tokens } from "../styles";
 import { ShiftBadge } from "./ShiftSelector";
 
 interface FirefightersModalProps {
@@ -164,7 +165,7 @@ export function FirefightersModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
+      className={`fixed inset-0 ${colors.components.modal.overlay} backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -172,43 +173,53 @@ export function FirefightersModal({
     >
       <div
         ref={trapRef}
-        className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-scale-in"
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${colors.components.modal.shadow} ${tokens.borders.radius.xl} max-w-6xl w-full max-h-[90vh] overflow-hidden animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 border-b-2 border-gray-700 p-6 flex items-center justify-between sticky top-0 z-10">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl">
+        <div
+          className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.xl} flex items-center justify-between sticky top-0 z-10`}
+        >
+          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+            <div
+              className={`${colors.semantic.warning.gradient} p-3 ${tokens.borders.radius.xl}`}
+            >
               <Users className="text-white" size={24} />
             </div>
             <div>
               <h2
                 id="firefighters-modal-title"
-                className="text-2xl font-bold text-white"
+                className={`${tokens.typography.heading.h1} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
               >
                 All Firefighters
               </h2>
-              <p className="text-sm text-gray-400">
+              <p
+                className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
+              >
                 Manage profiles and certifications
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-700 rounded-lg transition-colors focus-ring"
+            className={`p-2 hover:bg-gray-700 ${tokens.borders.radius.lg} ${tokens.transitions.fast} ${colors.structural.text.tertiary} focus-ring`}
             aria-label="Close firefighters dialog"
           >
-            <X size={24} className="text-gray-400" />
+            <X size={24} />
           </button>
         </div>
 
-        <div className="p-6 border-b border-gray-700">
-          <div className="flex gap-2">
+        <div
+          className={`${tokens.spacing.card.xl} border-b ${colors.structural.border.default}`}
+        >
+          <div className={`flex ${tokens.spacing.gap.sm}`}>
             <button
               onClick={() => setFilterShift("ALL")}
-              className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+              className={`px-4 py-2 ${tokens.borders.radius.lg} ${
+                tokens.typography.weight.semibold
+              } ${tokens.transitions.fast} ${
                 filterShift === "ALL"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                  ? colors.semantic.primary.solid + " text-white"
+                  : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-gray-600`
               }`}
             >
               All Shifts
@@ -217,10 +228,12 @@ export function FirefightersModal({
               <button
                 key={shift}
                 onClick={() => setFilterShift(shift)}
-                className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+                className={`px-4 py-2 ${tokens.borders.radius.lg} ${
+                  tokens.typography.weight.semibold
+                } ${tokens.transitions.fast} ${
                   filterShift === shift
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                    ? colors.semantic.primary.solid + " text-white"
+                    : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-gray-600`
                 }`}
               >
                 Shift {shift}
@@ -229,23 +242,44 @@ export function FirefightersModal({
           </div>
         </div>
 
-        <div className="overflow-y-auto max-h-[calc(90vh-180px)] p-6">
+        <div
+          className={`overflow-y-auto max-h-[calc(90vh-180px)] ${tokens.spacing.card.xl}`}
+        >
           {loading ? (
             <div className="text-center py-12">
-              <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-400">Loading firefighters...</p>
+              <div
+                className={`w-12 h-12 border-4 ${colors.semantic.primary.solid.replace(
+                  "bg-",
+                  "border-"
+                )} border-t-transparent ${
+                  tokens.borders.radius.full
+                } animate-spin mx-auto mb-4`}
+              ></div>
+              <p className={colors.structural.text.tertiary}>
+                Loading firefighters...
+              </p>
             </div>
           ) : filteredAndSortedFirefighters.length === 0 ? (
             <div className="text-center py-12">
-              <Users size={48} className="text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400 text-lg">No firefighters found</p>
+              <Users
+                size={48}
+                className={`${colors.structural.text.tertiary.replace(
+                  "text-",
+                  ""
+                )} mx-auto mb-4`}
+              />
+              <p
+                className={`${colors.structural.text.tertiary} ${tokens.typography.heading.h2}`}
+              >
+                No firefighters found
+              </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className={`space-y-4`}>
               {filteredAndSortedFirefighters.map((firefighter) => (
                 <div
                   key={firefighter.id}
-                  className="bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:bg-gray-900/70 transition-colors"
+                  className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.xl} hover:bg-gray-900/70 ${tokens.transitions.fast}`}
                 >
                   {firefighter.isEditing ? (
                     <div className="space-y-4">
@@ -256,19 +290,19 @@ export function FirefightersModal({
                           onChange={(e) =>
                             updateField(firefighter.id, "name", e.target.value)
                           }
-                          className="text-xl font-bold bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white w-full max-w-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.components.input.default} w-full max-w-md`}
                         />
-                        <div className="flex gap-2">
+                        <div className={`flex ${tokens.spacing.gap.sm}`}>
                           <button
                             onClick={() => saveProfile(firefighter)}
-                            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg flex items-center gap-2 font-semibold transition-colors"
+                            className={`px-4 py-2 ${colors.components.button.success} ${tokens.borders.radius.lg} flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.weight.semibold} ${tokens.transitions.fast}`}
                           >
                             <Save size={18} />
                             Save
                           </button>
                           <button
                             onClick={() => toggleEdit(firefighter.id)}
-                            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg flex items-center gap-2 font-semibold transition-colors"
+                            className={`px-4 py-2 ${colors.components.button.secondary} ${tokens.borders.radius.lg} flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.weight.semibold} ${tokens.transitions.fast}`}
                           >
                             <XCircle size={18} />
                             Cancel
@@ -276,9 +310,13 @@ export function FirefightersModal({
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div
+                        className={`grid grid-cols-1 md:grid-cols-3 ${tokens.spacing.gap.md}`}
+                      >
                         <div>
-                          <label className="text-sm font-semibold text-gray-400 mb-2 block">
+                          <label
+                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-2 block`}
+                          >
                             Shift
                           </label>
                           <select
@@ -290,7 +328,7 @@ export function FirefightersModal({
                                 e.target.value as Shift
                               )
                             }
-                            className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full ${colors.components.input.default}`}
                           >
                             {shifts.map((shift) => (
                               <option key={shift} value={shift}>
@@ -301,7 +339,9 @@ export function FirefightersModal({
                         </div>
 
                         <div>
-                          <label className="text-sm font-semibold text-gray-400 mb-2 block">
+                          <label
+                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-2 block`}
+                          >
                             Station Number
                           </label>
                           <input
@@ -314,13 +354,15 @@ export function FirefightersModal({
                                 e.target.value || null
                               )
                             }
-                            className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full ${colors.components.input.default}`}
                             placeholder="e.g., 1"
                           />
                         </div>
 
                         <div>
-                          <label className="text-sm font-semibold text-gray-400 mb-2 block">
+                          <label
+                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-2 block`}
+                          >
                             Certification Level
                           </label>
                           <select
@@ -332,7 +374,7 @@ export function FirefightersModal({
                                 e.target.value || null
                               )
                             }
-                            className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className={`w-full ${colors.components.input.default}`}
                           >
                             <option value="">Not specified</option>
                             {certificationLevels.slice(1).map((level) => (
@@ -345,10 +387,14 @@ export function FirefightersModal({
                       </div>
 
                       <div>
-                        <label className="text-sm font-semibold text-gray-400 mb-3 block">
+                        <label
+                          className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-3 block`}
+                        >
                           Apparatus Clearances
                         </label>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div
+                          className={`grid grid-cols-2 md:grid-cols-4 ${tokens.spacing.gap.md}`}
+                        >
                           {[
                             { key: "apparatus_ambulance", label: "Ambulance" },
                             {
@@ -367,7 +413,7 @@ export function FirefightersModal({
                           ].map((apparatus) => (
                             <label
                               key={apparatus.key}
-                              className="flex items-center gap-2 cursor-pointer"
+                              className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer`}
                             >
                               <input
                                 type="checkbox"
@@ -385,7 +431,9 @@ export function FirefightersModal({
                                 }
                                 className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-2 focus:ring-blue-500"
                               />
-                              <span className="text-sm text-gray-300">
+                              <span
+                                className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
+                              >
                                 {apparatus.label}
                               </span>
                             </label>
@@ -394,11 +442,17 @@ export function FirefightersModal({
                       </div>
 
                       <div>
-                        <label className="text-sm font-semibold text-gray-400 mb-3 block">
+                        <label
+                          className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-3 block`}
+                        >
                           Certifications & Roles
                         </label>
-                        <div className="grid grid-cols-3 gap-3">
-                          <label className="flex items-center gap-2 cursor-pointer bg-amber-900/20 px-3 py-2 rounded-lg hover:bg-amber-900/30 border border-amber-700/50 transition-colors">
+                        <div
+                          className={`grid grid-cols-3 ${tokens.spacing.gap.md}`}
+                        >
+                          <label
+                            className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-amber-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-amber-900/30 border border-amber-700/50 ${tokens.transitions.fast}`}
+                          >
                             <input
                               type="checkbox"
                               checked={firefighter.is_fto || false}
@@ -411,11 +465,15 @@ export function FirefightersModal({
                               }
                               className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
                             />
-                            <span className="text-sm font-semibold text-amber-300">
+                            <span
+                              className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-amber-300`}
+                            >
                               FTO
                             </span>
                           </label>
-                          <label className="flex items-center gap-2 cursor-pointer bg-emerald-900/20 px-3 py-2 rounded-lg hover:bg-emerald-900/30 border border-emerald-700/50 transition-colors">
+                          <label
+                            className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-emerald-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-emerald-900/30 border border-emerald-700/50 ${tokens.transitions.fast}`}
+                          >
                             <input
                               type="checkbox"
                               checked={firefighter.is_bls || false}
@@ -428,11 +486,15 @@ export function FirefightersModal({
                               }
                               className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
                             />
-                            <span className="text-sm font-semibold text-emerald-300">
+                            <span
+                              className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-emerald-300`}
+                            >
                               BLS
                             </span>
                           </label>
-                          <label className="flex items-center gap-2 cursor-pointer bg-cyan-900/20 px-3 py-2 rounded-lg hover:bg-cyan-900/30 border border-cyan-700/50 transition-colors">
+                          <label
+                            className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-cyan-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-cyan-900/30 border border-cyan-700/50 ${tokens.transitions.fast}`}
+                          >
                             <input
                               type="checkbox"
                               checked={firefighter.is_als || false}
@@ -445,7 +507,9 @@ export function FirefightersModal({
                               }
                               className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
                             />
-                            <span className="text-sm font-semibold text-cyan-300">
+                            <span
+                              className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-cyan-300`}
+                            >
                               ALS
                             </span>
                           </label>
@@ -455,13 +519,19 @@ export function FirefightersModal({
                   ) : (
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <h3 className="text-xl font-bold text-white">
+                        <div
+                          className={`flex items-center ${tokens.spacing.gap.md}`}
+                        >
+                          <h3
+                            className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
+                          >
                             {formatNameLastFirst(firefighter.name)}
                           </h3>
-                          <ShiftBadge shift={firefighter.shift} />
+                          <ShiftBadge shift={firefighter.shift as Shift} />
                           {firefighter.fire_station && (
-                            <span className="px-2 py-1 bg-gray-700 text-gray-300 rounded text-sm font-semibold">
+                            <span
+                              className={`px-2 py-1 ${colors.structural.bg.card} ${colors.structural.text.secondary} ${tokens.borders.radius.md} ${tokens.typography.body.secondary} ${tokens.typography.weight.semibold}`}
+                            >
                               Station #{firefighter.fire_station}
                             </span>
                           )}
@@ -469,7 +539,7 @@ export function FirefightersModal({
                         {isAdminMode && (
                           <button
                             onClick={() => toggleEdit(firefighter.id)}
-                            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg flex items-center gap-2 font-semibold transition-colors"
+                            className={`px-4 py-2 ${colors.semantic.info.solid} hover:${colors.semantic.info.hover} text-white ${tokens.borders.radius.lg} flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.weight.semibold} ${tokens.transitions.fast}`}
                           >
                             <Edit2 size={18} />
                             Edit
@@ -477,12 +547,18 @@ export function FirefightersModal({
                         )}
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div
+                        className={`grid grid-cols-1 md:grid-cols-2 ${tokens.spacing.gap.md} mb-4`}
+                      >
                         <div>
-                          <span className="text-sm font-semibold text-gray-400">
+                          <span
+                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary}`}
+                          >
                             Certification:
                           </span>
-                          <span className="ml-2 text-gray-200">
+                          <span
+                            className={`ml-2 ${colors.structural.text.secondary}`}
+                          >
                             {firefighter.certification_level || "Not specified"}
                           </span>
                         </div>
@@ -492,22 +568,32 @@ export function FirefightersModal({
                         firefighter.is_bls ||
                         firefighter.is_als) && (
                         <div className="mb-4">
-                          <span className="text-sm font-semibold text-gray-400 block mb-2">
+                          <span
+                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} block mb-2`}
+                          >
                             Certifications & Roles:
                           </span>
-                          <div className="flex flex-wrap gap-2">
+                          <div
+                            className={`flex flex-wrap ${tokens.spacing.gap.sm}`}
+                          >
                             {firefighter.is_fto && (
-                              <span className="px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-700/50 rounded-md text-xs font-bold">
+                              <span
+                                className={`px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-700/50 ${tokens.borders.radius.md} ${tokens.typography.body.small} ${tokens.typography.weight.bold}`}
+                              >
                                 FTO
                               </span>
                             )}
                             {firefighter.is_bls && (
-                              <span className="px-3 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-700/50 rounded-md text-xs font-bold">
+                              <span
+                                className={`px-3 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-700/50 ${tokens.borders.radius.md} ${tokens.typography.body.small} ${tokens.typography.weight.bold}`}
+                              >
                                 BLS
                               </span>
                             )}
                             {firefighter.is_als && (
-                              <span className="px-3 py-1 bg-cyan-900/30 text-cyan-300 border border-cyan-700/50 rounded-md text-xs font-bold">
+                              <span
+                                className={`px-3 py-1 bg-cyan-900/30 text-cyan-300 border border-cyan-700/50 ${tokens.borders.radius.md} ${tokens.typography.body.small} ${tokens.typography.weight.bold}`}
+                              >
                                 ALS
                               </span>
                             )}
@@ -516,10 +602,14 @@ export function FirefightersModal({
                       )}
 
                       <div>
-                        <span className="text-sm font-semibold text-gray-400 block mb-2">
+                        <span
+                          className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} block mb-2`}
+                        >
                           Apparatus Clearances:
                         </span>
-                        <div className="flex flex-wrap gap-2">
+                        <div
+                          className={`flex flex-wrap ${tokens.spacing.gap.sm}`}
+                        >
                           {[
                             { key: "apparatus_ambulance", label: "Ambulance" },
                             {
@@ -543,7 +633,7 @@ export function FirefightersModal({
                             .map((apparatus) => (
                               <span
                                 key={apparatus.key}
-                                className="px-3 py-1 bg-amber-950/70 text-amber-300 border border-amber-800 rounded-full text-xs font-semibold"
+                                className={`px-3 py-1 bg-amber-950/70 text-amber-300 border border-amber-800 ${tokens.borders.radius.full} ${tokens.typography.body.small} ${tokens.typography.weight.semibold}`}
                               >
                                 {apparatus.label}
                               </span>
@@ -560,7 +650,9 @@ export function FirefightersModal({
                           ].some(
                             (key) => firefighter[key as keyof Firefighter]
                           ) && (
-                            <span className="text-sm text-gray-500">
+                            <span
+                              className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}
+                            >
                               None specified
                             </span>
                           )}

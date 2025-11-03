@@ -1,4 +1,4 @@
-import { Firefighter, Shift } from "../lib/supabase";
+import { Firefighter, ScheduledHold, Shift } from "../lib/supabase";
 
 /**
  * Mock data for testing
@@ -322,8 +322,10 @@ export const mockScheduledHolds = [
 ];
 
 // Helper function to create valid mock scheduled holds with all required fields
-export function createMockHold(overrides: Partial<typeof mockScheduledHolds[0]> = {}): typeof mockScheduledHolds[0] {
-  const dateStr = new Date().toISOString().split('T')[0];
+export function createMockHold(
+  overrides: Partial<ScheduledHold> = {}
+): ScheduledHold {
+  const dateStr = new Date().toISOString().split("T")[0];
   return {
     id: "test-hold-" + Math.random().toString(36).substr(2, 9),
     firefighter_id: "ff-test",
@@ -346,7 +348,9 @@ export function createMockHold(overrides: Partial<typeof mockScheduledHolds[0]> 
 }
 
 // Helper function to create valid mock firefighters with all required fields
-export function createMockFirefighterForTest(overrides: Partial<Firefighter> = {}): Firefighter {
+export function createMockFirefighterForTest(
+  overrides: Partial<Firefighter> = {}
+): Firefighter {
   return {
     id: "ff-test-" + Math.random().toString(36).substr(2, 9),
     name: "Test Firefighter",

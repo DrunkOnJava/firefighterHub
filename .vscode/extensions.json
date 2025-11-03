@@ -6,6 +6,8 @@
     "dbaeumer.vscode-eslint", // ESLint integration
     "esbenp.prettier-vscode", // Code formatter
     "usernamehw.errorlens", // Inline error display
+    "editorconfig.editorconfig", // EditorConfig support
+    "mikestead.dotenv", // .env syntax highlighting
 
     // ==========================================
     // 🧪 TESTING TOOLS

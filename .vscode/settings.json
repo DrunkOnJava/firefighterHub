@@ -1,11 +1,14 @@
 {
   "editor.formatOnSave": true,
+  "github.copilot.enable": { "*": true, "plaintext": false, "markdown": true, "scminput": false },
+  "git.commitTemplate": "${workspaceFolder}/GIT_COMMIT_TEMPLATE.txt",
+  "files.associations": { "*.sql": "sql", ".env*": "dotenv" },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.organizeImports": "explicit"
   },
-  
+
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
@@ -13,7 +16,7 @@
     "**/.vite": true,
     "**/dist": false
   },
-  
+
   "search.exclude": {
     "**/node_modules": true,
     "**/dist": true,
@@ -23,16 +26,11 @@
     "**/test-results": true,
     "pnpm-lock.yaml": true
   },
-  
+
   "npm.enableScriptExplorer": true,
   "npm.enableRunFromFolder": true,
   "npm.scriptExplorerAction": "run",
-  
+
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ]
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"]
 }

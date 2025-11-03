@@ -1,0 +1,920 @@
+       Perfect! I now have enough information to compile a comprehensive report. Let me create the deliverable:
+
+       FirefighterHub Codebase Exploration Report
+
+       Executive Summary
+
+       The FirefighterHub application is a well-documented, functionally complete shift management system with significant architectural and
+       visual design inconsistencies that need systematic remediation. While the codebase demonstrates strong development practices (98.7% test
+       coverage, comprehensive documentation), it suffers from "God" components, mixed visual design systems, and violations of the Single
+       Responsibility Principle.
+
+       1. Architecture Analysis
+
+       Component Hierarchy
+
+       Total Components: 44 React components
+       Component Categories:
+       - God Components (2): Calendar.tsx (910 lines), FirefighterList.tsx (1,095 lines)
+       - Large Components (1): App.tsx (429 lines)
+       - Modal Components (12): CompleteHoldModal, FirefighterProfileModal, HelpModal, etc.
+       - UI Components (29): FirefighterItem, MetricCard, Toast, etc.
+
+       Critical "God" Components
+
+       1. Calendar.tsx (910 lines)
+
+       File: /Users/griffin/Projects/firefighterHub/src/components/Calendar.tsx
+       Responsibilities (Too Many):
+       - Month navigation and date calculation
+       - Day cell rendering and interaction
+       - Hold scheduling form
+       - Hold completion logic
+       - Hold deletion with confirmation
+       - Station selection
+       - Multiple modal states (selectedDay, showDeleteConfirm, editingHoldId)
+       - Direct theme application
+       - Keyboard event handling
+       - Focus management
+
+       Recommended Decomposition:
+       Calendar.tsx (main container)
+       ├── CalendarHeader.tsx (navigation + stats)
+       ├── CalendarGrid.tsx (month grid)
+       │   └── DayCell.tsx (individual day)
+       ├── DayModal.tsx (day detail view)
+       │   ├── HoldList.tsx
+       │   └── HoldForm.tsx
+       └── CalendarFooter.tsx (legend)
+
+       2. FirefighterList.tsx (1,095 lines)
+
+       File: /Users/griffin/Projects/firefighterHub/src/components/FirefighterList.tsx
+       Responsibilities (Too Many):
+       - Firefighter roster display
+       - Drag-and-drop reordering
+       - Search and filtering
+       - Bulk selection
+       - Export functionality (CSV, JSON)
+       - Add form modal
+       - Reactivate modal
+       - Profile modal
+       - Filter panel state
+
+       Recommended Decomposition:
+       FirefighterList.tsx (main container)
+       ├── RosterHeader.tsx (search + bulk actions + export)
+       ├── FilterPanel.tsx (already exists, good!)
+       ├── RosterGrid.tsx (firefighter cards)
+       │   └── FirefighterItem.tsx (already exists, good!)
+       ├── BulkActionBar.tsx
+       └── ExportMenu.tsx
+
+       "God" Hooks
+
+       1. useFirefighters.ts (658 lines)
+
+       File: /Users/griffin/Projects/firefighterHub/src/hooks/useFirefighters.ts
+
+       Current Responsibilities:
+       - Data fetching (loadFirefighters)
+       - Real-time subscription management
+       - Firefighter CRUD operations (add, delete, deactivate, reactivate)
+       - Hold completion logic
+       - Shift transfers
+       - Position recalculation
+       - Activity logging for ALL mutations
+       - Optimistic updates
+       - Toast notifications
+       - Loading states
+       - Error handling with retry logic
+
+       TECHNICAL DEBT Comment (Line 1-3):
+       // TECHNICAL DEBT: This hook is doing too much - violates Single Responsibility Principle
+       // Consider splitting into: useFirefightersData, useFirefighterMutations, useFirefighterRealtimeSync
+       // Currently 465 lines handling: data fetching, mutations, optimistic updates, logging, and real-time sync
+
+       Recommended Split:
+       useFirefightersData.ts      // Read operations + loading states
+       useFirefighterMutations.ts  // All mutations + activity logging
+       useFirefightersRealtime.ts  // Subscription management + reconnection logic
+
+       2. useScheduledHolds.ts (446 lines)
+
+       File: /Users/griffin/Projects/firefighterHub/src/hooks/useScheduledHolds.ts
+
+       Similar Issues:
+       - Data fetching
+       - Real-time subscriptions
+       - Hold scheduling
+       - Hold completion
+       - Hold removal
+       - Toast notifications
+       - Error handling
+
+       TECHNICAL DEBT Comment (Line 1-2):
+       // TECHNICAL DEBT: Similar to useFirefighters, this hook is large (224 lines) and handles multiple concerns
+       // Consider splitting data fetching, mutations, and real-time sync into separate hooks
+
+       Direct Database Calls from Components
+
+       Good News: After searching supabase.from in src/components/**/*.tsx, NO direct database calls were found in components. All database
+       operations are properly abstracted through hooks!
+
+       This is actually a strength of the architecture - separation of concerns is respected here.
+
+       2. Visual Design & UI/UX Analysis
+
+       Color System Chaos
+
+       Problem 1: Multiple Color Palettes in Use
+
+       The application uses THREE different color palettes inconsistently:
+
+       1. Gray Palette (Primary):
+         - Used in: theme.ts, most components
+         - Colors: gray-50, gray-100, gray-300, gray-400, gray-500, gray-600, gray-700, gray-800, gray-850, gray-900
+       2. Slate Palette (Secondary):
+         - Used in: calendarTheme.ts, sidebarTheme.ts
+         - Colors: slate-50, slate-100, slate-200, slate-300, slate-400, slate-500, slate-600, slate-700, slate-800, slate-850, slate-900
+       3. Blue Palette (Tertiary - used inconsistently):
+         - Used in: various gradients, scheduled holds, buttons
+         - Colors: blue-50, blue-100, blue-300, blue-400, blue-500, blue-600, blue-700, blue-800, blue-900
+
+       Evidence from Code:
+
+       Calendar Theme (slate-based):
+       // src/utils/calendarTheme.ts:76
+       container: 'bg-gradient-to-br from-slate-800 to-slate-850 border-slate-700'
+
+       Sidebar Theme (slate-based):
+       // src/utils/sidebarTheme.ts:56
+       container: 'bg-gradient-to-br from-slate-800 to-slate-850 border-slate-700'
+
+       Main Theme (gray-based):
+       // src/utils/theme.ts:47
+       cardBackground: "bg-gradient-to-br from-gray-800 to-gray-850"
+
+       Header Component (gray-based):
+       // src/components/Header.tsx:44
+       border-gray-800 bg-gray-900/95
+
+       Problem 2: Inconsistent Gradient Usage
+
+       Found 27 instances of gradient backgrounds across components, using different color combinations:
+
+       Examples:
+       - from-gray-800 to-gray-850 (most common - 8 instances)
+       - from-slate-800 to-slate-850 (calendar/sidebar - 6 instances)
+       - from-blue-900/40 to-blue-800/40 (next up indicator)
+       - from-red-950/40 via-slate-900 to-slate-800 (calendar header)
+       - from-blue-600 to-blue-700 (scheduled holds)
+       - from-emerald-600 to-emerald-700 (completed holds)
+
+       Color Palette Documentation
+
+       Complete Color Inventory:
+
+       | Color Group | Shades Used                                          | Primary Context                                  |
+       |-------------|------------------------------------------------------|--------------------------------------------------|
+       | gray        | 50, 100, 300, 400, 500, 600, 700, 800, 850, 900      | Main backgrounds, modals, cards                  |
+       | slate       | 50, 100, 200, 300, 400, 500, 600, 700, 800, 850, 900 | Calendar, sidebar, alternative theme             |
+       | red         | 100, 300, 400, 600, 700, 800, 900, 950               | Primary buttons, danger actions, "next up" badge |
+       | blue        | 50, 100, 300, 400, 500, 600, 700, 800, 900, 950      | Scheduled holds, secondary buttons, accents      |
+       | emerald     | 100, 200, 300, 400, 600, 700, 800, 900, 950          | Completed holds, success states                  |
+       | amber       | 100, 200, 300, 400, 600, 700, 800, 900, 950          | Warnings, apparatus badges                       |
+       | sky         | 200, 300, 600, 700, 800, 900, 950                    | Station badges, scheduled holds (alt)            |
+       | cyan        | 100, 300, 700, 900                                   | ALS certification                                |
+       | purple      | 100, 300, 400, 700, 900                              | Medical certification level                      |
+
+       README Claims vs. Reality
+
+       README Line 119:
+       │   │   ├── theme.ts             # Dark graphite color scheme
+
+       Actual Background Color:
+       // src/utils/theme.ts:46
+       appBackground: "bg-gradient-to-br from-gray-900 via-gray-900 to-black"
+
+       Reality: The background is black with dark gray gradients, NOT graphite. True graphite would be #4A4A4A (gray-600/700 range).
+
+       Information Density Issues
+
+       Excessive Padding Instances: 459 padding-related classes found across components
+
+       Examples of Excessive Padding:
+       // Calendar day modal
+       <div className="p-6">  // 24px padding
+         <div className="p-4"> // 16px padding inside
+           <div className="p-3"> // 12px padding inside that
+
+       FirefighterItem Component (lines 87-301):
+       - Main container: p-5 (20px)
+       - Inner sections: p-4 (16px)
+       - Badges: px-3 py-1.5 (12px x 6px)
+       - Buttons: py-3 px-4 (12px x 16px)
+
+       Calendar Component:
+       - Header: p-3 sm:p-6 (12px mobile, 24px desktop)
+       - Grid container: p-2 sm:p-4 lg:p-6 (8px → 16px → 24px)
+       - Day cells: p-2 sm:p-3 (8px → 12px)
+
+       Recommendation: Reduce padding by 25-33% across the board to increase information density.
+
+       Visual Inconsistencies
+
+       1. Alignment Issues
+
+       - Some modals use items-start, others use items-center
+       - Button groups have inconsistent gap sizes (gap-2, gap-3, gap-4, gap-6)
+       - Card headers mix justify-between and justify-start
+
+       2. Border Inconsistencies
+
+       - Some components: border-2
+       - Others: border (1px)
+       - Some: no border with shadow only
+
+       3. Shadow Patterns
+
+       - shadow-lg (most common)
+       - shadow-2xl (modals)
+       - shadow-sm (metric cards)
+       - Custom shadows: shadow-lg shadow-red-900/50
+
+       3. Blocking confirm() Dialog Usage
+
+       Total Instances: 7 confirm() calls found
+
+       Locations:
+
+       useFirefighters.ts:
+       // Line 385: Delete firefighter
+       if (!confirm(`Permanently delete ${firefighter.name} from roster?`)) return;
+
+       // Line 422: Deactivate
+       if (!confirm(`Remove ${firefighter.name} from active rotation?`)) return;
+
+       // Line 444-450: Master reset
+       if (!confirm("This will PERMANENTLY DELETE all firefighters...")) return;
+       if (!confirm("Final confirmation: Delete EVERYTHING and start fresh?")) return;
+
+       // Line 514: Transfer shift
+       if (!confirm(`Transfer ${firefighter.name} to Shift ${newShift}?`)) return;
+
+       FirefighterList.tsx:
+       // Line 204: Bulk delete
+       if (!confirm(`Delete ${selectedIds.size} selected firefighters permanently?`)) return;
+
+       // Line 215: Bulk deactivate
+       if (!confirm(`Deactivate ${selectedIds.size} selected firefighters?`)) return;
+
+       Solution Already Exists!
+
+       useConfirm.ts hook is implemented but NOT USED:
+       // /Users/griffin/Projects/firefighterHub/src/hooks/useConfirm.ts
+       export function useConfirm() {
+         const confirm = useCallback((options: ConfirmOptions): Promise<boolean> => {
+           return new Promise((resolve) => {
+             setState({
+               ...options,
+               isOpen: true,
+               resolver: resolve
+             });
+           });
+         }, []);
+         // ... rest of implementation
+       }
+
+       ConfirmDialog.tsx component exists with beautiful UI:
+       - File: /Users/griffin/Projects/firefighterHub/src/components/ConfirmDialog.tsx (196 lines)
+       - Features: variant types (danger, warning, info), consequence lists, keyboard handling
+       - Fully accessible with ARIA attributes
+       - Non-blocking Promise-based API
+
+       Example Usage Pattern:
+       // ConfirmDialog.example.tsx shows how to replace confirm()
+       const { confirm, confirmState, handleConfirm, handleCancel } = useConfirm();
+
+       // Instead of:
+       if (!confirm('Delete?')) return;
+
+       // Use:
+       const confirmed = await confirm({
+         title: 'Delete Firefighter',
+         message: 'Are you sure?',
+         variant: 'danger',
+         consequences: ['Removes from rotation', 'Cannot be undone']
+       });
+       if (!confirmed) return;
+
+       4. Component Analysis
+
+       Component File Locations
+
+       Core Components:
+       /Users/griffin/Projects/firefighterHub/src/components/
+       ├── Calendar.tsx (910 lines) ⚠️
+       ├── FirefighterList.tsx (1,095 lines) ⚠️
+       ├── App.tsx (429 lines - in src/)
+       ├── Header.tsx (50+ lines)
+       ├── Sidebar.tsx
+       ├── Reports.tsx
+       └── MobileNav.tsx
+
+       Modal Components (12 total):
+       ├── CompleteHoldModal.tsx
+       ├── FirefighterProfileModal.tsx
+       ├── HelpModal.tsx
+       ├── KeyboardShortcutsModal.tsx
+       ├── LoginModal.tsx
+       ├── ActivityLogModal.tsx
+       ├── ReactivateModal.tsx
+       ├── TransferShiftModal.tsx
+       ├── QuickAddFirefighterModal.tsx
+       ├── FirefightersModal.tsx
+       ├── CalendarSubscribeModal.tsx
+       └── ConfirmDialog.tsx ✅ (exists but unused!)
+
+       UI Components:
+       ├── FirefighterItem.tsx ✅
+       ├── MetricCard.tsx ✅
+       ├── Toast.tsx ✅
+       ├── ConfirmDialog.tsx ✅
+       ├── LoadingButton.tsx ✅
+       ├── EmptyState.tsx ✅
+       ├── SkeletonLoader.tsx ✅
+       ├── FilterPanel.tsx ✅
+       ├── StationSelector.tsx ✅
+       ├── ShiftSelector.tsx ✅
+       ├── ShiftIndicator.tsx ✅
+       ├── ConnectionStatusIndicator.tsx ✅
+       ├── ErrorBoundary.tsx ✅
+       ├── Breadcrumb.tsx ✅
+       ├── Tooltip.tsx ✅
+       └── ui/Button.tsx ✅
+
+       Reusable vs Specialized
+
+       Well-Designed Reusable Components (15):
+       - ✅ MetricCard - Generic metric display
+       - ✅ LoadingButton - Reusable loading state button
+       - ✅ Toast - Universal notification system
+       - ✅ ConfirmDialog - Universal confirmation (UNUSED!)
+       - ✅ EmptyState - Generic empty state display
+       - ✅ SkeletonLoader - Loading skeleton
+       - ✅ FilterPanel - Generic filtering
+       - ✅ StationSelector - Station selection dropdown
+       - ✅ ShiftSelector - Shift selection buttons
+       - ✅ ShiftIndicator - Shift badge display
+       - ✅ ErrorBoundary - Error handling wrapper
+       - ✅ ConnectionStatusIndicator - Connection status badge
+       - ✅ Breadcrumb - Navigation breadcrumbs
+       - ✅ Tooltip - Tooltip wrapper
+       - ✅ ui/Button - Base button component
+
+       Specialized Components (29):
+       - All modal components (tied to specific features)
+       - Calendar, FirefighterList, Reports (feature-specific)
+       - FirefighterItem (tied to firefighter data structure)
+
+       5. Hooks Analysis
+
+       Custom Hooks Inventory
+
+       Data Hooks (2):
+       /Users/griffin/Projects/firefighterHub/src/hooks/
+       ├── useFirefighters.ts (658 lines) ⚠️ GOD HOOK
+       └── useScheduledHolds.ts (446 lines) ⚠️ GOD HOOK
+
+       UI/UX Hooks (8):
+       ├── useToast.ts ✅
+       ├── useConfirm.ts ✅ (EXISTS BUT UNUSED!)
+       ├── useDarkMode.ts ✅
+       ├── useFilters.ts ✅
+       ├── useKeyboardShortcuts.ts ✅
+       ├── useOperationLoading.ts ✅
+       ├── useAnnounce.ts ✅ (accessibility)
+       └── useConnectionStatus.ts ✅
+
+       Focus Management Hooks (2):
+       ├── useFocusTrap.ts ✅
+       └── useFocusReturn.ts ✅
+
+       Hook Responsibility Breakdown
+
+       useFirefighters.ts Responsibilities:
+
+       1. Data Fetching:
+         - loadFirefighters() - Fetches active and deactivated firefighters
+         - Filter by current shift
+         - Sort by order_position
+       2. Real-time Sync:
+         - Supabase channel subscription
+         - Exponential backoff retry (1s → 2s → 4s → 8s → 16s → 30s max)
+         - Error handling with toast notifications
+         - Auto-reconnection logic
+         - MAX_RETRIES = 10
+       3. Mutations (11 total):
+         - addFirefighter()
+         - deleteFirefighter()
+         - deactivateFirefighter()
+         - reactivateFirefighter()
+         - completeHold()
+         - transferShift()
+         - resetAll()
+         - masterReset()
+         - reorderFirefighters()
+         - setFirefighterCertifications()
+         - moveToBottom() (internal)
+       4. Activity Logging:
+         - Every mutation logs to activity_log table
+         - Captures: firefighter_name, action_type, details, shift, performed_by
+       5. Loading States:
+         - Uses useOperationLoading hook
+         - Tracks 11 separate operations
+         - Prevents duplicate operations
+
+       6. Type System
+
+       Type Definitions Location
+
+       Primary Types File:
+       /Users/griffin/Projects/firefighterHub/src/lib/supabase.ts (109 lines)
+
+       Type Analysis
+
+       Manually Defined Types:
+       export type Shift = 'A' | 'B' | 'C';
+       export type HoldDuration = '12h' | '24h';
+
+       export interface Firefighter {
+         id: string;
+         name: string;
+         order_position: number;
+         is_available: boolean;
+         is_active: boolean;
+         shift: Shift;
+         fire_station: string | null;
+         last_hold_date: string | null; // ⚠️ Should be Date
+         // ... 20 more fields
+       }
+
+       export interface Database {
+         public: {
+           Tables: {
+             firefighters: { Row: Firefighter; Insert: ...; Update: ... };
+             scheduled_holds: { Row: { ... }; };
+             activity_log: { Row: { ... }; };
+           };
+         };
+       }
+
+       TECHNICAL DEBT Comments in Type File:
+
+       // Line 34
+       last_hold_date: string | null; // TECHNICAL DEBT: Should be Date type, but DB returns string
+
+       // Line 58-60
+       // TECHNICAL DEBT: Database table structure definition for type safety
+       // This should be generated from the database schema automatically
+
+       // Line 106-107
+       // TECHNICAL DEBT: Type-safe Supabase client
+       // Consider using Supabase CLI to generate these types automatically
+
+       Type Generation Status
+
+       Supabase CLI Setup: ❌ NOT CONFIGURED
+
+       Evidence:
+       - No database.types.ts file found
+       - No Supabase CLI commands in package.json
+       - Manual type definitions in supabase.ts
+       - README doesn't mention type generation
+
+       Should Use:
+       supabase gen types typescript --project-id <project-id> > src/lib/database.types.ts
+
+       7. Testing Infrastructure
+
+       Test Coverage Summary
+
+       Total Test Files: 34 files
+
+       Unit Tests (Vitest):
+       src/hooks/__tests__/
+       ├── useFirefighters.test.ts
+       └── useScheduledHolds.test.ts
+
+       src/utils/
+       ├── calendarUtils.test.ts (47/48 passing - 97.9%)
+       ├── holdManagement.test.ts
+       ├── holdManagement.errorHandling.test.ts
+       ├── holdOperations.test.ts
+       ├── rotationLogic.test.ts (30/30 passing - 100%)
+       ├── validation.test.ts
+       └── regressionTests.test.ts
+
+       src/components/__tests__/
+       ├── AddFirefighterForm.test.tsx (23,007 bytes)
+       ├── Calendar.test.tsx (16,111 bytes)
+       ├── CompleteHoldModal.test.tsx (24,732 bytes)
+       ├── FirefighterList.test.tsx (9,236 bytes)
+       ├── FirefighterProfileModal.test.tsx (25,741 bytes)
+       └── ShiftSelector.test.tsx (15,161 bytes)
+
+       E2E Tests (Playwright):
+       test-artifacts/e2e/
+       ├── smoke.spec.ts (basic functionality)
+       ├── audit-remediation.spec.ts (security & accessibility)
+       ├── rfc-acceptance-criteria.spec.ts (feature requirements)
+       ├── verify-features.spec.ts (core features)
+       └── capture-screenshots.spec.ts (visual regression)
+
+       Test Coverage Statistics
+
+       From README.md:
+       - Overall: 78/79 tests passing (98.7%)
+       - rotationLogic.ts: 100% coverage (30/30 tests)
+       - calendarUtils.ts: 97.9% coverage (47/48 tests)
+
+       Failing Test
+
+       Status: 1 test failing
+       Reason: Feature removed but test not updated
+       Details: "Synthetic holds" feature was removed per user feedback, but test still exists
+
+       Fix Required: Update or remove the failing test in test suite.
+
+       8. Documentation Review
+
+       README.md Quality: ⭐⭐⭐⭐⭐ (Excellent)
+
+       Highlights:
+       - 543 lines of comprehensive documentation
+       - Badge status indicators
+       - Clear project structure with file counts
+       - Database schema documentation
+       - Testing instructions with coverage stats
+       - Deployment guide with security headers
+       - Known issues and technical debt clearly documented
+       - Recent changelog
+
+       Visual Design Notes in README:
+
+       Line 119:
+       │   │   └── theme.ts             # Dark graphite color scheme
+       ⚠️ INACCURATE - Actually dark blue/black, not graphite
+
+       TECHNICAL DEBT Comments
+
+       Found in 4 Files:
+
+       1. useFirefighters.ts (Line 1-3):
+       // TECHNICAL DEBT: This hook is doing too much - violates Single Responsibility Principle
+       // Consider splitting into: useFirefightersData, useFirefighterMutations, useFirefighterRealtimeSync
+       // Currently 465 lines handling: data fetching, mutations, optimistic updates, logging, and real-time sync
+
+       2. useScheduledHolds.ts (Line 1-2):
+       // TECHNICAL DEBT: Similar to useFirefighters, this hook is large (224 lines) and handles multiple concerns
+       // Consider splitting data fetching, mutations, and real-time sync into separate hooks
+
+       3. App.tsx (Line 3):
+       // TECHNICAL DEBT: Large component file (266 lines) - consider breaking into smaller components
+
+       4. FirefighterList.tsx (Line 1-2):
+       // TECHNICAL DEBT: This file is 400+ lines - should be split into smaller components
+       // Consider extracting: BulkActions, ExportMenu, SearchBar, FirefighterCard components
+
+       Additional Documentation
+
+       Comprehensive Docs Directory:
+       docs/
+       ├── README.md (new index)
+       ├── AUDIT_REPORT.md ⭐ (the audit I read earlier)
+       ├── audits/ (9 files - accessibility, security, code quality)
+       ├── fixes/ (18 files - bug fixes and solutions)
+       ├── guides/ (11 files - feature guides)
+       ├── database/ (7 files - SQL scripts)
+       ├── deployments/ (6 files - deployment docs)
+       └── session-summaries/ (10 files - development sessions)
+
+       9. Text-Based Architecture Diagram
+
+       ┌─────────────────────────────────────────────────────────────────┐
+       │                         App.tsx (429 lines)                      │
+       │  ┌───────────────┐  ┌──────────────┐  ┌──────────────────────┐ │
+       │  │ AuthContext   │  │ useToast     │  │ useDarkMode          │ │
+       │  │ (Supabase)    │  │ useAnnounce  │  │ useKeyboardShortcuts │ │
+       │  └───────────────┘  └──────────────┘  └──────────────────────┘ │
+       └────────────┬────────────────────────────────────────────────────┘
+                    │
+           ┌────────┴────────┬───────────────┬───────────────────┐
+           │                 │               │                   │
+       ┌───▼───────────┐ ┌──▼─────────┐ ┌──▼──────────┐ ┌─────▼─────────┐
+       │ Header        │ │ Calendar   │ │ Firefighter │ │ Sidebar       │
+       │ (Navigation)  │ │ (910 lines)│ │ List        │ │ (Holds/Rot.)  │
+       │               │ │ ⚠️ GOD     │ │ (1,095 ln)  │ │               │
+       │ - ShiftSelect │ │            │ │ ⚠️ GOD      │ │               │
+       │ - DarkMode    │ │ Uses:      │ │             │ │               │
+       │ - HelpModal   │ │ ┌─────────┐│ │ Uses:       │ │               │
+       │ - ActivityLog │ │ │ use     ││ │ ┌─────────┐ │ │               │
+       └───────────────┘ │ │Scheduled││ │ │use      │ │ │               │
+                         │ │Holds    ││ │ │Fighters │ │ │               │
+                         │ │(446 ln) ││ │ │(658 ln) │ │ │               │
+                         │ │⚠️ GOD   ││ │ │⚠️ GOD   │ │ │               │
+                         │ └─────────┘│ │ └─────────┘ │ │               │
+                         │             │ │             │ │               │
+                         │ Renders:    │ │ Renders:    │ │               │
+                         │ - DayCell   │ │ - Fighter   │ │               │
+                         │   (inline)  │ │   Item ✅   │ │               │
+                         │ - HoldForm  │ │ - AddForm   │ │               │
+                         │   (inline)  │ │ - Filters✅ │ │               │
+                         │ - DayModal  │ │ - Export    │ │               │
+                         │   (inline)  │ │   Menu      │ │               │
+                         └─────────────┘ └─────────────┘ └───────────────┘
+                               │               │                  │
+                               └───────┬───────┴──────────────────┘
+                                       │
+                         ┌─────────────▼─────────────┐
+                         │    Supabase Client        │
+                         │  (lib/supabase.ts)        │
+                         │                           │
+                         │  ⚠️ Manual Type Defs      │
+                         │  ⚠️ Should Use CLI Gen    │
+                         └─────────────┬─────────────┘
+                                       │
+                         ┌─────────────▼─────────────┐
+                         │   Supabase Database       │
+                         │   (PostgreSQL 14)         │
+                         │                           │
+                         │  - firefighters           │
+                         │  - scheduled_holds        │
+                         │  - activity_log           │
+                         │                           │
+                         │  ✅ Real-time enabled     │
+                         │  ⚠️ RLS policies pending  │
+                         └───────────────────────────┘
+
+       Legend:
+       ⚠️ = Needs Refactoring
+       ✅ = Well-Designed
+       GOD = Violates SRP
+
+       10. Priority Categorization & Remediation Plan
+
+       🔴 CRITICAL PRIORITY (Do First)
+
+       1. Replace All confirm() Dialogs with ConfirmDialog Component
+
+       - Instances: 7 locations
+       - Files: useFirefighters.ts (5), FirefighterList.tsx (2)
+       - Effort: Medium (2-3 hours)
+       - Impact: High (UX improvement, accessibility)
+       - Solution: Already implemented! Just need to integrate useConfirm hook
+
+       2. Establish Single Color Palette
+
+       - Problem: Gray vs Slate confusion across components
+       - Files Affected: theme.ts, calendarTheme.ts, sidebarTheme.ts, 39+ component files
+       - Effort: High (6-8 hours)
+       - Impact: High (visual consistency, maintainability)
+       - Decision Needed: Choose gray OR slate, not both
+
+       🟡 HIGH PRIORITY (Do Second)
+
+       3. Refactor useFirefighters Hook (658 lines)
+
+       - Split Into:
+         - useFirefightersData.ts - Read operations
+         - useFirefighterMutations.ts - CRUD operations
+         - useFirefightersRealtime.ts - Subscriptions
+       - Effort: High (8-10 hours)
+       - Impact: High (maintainability, testability)
+       - Tests: Will need updating (use Firefighters.test.ts as base)
+
+       4. Refactor Calendar Component (910 lines)
+
+       - Extract Components:
+         - CalendarHeader.tsx (80 lines)
+         - CalendarGrid.tsx (200 lines)
+         - DayCell.tsx (100 lines)
+         - DayModal.tsx (300 lines)
+         - HoldForm.tsx (150 lines)
+       - Effort: Very High (12-16 hours)
+       - Impact: High (maintainability)
+
+       5. Reduce Information Density (Padding)
+
+       - Affected: All 44 components (459 instances)
+       - Change: Reduce padding by 25-33%
+       - Example: p-6 → p-4, p-4 → p-3, p-3 → p-2
+       - Effort: Medium (4-6 hours with find-replace)
+       - Impact: Medium (more content visible)
+
+       🟢 MEDIUM PRIORITY (Do Third)
+
+       6. Refactor useScheduledHolds Hook (446 lines)
+
+       - Similar to useFirefighters split
+       - Effort: High (6-8 hours)
+       - Impact: Medium (maintainability)
+
+       7. Refactor FirefighterList Component (1,095 lines)
+
+       - Extract Components:
+         - RosterHeader.tsx
+         - BulkActionBar.tsx
+         - ExportMenu.tsx
+       - Effort: High (8-10 hours)
+       - Impact: Medium (maintainability)
+
+       8. Automate TypeScript Type Generation
+
+       - Setup: Supabase CLI type generation
+       - Command: supabase gen types typescript
+       - Effort: Low (1-2 hours)
+       - Impact: Medium (type safety)
+
+       9. Fix Alignment and Spacing Inconsistencies
+
+       - Issues: Inconsistent gaps, borders, shadows
+       - Create: Design tokens/constants
+       - Effort: Medium (4-6 hours)
+       - Impact: Medium (visual polish)
+
+       🔵 LOW PRIORITY (Do Last)
+
+       10. Refactor App.tsx (429 lines)
+
+       - Extract: LoginFlow, ViewManager, ModalManager
+       - Effort: Medium (4-6 hours)
+       - Impact: Low (already reasonably organized)
+
+       11. Fix Failing Test
+
+       - Test: Synthetic holds test
+       - Action: Remove or update test
+       - Effort: Low (30 minutes)
+       - Impact: Low (get to 100% test pass rate)
+
+       12. Update README Color Documentation
+
+       - Fix: Line 119 - "Dark graphite" → "Dark blue-gray"
+       - Effort: Trivial (5 minutes)
+       - Impact: Low (documentation accuracy)
+
+       11. Specific Code Examples of Issues
+
+       Issue 1: Blocking confirm() Dialog
+
+       Current Code (useFirefighters.ts:385):
+       async function deleteFirefighter(id: string) {
+         if (!confirm(`Permanently delete ${firefighter.name} from roster?`)) return;
+         // ... deletion logic
+       }
+
+       Should Be:
+       async function deleteFirefighter(id: string) {
+         const confirmed = await confirm({
+           title: 'Delete Firefighter',
+           message: `Permanently delete ${firefighter.name} from roster?`,
+           variant: 'danger',
+           confirmText: 'Delete',
+           consequences: [
+             'Firefighter will be removed from rotation',
+             'All historical data will be preserved',
+             'This action cannot be undone'
+           ]
+         });
+         if (!confirmed) return;
+         // ... deletion logic
+       }
+
+       Issue 2: Color Palette Inconsistency
+
+       Calendar Uses Slate:
+       // src/utils/calendarTheme.ts:76
+       container: 'bg-gradient-to-br from-slate-800 to-slate-850 border-slate-700'
+
+       Header Uses Gray:
+       // src/components/Header.tsx:44
+       className={`border-b backdrop-blur-sm sticky top-0 z-40 ${
+         isDarkMode
+           ? "border-gray-800 bg-gray-900/95"
+           : "border-slate-300 bg-white/95"  // Mixing gray and slate!
+       }`}
+
+       Should Be Consistent:
+       // Pick ONE palette and stick to it everywhere
+       // Option 1: All gray
+       border-gray-800 bg-gray-900/95
+
+       // Option 2: All slate
+       border-slate-800 bg-slate-900/95
+
+       Issue 3: Excessive Padding
+
+       Current FirefighterItem:
+       <div className="p-5">  {/* 20px */}
+         <div className="flex items-start justify-between mb-4">
+           <div className="flex-1 min-w-0">
+             <div className="space-y-3">  {/* 12px gaps */}
+               <div className="flex gap-2 flex-wrap">
+                 <div className="px-3 py-1.5 ...">  {/* 12px x 6px */}
+
+       Recommended (25% reduction):
+       <div className="p-4">  {/* 16px instead of 20px */}
+         <div className="flex items-start justify-between mb-3">  {/* 12px instead of 16px */}
+           <div className="flex-1 min-w-0">
+             <div className="space-y-2">  {/* 8px instead of 12px */}
+               <div className="flex gap-2 flex-wrap">
+                 <div className="px-2.5 py-1 ...">  {/* 10px x 4px instead of 12px x 6px */}
+
+       Issue 4: God Hook Responsibilities
+
+       Current useFirefighters.ts (658 lines):
+       export function useFirefighters(showToast, currentShift) {
+         // Data fetching (80 lines)
+         const loadFirefighters = async () => { ... }
+
+         // Real-time sync (150 lines)
+         useEffect(() => {
+           const setupSubscription = () => { ... }
+           // Retry logic, error handling, reconnection
+         }, []);
+
+         // 11 mutation functions (350 lines)
+         const addFirefighter = async () => { ... }
+         const deleteFirefighter = async () => { ... }
+         const deactivateFirefighter = async () => { ... }
+         // ... 8 more
+
+         // Activity logging (50 lines)
+         const logActivity = async () => { ... }
+
+         return {
+           firefighters, loading,
+           addFirefighter, deleteFirefighter, ...
+           // 15+ items in return object!
+         };
+       }
+
+       Should Be (3 separate hooks):
+       // useFirefightersData.ts (150 lines)
+       export function useFirefightersData(currentShift) {
+         const [firefighters, setFirefighters] = useState([]);
+         const [loading, setLoading] = useState(true);
+
+         const loadFirefighters = async () => { ... }
+
+         return { firefighters, deactivatedFirefighters, loading, reload: loadFirefighters };
+       }
+
+       // useFirefightersRealtime.ts (150 lines)
+       export function useFirefightersRealtime(currentShift, onUpdate) {
+         useEffect(() => {
+           // All real-time logic here
+           const subscription = setupSubscription();
+           return () => subscription.unsubscribe();
+         }, [currentShift]);
+       }
+
+       // useFirefighterMutations.ts (350 lines)
+       export function useFirefighterMutations(showToast, onUpdate) {
+         const addFirefighter = async () => { ... }
+         const deleteFirefighter = async () => { ... }
+         // ... all mutations
+
+         return { addFirefighter, deleteFirefighter, ... };
+       }
+
+       // Usage in App.tsx
+       const { firefighters, loading, reload } = useFirefightersData(currentShift);
+       useFirefightersRealtime(currentShift, reload);
+       const mutations = useFirefighterMutations(showToast, reload);
+
+       Summary Statistics
+
+       | Metric                        | Count     | Status                                              |
+       |-------------------------------|-----------|-----------------------------------------------------|
+       | Total Components              | 44        | ⚠️ 2 need refactoring                               |
+       | God Components                | 2         | ⚠️ Calendar (910L), List (1,095L)                   |
+       | God Hooks                     | 2         | ⚠️ useFirefighters (658L), useScheduledHolds (446L) |
+       | Color Palettes                | 3         | ⚠️ Should be 1                                      |
+       | Blocking Dialogs              | 7         | ⚠️ Replace with ConfirmDialog                       |
+       | Padding Instances             | 459       | ⚠️ Reduce by 25-33%                                 |
+       | Test Files                    | 34        | ✅ Great coverage                                    |
+       | Test Pass Rate                | 98.7%     | ✅ 78/79 passing                                     |
+       | Direct DB Calls in Components | 0         | ✅ Excellent separation                              |
+       | Documentation Quality         | Excellent | ✅ Very comprehensive                                |
+       | Type Generation               | Manual    | ⚠️ Should use Supabase CLI                          |
+
+       ---
+       Total Remediation Effort Estimate: 60-80 hours
+       Recommended Approach: Tackle in priority order (Critical → High → Medium → Low)
+       Timeline: 2-3 week sprint, working 4-6 hours/day
+
+       This comprehensive exploration provides a complete roadmap for systematically improving the FirefighterHub codebase architecture and
+       visual consistency.

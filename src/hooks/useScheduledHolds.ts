@@ -58,6 +58,8 @@ export function useScheduledHolds(
     let retryTimeout: ReturnType<typeof setTimeout> | null = null;
     let isSubscribed = true;
     let hasShownErrorToast = false;
+    let wasConnected = false; // Track if we've ever successfully connected
+    let isIntentionalDisconnect = false; // Track if we're intentionally closing
     const MAX_RETRIES = 10; // Maximum retry attempts before giving up
 
     const setupSubscription = () => {
@@ -83,11 +85,16 @@ export function useScheduledHolds(
         .subscribe((status, err) => {
           if (status === "SUBSCRIBED") {
             console.log("✅ Real-time subscription active (scheduled_holds)");
+            wasConnected = true; // Mark that we've successfully connected
+
+            // Check if we had failures before resetting
+            const hadFailures = retryCount > 0 || hasShownErrorToast;
+
             retryCount = 0;
             hasShownErrorToast = false;
 
             // Show success toast if we recovered from errors
-            if (retryCount > 0) {
+            if (hadFailures) {
               showToast("Real-time updates reconnected", "success");
             }
           } else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
@@ -126,14 +133,28 @@ export function useScheduledHolds(
 
             retryTimeout = setTimeout(() => {
               if (isSubscribed) {
+                isIntentionalDisconnect = true; // Mark as intentional
                 supabase.removeChannel(channel);
-                setupSubscription();
+                setTimeout(() => {
+                  isIntentionalDisconnect = false; // Reset after delay
+                  setupSubscription();
+                }, 100);
               }
             }, delay);
           } else if (status === "CLOSED") {
-            console.log("🔌 Real-time connection closed");
-            if (isSubscribed && retryCount < MAX_RETRIES) {
+            // Only retry on CLOSED if we were previously connected AND this is not intentional
+            if (
+              wasConnected &&
+              !isIntentionalDisconnect &&
+              isSubscribed &&
+              retryCount < MAX_RETRIES
+            ) {
+              console.warn("🔌 Real-time connection closed unexpectedly");
               retryTimeout = setTimeout(() => setupSubscription(), 2000);
+            } else if (isIntentionalDisconnect) {
+              console.log("🔌 Real-time connection closed (intentional)");
+            } else {
+              console.log("🔌 Real-time connection initializing...");
             }
           }
         });
@@ -145,11 +166,12 @@ export function useScheduledHolds(
 
     return () => {
       isSubscribed = false;
+      isIntentionalDisconnect = true; // Mark cleanup as intentional
       if (retryTimeout) clearTimeout(retryTimeout);
       if (channel) supabase.removeChannel(channel);
       console.log("🛑 Unsubscribed from scheduled_holds real-time updates");
     };
-  }, [loadScheduledHolds, currentShift]);
+  }, [loadScheduledHolds, currentShift, showToast]);
 
   async function removeScheduledHold(holdId: string) {
     const previousHolds = [...scheduledHolds];

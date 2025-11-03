@@ -100,6 +100,7 @@ export function useFirefighters(
     let isSubscribed = true;
     let hasShownErrorToast = false;
     let wasConnected = false; // Track if we've ever connected
+    let isIntentionalDisconnect = false; // Track if we're intentionally closing
     let currentChannel: ReturnType<typeof supabase.channel> | null = null;
     const MAX_RETRIES = 10; // Maximum retry attempts before giving up
     const lastToastAt: Record<string, number> = {}; // Dedupe toasts
@@ -127,7 +128,11 @@ export function useFirefighters(
 
       // Ensure any prior channel is gone before creating a new one
       if (currentChannel) {
+        isIntentionalDisconnect = true; // Mark as intentional before removing
         await supabase.removeChannel(currentChannel);
+        // Give a small delay to ensure CLOSED event fires before we reset the flag
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        isIntentionalDisconnect = false; // Reset after removal
       }
 
       const channel = supabase
@@ -206,9 +211,10 @@ export function useFirefighters(
               }
             }, delay);
           } else if (status === "CLOSED") {
-            // Only retry on CLOSED if we were previously connected (disconnect scenario)
+            // Only retry on CLOSED if we were previously connected AND this is not intentional
             // Ignore CLOSED during initial connection (normal state transition)
-            if (wasConnected) {
+            // Ignore CLOSED when we're intentionally disconnecting (cleanup/reconnect)
+            if (wasConnected && !isIntentionalDisconnect) {
               console.warn("🔌 Real-time connection closed unexpectedly");
 
               if (!hasShownErrorToast) {
@@ -246,6 +252,9 @@ export function useFirefighters(
                   "error"
                 );
               }
+            } else if (isIntentionalDisconnect) {
+              // Expected disconnection during cleanup/reconnect - don't log as error
+              console.log("🔌 Real-time connection closed (intentional)");
             } else {
               // CLOSED during initial connection is normal, just log it
               console.log("🔌 Real-time connection initializing...");
@@ -262,6 +271,7 @@ export function useFirefighters(
 
     return () => {
       isSubscribed = false;
+      isIntentionalDisconnect = true; // Mark cleanup as intentional
       if (retryTimeout) clearTimeout(retryTimeout);
       // Note: removeChannel in cleanup can remain synchronous - useEffect cleanup
       // cannot be async, and the Promise is safely ignored on unmount

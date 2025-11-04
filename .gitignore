@@ -14,6 +14,7 @@ test-results/
 playwright/.cache/
 screenshots/
 verification-screenshots/
+test-artifacts/e2e/audit.spec.ts
 
 # Production
 build/

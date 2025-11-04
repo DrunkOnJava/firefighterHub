@@ -97,7 +97,7 @@ export function ReactivateModal({
               id="position-select"
               value={selectedPosition}
               onChange={(e) => setSelectedPosition(Number(e.target.value))}
-              className={`w-full ${colors.components.input.default} border-2 ${tokens.borders.radius.lg} px-4 py-3 ${colors.structural.text.primary} font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent`}
+              className={`w-full ${colors.components.input.default} border-2 ${tokens.borders.radius.lg} px-4 py-3 ${colors.structural.text.primary} font-semibold focus-ring !ring-emerald-500 focus:border-transparent`}
             >
               {positions.map((pos) => (
                 <option key={pos} value={pos}>

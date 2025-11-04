@@ -236,7 +236,7 @@ export function FirefighterProfileModal({
                     ${tokens.borders.radius.lg}
                     border-2
                     ${colors.components.input.default}
-                    focus:outline-none focus:ring-2 focus:ring-blue-500
+                    focus-ring
                   `}
                   placeholder="Firefighter name"
                 />
@@ -494,7 +494,7 @@ export function FirefighterProfileModal({
                         is_fto: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-amber-500 focus:ring-2 focus:ring-amber-500"
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-amber-500 focus-ring !ring-amber-500"
                   />
                   <span
                     className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
@@ -514,7 +514,7 @@ export function FirefighterProfileModal({
                         is_bls: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-emerald-500 focus-ring !ring-emerald-500"
                   />
                   <span
                     className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
@@ -534,7 +534,7 @@ export function FirefighterProfileModal({
                         is_als: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-cyan-500 focus:ring-2 focus:ring-cyan-500"
+                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-cyan-500 focus-ring !ring-cyan-500"
                   />
                   <span
                     className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
@@ -604,7 +604,7 @@ export function FirefighterProfileModal({
                             [apparatus.key]: e.target.checked,
                           })
                         }
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-orange-500 focus:ring-2 focus:ring-orange-500"
+                        className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-orange-500 focus-ring !ring-orange-500"
                       />
                       <IconComponent
                         className={`w-4 h-4 ${colors.structural.text.tertiary}`}

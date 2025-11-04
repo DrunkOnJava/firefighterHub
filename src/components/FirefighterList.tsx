@@ -568,7 +568,7 @@ export function FirefighterList({
                       >
                         <button
                           onClick={() => handleViewProfile(firefighter)}
-                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
+                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus-ring !ring-orange-500 rounded px-1"
                           aria-label={`View profile for ${firefighter.name}`}
                         >
                           {firefighter.name}

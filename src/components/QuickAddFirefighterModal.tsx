@@ -226,10 +226,10 @@ export function QuickAddFirefighterModal({
                 autoFocus
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "quick-name-error" : undefined}
-                className={`w-full px-4 py-3 ${errors.name ? colors.components.input.error : colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
+                className={`w-full px-4 py-3 ${errors.name ? colors.components.input.error : colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus-ring transition-all ${
                   errors.name
-                    ? "focus:ring-red-500"
-                    : "focus:ring-green-500 focus:border-transparent"
+                    ? "!ring-red-500"
+                    : "!ring-green-500 focus:border-transparent"
                 }`}
               />
               {errors.name && (
@@ -256,7 +256,7 @@ export function QuickAddFirefighterModal({
                 value={station}
                 onChange={(e) => setStation(e.target.value)}
                 placeholder="e.g., 1"
-                className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all`}
+                className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus-ring !ring-green-500 focus:border-transparent transition-all`}
               />
             </div>
           </div>
@@ -272,7 +272,7 @@ export function QuickAddFirefighterModal({
               id="quick-firefighter-certification"
               value={certificationLevel}
               onChange={(e) => setCertificationLevel(e.target.value)}
-              className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all`}
+              className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} focus-ring !ring-green-500 focus:border-transparent transition-all`}
             >
               <option value="">Not specified</option>
               {certificationLevels.slice(1).map((level) => (
@@ -330,7 +330,7 @@ export function QuickAddFirefighterModal({
                         type="checkbox"
                         checked={state}
                         onChange={(e) => setState(e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-green-600 focus:ring-2 focus:ring-green-500"
+                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-green-600 focus-ring !ring-green-500"
                       />
                       <span className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}>{label}</span>
                     </label>
@@ -348,7 +348,7 @@ export function QuickAddFirefighterModal({
                       type="checkbox"
                       checked={isFTO}
                       onChange={(e) => setIsFTO(e.target.checked)}
-                      className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
+                      className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus-ring !ring-amber-500"
                     />
                     <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.warning.text}`}>
                       FTO
@@ -359,7 +359,7 @@ export function QuickAddFirefighterModal({
                       type="checkbox"
                       checked={isBLS}
                       onChange={(e) => setIsBLS(e.target.checked)}
-                      className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
+                      className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus-ring !ring-emerald-500"
                     />
                     <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.success.text}`}>
                       BLS
@@ -370,7 +370,7 @@ export function QuickAddFirefighterModal({
                       type="checkbox"
                       checked={isALS}
                       onChange={(e) => setIsALS(e.target.checked)}
-                      className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
+                      className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus-ring !ring-cyan-500"
                     />
                     <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.info.text}`}>
                       ALS

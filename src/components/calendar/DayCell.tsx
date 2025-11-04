@@ -61,6 +61,7 @@ export function DayCell({
     ${tokens.transitions.fast}
     flex flex-col
     relative overflow-hidden
+    focus-ring-inset
   `;
 
   if (!day.isCurrentMonth) {

@@ -79,7 +79,7 @@ export function AddFirefighterForm({ onAdd }: AddFirefighterFormProps) {
             autoFocus
             aria-invalid={!!errors.name}
             aria-describedby={errors.name ? 'name-error' : undefined}
-            className={`w-full px-4 py-3 ${tokens.borders.radius.lg} border transition-all focus:outline-none focus:ring-2 ${colors.components.input.default} ${colors.structural.text.primary} ${colors.structural.border.default} ${colors.components.input.placeholder} focus:ring-blue-500 ${errors.name ? 'border-red-500 focus:ring-red-500' : ''}`}
+            className={`w-full px-4 py-3 ${tokens.borders.radius.lg} border transition-all focus-ring ${colors.components.input.default} ${colors.structural.text.primary} ${colors.structural.border.default} ${colors.components.input.placeholder} ${errors.name ? 'border-red-500 !ring-red-500' : ''}`}
           />
           {errors.name && (
             <p id="name-error" className={`${colors.semantic.error.text} ${tokens.typography.body.small} mt-1`} role="alert">
@@ -98,7 +98,7 @@ export function AddFirefighterForm({ onAdd }: AddFirefighterFormProps) {
             value={fireStation}
             onChange={(e) => setFireStation(e.target.value)}
             placeholder="Station number (optional)"
-            className={`w-full px-4 py-3 ${tokens.borders.radius.lg} border transition-all focus:outline-none focus:ring-2 ${colors.components.input.default} ${colors.structural.text.primary} ${colors.structural.border.default} ${colors.components.input.placeholder} focus:ring-blue-500`}
+            className={`w-full px-4 py-3 ${tokens.borders.radius.lg} border transition-all focus-ring ${colors.components.input.default} ${colors.structural.text.primary} ${colors.structural.border.default} ${colors.components.input.placeholder}`}
           />
         </div>
       </div>

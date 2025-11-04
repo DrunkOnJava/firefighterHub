@@ -132,7 +132,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 required
                 autoComplete="email"
                 placeholder="admin@example.com"
-                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
+                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus-ring !ring-orange-500 focus:border-transparent transition-all`}
                 disabled={isLoading}
               />
             </div>
@@ -156,7 +156,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 required
                 autoComplete="current-password"
                 placeholder="Enter your password"
-                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
+                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus-ring !ring-orange-500 focus:border-transparent transition-all`}
                 disabled={isLoading}
               />
             </div>
@@ -166,7 +166,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           <button
             type="submit"
             disabled={isLoading || !email || !password}
-            className={`w-full py-3 px-4 ${colors.semantic.warning.gradient} ${colors.semantic.warning.hover} disabled:${colors.interactive.button.disabled} text-white font-medium ${tokens.borders.radius.md} transition-colors focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:cursor-not-allowed`}
+            className={`w-full py-3 px-4 ${colors.semantic.warning.gradient} ${colors.semantic.warning.hover} disabled:${colors.interactive.button.disabled} text-white font-medium ${tokens.borders.radius.md} transition-colors focus-ring !ring-orange-500 disabled:cursor-not-allowed`}
           >
             {isLoading ? (
               <span className={`flex items-center justify-center ${tokens.spacing.gap.sm}`}>

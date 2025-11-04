@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
+import { ShiftBadge } from "./ShiftBadge";
 
 type View = "calendar" | "reports";
 
@@ -230,17 +231,7 @@ export function Sidebar({
 
                       {/* Shift Badge - Centered Column */}
                       <div className="flex justify-center">
-                        <span
-                          className={`inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded border-2 shadow-sm ${
-                            ff.shift === "A"
-                              ? "bg-green-600 text-white border-green-800 shadow-green-900/50"
-                              : ff.shift === "B"
-                              ? "bg-red-600 text-white border-red-800 shadow-red-900/50"
-                              : "bg-gray-700 text-white border-gray-900 shadow-black/50"
-                          }`}
-                        >
-                          {ff.shift}
-                        </span>
+                        <ShiftBadge shift={ff.shift} />
                       </div>
 
                       {/* Name and Station */}
@@ -278,8 +269,8 @@ export function Sidebar({
                             ${tokens.typography.body.small}
                             ${tokens.typography.weight.bold}
                             ${tokens.borders.radius.md}
-                            bg-amber-500 text-gray-900
-                            border-2 border-black shadow-lg shadow-black/50
+                            bg-amber-500 text-white
+                            border-2 border-black
                           `}
                         >
                           Next Up
@@ -345,17 +336,7 @@ export function Sidebar({
 
                       {/* Shift Badge - Centered Column */}
                       <div className="flex justify-center">
-                        <span
-                          className={`inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded border-2 shadow-sm ${
-                            ff.shift === "A"
-                              ? "bg-green-600 text-white border-green-800 shadow-green-900/50"
-                              : ff.shift === "B"
-                              ? "bg-red-600 text-white border-red-800 shadow-red-900/50"
-                              : "bg-gray-700 text-white border-gray-900 shadow-black/50"
-                          }`}
-                        >
-                          {ff.shift}
-                        </span>
+                        <ShiftBadge shift={ff.shift} />
                       </div>
 
                       {/* Name and Station */}
@@ -393,8 +374,8 @@ export function Sidebar({
                             ${tokens.typography.body.small}
                             ${tokens.typography.weight.bold}
                             ${tokens.borders.radius.md}
-                            bg-amber-500 text-gray-900
-                            border-2 border-black shadow-lg shadow-black/50
+                            bg-amber-500 text-white
+                            border-2 border-black
                           `}
                         >
                           Next Up

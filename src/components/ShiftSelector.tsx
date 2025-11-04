@@ -16,15 +16,15 @@ const SHIFT_COLORS = {
     inactive: "bg-red-950/60 text-red-300 hover:bg-red-600",
   },
   C: {
-    active: `${colors.structural.bg.card} text-white shadow-lg`,
-    inactive: `bg-gray-950/60 ${colors.structural.text.secondary} ${colors.interactive.hover.bg}`,
+    active: "bg-sky-700 text-white shadow-lg",
+    inactive: "bg-sky-950/60 text-sky-300 hover:bg-sky-600",
   },
 };
 
 const SHIFT_BADGE_COLORS = {
   A: "bg-green-600 border-2 border-green-800 text-white shadow-sm shadow-green-900/50",
   B: "bg-red-600 border-2 border-red-800 text-white shadow-sm shadow-red-900/50",
-  C: `bg-gray-700 border-2 border-gray-900 text-white shadow-sm shadow-black/50`,
+  C: "bg-sky-600 border-2 border-sky-800 text-white shadow-sm shadow-sky-900/50",
 };
 
 export function ShiftSelector({

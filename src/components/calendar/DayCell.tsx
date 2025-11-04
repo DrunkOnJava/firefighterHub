@@ -117,48 +117,8 @@ export function DayCell({
         {day.date.getDate()}
       </span>
 
-      {/* Hold count indicators - positioned in upper right */}
-      {hasHolds && (
-        <div className="absolute top-1.5 right-1.5 flex gap-1">
-          {hasScheduled && (
-            <div
-              className={`
-                ${tokens.typography.body.small}
-                px-2 py-1
-                ${tokens.borders.radius.sm}
-                ${colors.semantic.scheduled.solid}
-                text-white font-medium
-              `}
-              aria-label={`${scheduledHolds.length} scheduled`}
-              title={`${scheduledHolds.length} scheduled hold${
-                scheduledHolds.length > 1 ? "s" : ""
-              }`}
-            >
-              {scheduledHolds.length}
-            </div>
-          )}
-          {hasCompleted && (
-            <div
-              className={`
-                ${tokens.typography.body.small}
-                px-2 py-1
-                ${tokens.borders.radius.sm}
-                ${colors.semantic.success.solid}
-                text-white font-medium
-              `}
-              aria-label={`${completedHolds.length} completed`}
-              title={`${completedHolds.length} completed hold${
-                completedHolds.length > 1 ? "s" : ""
-              }`}
-            >
-              {completedHolds.length}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Today badge - small dot next to counts if present, otherwise upper right */}
-      {day.isToday && !hasHolds && (
+      {/* Today badge - positioned in upper right */}
+      {day.isToday && (
         <div className="absolute top-1.5 right-1.5">
           <div
             className={`w-2 h-2 ${tokens.borders.radius.full} ${colors.semantic.primary.solid}`}
@@ -171,6 +131,13 @@ export function DayCell({
         <div className="mt-7 px-1 flex-1 flex flex-col gap-0.5 overflow-hidden">
           {scheduledHolds.map((hold, index) => {
             const formattedName = formatName(hold.firefighter_name);
+            // Determine background color based on shift
+            const shiftBg = hold.shift === "A" 
+              ? "bg-green-600" 
+              : hold.shift === "B" 
+              ? "bg-red-600" 
+              : "bg-sky-600"; // Shift C or default
+            
             return (
               <div
                 key={hold.id || index}
@@ -178,7 +145,7 @@ export function DayCell({
                   text-xs
                   truncate
                   text-left
-                  bg-sky-600
+                  ${shiftBg}
                   text-white
                   px-1.5 py-0.5
                   rounded-md
@@ -198,6 +165,13 @@ export function DayCell({
           })}
           {completedHolds.map((hold, index) => {
             const formattedName = formatName(hold.firefighter_name);
+            // Determine background color based on shift (faded for completed)
+            const shiftBg = hold.shift === "A" 
+              ? "bg-green-600/60" 
+              : hold.shift === "B" 
+              ? "bg-red-600/60" 
+              : "bg-sky-600/60"; // Shift C or default
+            
             return (
               <div
                 key={hold.id || index}
@@ -205,7 +179,7 @@ export function DayCell({
                   text-xs
                   truncate
                   text-left
-                  bg-sky-600/60
+                  ${shiftBg}
                   text-white
                   px-1.5 py-0.5
                   rounded-md

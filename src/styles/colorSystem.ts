@@ -165,6 +165,16 @@ export const colors = {
       light: "bg-cyan-500/20",
       shadow: "shadow-lg shadow-cyan-900/50",
     },
+
+    /** Accent/Action color (red-orange gradient) */
+    accent: {
+      gradient: "bg-gradient-to-r from-red-500 to-orange-600",
+      hover: "hover:from-red-600 hover:to-orange-700",
+      text: "text-orange-500",
+      border: "border-orange-600",
+      light: "bg-orange-500/20",
+      shadow: "shadow-lg",
+    },
   },
 
   /**

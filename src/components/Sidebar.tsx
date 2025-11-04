@@ -231,7 +231,7 @@ export function Sidebar({
 
                       {/* Shift Badge - Centered Column */}
                       <div className="flex justify-center">
-                        <ShiftBadge shift={ff.shift} />
+                        <ShiftBadge shift={ff.shift as "A" | "B" | "C"} />
                       </div>
 
                       {/* Name and Station */}
@@ -336,7 +336,7 @@ export function Sidebar({
 
                       {/* Shift Badge - Centered Column */}
                       <div className="flex justify-center">
-                        <ShiftBadge shift={ff.shift} />
+                        <ShiftBadge shift={ff.shift as "A" | "B" | "C"} />
                       </div>
 
                       {/* Name and Station */}

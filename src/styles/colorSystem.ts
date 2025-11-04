@@ -26,20 +26,20 @@ export const colors = {
   structural: {
     /** Background colors */
     bg: {
-      app: "bg-gray-900", // Main app background
-      card: "bg-gray-800", // Card backgrounds
-      cardHover: "bg-gray-750", // Card hover state
+      app: "bg-[#2F3640]", // Main app background - dark slate grey
+      card: "bg-[#3A4149]", // Card backgrounds - medium slate grey
+      cardHover: "bg-[#424A54]", // Card hover state
       overlay: "bg-black/75", // Modal overlay
-      surface: "bg-gray-850", // Subtle surface difference
+      surface: "bg-[#353D47]", // Subtle surface difference
     },
 
     /** Border colors */
     border: {
-      default: "border-gray-700", // Standard borders
-      emphasis: "border-gray-600", // Emphasized borders
-      subtle: "border-gray-800", // Subtle borders
-      hover: "border-gray-500", // Hover state
-      strong: "border-gray-500", // Strong borders
+      default: "border-[#252A32]", // Standard borders - darker slate
+      emphasis: "border-[#1E2329]", // Emphasized borders
+      subtle: "border-[#2F3640]", // Subtle borders
+      hover: "border-[#4A5360]", // Hover state - lighter slate
+      strong: "border-[#4A5360]", // Strong borders
     },
 
     /** Text colors */
@@ -201,35 +201,35 @@ export const colors = {
 
     /** Modal styles */
     modal: {
-      background: "bg-gray-800",
-      border: "border border-gray-700",
+      background: "bg-[#3A4149]",
+      border: "border border-[#252A32]",
       shadow: "shadow-2xl",
       overlay: "bg-black/75 backdrop-blur-sm",
     },
 
     /** Card styles */
     card: {
-      default: "bg-gray-800 border border-gray-700",
+      default: "bg-[#3A4149] border border-[#252A32]",
       hover:
-        "bg-gray-800 border border-gray-700 hover:border-gray-600 hover:shadow-lg transition-all duration-150",
-      elevated: "bg-gray-800 border border-gray-700 shadow-xl",
-      shadow: "shadow-lg shadow-gray-900/30",
+        "bg-[#3A4149] border border-[#252A32] hover:border-[#4A5360] hover:shadow-lg transition-all duration-150",
+      elevated: "bg-[#3A4149] border border-[#252A32] shadow-xl",
+      shadow: "shadow-lg shadow-black/50",
     },
 
     /** Day cell styles (Calendar-specific) */
     dayCell: {
       scheduled: "bg-blue-500/20 border-2 border-blue-500",
-      completed: "bg-gray-700/50 border-2 border-gray-600",
-      both: "bg-gradient-to-br from-blue-500/20 to-gray-700/50 border-2 border-blue-500",
-      empty: "bg-gray-800 border border-gray-700 hover:border-gray-600",
-      today: "ring-2 ring-red-500",
+      completed: "bg-[#353D47]/80 border-2 border-[#252A32]",
+      both: "bg-gradient-to-br from-blue-500/20 to-[#353D47]/80 border-2 border-blue-500",
+      empty: "bg-[#3A4149] border border-[#252A32] hover:border-[#4A5360]",
+      today: "ring-2 ring-blue-400",
     },
 
     /** Hold card styles */
     hold: {
       border: "border-l-4",
-      scheduled: "border-l-blue-500 bg-gray-800",
-      completed: "border-l-emerald-500 bg-gray-800",
+      scheduled: "border-l-blue-500 bg-[#3A4149]",
+      completed: "border-l-emerald-500 bg-[#3A4149]",
     },
   },
 
@@ -242,8 +242,8 @@ export const colors = {
     primary: "bg-gradient-to-br from-red-600 to-rose-700",
     scheduled: "bg-gradient-to-br from-blue-600 to-blue-700",
     success: "bg-gradient-to-br from-emerald-600 to-green-700",
-    calendarHeader: "bg-gradient-to-r from-gray-800 to-gray-750",
-    cardHover: "bg-gradient-to-br from-gray-800 to-gray-750",
+    calendarHeader: "bg-gradient-to-r from-[#1E2329] to-[#252A32]",
+    cardHover: "bg-gradient-to-br from-[#3A4149] to-[#353D47]",
   },
 } as const;
 

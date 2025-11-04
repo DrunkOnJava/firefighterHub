@@ -663,8 +663,8 @@ describe("AddFirefighterForm", () => {
         /add firefighter to rotation/i
       );
 
-      // Component uses focus:ring-2 and focus-ring classes
-      expect(nameInput.className).toContain("focus:ring-2");
+      // Component uses focus-ring class
+      expect(nameInput.className).toContain("focus-ring");
       expect(submitButton.className).toContain("focus-ring");
     });
 

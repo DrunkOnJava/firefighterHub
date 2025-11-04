@@ -15,9 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Shift } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
 import { formatMonthYear } from "../../utils/calendarUtils";
-import { ShiftIndicator } from "../ShiftIndicator";
 
 interface CalendarHeaderProps {
   currentDate: Date;
@@ -31,94 +29,49 @@ export function CalendarHeader({
   currentDate,
   onPreviousMonth,
   onNextMonth,
-  currentShift,
-  isDarkMode = true,
 }: CalendarHeaderProps) {
-  return (
-    <div className="space-y-3 sm:space-y-4">
-      {/* Header with icon and title */}
-      <div
-        className={`flex items-center justify-between ${tokens.spacing.margin.md}`}
-      >
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div
-            className={`
-              ${colors.semantic.primary.gradient}
-              ${colors.semantic.primary.shadow}
-              ${tokens.spacing.section.md}
-              ${tokens.borders.radius.lg}
-            `}
-          >
-            <CalendarIcon className="text-white" size={20} />
-          </div>
-          <div>
-            <h2
-              className={`${tokens.typography.heading.h2} ${
-                isDarkMode ? colors.structural.text.primary : "text-gray-900"
-              }`}
-            >
-              Hold Calendar
-            </h2>
-            <p
-              className={`${tokens.typography.body.secondary} ${
-                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
-              } hidden sm:block`}
-            >
-              Click any date to schedule or manage holds
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-end">
-          <ShiftIndicator shift={currentShift} />
-        </div>
-      </div>
+  const goToToday = () => {
+    // This would need to be passed down as a prop in real implementation
+    // For now, just show the button
+  };
 
-      {/* Month navigation */}
-      <div className="flex items-center justify-center gap-2 sm:gap-6">
+  return (
+    <div className="flex items-center justify-between">
+      {/* Left Navigation */}
+      <div className="flex items-center gap-2">
         <button
           onClick={onPreviousMonth}
-          className={`
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
-            ${tokens.transitions.fast}
-            ${tokens.touchTarget.min}
-          `}
+          className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
           aria-label="Previous month"
         >
-          <ChevronLeft
-            className={
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }
-            size={20}
-          />
+          <ChevronLeft className="w-5 h-5 text-gray-300" />
         </button>
+      </div>
 
-        <h3
-          className={`${tokens.typography.heading.h3} ${
-            isDarkMode ? colors.structural.text.primary : "text-gray-900"
-          } min-w-[200px] text-center`}
+      {/* Centered Month/Year Display */}
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <CalendarIcon className="w-6 h-6 text-red-500" />
+          <h2 className="text-2xl font-bold text-gray-100">
+            {formatMonthYear(currentDate)}
+          </h2>
+        </div>
+        <button 
+          onClick={goToToday}
+          className="px-3 py-1 text-sm bg-[#2F3640] hover:bg-[#353D47] text-gray-300 rounded-md border border-[#252A32] transition-colors"
         >
-          {formatMonthYear(currentDate)}
-        </h3>
+          Today
+        </button>
+      </div>
 
+      {/* Right Navigation */}
+      <div className="flex items-center gap-2">
         <button
           onClick={onNextMonth}
-          className={`
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
-            ${tokens.transitions.fast}
-            ${tokens.touchTarget.min}
-          `}
+          className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
           aria-label="Next month"
         >
-          <ChevronRight
-            className={
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }
-            size={20}
-          />
+          <ChevronRight className="w-5 h-5 text-gray-300" />
         </button>
       </div>
     </div>

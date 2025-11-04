@@ -98,6 +98,13 @@ supabase-mcp-server/
 # Bolt
 .bolt/
 
+# Temporary working files
+*.pdf
+*.html
+visualAuditReport.txt
+docs/github-copilot/
+docs/github-copilot-markdown/
+
 # Database
 *.db
 *.sqlite

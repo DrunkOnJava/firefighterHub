@@ -49,33 +49,16 @@ export const STORAGE_KEYS = {
   CURRENT_SHIFT: "currentShift",
 } as const;
 
-// Default Values
-export const DEFAULTS = {
-  DARK_MODE: true,
-  SHIFT: "A" as const,
-} as const;
-
-// Z-Index Layers (prevent conflicts)
-export const Z_INDEX = {
-  SKIP_LINK: 60,
-  MODAL_OVERLAY: 50,
-  MODAL: 51,
-  TOAST: 100,
-  DROPDOWN: 40,
-} as const;
-
 // Scroll Behavior
 export const SCROLL_BEHAVIOR = {
   SMOOTH: "smooth" as const,
-  CENTER: "center" as const,
+  AUTO: "auto" as const,
 } as const;
 
 // Keyboard Shortcuts
 export const KEYBOARD_SHORTCUTS = {
-  SEARCH: { key: "k", ctrl: true, meta: true },
-  QUICK_ADD: { key: "n", ctrl: true, meta: true },
-  EXPORT: { key: "e", ctrl: true, meta: true },
-  HELP: { key: "h", ctrl: true, meta: true },
-  SHORTCUTS_MODAL: { key: "?" },
-  ESCAPE: { key: "Escape" },
+  HELP: "?",
+  SEARCH: "k",
+  QUICK_ADD: "n",
+  CLOSE_MODAL: "Escape",
 } as const;

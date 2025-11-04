@@ -30,20 +30,20 @@ jobs:
           # Copilot overrides this for security, but we set it anyway
           fetch-depth: 1
 
-      # Step 2: Set up Node.js with caching
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          # Use pnpm cache (not npm!)
-          cache: "pnpm"
-
-      # Step 3: Install pnpm (required for this project)
+      # Step 2: Install pnpm FIRST (required before Node.js caching)
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 8
           run_install: false
+
+      # Step 3: Set up Node.js with pnpm caching
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          # Use pnpm cache (pnpm must be installed first!)
+          cache: "pnpm"
 
       # Step 4: Get pnpm store directory for caching
       - name: Get pnpm store directory

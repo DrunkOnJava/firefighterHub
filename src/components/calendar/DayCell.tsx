@@ -12,9 +12,8 @@
  */
 
 import { Shift } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
+import { tokens } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
-import { getTheme } from "../../utils/theme";
 
 interface DayCellProps {
   day: CalendarDay;
@@ -28,9 +27,7 @@ export function DayCell({
   day,
   onDayClick,
   isAdminMode = false,
-  isDarkMode = true,
 }: DayCellProps) {
-  const theme = getTheme(isDarkMode);
   const hasHolds = day.scheduledHolds.length > 0;
   const scheduledHolds = day.scheduledHolds.filter(
     (h) => h.status === "scheduled"
@@ -38,8 +35,6 @@ export function DayCell({
   const completedHolds = day.scheduledHolds.filter(
     (h) => h.status === "completed"
   );
-  const hasScheduled = scheduledHolds.length > 0;
-  const hasCompleted = completedHolds.length > 0;
 
   // Format name as "F. Lastname"
   const formatName = (fullName: string | null): string => {
@@ -53,31 +48,25 @@ export function DayCell({
 
   // Determine styling based on state
   let cellClasses = `
-    aspect-square w-full
-    ${tokens.touchTarget.min}
-    ${tokens.spacing.section.sm}
-    ${tokens.borders.radius.md}
-    ${tokens.borders.width.thin}
+    relative aspect-square w-full p-2 text-left
     ${tokens.transitions.fast}
     flex flex-col
-    relative overflow-hidden
   `;
 
   if (!day.isCurrentMonth) {
-    cellClasses += ` cursor-default opacity-30 ${theme.calendar.dayCellOtherMonth}`;
-  } else if (hasScheduled && hasCompleted) {
-    cellClasses += ` ${colors.components.dayCell.both} cursor-pointer ${theme.calendar.dayCellHover}`;
-  } else if (hasScheduled) {
-    cellClasses += ` ${colors.components.dayCell.scheduled} cursor-pointer ${theme.calendar.dayCellHover}`;
-  } else if (hasCompleted) {
-    cellClasses += ` ${colors.components.dayCell.completed} cursor-pointer ${theme.calendar.dayCellHover}`;
+    cellClasses += ` bg-slate-800 text-gray-600 cursor-default opacity-50`;
   } else {
-    cellClasses += ` ${theme.calendar.dayCell} cursor-pointer ${theme.calendar.dayCellHover}`;
+    cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer`;
   }
 
   // Today indicator
-  if (day.isToday) {
-    cellClasses += ` ${colors.components.dayCell.today}`;
+  if (day.isToday && day.isCurrentMonth) {
+    cellClasses += ` ring-2 ring-inset ring-red-500`;
+  }
+
+  // Has holds - add left border
+  if (hasHolds && day.isCurrentMonth) {
+    cellClasses += ` border-l-4 border-l-red-500`;
   }
 
   // Past date and not admin - make read-only
@@ -105,100 +94,73 @@ export function DayCell({
           : undefined
       }
     >
-      {/* Day number - positioned in upper left */}
-      <span
-        className={`
-          absolute top-1.5 left-1.5
-          ${tokens.typography.body.secondary}
-          font-semibold
-          ${day.isToday ? "text-white" : theme.calendar.dayCellText}
-        `}
-      >
-        {day.date.getDate()}
-      </span>
-
-      {/* Today badge - positioned in upper right */}
-      {day.isToday && (
-        <div className="absolute top-1.5 right-1.5">
-          <div
-            className={`w-2 h-2 ${tokens.borders.radius.full} ${colors.semantic.primary.solid}`}
-          />
+      {/* Day content wrapper */}
+      <div className="flex items-center justify-between mb-2">
+        {/* Day number */}
+        <div className={`text-sm font-semibold ${day.isCurrentMonth ? 'text-gray-300' : 'text-gray-600'}`}>
+          {day.date.getDate()}
         </div>
-      )}
 
-      {/* Firefighter names with stations - main content area */}
-      {hasHolds && (
-        <div className="mt-7 px-1 flex-1 flex flex-col gap-0.5 overflow-hidden">
-          {scheduledHolds.map((hold, index) => {
-            const formattedName = formatName(hold.firefighter_name);
-            // Determine background color based on shift
-            const shiftBg = hold.shift === "A" 
-              ? "bg-green-600" 
-              : hold.shift === "B" 
-              ? "bg-red-600" 
-              : "bg-sky-600"; // Shift C or default
-            
-            return (
-              <div
-                key={hold.id || index}
-                className={`
-                  text-xs
-                  truncate
-                  text-left
-                  ${shiftBg}
-                  text-white
-                  px-1.5 py-0.5
-                  rounded-md
-                `}
-                title={`${hold.firefighter_name || "Unknown"}${
-                  hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-                }`}
-              >
-                {formattedName}
-                {hold.fire_station && (
-                  <span className="ml-1 opacity-90">
-                    (#{hold.fire_station})
-                  </span>
-                )}
-              </div>
-            );
-          })}
-          {completedHolds.map((hold, index) => {
-            const formattedName = formatName(hold.firefighter_name);
-            // Determine background color based on shift (faded for completed)
-            const shiftBg = hold.shift === "A" 
-              ? "bg-green-600/60" 
-              : hold.shift === "B" 
-              ? "bg-red-600/60" 
-              : "bg-sky-600/60"; // Shift C or default
-            
-            return (
-              <div
-                key={hold.id || index}
-                className={`
-                  text-xs
-                  truncate
-                  text-left
-                  ${shiftBg}
-                  text-white
-                  px-1.5 py-0.5
-                  rounded-md
-                `}
-                title={`${hold.firefighter_name || "Unknown"}${
-                  hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-                } (completed)`}
-              >
-                {formattedName}
-                {hold.fire_station && (
-                  <span className="ml-1 opacity-90">
-                    (#{hold.fire_station})
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
+        {/* Hold count badge */}
+        {hasHolds && day.isCurrentMonth && (
+          <div className="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+            {day.scheduledHolds.length}
+          </div>
+        )}
+      </div>
+
+      {/* Holds list */}
+      <div className="space-y-1">
+        {/* Show first 2 holds */}
+        {scheduledHolds.slice(0, 2).map((hold, index) => {
+          const formattedName = formatName(hold.firefighter_name);
+          
+          return (
+            <div
+              key={hold.id || index}
+              className="text-xs px-2 py-1 rounded bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
+              title={`${hold.firefighter_name || "Unknown"}${
+                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+              }`}
+            >
+              <span className="truncate">{formattedName}</span>
+              {hold.fire_station && (
+                <span className="ml-1 flex-shrink-0">
+                  (#{hold.fire_station})
+                </span>
+              )}
+            </div>
+          );
+        })}
+        
+        {completedHolds.slice(0, 2 - scheduledHolds.length).map((hold, index) => {
+          const formattedName = formatName(hold.firefighter_name);
+          
+          return (
+            <div
+              key={hold.id || index}
+              className="text-xs px-2 py-1 rounded bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
+              title={`${hold.firefighter_name || "Unknown"}${
+                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+              } (completed)`}
+            >
+              <span className="truncate">{formattedName}</span>
+              {hold.fire_station && (
+                <span className="ml-1 flex-shrink-0">
+                  (#{hold.fire_station})
+                </span>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Show "more" indicator if there are additional holds */}
+        {day.scheduledHolds.length > 2 && (
+          <div className="text-xs text-gray-500 px-2">
+            +{day.scheduledHolds.length - 2} more
+          </div>
+        )}
+      </div>
     </button>
   );
 }

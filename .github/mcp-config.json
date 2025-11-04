@@ -1,0 +1,90 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "tools": [
+        "puppeteer_navigate",
+        "puppeteer_screenshot",
+        "puppeteer_click",
+        "puppeteer_fill",
+        "puppeteer_select",
+        "puppeteer_hover",
+        "puppeteer_evaluate"
+      ]
+    },
+    "playwright": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-playwright"
+      ],
+      "tools": [
+        "playwright_navigate",
+        "playwright_screenshot",
+        "playwright_click",
+        "playwright_fill",
+        "playwright_pdf",
+        "playwright_evaluate"
+      ]
+    },
+    "context7-docs": {
+      "type": "sse",
+      "url": "https://context7.io/mcp/sse",
+      "tools": ["*"]
+    },
+    "github-enhanced": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "tools": [
+        "get_file_contents",
+        "search_code",
+        "search_issues",
+        "create_or_update_file",
+        "create_pull_request",
+        "create_issue_comment",
+        "push_files"
+      ]
+    },
+    "filesystem": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/workspace"
+      ],
+      "tools": [
+        "read_file",
+        "read_multiple_files",
+        "write_file",
+        "list_directory",
+        "search_files",
+        "get_file_info"
+      ]
+    },
+    "memory": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "tools": ["*"]
+    },
+    "web-fetch": {
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ],
+      "tools": ["fetch"]
+    }
+  }
+}

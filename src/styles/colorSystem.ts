@@ -138,7 +138,7 @@ export const colors = {
       gradient: "bg-gradient-to-br from-amber-500 to-yellow-600",
       solid: "bg-amber-500",
       hover: "hover:from-amber-400 hover:to-yellow-500",
-      text: "text-amber-400",
+      text: "text-white",
       border: "border-amber-500",
       light: "bg-amber-500/20",
       shadow: "shadow-lg shadow-amber-900/50",
@@ -218,9 +218,9 @@ export const colors = {
 
     /** Day cell styles (Calendar-specific) */
     dayCell: {
-      scheduled: "bg-blue-500/20 border-l-2 border-l-blue-500",
-      completed: "bg-emerald-500/20 border-l-2 border-l-emerald-500",
-      both: "bg-gradient-to-br from-blue-500/20 to-emerald-500/20 border-l-2 border-l-blue-500",
+      scheduled: "bg-blue-500/20 border-2 border-blue-500",
+      completed: "bg-gray-700/50 border-2 border-gray-600",
+      both: "bg-gradient-to-br from-blue-500/20 to-gray-700/50 border-2 border-blue-500",
       empty: "bg-gray-800 border border-gray-700 hover:border-gray-600",
       today: "ring-2 ring-red-500",
     },

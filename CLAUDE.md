@@ -228,10 +228,13 @@ Displays monthly grid with scheduled/completed holds.
 - Multiple holds per day: Shows first 4, "+X more" button
 - Responsive: Tested mobile (375px), tablet (768px), desktop (1920px)
 
-**Styling:**
-- Day cells use `aspect-square` for proportional scaling
-- Grid: `grid-cols-7` with `auto-rows-fr` for even rows
-- Hold cards: Compact design with `border-l-2` color indicators
+**Styling (Updated Nov 4, 2025):**
+- Main container: `bg-white dark:bg-slate-800` with `rounded-xl shadow-sm border`
+- Grid uses `gap-px` with slate borders to create visual separation
+- Day cells: `min-h-[120px] bg-white dark:bg-slate-800` with hover states
+- Today indicator: Red ring (`ring-2 ring-red-500 ring-inset`) + red badge on day number
+- Weekday headers: `bg-slate-50 dark:bg-slate-800`
+- Out-of-month days: `opacity-40` for visual hierarchy
 
 ### Hold Completion Flow
 
@@ -243,6 +246,40 @@ Displays monthly grid with scheduled/completed holds.
 4. Update `firefighters.last_hold_date` for completed firefighter
 
 See `useScheduledHolds.ts:markHoldCompleted()` for reference implementation (lines 321-415).
+
+## Color System & Design Tokens
+
+**Location:** `src/styles/colorSystem.ts` and `src/styles/tokens.ts`
+
+### Color Palette Organization
+
+The color system uses a **hybrid approach** with clear usage rules:
+
+1. **GRAY palette** → Structural elements (backgrounds, containers, borders)
+2. **SLATE palette** → Interactive elements (buttons, inputs, hover states)
+3. **SEMANTIC colors** → Contextual meaning (red=danger, blue=scheduled, emerald=success)
+
+### Accent Color (Added Nov 4, 2025)
+
+A **red-to-orange gradient** has been documented for future use as an accent color:
+
+```tsx
+import { colors } from '@/styles';
+
+// Use accent gradient for primary actions
+<button className={`${colors.semantic.accent.gradient} ${colors.semantic.accent.hover} ${colors.semantic.accent.shadow}`}>
+  Create Vacancy
+</button>
+
+// Or use directly
+<button className="bg-gradient-to-r from-red-500 to-orange-600 hover:from-red-600 hover:to-orange-700 shadow-lg">
+  Action
+</button>
+```
+
+**Use cases:** Primary action buttons, call-to-action elements, navigation active states, important notifications.
+
+**Documentation:** See `docs/ACCENT_COLORS.md` for full guidelines.
 
 ## Environment Variables
 

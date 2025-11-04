@@ -10,6 +10,8 @@ Shift rotation and availability management system for fire departments. Tracks f
 
 ## Development Commands
 
+**⚠️ IMPORTANT: Use MCP server tools instead of terminal commands when available (see MCP Server Tools section below).**
+
 ```bash
 # Development
 pnpm dev              # Start dev server (localhost:5173, may use 5174 if 5173 in use)
@@ -28,6 +30,33 @@ pnpm test:e2e:headed  # Run E2E tests with visible browser
 # Database Scripts (use tsx)
 pnpm dlx tsx scripts/<script-name>.ts
 ```
+
+## MCP Server Tools (⚠️ USE THESE FIRST)
+
+**ALWAYS prefer MCP server tools over terminal commands.** MCP (Model Context Protocol) servers provide structured, type-safe interfaces.
+
+### Available MCP Servers
+
+1. **GitHub MCP** (`mcp_github_*`) - Git operations, commits, PRs, issues, file management
+2. **Chrome DevTools MCP** (`mcp_chromedevtool_*`) - Browser automation, E2E testing, screenshots
+3. **Microsoft Playwright MCP** (`mcp_microsoft_pla_browser_*`) - Advanced browser testing
+4. **Upstash Context7 MCP** (`mcp_upstash_conte_*`) - Library documentation lookup
+
+### When to Ask for New MCP Servers
+
+**If a task would be more effective with an MCP server that's not available, STOP and ask:**
+
+> "This task would be better handled with an MCP server for [service]. Would you like me to recommend installing one? It would replace terminal commands with structured tools."
+
+**Candidates:** Database clients (Supabase, PostgreSQL), Cloud services (Vercel, AWS), Package managers (pnpm), CI/CD, monitoring services.
+
+### Usage Rules
+
+1. ✅ **Always check for MCP tools first** before using terminal
+2. ✅ **Use GitHub MCP** for all git operations (don't use `git` commands)
+3. ✅ **Use browser MCP** for E2E testing (don't use `playwright` CLI)
+4. ✅ **Parallelize independent MCP calls** for efficiency
+5. ❌ **Only use terminal for:** Package scripts (`pnpm dev`), simple checks (`ls`, `cat`), SQL migrations
 
 ## Critical Architecture Patterns
 

@@ -1,3 +1,21 @@
+/**
+ * Header - Navigation Bar
+ *
+ * Main navigation header with logo, actions, and responsive design.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * <Header
+ *   onShowHelp={handleShowHelp}
+ *   currentShift={currentShift}
+ *   onShiftChange={handleShiftChange}
+ *   isDarkMode={isDarkMode}
+ *   onToggleDarkMode={toggleDarkMode}
+ * />
+ * ```
+ */
+
 import {
   Clock,
   HelpCircle,
@@ -8,13 +26,17 @@ import {
   Sun,
   UserPlus,
 } from "lucide-react";
+import { Navbar } from 'flowbite-react';
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { ButtonM3 } from "./m3/ButtonM3";
+import { BadgeM3 } from "./m3/BadgeM3";
 import {
   ConnectionStatusDot,
   ConnectionStatusIndicator,
 } from "./ConnectionStatusIndicator";
 import { ShiftSelector } from "./ShiftSelector";
+import { HeaderLegacy } from "./HeaderLegacy";
 
 interface HeaderProps {
   onShowHelp: () => void;
@@ -28,7 +50,10 @@ interface HeaderProps {
   onToggleDarkMode: () => void;
 }
 
-export function Header({
+/**
+ * MaterialM Header Component
+ */
+function HeaderM3({
   onShowHelp,
   onShowActivityLog,
   onQuickAddFirefighter,
@@ -40,19 +65,11 @@ export function Header({
   onToggleDarkMode,
 }: HeaderProps) {
   return (
-    <header
-      className={`
-        border-b backdrop-blur-sm sticky top-0
-        ${tokens.zIndex.sticky}
-        ${tokens.shadows.lg}
-        ${
-          isDarkMode
-            ? `${colors.structural.border.emphasis} bg-gray-900/95`
-            : "border-slate-300 bg-white/95"
-        }
-      `}
+    <Navbar
+      fluid
+      className="border-b backdrop-blur-sm sticky top-0 z-40 shadow-materialm-2 bg-white/95 dark:bg-gray-900/95 dark:border-gray-800"
     >
-      <div className={`px-4 sm:px-6 ${tokens.spacing.section.sm}`}>
+      <div className="w-full px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between gap-4">
           {/* Logo & Title */}
           <div className="flex items-center gap-4 min-w-0 leading-tight">
@@ -64,31 +81,10 @@ export function Header({
               />
             </div>
             <div className="min-w-0">
-              <h1
-                className={`
-                  ${tokens.typography.heading.h1} truncate
-                  ${
-                    isDarkMode
-                      ? colors.structural.text.primary
-                      : "text-slate-900"
-                  }
-                `}
-              >
+              <h1 className="text-2xl sm:text-3xl font-bold truncate text-gray-900 dark:text-white">
                 Hold List Manager
               </h1>
-              <p
-                className={`
-                  ${tokens.typography.body.small} sm:${
-                  tokens.typography.body.secondary
-                }
-                  mt-0.5 hidden sm:block
-                  ${
-                    isDarkMode
-                      ? colors.structural.text.secondary
-                      : "text-slate-600"
-                  }
-                `}
-              >
+              <p className="text-sm sm:text-base mt-0.5 hidden sm:block text-gray-600 dark:text-gray-400">
                 Organize your team's hold rotation schedule
               </p>
             </div>
@@ -99,7 +95,7 @@ export function Header({
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-3">
               {/* Context Section - Shift */}
-              <div className="flex items-center gap-2 pr-3 border-r border-gray-700">
+              <div className="flex items-center gap-2 pr-3 border-r border-gray-300 dark:border-gray-700">
                 <ShiftSelector
                   currentShift={currentShift}
                   onShiftChange={onShiftChange}
@@ -113,24 +109,15 @@ export function Header({
             {/* Primary Actions */}
             <div className="hidden sm:flex items-center gap-2">
               {isAdminMode && (
-                <button
+                <ButtonM3
+                  color="success"
+                  size="md"
+                  startIcon={<UserPlus size={18} />}
                   onClick={onQuickAddFirefighter}
-                  className={`
-                    px-4 py-2
-                    ${tokens.touchTarget.min}
-                    ${tokens.borders.radius.lg}
-                    ${tokens.shadows.lg}
-                    font-semibold
-                    ${tokens.transitions.fast}
-                    flex items-center gap-2
-                    bg-green-600 hover:bg-green-700 text-white
-                    focus-ring
-                  `}
-                  aria-label="Quick add team member"
+                  className="shadow-materialm-2"
                 >
-                  <UserPlus size={18} />
                   <span className="hidden md:inline">Add Member</span>
-                </button>
+                </ButtonM3>
               )}
             </div>
 
@@ -141,7 +128,7 @@ export function Header({
                 className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
-                    : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
+                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label="Print calendar"
               >
@@ -150,10 +137,10 @@ export function Header({
               </button>
               <button
                 onClick={onShowActivityLog}
-                className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
+                className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
-                    : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
+                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label="View activity history"
               >
@@ -162,10 +149,10 @@ export function Header({
               </button>
               <button
                 onClick={onToggleDarkMode}
-                className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
+                className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
-                    : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
+                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label={
                   isDarkMode ? "Switch to light mode" : "Switch to dark mode"
@@ -178,10 +165,10 @@ export function Header({
               </button>
               <button
                 onClick={onShowHelp}
-                className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
+                className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
-                    : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
+                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label="Show help"
               >
@@ -192,16 +179,14 @@ export function Header({
 
             {/* Admin Mode Badge */}
             {isAdminMode && (
-              <div
-                className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border ${
-                  isDarkMode
-                    ? "bg-blue-900/30 border-blue-700 text-blue-300"
-                    : "bg-blue-100 border-blue-400 text-blue-700"
-                }`}
+              <BadgeM3
+                color="primary"
+                variant="tonal"
+                icon={<Shield size={14} />}
+                className="hidden sm:flex"
               >
-                <Shield size={14} />
-                <span className="text-xs font-bold">ADMIN</span>
-              </div>
+                ADMIN
+              </BadgeM3>
             )}
 
             {/* Mobile Connection Status (Compact) */}
@@ -212,10 +197,10 @@ export function Header({
             {/* Mobile Menu Button */}
             <button
               onClick={onOpenMobileMenu}
-              className={`sm:hidden p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring ${
+              className={`sm:hidden p-2 min-h-[44px] rounded-lg transition-colors focus-ring ${
                 isDarkMode
                   ? "hover:bg-gray-800 text-gray-300"
-                  : "hover:bg-slate-200 text-slate-600"
+                  : "hover:bg-gray-100 text-gray-600"
               }`}
               aria-label="Open menu"
             >
@@ -226,17 +211,35 @@ export function Header({
 
         {/* Mobile Add Button */}
         {isAdminMode && (
-          <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t">
-            <button
+          <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t dark:border-gray-800">
+            <ButtonM3
+              color="success"
+              size="md"
+              fullWidth
+              startIcon={<UserPlus size={16} />}
               onClick={onQuickAddFirefighter}
-              className={`w-full px-4 py-2 ${tokens.touchTarget.min} rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 shadow-lg focus-ring`}
+              className="shadow-materialm-2"
             >
-              <UserPlus size={16} />
               <span className="text-sm">Add Member</span>
-            </button>
+            </ButtonM3>
           </div>
         )}
       </div>
-    </header>
+    </Navbar>
   );
+}
+
+/**
+ * Header Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function Header(props: HeaderProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <HeaderLegacy {...props} />;
+  }
+
+  return <HeaderM3 {...props} />;
 }

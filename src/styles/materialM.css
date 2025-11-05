@@ -1,0 +1,176 @@
+/**
+ * MaterialM Theme - OKLCH Color System
+ *
+ * Source: MaterialM React/Tailwind Pro Template
+ * Color Space: OKLCH (perceptually uniform)
+ * Theme: BLUE_THEME (recommended for emergency services)
+ *
+ * Reference: https://m3.material.io/
+ */
+
+:root {
+  /* ========================================
+     Background Colors
+     ======================================== */
+  --dark: oklch(0.23 0.037 258.85);
+  --darkgray: oklch(0.26 0.0374 260);
+
+  /* ========================================
+     BLUE_THEME - Primary Colors
+     ======================================== */
+  --primary: oklch(66.93% 0.224 247.87);
+  --primary-emphasis: oklch(63.47% 0.213 247.92);
+  --lightprimary: oklch(66.93% 0.224 247.87 / 12.5%);
+
+  /* ========================================
+     BLUE_THEME - Secondary Colors
+     ======================================== */
+  --secondary: oklch(58.25% 0.213 291.79);
+  --secondary-emphasis: oklch(55.04% 0.205 292.12);
+  --lightsecondary: oklch(58.25% 0.213 291.79 / 12.5%);
+
+  /* ========================================
+     Semantic Colors
+     ======================================== */
+  --info: oklch(0.78 0.1209 218.04);
+  --success: oklch(0.76 0.138061 180.4149);
+  --warning: oklch(0.83 0.1712 81.04);
+  --error: oklch(0.71 0.1892 5.4);
+
+  /* ========================================
+     Light Semantic Variants (12.5-18% opacity)
+     ======================================== */
+  --lightsuccess: oklch(0.76 0.138061 180.4149 / 14.51%);
+  --lighterror: oklch(0.71 0.1892 5.4 / 18.82%);
+  --lightinfo: oklch(0.78 0.1209 218.04 / 14.51%);
+  --lightwarning: oklch(0.83 0.1712 81.04 / 14.51%);
+
+  /* ========================================
+     Borders
+     ======================================== */
+  --border: oklch(0.92 0.0094 242.84);
+  --darkborder: oklch(0.37 0.0414 262.29);
+
+  /* ========================================
+     Text Colors
+     ======================================== */
+  --link: oklch(0.33 0.0355 260.11);
+  --darklink: oklch(0.62 0.0225 243.61);
+
+  /* ========================================
+     Shadow System (Material Design 3 Elevations)
+     ======================================== */
+  --shadow-elevation-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --shadow-elevation-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --shadow-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --shadow-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+  --shadow-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.3);
+
+  /* ========================================
+     Border Radius Tokens
+     ======================================== */
+  --radius-sm: 7px;
+  --radius-md: 9px;
+  --radius-lg: 24px;
+
+  /* ========================================
+     Motion System (Material Design 3)
+     ======================================== */
+  --motion-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --motion-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-decelerated: cubic-bezier(0, 0, 0, 1);
+  --motion-accelerated: cubic-bezier(0.3, 0, 1, 1);
+
+  /* Duration tokens */
+  --duration-short-1: 50ms;
+  --duration-short-2: 100ms;
+  --duration-short-3: 150ms;
+  --duration-short-4: 200ms;
+  --duration-medium-1: 250ms;
+  --duration-medium-2: 300ms;
+  --duration-medium-3: 350ms;
+  --duration-medium-4: 400ms;
+  --duration-long-1: 450ms;
+  --duration-long-2: 500ms;
+  --duration-long-3: 550ms;
+  --duration-long-4: 600ms;
+}
+
+/* ========================================
+   Utility Classes for MaterialM
+   ======================================== */
+
+.materialm-bg-primary {
+  background-color: var(--primary);
+}
+
+.materialm-bg-secondary {
+  background-color: var(--secondary);
+}
+
+.materialm-bg-dark {
+  background-color: var(--dark);
+}
+
+.materialm-text-primary {
+  color: var(--primary);
+}
+
+.materialm-text-secondary {
+  color: var(--secondary);
+}
+
+.materialm-border-primary {
+  border-color: var(--primary);
+}
+
+.materialm-shadow-1 {
+  box-shadow: var(--shadow-elevation-1);
+}
+
+.materialm-shadow-2 {
+  box-shadow: var(--shadow-elevation-2);
+}
+
+.materialm-shadow-3 {
+  box-shadow: var(--shadow-elevation-3);
+}
+
+.materialm-shadow-4 {
+  box-shadow: var(--shadow-elevation-4);
+}
+
+.materialm-shadow-5 {
+  box-shadow: var(--shadow-elevation-5);
+}
+
+/* State layer overlays (Material Design 3) */
+.materialm-hover-overlay {
+  position: relative;
+}
+
+.materialm-hover-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transition: opacity var(--duration-short-2) var(--motion-standard);
+}
+
+.materialm-hover-overlay:hover::before {
+  opacity: 1;
+}
+
+.materialm-pressed-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.12);
+  opacity: 0;
+  transition: opacity var(--duration-short-1) var(--motion-standard);
+}
+
+.materialm-pressed-overlay:active::after {
+  opacity: 1;
+}

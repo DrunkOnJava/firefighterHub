@@ -1,19 +1,31 @@
 /**
- * DayCell Component
+ * DayCell - Calendar Day Cell Component
  *
  * Renders an individual day cell in the calendar grid.
- * Shows:
- * - Day number
- * - Today indicator
- * - Hold count badges (scheduled/completed)
- * - Visual states for scheduled/completed holds
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
  *
- * Uses design tokens for consistent styling.
+ * Shows:
+ * - Day number with today indicator
+ * - Hold count badge
+ * - Event pills for scheduled/completed holds
+ * - Visual states for different hold statuses
+ *
+ * @example
+ * ```tsx
+ * <DayCell
+ *   day={calendarDay}
+ *   onDayClick={handleDayClick}
+ *   isAdminMode={isAdminMode}
+ *   currentShift={currentShift}
+ * />
+ * ```
  */
 
+import { useFeatureFlag } from "../../hooks/useFeatureFlag";
 import { Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
+import { BadgeM3, CountBadgeM3 } from "../m3/BadgeM3";
+import { DayCellLegacy } from "./DayCellLegacy";
 
 interface DayCellProps {
   day: CalendarDay;
@@ -23,7 +35,10 @@ interface DayCellProps {
   isDarkMode?: boolean;
 }
 
-export function DayCell({
+/**
+ * MaterialM Day Cell Component
+ */
+function DayCellM3({
   day,
   onDayClick,
   isAdminMode = false,
@@ -40,36 +55,13 @@ export function DayCell({
   const formatName = (fullName: string | null): string => {
     if (!fullName) return "Unknown";
     const parts = fullName.trim().split(/\s+/);
-    if (parts.length === 1) return parts[0]; // Single name
+    if (parts.length === 1) return parts[0];
     const firstInitial = parts[0][0]?.toUpperCase() || "";
     const lastName = parts[parts.length - 1];
     return `${firstInitial}. ${lastName}`;
   };
 
-  // Determine styling based on state
-  let cellClasses = `
-    relative aspect-square w-full p-2 text-left
-    ${tokens.transitions.fast}
-    flex flex-col
-  `;
-
-  if (!day.isCurrentMonth) {
-    cellClasses += ` bg-slate-800 text-gray-600 cursor-default opacity-50`;
-  } else {
-    cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer`;
-  }
-
-  // Today indicator
-  if (day.isToday && day.isCurrentMonth) {
-    cellClasses += ` ring-2 ring-inset ring-red-500`;
-  }
-
-  // Has holds - add left border
-  if (hasHolds && day.isCurrentMonth) {
-    cellClasses += ` border-l-4 border-l-red-500`;
-  }
-
-  // Past date and not admin - make read-only
+  // Past date logic
   const isPastDate = day.date < new Date(new Date().setHours(0, 0, 0, 0));
   const isClickable =
     day.isCurrentMonth && (isAdminMode || !isPastDate || hasHolds);
@@ -79,6 +71,25 @@ export function DayCell({
       onDayClick(day);
     }
   };
+
+  // Build cell classes with MaterialM styling
+  let cellClasses = "relative w-full min-h-[120px] p-3 text-left transition-all duration-200 flex flex-col rounded-materialm-md border";
+
+  if (!day.isCurrentMonth) {
+    cellClasses += " bg-gray-50 dark:bg-gray-900 text-gray-400 cursor-default opacity-40 border-transparent";
+  } else {
+    cellClasses += " bg-white dark:bg-slate-800 text-gray-900 dark:text-white hover:shadow-materialm-2 cursor-pointer border-gray-200 dark:border-slate-700";
+  }
+
+  // Today indicator (red ring + today badge)
+  if (day.isToday && day.isCurrentMonth) {
+    cellClasses += " ring-2 ring-inset ring-red-500";
+  }
+
+  // Has holds - add elevation
+  if (hasHolds && day.isCurrentMonth) {
+    cellClasses += " shadow-materialm-1 hover:shadow-materialm-3";
+  }
 
   return (
     <button
@@ -94,73 +105,100 @@ export function DayCell({
           : undefined
       }
     >
-      {/* Day content wrapper */}
-      <div className="flex items-center justify-between mb-3">
-        {/* Day number */}
-        <div className={`text-base font-bold ${day.isCurrentMonth ? 'text-slate-200' : 'text-gray-600'}`}>
-          {day.date.getDate()}
+      {/* Day number and badges */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          {/* Day number */}
+          <span className={`text-base font-bold ${day.isCurrentMonth ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
+            {day.date.getDate()}
+          </span>
+
+          {/* Today badge */}
+          {day.isToday && day.isCurrentMonth && (
+            <BadgeM3 color="error" size="xs">
+              Today
+            </BadgeM3>
+          )}
         </div>
 
         {/* Hold count badge */}
-        {hasHolds && day.isCurrentMonth && (
-          <div className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-            {day.scheduledHolds.length}
-          </div>
+        {hasHolds && day.isCurrentMonth && day.scheduledHolds.length > 2 && (
+          <CountBadgeM3 count={day.scheduledHolds.length} color="info" />
         )}
       </div>
 
-      {/* Holds list */}
-      <div className="space-y-1.5">
-        {/* Show first 2 holds */}
+      {/* Holds list - Event pills */}
+      <div className="space-y-1.5 flex-1 overflow-hidden">
+        {/* Scheduled holds - Blue theme */}
         {scheduledHolds.slice(0, 2).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
-          
+
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-2.5 py-1.5 rounded-md bg-blue-50 dark:bg-blue-900/20 text-blue-900 dark:text-blue-100 font-medium border-l-3 border-l-blue-600 dark:border-l-blue-400 shadow-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
             >
-              <span className="truncate">{formattedName}</span>
-              {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
-                </span>
-              )}
-            </div>
-          );
-        })}
-        
-        {completedHolds.slice(0, 2 - scheduledHolds.length).map((hold, index) => {
-          const formattedName = formatName(hold.firefighter_name);
-          
-          return (
-            <div
-              key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
-              title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-              } (completed)`}
-            >
-              <span className="truncate">{formattedName}</span>
-              {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
-                </span>
-              )}
+              <div className="flex items-center justify-between gap-2">
+                <span className="truncate font-semibold">{formattedName}</span>
+                {hold.fire_station && (
+                  <span className="flex-shrink-0 text-blue-700 dark:text-blue-300 font-bold">
+                    #{hold.fire_station}
+                  </span>
+                )}
+              </div>
             </div>
           );
         })}
 
-        {/* Show "more" indicator if there are additional holds */}
+        {/* Completed holds - Gray theme with strikethrough */}
+        {completedHolds.slice(0, Math.max(0, 2 - scheduledHolds.length)).map((hold, index) => {
+          const formattedName = formatName(hold.firefighter_name);
+
+          return (
+            <div
+              key={hold.id || index}
+              className="text-xs px-2.5 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-medium border-l-3 border-l-gray-400 dark:border-l-gray-600 shadow-sm opacity-70"
+              title={`${hold.firefighter_name || "Unknown"}${
+                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+              } (completed)`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="truncate line-through">{formattedName}</span>
+                {hold.fire_station && (
+                  <span className="flex-shrink-0 line-through">
+                    #{hold.fire_station}
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* "More" indicator */}
         {day.scheduledHolds.length > 2 && (
-          <div className="text-xs text-gray-500 px-2.5">
+          <div className="text-xs text-gray-500 dark:text-gray-400 px-2 pt-1 font-medium">
             +{day.scheduledHolds.length - 2} more
           </div>
         )}
       </div>
     </button>
   );
+}
+
+/**
+ * Day Cell Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function DayCell(props: DayCellProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <DayCellLegacy {...props} />;
+  }
+
+  return <DayCellM3 {...props} />;
 }

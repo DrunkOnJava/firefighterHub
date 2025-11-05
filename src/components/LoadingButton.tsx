@@ -1,6 +1,26 @@
+/**
+ * LoadingButton - Button with Loading State
+ *
+ * Button component with loading state and spinner.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * <LoadingButton
+ *   isLoading={isSaving}
+ *   loadingText="Saving..."
+ *   variant="primary"
+ *   onClick={handleSave}
+ * >
+ *   Save Changes
+ * </LoadingButton>
+ * ```
+ */
+
 import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { Loader2 } from 'lucide-react';
-import { colors, tokens } from '../styles';
+import { useFeatureFlag } from '../hooks/useFeatureFlag';
+import { ButtonM3, type ButtonM3Color } from './m3/ButtonM3';
+import { LoadingButtonLegacy } from './LoadingButtonLegacy';
 
 interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -18,32 +38,53 @@ export function LoadingButton({
   disabled,
   ...props
 }: LoadingButtonProps) {
-  const variantClasses = {
-    primary: `${colors.semantic.primary.solid} ${colors.semantic.primary.hover} disabled:bg-blue-800 text-white`,
-    secondary: `${colors.components.button.secondary} disabled:bg-gray-800`,
-    danger: `${colors.semantic.error.solid} ${colors.semantic.error.hover} disabled:bg-red-800 text-white`,
-    success: `${colors.semantic.success.solid} ${colors.semantic.success.hover} disabled:bg-green-800 text-white`
-  };
+  const useMaterialM = useFeatureFlag('MATERIALM');
 
+  // Use legacy button if MaterialM is disabled
+  if (!useMaterialM) {
+    return (
+      <LoadingButtonLegacy
+        isLoading={isLoading}
+        loadingText={loadingText}
+        variant={variant}
+        className={className}
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </LoadingButtonLegacy>
+    );
+  }
+
+  // Map legacy variants to MaterialM colors
+  let materialMColor: ButtonM3Color = 'primary';
+
+  switch (variant) {
+    case 'primary':
+      materialMColor = 'primary';
+      break;
+    case 'secondary':
+      materialMColor = 'secondary';
+      break;
+    case 'danger':
+      materialMColor = 'error';
+      break;
+    case 'success':
+      materialMColor = 'success';
+      break;
+  }
+
+  // MaterialM Loading Button
   return (
-    <button
-      className={`
-        relative flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${tokens.borders.radius.lg}
-        font-medium transition-all duration-200
-        disabled:cursor-not-allowed disabled:opacity-60
-        active:scale-95 overflow-hidden
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-        shadow-sm hover:shadow-md
-        ${variantClasses[variant]}
-        ${className}
-      `}
-      disabled={disabled || isLoading}
-      {...props}
+    <ButtonM3
+      color={materialMColor}
+      loading={isLoading}
+      disabled={disabled}
+      className={className}
+      onClick={props.onClick}
+      type={props.type}
     >
-      {isLoading && (
-        <Loader2 className={`${tokens.icons.sm} animate-spin`} />
-      )}
-      <span>{isLoading && loadingText ? loadingText : children}</span>
-    </button>
+      {isLoading && loadingText ? loadingText : children}
+    </ButtonM3>
   );
 }

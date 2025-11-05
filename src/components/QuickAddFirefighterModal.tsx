@@ -1,9 +1,31 @@
-import { ChevronDown, ChevronUp, UserPlus, X } from "lucide-react";
+/**
+ * QuickAddFirefighterModal - Quick Add Modal
+ *
+ * Modal for quickly adding a firefighter to the current shift.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * <QuickAddFirefighterModal
+ *   isOpen={isOpen}
+ *   currentShift={currentShift}
+ *   onClose={handleClose}
+ *   onAdd={handleAddFirefighter}
+ * />
+ * ```
+ */
+
+import { ChevronDown, ChevronUp, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { DialogM3 } from "./m3/DialogM3";
+import { ButtonM3 } from "./m3/ButtonM3";
+import { InputM3, SelectM3, CheckboxM3, FormGroupM3 } from "./m3/InputM3";
+import { BadgeM3 } from "./m3/BadgeM3";
+import { QuickAddFirefighterModalLegacy } from "./QuickAddFirefighterModalLegacy";
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;
@@ -31,7 +53,10 @@ interface QuickAddFirefighterModalProps {
   ) => void;
 }
 
-export function QuickAddFirefighterModal({
+/**
+ * MaterialM Quick Add Modal
+ */
+function QuickAddFirefighterModalM3({
   isOpen,
   currentShift,
   onClose,
@@ -139,13 +164,14 @@ export function QuickAddFirefighterModal({
 
   if (!isOpen) return null;
 
-  const certificationLevels: string[] = [
-    "",
-    "EMT",
-    "EMT-A",
-    "EMT-I",
-    "Paramedic",
+  const certificationOptions = [
+    { value: "", label: "Not specified" },
+    { value: "EMT", label: "EMT" },
+    { value: "EMT-A", label: "EMT-A" },
+    { value: "EMT-I", label: "EMT-I" },
+    { value: "Paramedic", label: "Paramedic" },
   ];
+
   const hasAnyAdvancedData =
     apparatusAmbulance ||
     apparatusBrushTruck ||
@@ -160,246 +186,211 @@ export function QuickAddFirefighterModal({
     isALS;
 
   return (
-    <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onClose();
-        }
-      }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="quick-add-title"
-    >
+    <DialogM3 show={isOpen} onClose={onClose} size="xl">
+      {/* Custom Header */}
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} max-w-2xl w-full max-h-[90vh] overflow-hidden`}
-        onClick={(e) => e.stopPropagation()}
+        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-emerald-50 dark:bg-emerald-900/20"
       >
-        <div className={`${colors.semantic.success.light} border-b-2 ${colors.semantic.success.border} px-6 py-5 flex items-center justify-between`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <UserPlus className={colors.semantic.success.text} size={28} />
-            <div>
-              <h2
-                id="quick-add-title"
-                className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}
-              >
-                Add Team Member
-              </h2>
-              <p className={`${tokens.typography.body.secondary} ${colors.semantic.success.text} mt-1`}>
-                Shift {currentShift}
-              </p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-emerald-600">
+            <UserPlus className="w-6 h-6 text-white" />
           </div>
-          <button
-            onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className={`${tokens.spacing.card.lg} space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]`}
-        >
-          <div className={`grid grid-cols-1 md:grid-cols-2 ${tokens.spacing.gap.md}`}>
-            <div>
-              <label
-                htmlFor="quick-firefighter-name"
-                className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}
-              >
-                Name <span className={colors.semantic.error.text}>*</span>
-              </label>
-              <input
-                id="quick-firefighter-name"
-                type="text"
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  if (errors.name) validateName(e.target.value);
-                }}
-                onBlur={(e) => validateName(e.target.value)}
-                placeholder="Enter firefighter name"
-                required
-                autoFocus
-                aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? "quick-name-error" : undefined}
-                className={`w-full px-4 py-3 ${errors.name ? colors.components.input.error : colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
-                  errors.name
-                    ? "focus:ring-red-500"
-                    : "focus:ring-green-500 focus:border-transparent"
-                }`}
-              />
-              {errors.name && (
-                <p
-                  id="quick-name-error"
-                  className={`${colors.semantic.error.text} ${tokens.typography.body.small} mt-1`}
-                  role="alert"
-                >
-                  {errors.name}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="quick-firefighter-station"
-                className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}
-              >
-                Station Number
-              </label>
-              <input
-                id="quick-firefighter-station"
-                type="text"
-                value={station}
-                onChange={(e) => setStation(e.target.value)}
-                placeholder="e.g., 1"
-                className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all`}
-              />
-            </div>
-          </div>
-
           <div>
-            <label
-              htmlFor="quick-firefighter-certification"
-              className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}
-            >
-              Certification Level
-            </label>
-            <select
-              id="quick-firefighter-certification"
-              value={certificationLevel}
-              onChange={(e) => setCertificationLevel(e.target.value)}
-              className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all`}
-            >
-              <option value="">Not specified</option>
-              {certificationLevels.slice(1).map((level) => (
-                <option key={level} value={level}>
-                  {level}
-                </option>
-              ))}
-            </select>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Add Team Member
+            </h2>
+            <p className="text-sm text-emerald-700 dark:text-emerald-300 mt-1">
+              Shift {currentShift}
+            </p>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setShowAdvanced(!showAdvanced)}
-            className={`w-full flex items-center justify-between px-4 py-3 ${colors.structural.bg.surface} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} border ${colors.structural.border.default} transition-all focus-ring`}
-            aria-expanded={showAdvanced}
-            aria-controls="advanced-options"
-          >
-            <span className={`${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary}`}>
-              Advanced Options{" "}
-              {hasAnyAdvancedData && !showAdvanced && (
-                <span className={`ml-2 ${tokens.typography.body.small} ${colors.semantic.success.text}`}>
-                  (configured)
-                </span>
-              )}
-            </span>
-            {showAdvanced ? (
-              <ChevronUp className={colors.structural.text.tertiary} size={20} />
-            ) : (
-              <ChevronDown className={colors.structural.text.tertiary} size={20} />
-            )}
-          </button>
-
-          {showAdvanced && (
-            <div
-              id="advanced-options"
-              className={`space-y-5 pl-2 border-l-2 ${colors.semantic.success.border}`}
-            >
-              <div>
-                <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
-                  Apparatus Clearances
-                </label>
-                <div className={`grid grid-cols-2 md:grid-cols-4 ${tokens.spacing.gap.md}`}>
-                  {[
-                    { state: apparatusAmbulance, setState: setApparatusAmbulance, label: "Ambulance" },
-                    { state: apparatusBrushTruck, setState: setApparatusBrushTruck, label: "Brush Truck" },
-                    { state: apparatusEngine, setState: setApparatusEngine, label: "Engine" },
-                    { state: apparatusTanker, setState: setApparatusTanker, label: "Tanker" },
-                    { state: apparatusTruck, setState: setApparatusTruck, label: "Truck" },
-                    { state: apparatusBoat, setState: setApparatusBoat, label: "Boat" },
-                    { state: apparatusUtv, setState: setApparatusUtv, label: "UTV" },
-                    { state: apparatusRescueSquad, setState: setApparatusRescueSquad, label: "Rescue Squad" },
-                  ].map(({ state, setState, label }) => (
-                    <label key={label} className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.structural.bg.surface} px-3 py-2 ${tokens.borders.radius.md} ${colors.interactive.hover.bg} transition-colors`}>
-                      <input
-                        type="checkbox"
-                        checked={state}
-                        onChange={(e) => setState(e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-green-600 focus:ring-2 focus:ring-green-500"
-                      />
-                      <span className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}>{label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
-                  Certifications & Roles
-                </label>
-                <div className={`grid grid-cols-3 ${tokens.spacing.gap.md}`}>
-                  <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.warning.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-amber-900/30 border ${colors.semantic.warning.border} transition-colors`}>
-                    <input
-                      type="checkbox"
-                      checked={isFTO}
-                      onChange={(e) => setIsFTO(e.target.checked)}
-                      className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
-                    />
-                    <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.warning.text}`}>
-                      FTO
-                    </span>
-                  </label>
-                  <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.success.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-emerald-900/30 border ${colors.semantic.success.border} transition-colors`}>
-                    <input
-                      type="checkbox"
-                      checked={isBLS}
-                      onChange={(e) => setIsBLS(e.target.checked)}
-                      className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
-                    />
-                    <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.success.text}`}>
-                      BLS
-                    </span>
-                  </label>
-                  <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.info.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-cyan-900/30 border ${colors.semantic.info.border} transition-colors`}>
-                    <input
-                      type="checkbox"
-                      checked={isALS}
-                      onChange={(e) => setIsALS(e.target.checked)}
-                      className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
-                    />
-                    <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.info.text}`}>
-                      ALS
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className={`flex ${tokens.spacing.gap.md} pt-2 border-t ${colors.structural.border.default}`}>
-            <button
-              type="button"
-              onClick={onClose}
-              className={`flex-1 ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.md} focus-ring`}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={!name.trim()}
-              className={`flex-1 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors ${colors.semantic.success.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm} disabled:opacity-50 disabled:cursor-not-allowed`}
-            >
-              <UserPlus size={20} />
-              Add Member
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+
+      <form onSubmit={handleSubmit}>
+        <DialogM3.Body>
+          <div className="space-y-6">
+            {/* Basic Information */}
+            <FormGroupM3 title="Basic Information">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InputM3
+                  label="Name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (errors.name) validateName(e.target.value);
+                  }}
+                  onBlur={(e) => validateName(e.target.value)}
+                  placeholder="Enter firefighter name"
+                  required
+                  autoFocus
+                  error={errors.name}
+                />
+
+                <InputM3
+                  label="Station Number"
+                  value={station}
+                  onChange={(e) => setStation(e.target.value)}
+                  placeholder="e.g., 1"
+                />
+              </div>
+
+              <SelectM3
+                label="Certification Level"
+                value={certificationLevel}
+                onChange={(e) => setCertificationLevel(e.target.value)}
+                options={certificationOptions}
+              />
+            </FormGroupM3>
+
+            {/* Advanced Options Toggle */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="flex items-center justify-between w-full p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors bg-gray-50 dark:bg-gray-800"
+              >
+                <div className="flex items-center gap-3">
+                  {showAdvanced ? (
+                    <ChevronUp className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  )}
+                  <div className="text-left">
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                      Advanced Options
+                    </h3>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Apparatus clearances and certifications
+                    </p>
+                  </div>
+                </div>
+                {hasAnyAdvancedData && (
+                  <BadgeM3 color="info" size="xs">
+                    {
+                      [
+                        apparatusAmbulance,
+                        apparatusBrushTruck,
+                        apparatusEngine,
+                        apparatusTanker,
+                        apparatusTruck,
+                        apparatusBoat,
+                        apparatusUtv,
+                        apparatusRescueSquad,
+                        isFTO,
+                        isBLS,
+                        isALS,
+                      ].filter(Boolean).length
+                    }{" "}
+                    selected
+                  </BadgeM3>
+                )}
+              </button>
+
+              {showAdvanced && (
+                <div className="mt-4 space-y-6 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800">
+                  {/* Apparatus Clearances */}
+                  <FormGroupM3 title="Apparatus Clearances">
+                    <div className="grid grid-cols-2 gap-3">
+                      <CheckboxM3
+                        label="Ambulance"
+                        checked={apparatusAmbulance}
+                        onChange={(e) => setApparatusAmbulance(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Brush Truck"
+                        checked={apparatusBrushTruck}
+                        onChange={(e) => setApparatusBrushTruck(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Engine"
+                        checked={apparatusEngine}
+                        onChange={(e) => setApparatusEngine(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Tanker"
+                        checked={apparatusTanker}
+                        onChange={(e) => setApparatusTanker(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Truck"
+                        checked={apparatusTruck}
+                        onChange={(e) => setApparatusTruck(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Boat"
+                        checked={apparatusBoat}
+                        onChange={(e) => setApparatusBoat(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="UTV"
+                        checked={apparatusUtv}
+                        onChange={(e) => setApparatusUtv(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Rescue Squad"
+                        checked={apparatusRescueSquad}
+                        onChange={(e) => setApparatusRescueSquad(e.target.checked)}
+                      />
+                    </div>
+                  </FormGroupM3>
+
+                  {/* Certifications */}
+                  <FormGroupM3 title="Additional Certifications">
+                    <div className="space-y-2">
+                      <CheckboxM3
+                        label="Field Training Officer (FTO)"
+                        checked={isFTO}
+                        onChange={(e) => setIsFTO(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Basic Life Support (BLS)"
+                        checked={isBLS}
+                        onChange={(e) => setIsBLS(e.target.checked)}
+                      />
+                      <CheckboxM3
+                        label="Advanced Life Support (ALS)"
+                        checked={isALS}
+                        onChange={(e) => setIsALS(e.target.checked)}
+                      />
+                    </div>
+                  </FormGroupM3>
+                </div>
+              )}
+            </div>
+          </div>
+        </DialogM3.Body>
+
+        <DialogM3.Footer>
+          <ButtonM3 variant="outlined" color="neutral" onClick={onClose} type="button">
+            Cancel
+          </ButtonM3>
+          <ButtonM3
+            color="success"
+            startIcon={<UserPlus size={20} />}
+            type="submit"
+            disabled={!name.trim()}
+            className="shadow-materialm-2"
+          >
+            Add Member
+          </ButtonM3>
+        </DialogM3.Footer>
+      </form>
+    </DialogM3>
   );
+}
+
+/**
+ * Quick Add Firefighter Modal Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function QuickAddFirefighterModal(props: QuickAddFirefighterModalProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <QuickAddFirefighterModalLegacy {...props} />;
+  }
+
+  return <QuickAddFirefighterModalM3 {...props} />;
 }

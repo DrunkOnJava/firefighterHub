@@ -1,9 +1,31 @@
-import { ArrowRightLeft, X } from "lucide-react";
+/**
+ * TransferShiftModal - Shift Transfer Modal Component
+ *
+ * Modal for transferring a firefighter to a different shift.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * <TransferShiftModal
+ *   isOpen={isOpen}
+ *   firefighter={selectedFirefighter}
+ *   onClose={handleClose}
+ *   onConfirm={handleTransfer}
+ * />
+ * ```
+ */
+
+import { ArrowRightLeft } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { DialogM3 } from "./m3/DialogM3";
+import { ButtonM3 } from "./m3/ButtonM3";
+import { CardM3 } from "./m3/CardM3";
+import { ShiftBadge } from "./ShiftBadge";
+import { TransferShiftModalLegacy } from "./TransferShiftModalLegacy";
 
 interface TransferShiftModalProps {
   isOpen: boolean;
@@ -12,7 +34,10 @@ interface TransferShiftModalProps {
   onConfirm: (firefighterId: string, newShift: Shift) => void;
 }
 
-export function TransferShiftModal({
+/**
+ * MaterialM Transfer Shift Modal
+ */
+function TransferShiftModalM3({
   isOpen,
   firefighter,
   onClose,
@@ -52,70 +77,39 @@ export function TransferShiftModal({
   const availableShifts = shifts.filter((s) => s !== firefighter.shift);
 
   return (
-    <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) {
-          onClose();
-        }
-      }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="transfer-shift-title"
-    >
+    <DialogM3 show={isOpen} onClose={onClose} size="md">
+      {/* Custom Header */}
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} max-w-lg w-full max-h-[90vh] overflow-y-auto`}
-        onClick={(e) => e.stopPropagation()}
+        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-600 dark:bg-blue-700"
       >
-        <div
-          className={`sticky top-0 ${colors.semantic.primary.gradient} backdrop-blur-sm border-b-2 ${colors.semantic.primary.border} ${tokens.spacing.card.lg} flex items-center justify-between z-10`}
-        >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <ArrowRightLeft
-              className={colors.semantic.primary.text}
-              size={28}
-            />
-            <div>
-              <h2
-                id="transfer-shift-title"
-                className={`${tokens.typography.heading.h2} text-white`}
-              >
-                Transfer Shift
-              </h2>
-              <p
-                className={`${tokens.typography.body.small} text-blue-200 mt-1`}
-              >
-                {firefighter.name}
-              </p>
-            </div>
+        <div className="flex items-center gap-3">
+          <ArrowRightLeft className="w-7 h-7 text-white" />
+          <div>
+            <h2 className="text-2xl font-bold text-white">
+              Transfer Shift
+            </h2>
+            <p className="text-sm text-blue-100 mt-1">
+              {firefighter.name}
+            </p>
           </div>
-          <button
-            onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.lg} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
         </div>
+      </div>
 
-        <div className={`${tokens.spacing.card.lg} space-y-6`}>
-          <div
-            className={`${colors.semantic.info.light} border ${colors.semantic.info.border} ${tokens.borders.radius.lg} ${tokens.spacing.card.md}`}
-          >
-            <p
-              className={`${tokens.typography.body.secondary} ${colors.semantic.info.text}`}
-            >
+      <DialogM3.Body>
+        <div className="space-y-6">
+          {/* Info Card */}
+          <CardM3 className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
+            <p className="text-sm text-blue-900 dark:text-blue-100">
               Transfer <strong>{firefighter.name}</strong> from{" "}
               <strong>Shift {firefighter.shift}</strong> to a different shift.
               All history and records will be preserved.
             </p>
-          </div>
+          </CardM3>
 
+          {/* Shift Selector */}
           <div className="space-y-3">
-            <label
-              className={`${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary}`}
-            >
+            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               Select New Shift
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -123,37 +117,52 @@ export function TransferShiftModal({
                 <button
                   key={shift}
                   onClick={() => setSelectedShift(shift)}
-                  className={`py-4 px-6 ${
-                    tokens.borders.radius.lg
-                  } font-bold text-lg transition-all border-2 ${
-                    selectedShift === shift
-                      ? `${colors.semantic.primary.solid} ${colors.semantic.primary.border} text-white ${colors.semantic.primary.shadow}`
-                      : `${colors.structural.bg.card} ${colors.structural.border.default} ${colors.structural.text.secondary} hover:${colors.structural.border.hover}`
-                  }`}
+                  className={`
+                    py-4 px-6 rounded-lg font-bold text-lg transition-all border-2 flex items-center justify-center gap-2
+                    ${
+                      selectedShift === shift
+                        ? "bg-blue-600 dark:bg-blue-700 border-blue-700 dark:border-blue-600 text-white shadow-materialm-2"
+                        : "bg-white dark:bg-slate-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-500 dark:hover:border-blue-400"
+                    }
+                  `}
                 >
-                  Shift {shift}
+                  <ShiftBadge shift={shift} size="sm" />
+                  <span>Shift {shift}</span>
                 </button>
               ))}
             </div>
           </div>
-
-          <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
-            <button
-              onClick={onClose}
-              className={`flex-1 ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.lg} transition-colors focus-ring`}
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleConfirm}
-              className={`flex-1 ${colors.semantic.primary.gradient} ${colors.semantic.primary.hover} text-white font-bold py-3 ${tokens.borders.radius.lg} transition-colors ${colors.semantic.primary.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm}`}
-            >
-              <ArrowRightLeft size={20} />
-              Transfer
-            </button>
-          </div>
         </div>
-      </div>
-    </div>
+      </DialogM3.Body>
+
+      <DialogM3.Footer>
+        <ButtonM3 variant="outlined" color="neutral" onClick={onClose}>
+          Cancel
+        </ButtonM3>
+        <ButtonM3
+          color="primary"
+          startIcon={<ArrowRightLeft size={20} />}
+          onClick={handleConfirm}
+          className="shadow-materialm-2"
+        >
+          Transfer
+        </ButtonM3>
+      </DialogM3.Footer>
+    </DialogM3>
   );
+}
+
+/**
+ * Transfer Shift Modal Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function TransferShiftModal(props: TransferShiftModalProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <TransferShiftModalLegacy {...props} />;
+  }
+
+  return <TransferShiftModalM3 {...props} />;
 }

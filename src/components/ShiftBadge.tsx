@@ -1,60 +1,56 @@
+/**
+ * ShiftBadge - Shift Indicator Component
+ *
+ * Displays a colored badge for firefighter shifts (A, B, or C).
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Maintains WCAG 1.4.1 accessibility with shape indicators.
+ *
+ * @example
+ * ```tsx
+ * <ShiftBadge shift="A" />
+ * <ShiftBadge shift="B" className="mr-2" />
+ * ```
+ */
+
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Shift } from "../lib/supabase";
+import { ShiftBadgeM3 } from "./m3/BadgeM3";
+import { ShiftBadgeLegacy } from "./ShiftBadgeLegacy";
 
 interface ShiftBadgeProps {
   shift: Shift;
   className?: string;
+  /**
+   * Badge size (only applies to MaterialM version)
+   * @default 'sm'
+   */
+  size?: 'xs' | 'sm' | 'md';
 }
 
 /**
- * Reusable Shift Badge Component
- * 
+ * Shift Badge Component
+ *
  * Displays a colored badge indicating the shift (A, B, or C).
  * Includes shape/icon differentiation for color-blind accessibility (WCAG 1.4.1).
- * 
- * Shape indicators:
- * - Shift A: ● (filled circle)
- * - Shift B: ■ (filled square)
- * - Shift C: ▲ (filled triangle)
- * 
- * @param shift - The shift letter ('A', 'B', or 'C')
- * @param className - Optional additional CSS classes
+ *
+ * MaterialM version uses:
+ * - Shift A: ● (filled circle) - green
+ * - Shift B: ■ (filled square) - red
+ * - Shift C: ◆ (filled diamond) - blue
+ *
+ * Legacy version uses:
+ * - Shift A: Circle shape (rounded-full) - green
+ * - Shift B: Square shape (rounded-none) - red
+ * - Shift C: Diamond shape (rotate-45) - blue
  */
-export function ShiftBadge({ shift, className = "" }: ShiftBadgeProps) {
-  const shiftStyles = {
-    A: {
-      color: "bg-green-600 text-white border-white shadow-green-900/50",
-      shape: "rounded-full",
-      label: "Shift A (circle)",
-    },
-    B: {
-      color: "bg-red-600 text-white border-white shadow-red-900/50",
-      shape: "rounded-none",
-      label: "Shift B (square)",
-    },
-    C: {
-      color: "bg-sky-600 text-white border-white shadow-sky-900/50",
-      shape: "rounded-sm rotate-45",
-      label: "Shift C (diamond)",
-    },
-  };
+export function ShiftBadge({ shift, className = "", size = 'sm' }: ShiftBadgeProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
 
-  const style = shiftStyles[shift];
+  // Use legacy badge if MaterialM is disabled
+  if (!useMaterialM) {
+    return <ShiftBadgeLegacy shift={shift} className={className} />;
+  }
 
-  return (
-    <span
-      className={`
-        inline-flex items-center justify-center
-        w-7 h-7
-        text-xs font-bold
-        ${style.shape}
-        border shadow-sm
-        ${style.color}
-        ${className}
-        ${shift === 'C' ? '' : ''}
-      `}
-      aria-label={style.label}
-    >
-      <span className={shift === 'C' ? '-rotate-45' : ''}>{shift}</span>
-    </span>
-  );
+  // MaterialM Badge
+  return <ShiftBadgeM3 shift={shift} size={size} className={className} />;
 }

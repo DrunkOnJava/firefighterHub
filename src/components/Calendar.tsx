@@ -1,17 +1,28 @@
 /**
- * Calendar Component (Refactored Orchestrator)
- * 
- * Simplified calendar component that orchestrates sub-components:
- * - CalendarHeader: Navigation and title
+ * Calendar Component
+ *
+ * Main calendar orchestrator that coordinates all calendar sub-components.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * Orchestrates:
+ * - CalendarHeader: Month navigation and title
  * - CalendarGrid: Weekday headers and day cells
  * - DayModal: Modal for viewing/editing holds
  * - CalendarLegend: Color legend
- * 
- * Reduced from 910 lines to ~160 lines by extracting components.
- * Uses design tokens for consistent styling.
+ *
+ * @example
+ * ```tsx
+ * <Calendar
+ *   firefighters={firefighters}
+ *   scheduledHolds={holds}
+ *   onScheduleHold={handleSchedule}
+ *   currentShift={currentShift}
+ * />
+ * ```
  */
 
 import { useState, useMemo } from "react";
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
 import {
   getMonthDays,
@@ -19,11 +30,12 @@ import {
   ScheduledHold,
   CalendarDay,
 } from "../utils/calendarUtils";
+import { CardM3 } from "./m3/CardM3";
 import { CalendarHeader } from './calendar/CalendarHeader';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { DayModal } from './calendar/DayModal';
 import { CalendarLegend } from './calendar/CalendarLegend';
-import { colors, tokens } from '../styles';
+import { CalendarLegacy } from './CalendarLegacy';
 
 interface CalendarProps {
   firefighters: Firefighter[];
@@ -43,7 +55,10 @@ interface CalendarProps {
   currentShift: Shift;
 }
 
-export function Calendar({
+/**
+ * MaterialM Calendar Component
+ */
+function CalendarM3({
   firefighters,
   scheduledHolds,
   onScheduleHold,
@@ -102,23 +117,9 @@ export function Calendar({
   }
 
   return (
-    <div
-      className={`
-        ${colors.structural.bg.card}
-        ${colors.structural.border.default}
-        ${tokens.borders.radius.xl}
-        ${tokens.spacing.card.md}
-        border-2
-        ${tokens.shadows.sm}
-        overflow-hidden
-      `}
-    >
+    <CardM3 elevation={1} className="overflow-hidden">
       {/* Header section */}
-      <div className={`
-        border-b-2
-        ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}
-        ${tokens.spacing.card.md}
-      `}>
+      <CardM3.Header>
         <CalendarHeader
           currentDate={currentDate}
           onPreviousMonth={goToPreviousMonth}
@@ -126,10 +127,10 @@ export function Calendar({
           currentShift={currentShift}
           isDarkMode={isDarkMode}
         />
-      </div>
+      </CardM3.Header>
 
       {/* Calendar grid section */}
-      <div className={`${tokens.spacing.card.md} w-full`}>
+      <CardM3.Body>
         <CalendarGrid
           calendarDays={calendarDays}
           onDayClick={handleDayClick}
@@ -138,16 +139,12 @@ export function Calendar({
           currentShift={currentShift}
           isDarkMode={isDarkMode}
         />
-      </div>
+      </CardM3.Body>
 
       {/* Legend section */}
-      <div className={`
-        border-t-2
-        ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}
-        ${tokens.spacing.card.md}
-      `}>
+      <CardM3.Footer>
         <CalendarLegend isDarkMode={isDarkMode} />
-      </div>
+      </CardM3.Footer>
 
       {/* Day modal */}
       <DayModal
@@ -164,6 +161,21 @@ export function Calendar({
         isDarkMode={isDarkMode}
         currentShift={currentShift}
       />
-    </div>
+    </CardM3>
   );
+}
+
+/**
+ * Calendar Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function Calendar(props: CalendarProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <CalendarLegacy {...props} />;
+  }
+
+  return <CalendarM3 {...props} />;
 }

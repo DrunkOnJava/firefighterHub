@@ -1,26 +1,44 @@
+/**
+ * Toast - Notification Component
+ *
+ * Displays temporary notification messages with MaterialM or legacy styling.
+ * Automatically switches between designs based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * const { showToast } = useToast();
+ * showToast('Changes saved successfully', 'success');
+ * ```
+ */
+
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
+import { Toast as FlowbiteToast, ToastToggle } from 'flowbite-react';
+import { useFeatureFlag } from '../hooks/useFeatureFlag';
 import { Toast as ToastType } from '../hooks/useToast';
-import { tokens } from '../styles';
+import { ToastContainerLegacy, ToastLegacy } from './ToastLegacy';
 
 export type { ToastType } from '../hooks/useToast';
 
-interface SingleToastProps {
+/**
+ * MaterialM Single Toast Component
+ */
+interface SingleToastM3Props {
   toast: ToastType;
   onClose: (id: string) => void;
   index: number;
 }
 
-function SingleToast({ toast, onClose, index }: SingleToastProps) {
+function SingleToastM3({ toast, onClose, index }: SingleToastM3Props) {
   const icons = {
-    success: <CheckCircle className={`${tokens.icons.md} text-emerald-400`} />,
-    error: <XCircle className={`${tokens.icons.md} text-red-400`} />,
-    info: <AlertCircle className={`${tokens.icons.md} text-sky-400`} />
+    success: <CheckCircle className="w-5 h-5" />,
+    error: <XCircle className="w-5 h-5" />,
+    info: <AlertCircle className="w-5 h-5" />
   };
 
   const colors = {
-    success: 'bg-emerald-900/95 border-emerald-700',
-    error: 'bg-red-900/95 border-red-700',
-    info: 'bg-sky-900/95 border-sky-700'
+    success: 'bg-materialm-success-light text-materialm-success border-materialm-success',
+    error: 'bg-materialm-error-light text-materialm-error border-materialm-error',
+    info: 'bg-materialm-info-light text-materialm-info border-materialm-info'
   };
 
   return (
@@ -28,9 +46,9 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
       className={`
         ${colors[toast.type]}
         border-2
-        ${tokens.borders.radius.lg}
-        ${tokens.shadows['2xl']}
-        ${tokens.spacing.card.md}
+        rounded-materialm-md
+        shadow-materialm-3
+        p-4
         min-w-[320px] max-w-[500px]
         backdrop-blur-sm
         animate-slide-up
@@ -40,34 +58,53 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
         transform: `translateY(-${index * 80}px)`,
         opacity: 1 - (index * 0.2)
       }}
+      role="alert"
+      aria-live="polite"
     >
       <div className="flex items-center gap-3">
-        {icons[toast.type]}
-        <p className="text-white font-medium flex-1">{toast.message}</p>
+        <div className="flex-shrink-0">{icons[toast.type]}</div>
+        <p className="font-medium flex-1 text-gray-900 dark:text-white">{toast.message}</p>
         <button
           onClick={() => onClose(toast.id)}
-          className={`p-1.5 ${tokens.touchTarget.min} hover:bg-white/10 rounded transition-colors focus-ring flex items-center justify-center`}
+          className="flex-shrink-0 p-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-current"
           aria-label="Close notification"
         >
-          <X className={`${tokens.icons.sm} text-white`} />
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>
   );
 }
 
+/**
+ * Toast Container Component
+ *
+ * Manages multiple toast notifications with stacking.
+ */
 interface ToastContainerProps {
   toasts: ToastType[];
   onClose: (id: string) => void;
 }
 
 export function ToastContainer({ toasts, onClose }: ToastContainerProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
   if (toasts.length === 0) return null;
 
+  // Use legacy container if MaterialM is disabled
+  if (!useMaterialM) {
+    return <ToastContainerLegacy toasts={toasts} onClose={onClose} />;
+  }
+
+  // MaterialM Toast Container
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col-reverse gap-3">
+    <div
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col-reverse gap-3"
+      role="region"
+      aria-label="Notifications"
+    >
       {toasts.map((toast, index) => (
-        <SingleToast
+        <SingleToastM3
           key={toast.id}
           toast={toast}
           onClose={onClose}
@@ -78,7 +115,11 @@ export function ToastContainer({ toasts, onClose }: ToastContainerProps) {
   );
 }
 
-// Legacy single toast component for backward compatibility
+/**
+ * Legacy Single Toast Component
+ *
+ * For backward compatibility with components that use the single Toast API.
+ */
 interface LegacyToastProps {
   message: string;
   type: 'success' | 'error' | 'info';
@@ -86,6 +127,8 @@ interface LegacyToastProps {
 }
 
 export function Toast({ message, type, onClose }: LegacyToastProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
   const tempToast: ToastType = {
     id: 'legacy',
     message,
@@ -93,9 +136,60 @@ export function Toast({ message, type, onClose }: LegacyToastProps) {
     timestamp: Date.now()
   };
 
+  // Use legacy toast if MaterialM is disabled
+  if (!useMaterialM) {
+    return <ToastLegacy message={message} type={type} onClose={onClose} />;
+  }
+
+  // MaterialM Single Toast
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      <SingleToast toast={tempToast} onClose={onClose} index={0} />
+    <div
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
+      role="region"
+      aria-label="Notification"
+    >
+      <SingleToastM3 toast={tempToast} onClose={() => onClose()} index={0} />
     </div>
+  );
+}
+
+/**
+ * Alternative: Flowbite Toast Wrapper
+ *
+ * For cases where you want to use Flowbite's Toast component directly.
+ * This is more aligned with Flowbite patterns but less customized.
+ *
+ * @example
+ * ```tsx
+ * <FlowbiteToastWrapper type="success" onClose={handleClose}>
+ *   Changes saved successfully
+ * </FlowbiteToastWrapper>
+ * ```
+ */
+interface FlowbiteToastWrapperProps {
+  type: 'success' | 'error' | 'info';
+  onClose: () => void;
+  children: React.ReactNode;
+}
+
+export function FlowbiteToastWrapper({
+  type,
+  onClose,
+  children,
+}: FlowbiteToastWrapperProps) {
+  const icons = {
+    success: <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />,
+    error: <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />,
+    info: <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+  };
+
+  return (
+    <FlowbiteToast className="shadow-materialm-3">
+      <div className="flex items-center gap-3">
+        {icons[type]}
+        <div className="text-sm font-medium text-gray-900 dark:text-white">{children}</div>
+      </div>
+      <ToastToggle onDismiss={onClose} />
+    </FlowbiteToast>
   );
 }

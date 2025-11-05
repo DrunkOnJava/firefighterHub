@@ -1,26 +1,38 @@
 /**
- * DayModal Component
+ * DayModal - Day Hold Management Modal
  *
  * Modal for viewing and managing holds for a selected day.
- * Contains:
- * - Modal overlay and container
- * - Day header with date
- * - Conditional rendering: HoldList OR HoldForm
- * - Focus trap and keyboard handling (Escape key)
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
  *
- * Uses design tokens for consistent styling.
+ * Contains:
+ * - Day header with date and hold count
+ * - Conditional rendering: HoldList OR HoldForm
+ * - Focus trap and keyboard handling
+ *
+ * @example
+ * ```tsx
+ * <DayModal
+ *   isOpen={isOpen}
+ *   selectedDay={day}
+ *   onClose={handleClose}
+ *   firefighters={firefighters}
+ *   onScheduleHold={handleSchedule}
+ * />
+ * ```
  */
 
 import { X } from "lucide-react";
 import { useState } from "react";
+import { useFeatureFlag } from "../../hooks/useFeatureFlag";
 import { useFocusReturn } from "../../hooks/useFocusReturn";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
 import { CalendarDay, ScheduledHold } from "../../utils/calendarUtils";
-import { getTheme } from "../../utils/theme";
+import { DialogM3 } from "../m3/DialogM3";
+import { BadgeM3 } from "../m3/BadgeM3";
 import { HoldForm } from "./HoldForm";
 import { HoldList } from "./HoldList";
+import { DayModalLegacy } from "./DayModalLegacy";
 
 interface DayModalProps {
   isOpen: boolean;
@@ -43,7 +55,10 @@ interface DayModalProps {
   currentShift: Shift;
 }
 
-export function DayModal({
+/**
+ * MaterialM Day Modal Component
+ */
+function DayModalM3({
   isOpen,
   selectedDay,
   onClose,
@@ -56,7 +71,6 @@ export function DayModal({
   isAdminMode = false,
   isDarkMode = true,
 }: DayModalProps) {
-  const theme = getTheme(isDarkMode);
   const [selectedStation, setSelectedStation] = useState<string>("");
   const [showAddAnother, setShowAddAnother] = useState(false);
 
@@ -105,75 +119,38 @@ export function DayModal({
     setSelectedStation("");
   };
 
-  return (
-    <div
-      className={`
-        fixed inset-0
-        ${tokens.zIndex.modal}
-        flex items-center justify-center
-        ${tokens.spacing.card.md}
-      `}
-      onClick={handleClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="day-modal-title"
-    >
-      {/* Backdrop */}
-      <div
-        className={`absolute inset-0 ${theme.confirmDialog.overlay}`}
-        aria-hidden="true"
-      />
+  // Format modal title
+  const modalTitle = (
+    <div className="flex items-center gap-2">
+      <span>
+        {selectedDay.date.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+        })}
+      </span>
+      {isPastDate && (
+        <BadgeM3 color="warning" size="xs">
+          PAST DATE
+        </BadgeM3>
+      )}
+    </div>
+  );
 
-      {/* Modal */}
+  return (
+    <DialogM3 show={isOpen} onClose={handleClose} size="lg">
+      {/* Custom header with hold count */}
       <div
         ref={modalTrapRef}
-        className={`
-          relative
-          ${theme.modal.background}
-          ${theme.modal.border}
-          border-2
-          ${tokens.shadows['2xl']}
-          ${tokens.borders.radius.xl}
-          max-w-md w-full
-          max-h-[90vh]
-          overflow-hidden
-          flex flex-col
-        `}
-        onClick={(e) => e.stopPropagation()}
+        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
       >
-        {/* Header */}
-        <div
-          className={`
-          ${theme.calendar.headerBackground}
-          border-b-2
-          ${theme.cardBorder}
-          ${tokens.spacing.card.lg}
-          flex items-center justify-between
-          sticky top-0 z-10
-        `}
-        >
-          <div>
-            <h3
-              id="day-modal-title"
-              className={`${tokens.typography.heading.h3} ${theme.textPrimary}`}
-            >
-              {selectedDay.date.toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}
-              {isPastDate && (
-                <span
-                  className={`ml-2 px-2 py-1 ${tokens.typography.body.small} bg-amber-900/70 text-amber-200 ${tokens.borders.radius.sm} font-semibold`}
-                >
-                  PAST DATE
-                </span>
-              )}
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+              {modalTitle}
             </h3>
             {hasHolds && !showAddAnother && (
-              <p
-                className={`${tokens.typography.body.secondary} ${theme.textSecondary} mt-1`}
-              >
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {selectedDay.scheduledHolds.length} hold
                 {selectedDay.scheduledHolds.length !== 1 ? "s" : ""} scheduled
               </p>
@@ -181,51 +158,58 @@ export function DayModal({
           </div>
           <button
             onClick={handleClose}
-            className={`
-              ${tokens.spacing.section.sm}
-              ${tokens.touchTarget.min}
-              ${tokens.borders.radius.lg}
-              ${theme.modal.background}
-              hover:opacity-80
-              ${tokens.transitions.fast}
-              flex items-center justify-center
-            `}
+            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors focus-ring"
             aria-label="Close date dialog"
           >
-            <X className={`${tokens.icons.lg} ${theme.textTertiary}`} />
+            <X className="w-6 h-6" />
           </button>
         </div>
-
-        {/* Content */}
-        <div className={`${tokens.spacing.card.lg} overflow-y-auto`}>
-          {hasHolds && !showAddAnother && !selectedFirefighter ? (
-            <HoldList
-              holds={selectedDay.scheduledHolds}
-              firefighters={firefighters}
-              onRemove={onRemoveHold}
-              onMarkCompleted={onMarkCompleted}
-              onEdit={() => {}} // TODO: Implement hold editing
-              onAddNew={handleAddNewClick}
-              isAdminMode={isAdminMode}
-              isDarkMode={isDarkMode}
-            />
-          ) : (
-            <HoldForm
-              selectedDay={selectedDay}
-              firefighters={firefighters}
-              selectedFirefighter={selectedFirefighter}
-              onFirefighterSelect={onFirefighterSelect}
-              onSchedule={handleSchedule}
-              onCancel={handleCancel}
-              selectedStation={selectedStation}
-              onStationChange={setSelectedStation}
-              showAddAnother={showAddAnother}
-              onAddAnotherChange={setShowAddAnother}
-              isDarkMode={isDarkMode}
-            />
-          )}
-        </div>
       </div>
-    </div>
+
+      {/* Modal Body */}
+      <DialogM3.Body>
+        {hasHolds && !showAddAnother && !selectedFirefighter ? (
+          <HoldList
+            holds={selectedDay.scheduledHolds}
+            firefighters={firefighters}
+            onRemove={onRemoveHold}
+            onMarkCompleted={onMarkCompleted}
+            onEdit={() => {}} // TODO: Implement hold editing
+            onAddNew={handleAddNewClick}
+            isAdminMode={isAdminMode}
+            isDarkMode={isDarkMode}
+          />
+        ) : (
+          <HoldForm
+            selectedDay={selectedDay}
+            firefighters={firefighters}
+            selectedFirefighter={selectedFirefighter}
+            onFirefighterSelect={onFirefighterSelect}
+            onSchedule={handleSchedule}
+            onCancel={handleCancel}
+            selectedStation={selectedStation}
+            onStationChange={setSelectedStation}
+            showAddAnother={showAddAnother}
+            onAddAnotherChange={setShowAddAnother}
+            isDarkMode={isDarkMode}
+          />
+        )}
+      </DialogM3.Body>
+    </DialogM3>
   );
+}
+
+/**
+ * Day Modal Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function DayModal(props: DayModalProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <DayModalLegacy {...props} />;
+  }
+
+  return <DayModalM3 {...props} />;
 }

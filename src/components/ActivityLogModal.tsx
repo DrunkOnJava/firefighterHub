@@ -1,16 +1,36 @@
-import { X, Clock } from 'lucide-react';
-import { ActivityLog } from './ActivityLog';
+/**
+ * ActivityLogModal - Activity History Modal
+ *
+ * Modal for viewing activity history and audit trail.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * <ActivityLogModal
+ *   isOpen={isOpen}
+ *   onClose={handleClose}
+ * />
+ * ```
+ */
+
+import { Clock } from 'lucide-react';
+import { useEffect } from 'react';
+import { useFeatureFlag } from '../hooks/useFeatureFlag';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
-import { colors, tokens } from '../styles';
-import { useEffect } from 'react';
+import { DialogM3 } from './m3/DialogM3';
+import { ActivityLog } from './ActivityLog';
+import { ActivityLogModalLegacy } from './ActivityLogModalLegacy';
 
 interface ActivityLogModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
+/**
+ * MaterialM Activity Log Modal
+ */
+function ActivityLogModalM3({ isOpen, onClose }: ActivityLogModalProps) {
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -30,38 +50,43 @@ export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="activity-modal-title"
-    >
+    <DialogM3 show={isOpen} onClose={onClose} size="xl">
+      {/* Custom Header */}
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} max-w-4xl w-full max-h-[90vh] overflow-hidden ${colors.components.modal.shadow} animate-scale-in`}
-        onClick={(e) => e.stopPropagation()}
+        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20"
       >
-        <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`${colors.semantic.scheduled.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}>
-              <Clock className="text-white" size={24} />
-            </div>
-            <h2 id="activity-modal-title" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>Activity Log</h2>
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-blue-600">
+            <Clock className="w-6 h-6 text-white" />
           </div>
-          <button
-            onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close activity log dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
-        </div>
-
-        <div className="overflow-y-auto max-h-[calc(90vh-100px)]">
-          <ActivityLog />
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Activity Log
+          </h2>
         </div>
       </div>
-    </div>
+
+      {/* Activity Log Content */}
+      <DialogM3.Body>
+        <div className="max-h-[60vh] overflow-y-auto">
+          <ActivityLog />
+        </div>
+      </DialogM3.Body>
+    </DialogM3>
   );
+}
+
+/**
+ * Activity Log Modal Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function ActivityLogModal(props: ActivityLogModalProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <ActivityLogModalLegacy {...props} />;
+  }
+
+  return <ActivityLogModalM3 {...props} />;
 }

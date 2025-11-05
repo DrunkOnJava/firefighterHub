@@ -1,10 +1,38 @@
-import { Edit2, Save, Users, X, XCircle } from "lucide-react";
+/**
+ * FirefightersModal - Roster Management Modal
+ *
+ * Modal for viewing and managing all firefighters across shifts.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * Features:
+ * - View all firefighters
+ * - Filter by shift
+ * - Inline editing
+ * - Deactivate firefighters
+ *
+ * @example
+ * ```tsx
+ * <FirefightersModal
+ *   isOpen={isOpen}
+ *   onClose={handleClose}
+ *   onUpdate={handleUpdate}
+ *   isAdminMode={isAdminMode}
+ * />
+ * ```
+ */
+
+import { Edit2, Save, Users, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift, supabase } from "../lib/supabase";
-import { colors, tokens } from "../styles";
-import { ShiftBadge } from "./ShiftSelector";
+import { DialogM3 } from "./m3/DialogM3";
+import { ButtonM3, IconButtonM3 } from "./m3/ButtonM3";
+import { SelectM3 } from "./m3/InputM3";
+import { BadgeM3 } from "./m3/BadgeM3";
+import { ShiftBadge } from "./ShiftBadge";
+import { FirefightersModalLegacy } from "./FirefightersModalLegacy";
 import type { Tables } from "../lib/database.types";
 
 type Firefighter = Tables<"firefighters">;
@@ -20,7 +48,10 @@ interface EditingProfile extends Firefighter {
   isEditing: boolean;
 }
 
-export function FirefightersModal({
+/**
+ * MaterialM Firefighters Modal
+ */
+function FirefightersModalM3({
   isOpen,
   onClose,
   onUpdate,
@@ -78,597 +109,251 @@ export function FirefightersModal({
     );
   }
 
-  function updateField<K extends keyof Firefighter>(
-    id: string,
-    field: K,
-    value: Firefighter[K]
-  ) {
-    setAllFirefighters((prev) =>
-      prev.map((ff) => (ff.id === id ? { ...ff, [field]: value } : ff))
-    );
-  }
+  async function handleSave(id: string) {
+    const firefighter = allFirefighters.find((ff) => ff.id === id);
+    if (!firefighter) return;
 
-  async function saveProfile(firefighter: EditingProfile) {
     try {
       const { error } = await supabase
         .from("firefighters")
         .update({
           name: firefighter.name,
           fire_station: firefighter.fire_station,
-          shift: firefighter.shift,
-          certification_level: firefighter.certification_level,
-          apparatus_ambulance: firefighter.apparatus_ambulance,
-          apparatus_brush_truck: firefighter.apparatus_brush_truck,
-          apparatus_engine: firefighter.apparatus_engine,
-          apparatus_tanker: firefighter.apparatus_tanker,
-          apparatus_truck: firefighter.apparatus_truck,
-          apparatus_boat: firefighter.apparatus_boat,
-          apparatus_utv: firefighter.apparatus_utv,
-          apparatus_rescue_squad: firefighter.apparatus_rescue_squad,
-          is_fto: firefighter.is_fto,
-          is_bls: firefighter.is_bls,
-          is_als: firefighter.is_als,
-          updated_at: new Date().toISOString(),
         })
-        .eq("id", firefighter.id);
+        .eq("id", id);
 
       if (error) throw error;
-
-      toggleEdit(firefighter.id);
+      toggleEdit(id);
       onUpdate();
     } catch (error) {
-      console.error("Error saving profile:", error);
-      alert("Failed to save profile. Please try again.");
+      console.error("Error updating firefighter:", error);
     }
   }
 
-  function parseNameForSorting(name: string): {
-    lastName: string;
-    firstName: string;
-    fullName: string;
-  } {
-    const parts = name.trim().split(/\s+/);
-    if (parts.length === 0) {
-      return { lastName: "", firstName: "", fullName: name };
+  async function handleDeactivate(id: string) {
+    if (!confirm("Are you sure you want to deactivate this firefighter?"))
+      return;
+
+    try {
+      const { error } = await supabase
+        .from("firefighters")
+        .update({ is_active: false })
+        .eq("id", id);
+
+      if (error) throw error;
+      await loadAllFirefighters();
+      onUpdate();
+    } catch (error) {
+      console.error("Error deactivating firefighter:", error);
     }
-    if (parts.length === 1) {
-      return { lastName: parts[0], firstName: "", fullName: name };
-    }
-    const lastName = parts[parts.length - 1];
-    const firstName = parts.slice(0, -1).join(" ");
-    return { lastName, firstName, fullName: name };
   }
 
-  function formatNameLastFirst(name: string): string {
-    const { lastName, firstName } = parseNameForSorting(name);
-    if (!firstName) return lastName;
-    return `${lastName}, ${firstName}`;
+  function updateField(id: string, field: string, value: string) {
+    setAllFirefighters((prev) =>
+      prev.map((ff) =>
+        ff.id === id ? { ...ff, [field]: value } : ff
+      )
+    );
   }
 
-  const filteredAndSortedFirefighters = (
+  const filteredFirefighters =
     filterShift === "ALL"
       ? allFirefighters
-      : allFirefighters.filter((ff) => ff.shift === filterShift)
-  ).sort((a, b) => {
-    const aLastName = parseNameForSorting(a.name).lastName.toLowerCase();
-    const bLastName = parseNameForSorting(b.name).lastName.toLowerCase();
-    return aLastName.localeCompare(bLastName);
-  });
+      : allFirefighters.filter((ff) => ff.shift === filterShift);
+
+  const shiftFilterOptions = [
+    { value: "ALL", label: "All Shifts" },
+    { value: "A", label: "Shift A" },
+    { value: "B", label: "Shift B" },
+    { value: "C", label: "Shift C" },
+  ];
 
   if (!isOpen) return null;
 
-  const certificationLevels: (string | "")[] = [
-    "",
-    "EMT",
-    "EMT-A",
-    "EMT-I",
-    "Paramedic",
-  ];
-  const shifts: Shift[] = ["A", "B", "C"];
-
   return (
-    <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in`}
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="firefighters-modal-title"
-    >
+    <DialogM3 show={isOpen} onClose={onClose} size="full">
+      {/* Custom Header */}
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${colors.components.modal.shadow} ${tokens.borders.radius['2xl']} max-w-6xl w-full max-h-[90vh] overflow-hidden animate-scale-in`}
-        onClick={(e) => e.stopPropagation()}
+        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20"
       >
-        <div
-          className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.xl} flex items-center justify-between sticky top-0 z-10`}
-        >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div
-              className={`${colors.semantic.warning.gradient} p-3 ${tokens.borders.radius.xl}`}
-            >
-              <Users className="text-white" size={24} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-600">
+              <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2
-                id="firefighters-modal-title"
-                className={`${tokens.typography.heading.h1} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
-              >
-                All Firefighters
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Manage Team
               </h2>
-              <p
-                className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
-              >
-                Manage profiles and certifications
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {filteredFirefighters.length} firefighter
+                {filteredFirefighters.length !== 1 ? "s" : ""}
+                {filterShift !== "ALL" && ` in Shift ${filterShift}`}
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} hover:bg-gray-700 ${tokens.borders.radius.lg} ${tokens.transitions.fast} ${colors.structural.text.tertiary} focus-ring flex items-center justify-center`}
-            aria-label="Close firefighters dialog"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        <div
-          className={`${tokens.spacing.card.xl} border-b ${colors.structural.border.default}`}
-        >
-          <div className={`flex ${tokens.spacing.gap.sm}`}>
-            <button
-              onClick={() => setFilterShift("ALL")}
-              className={`px-4 py-2 ${tokens.borders.radius.lg} ${
-                tokens.typography.weight.semibold
-              } ${tokens.transitions.fast} ${
-                filterShift === "ALL"
-                  ? colors.semantic.primary.solid + " text-white"
-                  : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-gray-600`
-              }`}
-            >
-              All Shifts
-            </button>
-            {shifts.map((shift) => (
-              <button
-                key={shift}
-                onClick={() => setFilterShift(shift)}
-                className={`px-4 py-2 ${tokens.borders.radius.lg} ${
-                  tokens.typography.weight.semibold
-                } ${tokens.transitions.fast} ${
-                  filterShift === shift
-                    ? colors.semantic.primary.solid + " text-white"
-                    : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-gray-600`
-                }`}
-              >
-                Shift {shift}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div
-          className={`overflow-y-auto max-h-[calc(90vh-180px)] ${tokens.spacing.card.xl}`}
-        >
-          {loading ? (
-            <div className="text-center py-12">
-              <div
-                className={`w-12 h-12 border-4 ${colors.semantic.primary.solid.replace(
-                  "bg-",
-                  "border-"
-                )} border-t-transparent ${
-                  tokens.borders.radius.full
-                } animate-spin mx-auto mb-4`}
-              ></div>
-              <p className={colors.structural.text.tertiary}>
-                Loading firefighters...
-              </p>
-            </div>
-          ) : filteredAndSortedFirefighters.length === 0 ? (
-            <div className="text-center py-12">
-              <Users
-                size={48}
-                className={`${colors.structural.text.tertiary.replace(
-                  "text-",
-                  ""
-                )} mx-auto mb-4`}
-              />
-              <p
-                className={`${colors.structural.text.tertiary} ${tokens.typography.heading.h2}`}
-              >
-                No firefighters found
-              </p>
-            </div>
-          ) : (
-            <div className={`space-y-4`}>
-              {filteredAndSortedFirefighters.map((firefighter) => (
-                <div
-                  key={firefighter.id}
-                  className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.xl} hover:bg-gray-900/70 ${tokens.transitions.fast}`}
-                >
-                  {firefighter.isEditing ? (
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <input
-                          type="text"
-                          value={firefighter.name}
-                          onChange={(e) =>
-                            updateField(firefighter.id, "name", e.target.value)
-                          }
-                          className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.components.input.default} w-full max-w-md`}
-                        />
-                        <div className={`flex ${tokens.spacing.gap.sm}`}>
-                          <button
-                            onClick={() => saveProfile(firefighter)}
-                            className={`px-4 py-2 ${colors.components.button.success} ${tokens.borders.radius.lg} flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.weight.semibold} ${tokens.transitions.fast}`}
-                          >
-                            <Save size={18} />
-                            Save
-                          </button>
-                          <button
-                            onClick={() => toggleEdit(firefighter.id)}
-                            className={`px-4 py-2 ${colors.components.button.secondary} ${tokens.borders.radius.lg} flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.weight.semibold} ${tokens.transitions.fast}`}
-                          >
-                            <XCircle size={18} />
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-
-                      <div
-                        className={`grid grid-cols-1 md:grid-cols-3 ${tokens.spacing.gap.md}`}
-                      >
-                        <div>
-                          <label
-                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-2 block`}
-                          >
-                            Shift
-                          </label>
-                          <select
-                            value={firefighter.shift}
-                            onChange={(e) =>
-                              updateField(
-                                firefighter.id,
-                                "shift",
-                                e.target.value as Shift
-                              )
-                            }
-                            className={`w-full ${colors.components.input.default}`}
-                          >
-                            {shifts.map((shift) => (
-                              <option key={shift} value={shift}>
-                                Shift {shift}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-
-                        <div>
-                          <label
-                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-2 block`}
-                          >
-                            Station Number
-                          </label>
-                          <input
-                            type="text"
-                            value={firefighter.fire_station || ""}
-                            onChange={(e) =>
-                              updateField(
-                                firefighter.id,
-                                "fire_station",
-                                e.target.value || null
-                              )
-                            }
-                            className={`w-full ${colors.components.input.default}`}
-                            placeholder="e.g., 1"
-                          />
-                        </div>
-
-                        <div>
-                          <label
-                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-2 block`}
-                          >
-                            Certification Level
-                          </label>
-                          <select
-                            value={firefighter.certification_level || ""}
-                            onChange={(e) =>
-                              updateField(
-                                firefighter.id,
-                                "certification_level",
-                                e.target.value || null
-                              )
-                            }
-                            className={`w-full ${colors.components.input.default}`}
-                          >
-                            <option value="">Not specified</option>
-                            {certificationLevels.slice(1).map((level) => (
-                              <option key={level} value={level}>
-                                {level}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label
-                          className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-3 block`}
-                        >
-                          Apparatus Clearances
-                        </label>
-                        <div
-                          className={`grid grid-cols-2 md:grid-cols-4 ${tokens.spacing.gap.md}`}
-                        >
-                          {[
-                            { key: "apparatus_ambulance", label: "Ambulance" },
-                            {
-                              key: "apparatus_brush_truck",
-                              label: "Brush Truck",
-                            },
-                            { key: "apparatus_engine", label: "Engine" },
-                            { key: "apparatus_tanker", label: "Tanker" },
-                            { key: "apparatus_truck", label: "Truck" },
-                            { key: "apparatus_boat", label: "Boat" },
-                            { key: "apparatus_utv", label: "UTV" },
-                            {
-                              key: "apparatus_rescue_squad",
-                              label: "Rescue Squad",
-                            },
-                          ].map((apparatus) => (
-                            <label
-                              key={apparatus.key}
-                              className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer`}
-                            >
-                              <input
-                                type="checkbox"
-                                checked={
-                                  (firefighter[
-                                    apparatus.key as keyof Firefighter
-                                  ] as boolean) || false
-                                }
-                                onChange={(e) =>
-                                  updateField(
-                                    firefighter.id,
-                                    apparatus.key as keyof Firefighter,
-                                    e.target.checked
-                                  )
-                                }
-                                className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-2 focus:ring-blue-500"
-                              />
-                              <span
-                                className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
-                              >
-                                {apparatus.label}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label
-                          className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} mb-3 block`}
-                        >
-                          Certifications & Roles
-                        </label>
-                        <div
-                          className={`grid grid-cols-3 ${tokens.spacing.gap.md}`}
-                        >
-                          <label
-                            className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-amber-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-amber-900/30 border border-amber-700/50 ${tokens.transitions.fast}`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={firefighter.is_fto || false}
-                              onChange={(e) =>
-                                updateField(
-                                  firefighter.id,
-                                  "is_fto",
-                                  e.target.checked
-                                )
-                              }
-                              className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
-                            />
-                            <span
-                              className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-amber-300`}
-                            >
-                              FTO
-                            </span>
-                          </label>
-                          <label
-                            className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-emerald-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-emerald-900/30 border border-emerald-700/50 ${tokens.transitions.fast}`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={firefighter.is_bls || false}
-                              onChange={(e) =>
-                                updateField(
-                                  firefighter.id,
-                                  "is_bls",
-                                  e.target.checked
-                                )
-                              }
-                              className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
-                            />
-                            <span
-                              className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-emerald-300`}
-                            >
-                              BLS
-                            </span>
-                          </label>
-                          <label
-                            className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-cyan-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-cyan-900/30 border border-cyan-700/50 ${tokens.transitions.fast}`}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={firefighter.is_als || false}
-                              onChange={(e) =>
-                                updateField(
-                                  firefighter.id,
-                                  "is_als",
-                                  e.target.checked
-                                )
-                              }
-                              className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
-                            />
-                            <span
-                              className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-cyan-300`}
-                            >
-                              ALS
-                            </span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <div
-                          className={`flex items-center ${tokens.spacing.gap.md}`}
-                        >
-                          <h3
-                            className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.structural.text.primary}`}
-                          >
-                            {formatNameLastFirst(firefighter.name)}
-                          </h3>
-                          <ShiftBadge shift={firefighter.shift as Shift} />
-                          {firefighter.fire_station && (
-                            <span
-                              className={`px-2 py-1 ${colors.structural.bg.card} ${colors.structural.text.secondary} ${tokens.borders.radius.md} ${tokens.typography.body.secondary} ${tokens.typography.weight.semibold}`}
-                            >
-                              Station #{firefighter.fire_station}
-                            </span>
-                          )}
-                        </div>
-                        {isAdminMode && (
-                          <button
-                            onClick={() => toggleEdit(firefighter.id)}
-                            className={`px-4 py-2 ${colors.semantic.info.solid} hover:${colors.semantic.info.hover} text-white ${tokens.borders.radius.lg} flex items-center ${tokens.spacing.gap.sm} ${tokens.typography.weight.semibold} ${tokens.transitions.fast}`}
-                          >
-                            <Edit2 size={18} />
-                            Edit
-                          </button>
-                        )}
-                      </div>
-
-                      <div
-                        className={`grid grid-cols-1 md:grid-cols-2 ${tokens.spacing.gap.md} mb-4`}
-                      >
-                        <div>
-                          <span
-                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary}`}
-                          >
-                            Certification:
-                          </span>
-                          <span
-                            className={`ml-2 ${colors.structural.text.secondary}`}
-                          >
-                            {firefighter.certification_level || "Not specified"}
-                          </span>
-                        </div>
-                      </div>
-
-                      {(firefighter.is_fto ||
-                        firefighter.is_bls ||
-                        firefighter.is_als) && (
-                        <div className="mb-4">
-                          <span
-                            className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} block mb-2`}
-                          >
-                            Certifications & Roles:
-                          </span>
-                          <div
-                            className={`flex flex-wrap ${tokens.spacing.gap.sm}`}
-                          >
-                            {firefighter.is_fto && (
-                              <span
-                                className={`px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-700/50 ${tokens.borders.radius.md} ${tokens.typography.body.small} ${tokens.typography.weight.bold}`}
-                              >
-                                FTO
-                              </span>
-                            )}
-                            {firefighter.is_bls && (
-                              <span
-                                className={`px-3 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-700/50 ${tokens.borders.radius.md} ${tokens.typography.body.small} ${tokens.typography.weight.bold}`}
-                              >
-                                BLS
-                              </span>
-                            )}
-                            {firefighter.is_als && (
-                              <span
-                                className={`px-3 py-1 bg-cyan-900/30 text-cyan-300 border border-cyan-700/50 ${tokens.borders.radius.md} ${tokens.typography.body.small} ${tokens.typography.weight.bold}`}
-                              >
-                                ALS
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      <div>
-                        <span
-                          className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.tertiary} block mb-2`}
-                        >
-                          Apparatus Clearances:
-                        </span>
-                        <div
-                          className={`flex flex-wrap ${tokens.spacing.gap.sm}`}
-                        >
-                          {[
-                            { key: "apparatus_ambulance", label: "Ambulance" },
-                            {
-                              key: "apparatus_brush_truck",
-                              label: "Brush Truck",
-                            },
-                            { key: "apparatus_engine", label: "Engine" },
-                            { key: "apparatus_tanker", label: "Tanker" },
-                            { key: "apparatus_truck", label: "Truck" },
-                            { key: "apparatus_boat", label: "Boat" },
-                            { key: "apparatus_utv", label: "UTV" },
-                            {
-                              key: "apparatus_rescue_squad",
-                              label: "Rescue Squad",
-                            },
-                          ]
-                            .filter(
-                              (apparatus) =>
-                                firefighter[apparatus.key as keyof Firefighter]
-                            )
-                            .map((apparatus) => (
-                              <span
-                                key={apparatus.key}
-                                className={`px-3 py-1 bg-amber-950/70 text-amber-300 border border-amber-800 ${tokens.borders.radius.full} ${tokens.typography.body.small} ${tokens.typography.weight.semibold}`}
-                              >
-                                {apparatus.label}
-                              </span>
-                            ))}
-                          {![
-                            "apparatus_ambulance",
-                            "apparatus_brush_truck",
-                            "apparatus_engine",
-                            "apparatus_tanker",
-                            "apparatus_truck",
-                            "apparatus_boat",
-                            "apparatus_utv",
-                            "apparatus_rescue_squad",
-                          ].some(
-                            (key) => firefighter[key as keyof Firefighter]
-                          ) && (
-                            <span
-                              className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}
-                            >
-                              None specified
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <SelectM3
+            value={filterShift}
+            onChange={(e) => setFilterShift(e.target.value as Shift | "ALL")}
+            options={shiftFilterOptions}
+            size="sm"
+            className="w-40"
+          />
         </div>
       </div>
-    </div>
+
+      <DialogM3.Body>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    Name
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    Shift
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    Station
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    Status
+                  </th>
+                  {isAdminMode && (
+                    <th className="px-4 py-3 text-right text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                      Actions
+                    </th>
+                  )}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {filteredFirefighters.map((ff) => (
+                  <tr
+                    key={ff.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <td className="px-4 py-3">
+                      {ff.isEditing ? (
+                        <input
+                          type="text"
+                          value={ff.name}
+                          onChange={(e) => updateField(ff.id, "name", e.target.value)}
+                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        />
+                      ) : (
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          {ff.name}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <ShiftBadge shift={ff.shift as Shift} />
+                    </td>
+                    <td className="px-4 py-3">
+                      {ff.isEditing ? (
+                        <input
+                          type="text"
+                          value={ff.fire_station || ""}
+                          onChange={(e) =>
+                            updateField(ff.id, "fire_station", e.target.value)
+                          }
+                          placeholder="Station #"
+                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                        />
+                      ) : (
+                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                          {ff.fire_station ? `#${ff.fire_station}` : "—"}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      <BadgeM3
+                        color={ff.is_available ? "success" : "neutral"}
+                        size="xs"
+                      >
+                        {ff.is_available ? "Available" : "Unavailable"}
+                      </BadgeM3>
+                    </td>
+                    {isAdminMode && (
+                      <td className="px-4 py-3 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          {ff.isEditing ? (
+                            <ButtonM3
+                              variant="filled"
+                              color="success"
+                              size="sm"
+                              startIcon={<Save size={16} />}
+                              onClick={() => handleSave(ff.id)}
+                            >
+                              Save
+                            </ButtonM3>
+                          ) : (
+                            <IconButtonM3
+                              variant="outlined"
+                              color="neutral"
+                              size="sm"
+                              onClick={() => toggleEdit(ff.id)}
+                              aria-label="Edit firefighter"
+                            >
+                              <Edit2 size={16} />
+                            </IconButtonM3>
+                          )}
+                          <IconButtonM3
+                            variant="outlined"
+                            color="error"
+                            size="sm"
+                            onClick={() => handleDeactivate(ff.id)}
+                            aria-label="Deactivate firefighter"
+                          >
+                            <XCircle size={16} />
+                          </IconButtonM3>
+                        </div>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {filteredFirefighters.length === 0 && !loading && (
+              <div className="text-center py-12">
+                <Users className="w-16 h-16 mx-auto mb-4 text-gray-400" />
+                <p className="text-gray-600 dark:text-gray-400">
+                  No firefighters found
+                  {filterShift !== "ALL" && ` in Shift ${filterShift}`}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </DialogM3.Body>
+
+      <DialogM3.Footer align="right">
+        <ButtonM3 variant="filled" color="primary" onClick={onClose}>
+          Done
+        </ButtonM3>
+      </DialogM3.Footer>
+    </DialogM3>
   );
+}
+
+/**
+ * Firefighters Modal Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function FirefightersModal(props: FirefightersModalProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <FirefightersModalLegacy {...props} />;
+  }
+
+  return <FirefightersModalM3 {...props} />;
 }

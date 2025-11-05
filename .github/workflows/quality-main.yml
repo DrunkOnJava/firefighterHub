@@ -1,0 +1,24 @@
+name: Quality CI (main)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "vite.config.*"
+      - "tailwind.config.*"
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality-reusable.yml
+    with:
+      run_visual_regression: true
+      run_lighthouse: true
+      run_accessibility: true
+      token_usage_threshold: 95
+    secrets: inherit

@@ -20,6 +20,7 @@ import { Sidebar } from "./components/Sidebar";
 import { ToastContainer } from "./components/Toast";
 import { TransferShiftModal } from "./components/TransferShiftModal";
 import { UpdateNotification } from "./components/UpdateNotification";
+import { MaterialMPilot } from "./components/MaterialMPilot";
 import {
   A11Y,
   GRID_COLS,
@@ -439,6 +440,9 @@ function App() {
 
       {/* Update notification for new app versions */}
       <UpdateNotification />
+
+      {/* MaterialM Design Preview Pilot */}
+      <MaterialMPilot />
     </div>
   );
 }

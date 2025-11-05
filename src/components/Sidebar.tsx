@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
+import { NoScheduledHoldsEmptyState } from "./EmptyState";
 import { ShiftBadge } from "./ShiftBadge";
 
 type View = "calendar" | "reports";
@@ -183,6 +184,21 @@ export function Sidebar({
         </div>
 
         <div className={`${tokens.spacing.card.md} space-y-4`}>
+          {/* Empty state when no firefighters and no holds */}
+          {nextUpAllShifts.length === 0 && 
+           currentShiftRotation.length === 0 && 
+           displayedHolds.length === 0 && (
+            <div className="py-4">
+              <NoScheduledHoldsEmptyState 
+                onScheduleHold={() => {
+                  // This will be handled by the calendar click
+                  // Empty state guides user to use calendar
+                }}
+                isAdminMode={isAdminMode}
+              />
+            </div>
+          )}
+
           {/* Always show Next Up for Hold (All Shifts) */}
           {nextUpAllShifts.length > 0 && (
             <div>
@@ -483,6 +499,29 @@ export function Sidebar({
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Empty state for no scheduled holds (but firefighters exist) */}
+          {displayedHolds.length === 0 && 
+           (nextUpAllShifts.length > 0 || currentShiftRotation.length > 0) && (
+            <div
+              className={`
+                pt-4 border-t-2
+                ${colors.structural.border.default}
+              `}
+            >
+              <div className="text-center py-8">
+                <Calendar 
+                  className={`w-12 h-12 mx-auto mb-3 ${colors.structural.text.tertiary}`} 
+                />
+                <p className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary} mb-1`}>
+                  No Upcoming Holds
+                </p>
+                <p className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}>
+                  Click any date to schedule
+                </p>
               </div>
             </div>
           )}

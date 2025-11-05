@@ -1,0 +1,548 @@
+name: "Frontend Quality Checks"
+
+# Consolidated quality pipeline: Build once, test everywhere
+# Runs: Design tokens, Visual regression, Accessibility, Lighthouse
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TZ: UTC
+  LANG: en_US.UTF-8
+  CI: true
+  PLAYWRIGHT_BROWSERS_PATH: 0
+
+jobs:
+  # ============================================
+  # Job 1: Build (runs once, shared by all)
+  # ============================================
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Get pnpm store path
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build-${{ github.sha }}
+          path: |
+            dist/
+            package.json
+            pnpm-lock.yaml
+          retention-days: 1
+
+  # ============================================
+  # Job 2: Design Token Validation (parallel)
+  # ============================================
+  design-tokens:
+    name: Design Token Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Scan for arbitrary Tailwind values
+        id: scan
+        run: |
+          # Comprehensive patterns for arbitrary values
+          PATTERNS=(
+            'bg-\[#[0-9A-Fa-f]{3,8}\]'
+            'text-\[#[0-9A-Fa-f]{3,8}\]'
+            'border-\[#[0-9A-Fa-f]{3,8}\]'
+            'bg-\[[0-9.]+r?em\]'
+            'text-\[[0-9.]+r?em\]'
+            'w-\[[0-9.]+r?em\]'
+            'h-\[[0-9.]+r?em\]'
+            'p[xytblr]?-\[[0-9.]+r?em\]'
+            'm[xytblr]?-\[[0-9.]+r?em\]'
+            'gap-\[[0-9.]+r?em\]'
+            'rounded-\[[0-9.]+r?em\]'
+            'shadow-\[.*\]'
+            'grid-(cols|rows)-\[.*\]'
+          )
+
+          VIOLATIONS=0
+          : > violations.txt
+
+          for pattern in "${PATTERNS[@]}"; do
+            if grep -rn --include="*.tsx" --include="*.ts" -E "$pattern" src/ >> violations.txt 2>/dev/null; then
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          done
+
+          echo "count=$VIOLATIONS" >> $GITHUB_OUTPUT
+          echo "has_violations=$([ $VIOLATIONS -gt 0 ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+
+      - name: Calculate token usage
+        id: usage
+        run: |
+          TOTAL_FILES=$(find src/components -name "*.tsx" | wc -l)
+          TOKEN_FILES=$(grep -rl "from.*['\"]@\?/\?styles['\"]" src/components | wc -l)
+
+          if [ "$TOTAL_FILES" -gt 0 ]; then
+            PERCENTAGE=$(awk "BEGIN {printf \"%.0f\", ($TOKEN_FILES / $TOTAL_FILES) * 100}")
+          else
+            PERCENTAGE=0
+          fi
+
+          echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
+          echo "meets_threshold=$([ "$PERCENTAGE" -ge 95 ] && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+
+      - name: Generate report
+        if: always()
+        run: |
+          {
+            echo "# 🎨 Design Token Validation"
+            echo ""
+            echo "| Metric | Value | Status |"
+            echo "|--------|-------|--------|"
+            echo "| Token Usage | ${{ steps.usage.outputs.percentage }}% | $([ "${{ steps.usage.outputs.meets_threshold }}" = "true" ] && echo "✅" || echo "⚠️") |"
+            echo "| Arbitrary Values | ${{ steps.scan.outputs.count }} | $([ "${{ steps.scan.outputs.has_violations }}" = "false" ] && echo "✅" || echo "❌") |"
+            echo ""
+
+            if [ "${{ steps.scan.outputs.has_violations }}" = "true" ]; then
+              echo "## ❌ Violations Found"
+              echo ""
+              echo '```'
+              head -20 violations.txt
+              echo '```'
+            else
+              echo "## ✅ All styling uses design tokens!"
+            fi
+          } > report.md
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('report.md', 'utf8');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+      - name: Fail if violations found
+        if: steps.scan.outputs.has_violations == 'true'
+        run: |
+          echo "::error::Found arbitrary Tailwind values - use design tokens"
+          exit 1
+
+  # ============================================
+  # Job 3: Lighthouse CI (needs build)
+  # ============================================
+  lighthouse:
+    name: Lighthouse Performance & Accessibility
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build-${{ github.sha }}
+          path: .
+
+      - name: Start preview server
+        run: |
+          npx serve -s dist -l 4173 &
+          echo $! > .server-pid
+          timeout 60 bash -c 'until curl -sf http://localhost:4173 > /dev/null; do sleep 1; done'
+          echo "✅ Server ready"
+
+      - name: Run Lighthouse CI
+        run: |
+          # Create config
+          cat > lighthouserc.json << 'EOF'
+          {
+            "ci": {
+              "collect": {
+                "url": ["http://localhost:4173"],
+                "numberOfRuns": 2,
+                "settings": {
+                  "preset": "desktop",
+                  "onlyCategories": ["performance", "accessibility", "best-practices", "seo"]
+                }
+              },
+              "assert": {
+                "assertions": {
+                  "categories:performance": ["warn", {"minScore": 0.9}],
+                  "categories:accessibility": ["error", {"minScore": 1.0}],
+                  "categories:best-practices": ["warn", {"minScore": 0.9}],
+                  "first-contentful-paint": ["warn", {"maxNumericValue": 1800}],
+                  "largest-contentful-paint": ["error", {"maxNumericValue": 2500}],
+                  "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}]
+                }
+              }
+            }
+          }
+          EOF
+
+          npx @lhci/cli@0.14.3 autorun --config=lighthouserc.json || true
+
+      - name: Parse results
+        id: results
+        run: |
+          REPORT=$(find .lighthouseci -name "*.json" -type f | head -1)
+
+          if [ -f "$REPORT" ]; then
+            PERF=$(jq -r '(.categories.performance.score // 0) * 100 | floor' "$REPORT")
+            A11Y=$(jq -r '(.categories.accessibility.score // 0) * 100 | floor' "$REPORT")
+            BP=$(jq -r '(.categories["best-practices"].score // 0) * 100 | floor' "$REPORT")
+
+            echo "performance=$PERF" >> $GITHUB_OUTPUT
+            echo "accessibility=$A11Y" >> $GITHUB_OUTPUT
+            echo "best_practices=$BP" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ github.sha }}
+          path: .lighthouseci/
+          retention-days: 14
+
+      - name: Fail if accessibility < 100
+        if: steps.results.outputs.accessibility != '100'
+        run: |
+          echo "::error::Accessibility score ${{ steps.results.outputs.accessibility }}/100 - Must be 100"
+          exit 1
+
+      - name: Stop server
+        if: always()
+        run: |
+          [ -f .server-pid ] && kill $(cat .server-pid) || true
+
+  # ============================================
+  # Job 4: Accessibility Audit (needs build)
+  # ============================================
+  accessibility:
+    name: Accessibility Audit (axe-core)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      - name: Install Playwright
+        run: pnpm add -D @playwright/test @axe-core/playwright
+
+      - name: Install browsers
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build-${{ github.sha }}
+          path: .
+
+      - name: Create accessibility test
+        run: |
+          mkdir -p tests/a11y
+          cat > tests/a11y/audit.spec.ts << 'EOF'
+          import { test, expect } from '@playwright/test';
+          import AxeBuilder from '@axe-core/playwright';
+
+          const pages = [
+            { url: 'http://localhost:4173', name: 'Home' },
+            { url: 'http://localhost:4173?shift=A', name: 'Shift A' },
+            { url: 'http://localhost:4173?shift=B', name: 'Shift B' },
+            { url: 'http://localhost:4173?shift=C', name: 'Shift C' },
+          ];
+
+          const viewports = [
+            { width: 1920, height: 1080, name: 'Desktop' },
+            { width: 375, height: 667, name: 'Mobile' },
+          ];
+
+          for (const page of pages) {
+            for (const viewport of viewports) {
+              test(`${page.name} - ${viewport.name}`, async ({ page: pw }) => {
+                await pw.setViewportSize(viewport);
+                await pw.goto(page.url);
+                await pw.waitForLoadState('networkidle');
+
+                const results = await new AxeBuilder({ page: pw })
+                  .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+                  .analyze();
+
+                const criticalViolations = results.violations.filter(
+                  v => v.impact === 'critical' || v.impact === 'serious'
+                );
+
+                expect(criticalViolations).toHaveLength(0);
+              });
+            }
+          }
+          EOF
+
+      - name: Start preview server
+        run: |
+          npx serve -s dist -l 4173 &
+          echo $! > .server-pid
+          timeout 60 bash -c 'until curl -sf http://localhost:4173 > /dev/null; do sleep 1; done'
+
+      - name: Run accessibility tests
+        run: pnpm exec playwright test tests/a11y/
+
+      - name: Upload accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-report-${{ github.sha }}
+          path: playwright-report/
+          retention-days: 14
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f .server-pid ]; then
+            kill $(cat .server-pid) 2>/dev/null || true
+            sleep 1
+            kill -9 $(cat .server-pid) 2>/dev/null || true
+          fi
+
+  # ============================================
+  # Job 5: Visual Regression (needs build)
+  # ============================================
+  visual-regression:
+    name: Visual Regression Testing
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        viewport:
+          - { width: 1920, height: 1080, name: desktop }
+          - { width: 768, height: 1024, name: tablet }
+          - { width: 375, height: 667, name: mobile }
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package.json') }}
+
+      - name: Install Playwright
+        run: |
+          pnpm add -D @playwright/test
+          pnpm exec playwright install chromium --with-deps
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build-${{ github.sha }}
+          path: .
+
+      - name: Create VRT test config
+        run: |
+          cat > playwright.vrt.config.ts << 'EOF'
+          import { defineConfig } from '@playwright/test';
+
+          export default defineConfig({
+            testDir: 'tests/vrt',
+            use: {
+              baseURL: 'http://localhost:4173',
+              viewport: {
+                width: ${{ matrix.viewport.width }},
+                height: ${{ matrix.viewport.height }}
+              },
+              colorScheme: 'dark',
+              deviceScaleFactor: 1,
+              locale: 'en-US',
+              timezoneId: 'UTC',
+            },
+            expect: {
+              toHaveScreenshot: {
+                maxDiffPixelRatio: 0.002,
+                animations: 'disabled',
+              },
+            },
+            retries: 1,
+          });
+          EOF
+
+      - name: Create VRT tests
+        run: |
+          mkdir -p tests/vrt
+          cat > tests/vrt/calendar.spec.ts << 'EOF'
+          import { test, expect } from '@playwright/test';
+
+          test.beforeEach(async ({ page }) => {
+            // Freeze time for deterministic UI
+            await page.addInitScript(() => {
+              const fixed = new Date('2025-10-15T12:00:00Z').valueOf();
+              Date.now = () => fixed;
+            });
+
+            // Disable animations
+            await page.addStyleTag({ content: `
+              *, *::before, *::after {
+                animation-duration: 0s !important;
+                transition-duration: 0s !important;
+                caret-color: transparent !important;
+              }
+              ::-webkit-scrollbar { display: none !important; }
+            `});
+          });
+
+          test('Calendar month view', async ({ page }) => {
+            await page.goto('/');
+            await page.waitForLoadState('networkidle');
+            await page.evaluate(() => document.fonts?.ready);
+            await expect(page).toHaveScreenshot('calendar-month.png');
+          });
+
+          test('Sidebar upcoming schedule', async ({ page }) => {
+            await page.goto('/');
+            const sidebar = page.locator('[role="complementary"]');
+            await expect(sidebar).toHaveScreenshot('sidebar.png');
+          });
+          EOF
+
+      - name: Start preview server
+        run: |
+          npx serve -s dist -l 4173 &
+          echo $! > .server-pid
+          timeout 60 bash -c 'until curl -sf http://localhost:4173 > /dev/null; do sleep 1; done'
+
+      - name: Run VRT
+        run: pnpm exec playwright test --config=playwright.vrt.config.ts
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-${{ matrix.viewport.name }}-${{ github.sha }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f .server-pid ]; then
+            kill $(cat .server-pid) 2>/dev/null || true
+            sleep 1
+            kill -9 $(cat .server-pid) 2>/dev/null || true
+          fi

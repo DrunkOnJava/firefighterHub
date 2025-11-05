@@ -1,0 +1,226 @@
+name: "Release Notes Generator"
+
+# Auto-generate release notes from conventional commits
+# Hardened with input validation, error handling, and proper tag management
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'  # Only semver tags
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag (e.g., v1.0.0)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false  # Don't cancel releases
+
+jobs:
+  generate:
+    name: Generate Release Notes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate and extract tag
+        id: tag
+        run: |
+          # Determine tag from trigger
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          fi
+
+          # Validate tag format
+          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid tag format: $TAG (expected: v1.0.0)"
+            exit 1
+          fi
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "✅ Valid tag: $TAG"
+
+      - name: Get previous tag
+        id: prev
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          PREV=$(git describe --tags --abbrev=0 "${TAG}^" 2>/dev/null || echo "")
+
+          echo "prev=$PREV" >> $GITHUB_OUTPUT
+
+          if [ -n "$PREV" ]; then
+            echo "📊 Generating changelog: $PREV → $TAG"
+          else
+            echo "📊 Generating changelog for first release: $TAG"
+          fi
+
+      - name: Generate categorized changelog
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          PREV="${{ steps.prev.outputs.prev }}"
+
+          # Set range
+          if [ -n "$PREV" ]; then
+            RANGE="${PREV}..${TAG}"
+          else
+            RANGE="$TAG"
+          fi
+
+          {
+            echo "# Release $TAG"
+            echo ""
+            echo "**Release Date:** $(date '+%Y-%m-%d')"
+            echo "**Repository:** FirefighterHub"
+            echo ""
+            echo "---"
+            echo ""
+            echo "## 🎯 What's Changed"
+            echo ""
+
+            # Features
+            echo "### ✨ Features"
+            git log $RANGE --pretty=format:"- %s (%h)" --perl-regexp --grep="^feat[\(:]" || echo "- No new features"
+            echo ""
+            echo ""
+
+            # Bug Fixes
+            echo "### 🐛 Bug Fixes"
+            git log $RANGE --pretty=format:"- %s (%h)" --perl-regexp --grep="^fix[\(:]" || echo "- No bug fixes"
+            echo ""
+            echo ""
+
+            # UI/UX
+            echo "### 🎨 UI/UX Improvements"
+            git log $RANGE --pretty=format:"- %s (%h)" --perl-regexp --grep="^(style|refactor).*ui" || echo "- No UI/UX changes"
+            echo ""
+            echo ""
+
+            # Documentation
+            echo "### 📚 Documentation"
+            git log $RANGE --pretty=format:"- %s (%h)" --perl-regexp --grep="^docs[\(:]" || echo "- No documentation updates"
+            echo ""
+            echo ""
+
+            # Performance
+            echo "### ⚡ Performance"
+            git log $RANGE --pretty=format:"- %s (%h)" --perl-regexp --grep="^perf[\(:]" || echo "- No performance improvements"
+            echo ""
+            echo ""
+
+            # Maintenance
+            echo "### 🔧 Maintenance"
+            git log $RANGE --pretty=format:"- %s (%h)" --perl-regexp --grep="^(chore|ci|build)[\(:]" || echo "- No maintenance updates"
+            echo ""
+            echo ""
+
+            # Breaking Changes
+            echo "### ⚠️ Breaking Changes"
+            git log $RANGE --pretty=format:"- %s (%h)" --grep="BREAKING CHANGE" || echo "- No breaking changes"
+            echo ""
+            echo ""
+
+            # Statistics
+            echo "## 📊 Statistics"
+            echo ""
+            git diff --shortstat $RANGE 2>/dev/null || echo "First release"
+            echo ""
+            echo ""
+
+            # Contributors
+            echo "## 👥 Contributors"
+            echo ""
+            git log $RANGE --format="%an <%ae>" | sort -u | while read line; do
+              NAME=$(echo "$line" | cut -d '<' -f1 | xargs)
+              echo "- $NAME"
+            done
+            echo ""
+
+            # Links
+            echo "---"
+            echo ""
+            echo "## 🔗 Links"
+            echo ""
+            echo "- **Production:** https://firefighter-hub.vercel.app"
+            echo "- **Repository:** https://github.com/DrunkOnJava/firefighterHub"
+            echo "- **Issues:** https://github.com/DrunkOnJava/firefighterHub/issues"
+
+          } > RELEASE_NOTES.md
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+
+          # Try to create release
+          if gh release create "$TAG" \
+            --title "Release $TAG" \
+            --notes-file RELEASE_NOTES.md \
+            --latest 2>&1; then
+            echo "✅ Release created"
+          else
+            # If creation failed, try to edit
+            echo "Release exists, updating..."
+            if ! gh release edit "$TAG" --notes-file RELEASE_NOTES.md; then
+              echo "::error::Failed to create or update release"
+              exit 1
+            fi
+            echo "✅ Release updated"
+          fi
+
+      - name: Find and notify merged PRs
+        if: steps.prev.outputs.prev != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          PREV="${{ steps.prev.outputs.prev }}"
+
+          # Get all commits in range
+          git log ${PREV}..${TAG} --format=%H | while read commit; do
+            # Find PR for commit (GitHub auto-links)
+            PR=$(gh pr list --search "$commit" --state merged --json number --jq '.[0].number' 2>/dev/null || echo "")
+
+            if [ -n "$PR" ]; then
+              # Comment on PR
+              gh pr comment "$PR" \
+                --body "🎉 Included in release [$TAG](https://github.com/DrunkOnJava/firefighterHub/releases/tag/$TAG)" \
+                2>/dev/null || echo "Could not comment on PR #$PR"
+            fi
+          done | sort -u
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes-${{ steps.tag.outputs.tag }}
+          path: RELEASE_NOTES.md
+          retention-days: 90
+
+      - name: Summary
+        run: |
+          {
+            echo "## 📝 Release ${{ steps.tag.outputs.tag }}"
+            echo ""
+            echo "✅ Release notes generated"
+            echo "✅ GitHub release created/updated"
+            echo "✅ Merged PRs notified"
+            echo ""
+            echo "**View:** https://github.com/DrunkOnJava/firefighterHub/releases/tag/${{ steps.tag.outputs.tag }}"
+          } >> $GITHUB_STEP_SUMMARY

@@ -12,9 +12,9 @@ interface SingleToastProps {
 
 function SingleToast({ toast, onClose, index }: SingleToastProps) {
   const icons = {
-    success: <CheckCircle className="text-emerald-400" size={20} />,
-    error: <XCircle className="text-red-400" size={20} />,
-    info: <AlertCircle className="text-sky-400" size={20} />
+    success: <CheckCircle className={`${tokens.icons.md} text-emerald-400`} />,
+    error: <XCircle className={`${tokens.icons.md} text-red-400`} />,
+    info: <AlertCircle className={`${tokens.icons.md} text-sky-400`} />
   };
 
   const colors = {
@@ -49,7 +49,7 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
           className="p-1.5 hover:bg-white/10 rounded transition-colors focus-ring"
           aria-label="Close notification"
         >
-          <X size={18} className="text-white" />
+          <X className={`${tokens.icons.sm} text-white`} />
         </button>
       </div>
     </div>

@@ -60,7 +60,7 @@ export function MetricCard({
         </div>
         {Icon && (
           <div className={`${iconClass} opacity-80`}>
-            <Icon size={24} />
+            <Icon className={tokens.icons.lg} />
           </div>
         )}
       </div>

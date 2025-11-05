@@ -110,7 +110,23 @@ export const tokens = {
   },
 
   /**
-   * Shadow System
+   * Shadow System - Elevation Hierarchy
+   * 
+   * Apply shadows consistently based on component elevation level:
+   * 
+   * Level 0 (none) - Flat backgrounds, inline elements
+   * Level 1 (sm) - Slightly elevated cards, calendar containers
+   * Level 2 (md) - Floating elements (sidebar, dropdowns)
+   * Level 3 (lg) - Primary actions (buttons), sticky headers
+   * Level 4 (xl) - Overlays (tooltips, popovers)
+   * Level 5 (2xl) - Highest priority (modals, toasts)
+   * 
+   * Usage:
+   * - Calendar container: shadow-sm
+   * - Sidebar: shadow-md
+   * - Header (sticky): shadow-lg
+   * - Modals/dialogs: shadow-2xl
+   * - Toast notifications: shadow-2xl
    */
   shadows: {
     none: 'shadow-none',

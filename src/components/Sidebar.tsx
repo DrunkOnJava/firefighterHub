@@ -148,7 +148,7 @@ export function Sidebar({
 
       <div
         className={`
-          border-2 ${tokens.borders.radius.xl} ${tokens.shadows.lg}
+          border-2 ${tokens.borders.radius.xl} ${tokens.shadows.md}
           overflow-hidden
           ${colors.structural.bg.card}
           ${colors.structural.border.default}

@@ -132,7 +132,7 @@ export function DayModal({
           ${theme.modal.background}
           ${theme.modal.border}
           border-2
-          ${tokens.shadows.xl}
+          ${tokens.shadows['2xl']}
           ${tokens.borders.radius.xl}
           max-w-md w-full
           max-h-[90vh]

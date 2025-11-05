@@ -154,7 +154,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
             {import.meta.env.DEV && error?.stack && (
               <details className="mt-4">
-                <summary className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} cursor-pointer hover:${colors.structural.text.primary}`}>
+                <summary className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} cursor-pointer hover:${colors.structural.text.primary} ${tokens.transitions.colors}`}>
                   Stack Trace (Development Only)
                 </summary>
                 <pre className={`mt-2 ${tokens.typography.body.small} ${colors.structural.bg.surface} p-3 rounded overflow-x-auto max-h-40 ${colors.structural.text.primary}`}>

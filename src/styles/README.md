@@ -290,6 +290,155 @@ tokens.typography.body.secondary  // text-sm (14px)
 tokens.typography.body.small      // text-xs (12px)
 ```
 
+## ⚡ Transitions & Animations
+
+### Transition System
+
+Consistent timing functions for smooth, professional interactions. All transitions respect `prefers-reduced-motion` via global CSS.
+
+```tsx
+// Fast transitions (150ms) - For immediate feedback
+tokens.transitions.fast    // Buttons, inputs, hovers, focus states
+
+// Normal transitions (300ms) - For larger movements
+tokens.transitions.normal  // Modals, drawers, dropdowns, panels
+
+// Slow transitions (500ms) - For complex animations
+tokens.transitions.slow    // Page transitions, large movements
+```
+
+### Property-Specific Transitions
+
+For better performance, use property-specific transitions instead of `transition-all`:
+
+```tsx
+tokens.transitions.colors     // Color changes only
+tokens.transitions.opacity    // Opacity changes only
+tokens.transitions.transform  // Transform changes only
+tokens.transitions.shadow     // Shadow changes only
+```
+
+### Usage Guidelines
+
+**When to use fast (150ms):**
+- Button hover states
+- Input field focus
+- Icon color changes
+- Card hover effects
+- Tooltip appearances
+- Link underlines
+
+**When to use normal (300ms):**
+- Modal entrances/exits
+- Drawer slide-ins
+- Dropdown menus
+- Panel expansions
+- Tab switching
+- Toast notifications
+
+**When to use slow (500ms):**
+- Full page transitions
+- Complex multi-property animations
+- Large element movements
+- Route changes
+
+### Examples
+
+```tsx
+// Button with fast hover transition
+<button className={`
+  ${colors.components.button.primary}
+  ${tokens.transitions.fast}
+`}>
+  Click Me
+</button>
+
+// Card with hover effect
+<div className={`
+  ${colors.structural.bg.card}
+  ${tokens.spacing.card.md}
+  ${tokens.borders.radius.xl}
+  ${tokens.transitions.fast}
+  hover:shadow-lg
+  hover:border-blue-500
+`}>
+  Card content
+</div>
+
+// Modal with entrance animation
+<div className={`
+  ${colors.components.modal.background}
+  ${tokens.spacing.modal.md}
+  ${tokens.borders.radius['2xl']}
+  ${tokens.transitions.normal}
+  ${isOpen ? 'opacity-100' : 'opacity-0'}
+`}>
+  Modal content
+</div>
+
+// Performance-optimized color transition
+<button className={`
+  ${tokens.transitions.colors}
+  hover:text-blue-500
+`}>
+  Hover Me
+</button>
+```
+
+### Accessibility: prefers-reduced-motion
+
+All transitions automatically reduce to 0.01ms for users who prefer reduced motion. This is handled globally in `src/index.css`:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+You don't need to check for this preference manually - just use the transition tokens and the accessibility is handled automatically.
+
+### Common Mistakes
+
+```tsx
+// ❌ BAD: Hardcoded duration
+<button className="transition-all duration-200 hover:bg-blue-600">
+
+// ✅ GOOD: Use token
+<button className={`${tokens.transitions.fast} hover:bg-blue-600`}>
+
+// ❌ BAD: No transition on hover
+<button className="hover:bg-blue-600">
+
+// ✅ GOOD: Smooth transition
+<button className={`${tokens.transitions.fast} hover:bg-blue-600`}>
+
+// ❌ BAD: Using transition-all for color change
+<button className="transition-all duration-150 hover:text-blue-500">
+
+// ✅ GOOD: Use property-specific transition for better performance
+<button className={`${tokens.transitions.colors} hover:text-blue-500`}>
+```
+
+### Migration Examples
+
+```tsx
+// Before: Inconsistent and hardcoded
+<button className="transition-all duration-200">...</button>
+<div className="transition-colors duration-150">...</div>
+<modal className="transition-all duration-300">...</modal>
+
+// After: Consistent and token-based
+<button className={tokens.transitions.fast}>...</button>
+<div className={tokens.transitions.colors}>...</div>
+<modal className={tokens.transitions.normal}>...</modal>
+```
+
 ## 📦 Migration Guide
 
 ### Before (Inconsistent)

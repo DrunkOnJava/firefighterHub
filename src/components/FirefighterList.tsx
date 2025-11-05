@@ -802,7 +802,7 @@ export function FirefighterList({
                             setSelectedFirefighter(firefighter);
                             setShowProfileModal(true);
                           }}
-                          className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
+                          className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${tokens.transitions.colors} ${
                             isDarkMode
                               ? "text-gray-400 hover:text-gray-300"
                               : "text-gray-600 hover:text-gray-800"

@@ -34,7 +34,7 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
         min-w-[320px] max-w-[500px]
         backdrop-blur-sm
         animate-slide-up
-        transition-all duration-300
+        ${tokens.transitions.normal}
       `}
       style={{
         transform: `translateY(-${index * 80}px)`,
@@ -46,7 +46,7 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
         <p className="text-white font-medium flex-1">{toast.message}</p>
         <button
           onClick={() => onClose(toast.id)}
-          className="p-1.5 hover:bg-white/10 rounded transition-colors focus-ring"
+          className={`p-1.5 hover:bg-white/10 rounded ${tokens.transitions.colors} focus-ring`}
           aria-label="Close notification"
         >
           <X className={`${tokens.icons.sm} text-white`} />

@@ -150,11 +150,47 @@ export const tokens = {
 
   /**
    * Transition System
+   * 
+   * Consistent timing functions for smooth, professional interactions.
+   * Respects prefers-reduced-motion via global CSS (see index.css).
+   * 
+   * Usage Guidelines:
+   * - **fast** (150ms): Buttons, inputs, hovers, focus states, small UI changes
+   * - **normal** (300ms): Modals, drawers, dropdowns, panel expansions
+   * - **slow** (500ms): Page transitions, complex animations, large movements
+   * 
+   * Property-Specific Variants:
+   * - Use specific properties (colors, opacity, transform) instead of 'all' for better performance
+   * 
+   * Examples:
+   * ```tsx
+   * // Button hover - fast transition
+   * <button className={`${tokens.transitions.fast} hover:bg-blue-600`}>
+   * 
+   * // Modal entrance - normal transition
+   * <div className={`${tokens.transitions.normal} ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+   * 
+   * // Color-only transition (better performance)
+   * <div className={`${tokens.transitions.colors} hover:text-blue-500`}>
+   * ```
+   * 
+   * @see src/index.css for prefers-reduced-motion support
    */
   transitions: {
-    fast: 'transition-all duration-150',
-    normal: 'transition-all duration-300',
-    slow: 'transition-all duration-500',
+    /** Fast (150ms) - Buttons, inputs, hovers, focus states */
+    fast: 'transition-all duration-150 ease-in-out',
+    
+    /** Normal (300ms) - Modals, drawers, dropdowns, panels */
+    normal: 'transition-all duration-300 ease-in-out',
+    
+    /** Slow (500ms) - Page transitions, complex animations */
+    slow: 'transition-all duration-500 ease-in-out',
+    
+    /** Property-specific transitions for better performance */
+    colors: 'transition-colors duration-150 ease-in-out',
+    opacity: 'transition-opacity duration-150 ease-in-out',
+    transform: 'transition-transform duration-150 ease-in-out',
+    shadow: 'transition-shadow duration-150 ease-in-out',
   },
 
   /**

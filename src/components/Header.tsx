@@ -215,7 +215,7 @@ export function Header({
           <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t">
             <button
               onClick={onQuickAddFirefighter}
-              className="w-full px-4 py-2 rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 shadow-lg focus-ring"
+              className={`w-full px-4 py-2 rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 shadow-lg focus-ring ${tokens.transitions.fast}`}
             >
               <UserPlus size={16} />
               <span className="text-sm">Add Member</span>

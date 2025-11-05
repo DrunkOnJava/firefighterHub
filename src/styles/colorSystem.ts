@@ -8,6 +8,8 @@
  *
  * This provides flexibility while maintaining consistency through clear guidelines.
  *
+ * Transitions: All interactive elements use duration-150 (fast) for immediate feedback
+ * @see src/styles/tokens.ts for transition tokens
  * @see src/styles/README.md for detailed usage rules
  */
 

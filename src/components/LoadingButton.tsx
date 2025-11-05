@@ -29,7 +29,7 @@ export function LoadingButton({
     <button
       className={`
         relative flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${tokens.borders.radius.lg}
-        font-medium transition-all duration-200
+        font-medium ${tokens.transitions.fast}
         disabled:cursor-not-allowed disabled:opacity-60
         ${variantClasses[variant]}
         ${className}

@@ -6,6 +6,7 @@
 
 import { Tooltip } from './Tooltip';
 import { Trash2, Eye, UserX, RefreshCw } from 'lucide-react';
+import { tokens } from '../styles';
 
 /**
  * EXAMPLE 1: Icon button with tooltip
@@ -56,19 +57,19 @@ export function ButtonGroupExample() {
   return (
     <div className="flex gap-2">
       <Tooltip content="View profile">
-        <button className="p-2 hover:bg-gray-700 rounded">
+        <button className={`p-2 hover:bg-gray-700 rounded ${tokens.transitions.colors}`}>
           <Eye size={16} />
         </button>
       </Tooltip>
 
       <Tooltip content="Deactivate firefighter">
-        <button className="p-2 hover:bg-yellow-900/50 text-yellow-400 rounded">
+        <button className={`p-2 hover:bg-yellow-900/50 text-yellow-400 rounded ${tokens.transitions.colors}`}>
           <UserX size={16} />
         </button>
       </Tooltip>
 
       <Tooltip content="Reset roster order">
-        <button className="p-2 hover:bg-gray-700 rounded">
+        <button className={`p-2 hover:bg-gray-700 rounded ${tokens.transitions.colors}`}>
           <RefreshCw size={16} />
         </button>
       </Tooltip>

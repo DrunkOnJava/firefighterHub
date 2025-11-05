@@ -49,7 +49,7 @@ export function CalendarHeader({
               ${tokens.borders.radius.lg}
             `}
           >
-            <CalendarIcon className="text-white" size={20} />
+            <CalendarIcon className={`${tokens.icons.md} text-white`} />
           </div>
           <div>
             <h2
@@ -87,10 +87,9 @@ export function CalendarHeader({
           aria-label="Previous month"
         >
           <ChevronLeft
-            className={
+            className={`${tokens.icons.md} ${
               isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }
-            size={20}
+            }`}
           />
         </button>
 
@@ -114,10 +113,9 @@ export function CalendarHeader({
           aria-label="Next month"
         >
           <ChevronRight
-            className={
+            className={`${tokens.icons.md} ${
               isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }
-            size={20}
+            }`}
           />
         </button>
       </div>

@@ -113,7 +113,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 <AlertTriangle className={`w-6 h-6 ${colors.semantic.error.text}`} />
               </div>
               <div>
-                <h2 className={`text-lg font-semibold ${colors.structural.text.primary}`}>
+                <h2 className={`${tokens.typography.heading.h4} ${colors.structural.text.primary}`}>
                   Something went wrong
                 </h2>
                 <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}>

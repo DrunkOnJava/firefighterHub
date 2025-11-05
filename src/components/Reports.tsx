@@ -232,7 +232,7 @@ export function Reports({
                 `}
                 title="Return to Calendar"
               >
-                <ArrowLeft size={18} />
+                <ArrowLeft className={tokens.icons.sm} />
                 <span className="hidden sm:inline">Back</span>
               </button>
             )}
@@ -249,7 +249,7 @@ export function Reports({
                 focus-ring
               `}
             >
-              <Download size={18} />
+              <Download className={tokens.icons.sm} />
               <span className="hidden sm:inline">Export</span>
             </button>
           </div>
@@ -271,12 +271,11 @@ export function Reports({
           <div className="flex items-center gap-4 flex-wrap">
             <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
               <Filter
-                size={18}
-                className={
+                className={`${tokens.icons.sm} ${
                   isDarkMode
                     ? colors.structural.text.secondary
                     : "text-gray-600"
-                }
+                }`}
               />
               <span
                 className={`

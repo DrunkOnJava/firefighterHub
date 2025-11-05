@@ -60,15 +60,16 @@ export const tokens = {
    * Typography System
    * 
    * Consistent font sizes, weights, and line heights.
+   * Enhanced with 1.25x type scale and responsive variants for better visual hierarchy.
    */
   typography: {
-    /** Heading styles */
+    /** Heading styles with responsive scaling */
     heading: {
-      h1: 'text-3xl font-bold',          // Main page titles
-      h2: 'text-2xl font-semibold',      // Section headers
-      h3: 'text-xl font-semibold',       // Subsection headers
-      h4: 'text-lg font-semibold',       // Card titles
-      h5: 'text-base font-semibold',     // Small headers
+      h1: 'text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight',      // Main page titles (24px → 30px → 36px)
+      h2: 'text-xl sm:text-2xl font-semibold leading-snug',                 // Section headers (20px → 24px)
+      h3: 'text-xl font-semibold leading-snug',                             // Subsection headers (20px)
+      h4: 'text-lg font-semibold leading-normal',                           // Card titles (18px)
+      h5: 'text-base font-semibold leading-normal',                         // Small headers (16px)
     },
     
     /** Body text styles */
@@ -179,6 +180,36 @@ export const tokens = {
   touchTarget: {
     min: 'min-h-[44px]',                // WCAG 2.1 AA minimum
     comfortable: 'min-h-[48px]',
+  },
+
+  /**
+   * Icon Sizing System
+   * 
+   * Standardized icon sizes to match text sizes for visual harmony.
+   * Use these classes on icon components to ensure consistency.
+   * 
+   * Matching Guide:
+   * - xs (12px): Inline with small/fine print text (text-xs)
+   * - sm (16px): Inline with secondary text (text-sm) or small buttons
+   * - md (20px): Inline with base text (text-base) or medium buttons
+   * - lg (24px): Inline with large text (text-lg) or large buttons, standalone icons
+   * - xl (32px): Feature icons, empty states, large touch targets
+   * 
+   * Usage:
+   * ```tsx
+   * import { tokens } from '@/styles';
+   * import { Calendar } from 'lucide-react';
+   * 
+   * // Instead of: <Calendar size={20} />
+   * <Calendar className={tokens.icons.md} />
+   * ```
+   */
+  icons: {
+    xs: 'w-3 h-3',      // 12px - Inline small text
+    sm: 'w-4 h-4',      // 16px - Inline base text, small buttons
+    md: 'w-5 h-5',      // 20px - Inline large text, medium buttons
+    lg: 'w-6 h-6',      // 24px - Standalone icons, large buttons
+    xl: 'w-8 h-8',      // 32px - Feature icons, empty states
   },
 } as const;
 

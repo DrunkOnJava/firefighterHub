@@ -190,7 +190,7 @@ export function DayModal({
             `}
             aria-label="Close date dialog"
           >
-            <X size={24} className={theme.textTertiary} />
+            <X className={`${tokens.icons.lg} ${theme.textTertiary}`} />
           </button>
         </div>
 

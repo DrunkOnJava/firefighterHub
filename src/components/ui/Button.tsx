@@ -1,5 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { ButtonHTMLAttributes, forwardRef } from "react";
+import { tokens } from "../../styles";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger" | "success";
@@ -51,9 +52,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const iconSizes = {
-      sm: 16,
-      md: 18,
-      lg: 20,
+      sm: tokens.icons.sm,    // 16px - matches text-sm
+      md: tokens.icons.md,    // 20px - matches text-base/text-md
+      lg: tokens.icons.lg,    // 24px - matches text-lg
     };
 
     return (
@@ -71,7 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {isLoading && (
-          <Loader2 size={iconSizes[size]} className="animate-spin" />
+          <Loader2 className={`${iconSizes[size]} animate-spin`} />
         )}
         {!isLoading && leftIcon && (
           <span className="flex-shrink-0">{leftIcon}</span>

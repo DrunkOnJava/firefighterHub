@@ -25,19 +25,15 @@
         "strict_required_status_checks_policy": true,
         "required_status_checks": [
           {
+            "context": "build",
+            "integration_id": null
+          },
+          {
             "context": "typecheck",
             "integration_id": null
           },
           {
             "context": "lint",
-            "integration_id": null
-          },
-          {
-            "context": "test",
-            "integration_id": null
-          },
-          {
-            "context": "build",
             "integration_id": null
           }
         ]

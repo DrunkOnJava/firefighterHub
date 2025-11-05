@@ -1,3 +1,20 @@
+/**
+ * MobileNav - Mobile Navigation Menu
+ *
+ * Slide-out mobile menu with actions and preferences.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * <MobileNav
+ *   isOpen={isMobileMenuOpen}
+ *   onClose={handleCloseMobile}
+ *   currentShift={currentShift}
+ *   isDarkMode={isDarkMode}
+ * />
+ * ```
+ */
+
 import {
   Clock,
   HelpCircle,
@@ -9,11 +26,14 @@ import {
   X,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { tokens } from "../styles";
+import { ButtonM3 } from "./m3/ButtonM3";
+import { BadgeM3 } from "./m3/BadgeM3";
 import { ShiftSelector } from "./ShiftSelector";
+import { MobileNavLegacy } from "./MobileNavLegacy";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -28,7 +48,10 @@ interface MobileNavProps {
   onToggleDarkMode: () => void;
 }
 
-export function MobileNav({
+/**
+ * MaterialM Mobile Navigation
+ */
+function MobileNavM3({
   isOpen,
   onClose,
   onShowHelp,
@@ -65,6 +88,7 @@ export function MobileNav({
 
   return (
     <>
+      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 animate-fade-in"
         onClick={onClose}
@@ -72,118 +96,85 @@ export function MobileNav({
         aria-modal="true"
         aria-labelledby="mobile-nav-title"
       />
+
+      {/* Drawer */}
       <nav
         ref={trapRef}
-        className={`fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] border-l-2 z-50 shadow-2xl animate-slide-in-right ${
-          isDarkMode
-            ? "bg-gradient-to-b from-gray-800 to-gray-900 border-gray-700"
-            : "bg-gradient-to-b from-slate-50 to-white border-slate-300"
-        }`}
+        className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 z-50 shadow-materialm-5 animate-slide-in-right"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div
-            className={`border-b-2 p-5 flex items-center justify-between ${
-              isDarkMode
-                ? "bg-gradient-to-r from-gray-900 to-gray-800 border-gray-700"
-                : "bg-gradient-to-r from-slate-100 to-slate-50 border-slate-300"
-            }`}
-          >
-            <div>
+          <div className="p-5 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
+            <div className="flex items-center justify-between mb-2">
               <h2
                 id="mobile-nav-title"
-                className={`${tokens.typography.heading.h3} ${
-                  isDarkMode ? "text-white" : "text-slate-900"
-                }`}
+                className="text-xl font-bold text-gray-900 dark:text-white"
               >
                 Menu
               </h2>
-              {isAdminMode && (
-                <div className="flex items-center gap-1.5 mt-1">
-                  <Shield
-                    size={12}
-                    className={isDarkMode ? "text-blue-400" : "text-blue-600"}
-                  />
-                  <span
-                    className={`text-xs font-bold ${
-                      isDarkMode ? "text-blue-400" : "text-blue-600"
-                    }`}
-                  >
-                    ADMIN MODE
-                  </span>
-                </div>
-              )}
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors focus-ring"
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
             </div>
-            <button
-              onClick={onClose}
-              className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex items-center justify-center ${
-                isDarkMode
-                  ? "hover:bg-gray-700 text-gray-400"
-                  : "hover:bg-slate-200 text-slate-600"
-              }`}
-              aria-label="Close menu"
-            >
-              <X size={24} />
-            </button>
+            {isAdminMode && (
+              <BadgeM3
+                color="primary"
+                variant="tonal"
+                icon={<Shield size={12} />}
+                size="xs"
+              >
+                ADMIN MODE
+              </BadgeM3>
+            )}
           </div>
 
+          {/* Content */}
           <div className="flex-1 overflow-y-auto p-5 space-y-6">
             {/* Context Section */}
             <section>
-              <h3
-                className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
-                }`}
-              >
+              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
                 Current Context
               </h3>
-              <div className="space-y-3">
-                <div>
-                  <label
-                    className={`text-xs font-semibold mb-2 block ${
-                      isDarkMode ? "text-gray-400" : "text-slate-600"
-                    }`}
-                  >
-                    Active Shift
-                  </label>
-                  <ShiftSelector
-                    currentShift={currentShift}
-                    onShiftChange={onShiftChange}
-                  />
-                </div>
+              <div>
+                <label className="text-xs font-semibold mb-2 block text-gray-600 dark:text-gray-400">
+                  Active Shift
+                </label>
+                <ShiftSelector
+                  currentShift={currentShift}
+                  onShiftChange={onShiftChange}
+                />
               </div>
             </section>
 
-            {/* Primary Actions */}
+            {/* Quick Actions */}
             {isAdminMode && (
               <section>
-                <h3
-                  className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                    isDarkMode ? "text-gray-400" : "text-slate-600"
-                  }`}
-                >
+                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
                   Quick Actions
                 </h3>
-                <button
+                <ButtonM3
+                  color="success"
+                  size="lg"
+                  fullWidth
+                  startIcon={<UserPlus size={20} />}
                   onClick={() => {
                     onQuickAddFirefighter();
                     onClose();
                   }}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg focus-ring"
+                  className="shadow-materialm-2"
                 >
-                  <UserPlus size={20} />
                   Add Team Member
-                </button>
+                </ButtonM3>
               </section>
             )}
 
-            {/* Secondary Actions */}
+            {/* Tools */}
             <section>
-              <h3
-                className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
-                }`}
-              >
+              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
                 Tools
               </h3>
               <div className="space-y-2">
@@ -192,29 +183,14 @@ export function MobileNav({
                     onShowActivityLog();
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring ${
-                    isDarkMode
-                      ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
-                      : "bg-white hover:bg-slate-50 border-slate-300"
-                  }`}
+                  className="w-full flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
                 >
-                  <Clock
-                    size={22}
-                    className={isDarkMode ? "text-blue-400" : "text-blue-600"}
-                  />
-                  <div>
-                    <div
-                      className={`font-semibold ${
-                        isDarkMode ? "text-white" : "text-slate-900"
-                      }`}
-                    >
+                  <Clock size={22} className="text-blue-600 dark:text-blue-400" />
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-900 dark:text-white">
                       Activity History
                     </div>
-                    <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-gray-400" : "text-slate-600"
-                      }`}
-                    >
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
                       View recent actions
                     </div>
                   </div>
@@ -225,31 +201,14 @@ export function MobileNav({
                     onShowHelp();
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring ${
-                    isDarkMode
-                      ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
-                      : "bg-white hover:bg-slate-50 border-slate-300"
-                  }`}
+                  className="w-full flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
                 >
-                  <HelpCircle
-                    size={22}
-                    className={
-                      isDarkMode ? "text-purple-400" : "text-purple-600"
-                    }
-                  />
-                  <div>
-                    <div
-                      className={`font-semibold ${
-                        isDarkMode ? "text-white" : "text-slate-900"
-                      }`}
-                    >
+                  <HelpCircle size={22} className="text-purple-600 dark:text-purple-400" />
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-900 dark:text-white">
                       Help & Guide
                     </div>
-                    <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-gray-400" : "text-slate-600"
-                      }`}
-                    >
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
                       Learn about features
                     </div>
                   </div>
@@ -257,85 +216,51 @@ export function MobileNav({
               </div>
             </section>
 
-            {/* Settings */}
+            {/* Preferences */}
             <section>
-              <h3
-                className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
-                }`}
-              >
+              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
                 Preferences
               </h3>
               <button
                 onClick={onToggleDarkMode}
-                className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
-                  isDarkMode
-                    ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
-                    : "bg-white hover:bg-slate-50 border-slate-300"
-                }`}
+                className="w-full flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus-ring"
               >
                 <div className="flex items-center gap-3">
                   {isDarkMode ? (
-                    <Sun size={22} className="text-amber-400" />
+                    <Sun size={22} className="text-amber-500" />
                   ) : (
-                    <Moon size={22} className="text-slate-700" />
+                    <Moon size={22} className="text-gray-700" />
                   )}
                   <div className="text-left">
-                    <div
-                      className={`font-semibold ${
-                        isDarkMode ? "text-white" : "text-slate-900"
-                      }`}
-                    >
+                    <div className="font-semibold text-gray-900 dark:text-white">
                       Theme
                     </div>
-                    <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-gray-400" : "text-slate-600"
-                      }`}
-                    >
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
                       {isDarkMode ? "Dark mode" : "Light mode"}
                     </div>
                   </div>
                 </div>
-                <div
-                  className={`text-xs font-semibold ${
-                    isDarkMode ? "text-gray-500" : "text-slate-500"
-                  }`}
-                >
+                <BadgeM3 color="neutral" size="xs">
                   Toggle
-                </div>
+                </BadgeM3>
               </button>
             </section>
 
-            {/* Info Section */}
+            {/* Info Section for Non-Admin */}
             {!isAdminMode && (
-              <section className="pt-4 border-t-2">
-                <div
-                  className={`border rounded-lg p-4 ${
-                    isDarkMode
-                      ? "bg-blue-900/30 border-blue-700"
-                      : "bg-blue-50 border-blue-300"
-                  }`}
-                >
-                  <h3
-                    className={`font-semibold mb-2 flex items-center gap-2 ${
-                      isDarkMode ? "text-white" : "text-slate-900"
-                    }`}
-                  >
-                    <Lightbulb
-                      className={`w-4 h-4 ${
-                        isDarkMode ? "text-blue-400" : "text-blue-600"
-                      }`}
-                    />
-                    Quick Tip
-                  </h3>
-                  <p
-                    className={`text-sm ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
-                    }`}
-                  >
-                    Enable Admin mode to add firefighters and schedule holds.
-                  </p>
+              <section className="pt-4 border-t-2 border-gray-200 dark:border-gray-700">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <div className="flex gap-3">
+                    <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                    <div>
+                      <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">
+                        Quick Tip
+                      </h3>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                        Enable Admin mode to add firefighters and schedule holds.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </section>
             )}
@@ -344,4 +269,19 @@ export function MobileNav({
       </nav>
     </>
   );
+}
+
+/**
+ * MobileNav Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function MobileNav(props: MobileNavProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <MobileNavLegacy {...props} />;
+  }
+
+  return <MobileNavM3 {...props} />;
 }

@@ -6,7 +6,17 @@
  */
 
 import { useState } from "react";
-import { Badge, Button, Card, Label, TextInput, Modal } from "flowbite-react";
+import {
+  Badge,
+  Button,
+  Card,
+  Label,
+  TextInput,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "flowbite-react";
 import { ShiftBadge } from "./ShiftBadge";
 import { CalendarMaterialMPreview } from "./CalendarMaterialMPreview";
 
@@ -196,8 +206,8 @@ export function MaterialMPilot() {
       {/* MaterialM Modal Example */}
       {useMaterialM && showModal && (
         <Modal show={showModal} onClose={() => setShowModal(false)}>
-          <Modal.Header>Schedule Hold</Modal.Header>
-          <Modal.Body>
+          <ModalHeader>Schedule Hold</ModalHeader>
+          <ModalBody>
             <div className="space-y-4">
               <p className="text-sm text-gray-700 dark:text-gray-400">
                 This is how modals look in MaterialM/Flowbite design.
@@ -215,13 +225,13 @@ export function MaterialMPilot() {
                 <TextInput id="date" type="date" />
               </div>
             </div>
-          </Modal.Body>
-          <Modal.Footer>
+          </ModalBody>
+          <ModalFooter>
             <Button onClick={() => setShowModal(false)}>Submit</Button>
             <Button color="gray" onClick={() => setShowModal(false)}>
               Cancel
             </Button>
-          </Modal.Footer>
+          </ModalFooter>
         </Modal>
       )}
       </div>

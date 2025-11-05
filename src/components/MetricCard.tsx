@@ -1,6 +1,27 @@
+/**
+ * MetricCard - Metric Display Component
+ *
+ * Displays metrics and statistics in a card format.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
+ *
+ * @example
+ * ```tsx
+ * import { Users } from 'lucide-react';
+ *
+ * <MetricCard
+ *   title="Active Firefighters"
+ *   value={24}
+ *   subtitle="Currently available"
+ *   icon={Users}
+ *   isDarkMode={isDarkMode}
+ * />
+ * ```
+ */
+
 import { LucideIcon } from "lucide-react";
-import { tokens } from "../styles";
-import { getTheme } from "../utils/theme";
+import { useFeatureFlag } from "../hooks/useFeatureFlag";
+import { MetricCardM3 } from "./m3/CardM3";
+import { MetricCardLegacy } from "./MetricCardLegacy";
 
 interface MetricCardProps {
   title: string;
@@ -9,6 +30,17 @@ interface MetricCardProps {
   icon?: LucideIcon;
   isDarkMode: boolean;
   colorClass?: string;
+  /**
+   * Optional trend indicator (only shown in MaterialM)
+   */
+  trend?: {
+    value: number;
+    direction: 'up' | 'down' | 'neutral';
+  };
+  /**
+   * Click handler (makes card interactive)
+   */
+  onClick?: () => void;
 }
 
 export function MetricCard({
@@ -18,52 +50,34 @@ export function MetricCard({
   icon: Icon,
   isDarkMode,
   colorClass = "blue",
+  trend,
+  onClick,
 }: MetricCardProps) {
-  const theme = getTheme(isDarkMode);
+  const useMaterialM = useFeatureFlag('MATERIALM');
 
-  // Color classes for the icon
-  const iconColorMap: Record<string, string> = {
-    blue: theme.metricCard.icon,
-    green: isDarkMode ? "text-green-400" : "text-green-600",
-    amber: isDarkMode ? "text-amber-400" : "text-amber-600",
-    red: isDarkMode ? "text-red-400" : "text-red-600",
-    purple: isDarkMode ? "text-purple-400" : "text-purple-600",
-  };
+  // Use legacy card if MaterialM is disabled
+  if (!useMaterialM) {
+    return (
+      <MetricCardLegacy
+        title={title}
+        value={value}
+        subtitle={subtitle}
+        icon={Icon}
+        isDarkMode={isDarkMode}
+        colorClass={colorClass}
+      />
+    );
+  }
 
-  const iconClass = iconColorMap[colorClass] || iconColorMap.blue;
-
+  // MaterialM Metric Card
   return (
-    <div
-      className={`
-        ${theme.metricCard.background} ${theme.metricCard.border}
-        ${tokens.borders.radius.lg}
-        ${tokens.spacing.card.lg}
-        ${tokens.shadows.sm}
-        ${tokens.transitions.fast}
-        border
-        hover:shadow-md
-      `}
-    >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <h4
-            className={`text-sm font-medium ${theme.metricCard.titleText} mb-1`}
-          >
-            {title}
-          </h4>
-          <p
-            className={`text-3xl font-bold ${theme.metricCard.valueText} my-2`}
-          >
-            {value}
-          </p>
-          <p className={`text-xs ${theme.textTertiary}`}>{subtitle}</p>
-        </div>
-        {Icon && (
-          <div className={`${iconClass} opacity-80`}>
-            <Icon className={tokens.icons.lg} />
-          </div>
-        )}
-      </div>
-    </div>
+    <MetricCardM3
+      title={title}
+      value={value}
+      subtitle={subtitle}
+      icon={Icon ? <Icon className="w-8 h-8" /> : undefined}
+      trend={trend}
+      onClick={onClick}
+    />
   );
 }

@@ -1,12 +1,19 @@
 /**
- * CalendarHeader Component
+ * CalendarHeader - Calendar Header Component
  *
- * Displays the calendar header with:
- * - Calendar icon and title
- * - Month navigation (previous/next buttons)
- * - Current shift indicator
+ * Displays the calendar header with month navigation and shift indicator.
+ * Automatically switches between MaterialM and legacy styling based on feature flag.
  *
- * Uses design tokens for consistent spacing and colors.
+ * @example
+ * ```tsx
+ * <CalendarHeader
+ *   currentDate={new Date()}
+ *   onPreviousMonth={handlePrevious}
+ *   onNextMonth={handleNext}
+ *   currentShift={currentShift}
+ *   isDarkMode={isDarkMode}
+ * />
+ * ```
  */
 
 import {
@@ -14,10 +21,12 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useFeatureFlag } from "../../hooks/useFeatureFlag";
 import { Shift } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
+import { IconButtonM3 } from "../m3/ButtonM3";
 import { formatMonthYear } from "../../utils/calendarUtils";
 import { ShiftIndicator } from "../ShiftIndicator";
+import { CalendarHeaderLegacy } from "./CalendarHeaderLegacy";
 
 interface CalendarHeaderProps {
   currentDate: Date;
@@ -27,43 +36,28 @@ interface CalendarHeaderProps {
   isDarkMode?: boolean;
 }
 
-export function CalendarHeader({
+/**
+ * MaterialM Calendar Header Component
+ */
+function CalendarHeaderM3({
   currentDate,
   onPreviousMonth,
   onNextMonth,
   currentShift,
-  isDarkMode = true,
 }: CalendarHeaderProps) {
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div className="space-y-4">
       {/* Header with icon and title */}
-      <div
-        className={`flex items-center justify-between ${tokens.spacing.margin.md}`}
-      >
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div
-            className={`
-              ${colors.semantic.primary.gradient}
-              ${colors.semantic.primary.shadow}
-              ${tokens.spacing.section.md}
-              ${tokens.borders.radius.lg}
-            `}
-          >
-            <CalendarIcon className={`${tokens.icons.md} text-white`} />
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="p-3 rounded-lg bg-materialm-primary shadow-materialm-2">
+            <CalendarIcon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2
-              className={`${tokens.typography.heading.h2} ${
-                isDarkMode ? colors.structural.text.primary : "text-gray-900"
-              }`}
-            >
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               Hold Calendar
             </h2>
-            <p
-              className={`${tokens.typography.body.secondary} ${
-                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
-              } hidden sm:block`}
-            >
+            <p className="text-sm text-gray-600 dark:text-gray-400 hidden sm:block">
               Click any date to schedule or manage holds
             </p>
           </div>
@@ -74,51 +68,46 @@ export function CalendarHeader({
       </div>
 
       {/* Month navigation */}
-      <div className="flex items-center justify-center gap-2 sm:gap-6">
-        <button
+      <div className="flex items-center justify-center gap-4">
+        <IconButtonM3
+          variant="outlined"
+          color="neutral"
+          size="md"
           onClick={onPreviousMonth}
-          className={`
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
-            ${tokens.transitions.fast}
-            ${tokens.touchTarget.min}
-          `}
           aria-label="Previous month"
         >
-          <ChevronLeft
-            className={`${tokens.icons.md} ${
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }`}
-          />
-        </button>
+          <ChevronLeft className="w-5 h-5" />
+        </IconButtonM3>
 
-        <h3
-          className={`${tokens.typography.heading.h3} ${
-            isDarkMode ? colors.structural.text.primary : "text-gray-900"
-          } min-w-[200px] text-center`}
-        >
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white min-w-[200px] text-center">
           {formatMonthYear(currentDate)}
         </h3>
 
-        <button
+        <IconButtonM3
+          variant="outlined"
+          color="neutral"
+          size="md"
           onClick={onNextMonth}
-          className={`
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
-            ${tokens.transitions.fast}
-            ${tokens.touchTarget.min}
-          `}
           aria-label="Next month"
         >
-          <ChevronRight
-            className={`${tokens.icons.md} ${
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }`}
-          />
-        </button>
+          <ChevronRight className="w-5 h-5" />
+        </IconButtonM3>
       </div>
     </div>
   );
+}
+
+/**
+ * Calendar Header Component with Feature Flag
+ *
+ * Switches between MaterialM and legacy versions.
+ */
+export function CalendarHeader(props: CalendarHeaderProps) {
+  const useMaterialM = useFeatureFlag('MATERIALM');
+
+  if (!useMaterialM) {
+    return <CalendarHeaderLegacy {...props} />;
+  }
+
+  return <CalendarHeaderM3 {...props} />;
 }

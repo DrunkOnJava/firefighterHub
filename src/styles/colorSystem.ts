@@ -221,9 +221,10 @@ export const colors = {
     card: {
       default: "bg-[#3A4149] border border-[#252A32]",
       hover:
-        "bg-[#3A4149] border border-[#252A32] hover:border-[#4A5360] hover:shadow-lg transition-all duration-150",
+        "bg-[#3A4149] border border-[#252A32] hover:border-[#4A5360] hover:shadow-xl transition-all duration-150",
       elevated: "bg-[#3A4149] border border-[#252A32] shadow-xl",
       shadow: "shadow-lg shadow-black/50",
+      hoverShadow: "hover:shadow-xl",
     },
 
     /** Day cell styles (Calendar-specific) */

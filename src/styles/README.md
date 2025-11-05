@@ -479,6 +479,84 @@ All colors meet WCAG 2.1 AA contrast requirements:
 - `text-gray-400` on `bg-gray-800`: 5.2:1 (AA)
 - Button text on gradients: 4.8:1+ (AA)
 
+## 🖱️ Hover State Patterns
+
+**Rule**: All clickable/interactive elements MUST have a visible hover state that is distinct from both the default and focus states.
+
+This ensures WCAG 1.4.13 compliance and provides visual feedback to users.
+
+### Hover State Requirements
+
+1. **Calendar Cells**: Use `hover:bg-slate-700` for interactive day cells
+2. **Cards**: Use `hover:shadow-xl` for clickable cards (in addition to shadow-lg default)
+3. **Buttons**: Already have hover states via color system (e.g., `hover:from-red-500`)
+4. **Links**: Use `hover:text-orange-400` or appropriate semantic color
+5. **Interactive Elements**: Add opacity, shadow, or color change
+
+### Implementation Examples
+
+```tsx
+// Calendar day cell (interactive)
+<button className="bg-slate-800 hover:bg-slate-700 transition-all">
+  {day}
+</button>
+
+// Card (clickable)
+<div className={`
+  ${colors.structural.bg.card}
+  ${tokens.shadows.lg}
+  hover:shadow-xl
+  ${tokens.transitions.fast}
+  cursor-pointer
+`}>
+  Card content
+</div>
+
+// Metric card (with design tokens)
+<div className={`
+  ${tokens.shadows.sm}
+  hover:shadow-md
+  ${tokens.transitions.fast}
+`}>
+  Metric content
+</div>
+
+// List item (interactive)
+<div className="hover:bg-slate-700 transition-all">
+  List item
+</div>
+```
+
+### Hover vs Focus Distinction
+
+**Critical**: Hover and focus states must be visually distinct for WCAG 1.4.13 compliance.
+
+```tsx
+// ✅ CORRECT: Different visual indicators
+<button className={`
+  bg-slate-700 
+  hover:bg-slate-600                    // Hover: lighter background
+  focus:ring-2 focus:ring-blue-500      // Focus: visible ring
+  transition-all
+`}>
+  Button
+</button>
+
+// ❌ WRONG: Same visual change for hover and focus
+<button className="hover:ring-2 focus:ring-2">
+  Button
+</button>
+```
+
+### Testing Hover States
+
+Before committing changes:
+1. ✅ Test with mouse hover - visual change is clear
+2. ✅ Test with keyboard navigation - focus state is different from hover
+3. ✅ Verify transitions are smooth (use `tokens.transitions.fast`)
+4. ✅ Ensure touch targets remain ≥44px on mobile
+5. ✅ Check contrast ratios meet WCAG AA (4.5:1 for text, 3:1 for UI)
+
 ## ❓ FAQ
 
 **Q: Can I still use Tailwind classes directly?**  
@@ -493,18 +571,22 @@ A: Yes, but prioritize large/frequently-used components (Calendar, FirefighterLi
 **Q: How do I remember which palette to use?**  
 A: **Structure = Gray**, **Interaction = Slate**, **Meaning = Semantic**.
 
+**Q: Do all elements need hover states?**  
+A: Only interactive elements (buttons, links, clickable cards, calendar cells). Static text and non-interactive containers do not need hover states.
+
 ## 📝 Next Steps
 
 1. ✅ Design token system created
-2. ⏳ Replace blocking `confirm()` dialogs
-3. ⏳ Refactor Calendar component (apply tokens)
-4. ⏳ Refactor FirefighterList component (apply tokens)
-5. ⏳ Update remaining 29 components
+2. ✅ Hover state patterns documented
+3. ⏳ Replace blocking `confirm()` dialogs
+4. ⏳ Refactor Calendar component (apply tokens)
+5. ⏳ Refactor FirefighterList component (apply tokens)
+6. ⏳ Update remaining 29 components
 
 ---
 
 **Questions?** Check this README or review examples in newly created components.
 
-**Last Updated**: November 2, 2025  
+**Last Updated**: November 5, 2025  
 **Maintained By**: Development Team
 

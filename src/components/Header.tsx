@@ -43,6 +43,7 @@ export function Header({
       className={`
         border-b backdrop-blur-sm sticky top-0
         ${tokens.zIndex.sticky}
+        ${tokens.shadows.lg}
         ${
           isDarkMode
             ? `${colors.structural.border.emphasis} bg-gray-900/95`

@@ -109,7 +109,7 @@ export function Calendar({
         ${tokens.borders.radius.xl}
         ${tokens.spacing.card.md}
         border-2
-        shadow-2xl
+        ${tokens.shadows.sm}
         overflow-hidden
       `}
     >

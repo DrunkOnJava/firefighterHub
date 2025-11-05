@@ -20,13 +20,13 @@ import { Sidebar } from "./components/Sidebar";
 import { ToastContainer } from "./components/Toast";
 import { TransferShiftModal } from "./components/TransferShiftModal";
 import { UpdateNotification } from "./components/UpdateNotification";
+import { LoadingSpinner } from "./components/ui/LoadingSpinner";
 import {
   A11Y,
   GRID_COLS,
   KEYBOARD_SHORTCUTS,
   LAYOUT,
   SCROLL_BEHAVIOR,
-  SPINNER,
 } from "./config/constants";
 import { useAuth } from "./contexts/AuthContext";
 import { useAnnounce } from "./hooks/useAnnounce";
@@ -224,20 +224,15 @@ function App() {
   // Show loading state while auth is initializing
   if (authLoading || firefightersLoading) {
     return (
-      <div
-        className={`min-h-screen ${theme.appBackground} flex items-center justify-center`}
-      >
-        <div className="text-center">
-          <div
-            className={`${SPINNER.SIZE} ${SPINNER.BORDER} ${SPINNER.COLOR} ${SPINNER.TRANSPARENT_SIDE} rounded-full ${SPINNER.ANIMATION} mx-auto mb-4`}
-          ></div>
-          <p className="text-white text-xl font-semibold">
-            {authLoading
-              ? "Checking authentication..."
-              : "Loading Hold List Manager..."}
-          </p>
-        </div>
-      </div>
+      <LoadingSpinner
+        size="xl"
+        text={
+          authLoading
+            ? "Checking authentication..."
+            : "Loading Hold List Manager..."
+        }
+        fullPage
+      />
     );
   }
 

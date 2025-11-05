@@ -1,5 +1,5 @@
-import { Loader2 } from "lucide-react";
 import { ButtonHTMLAttributes, forwardRef } from "react";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger" | "success";
@@ -50,12 +50,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       lg: "px-6 py-3 text-lg gap-2.5",
     };
 
-    const iconSizes = {
-      sm: 16,
-      md: 18,
-      lg: 20,
-    };
-
     return (
       <button
         ref={ref}
@@ -70,9 +64,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         onClick={onClick}
         {...props}
       >
-        {isLoading && (
-          <Loader2 size={iconSizes[size]} className="animate-spin" />
-        )}
+        {isLoading && <LoadingSpinner size="sm" />}
         {!isLoading && leftIcon && (
           <span className="flex-shrink-0">{leftIcon}</span>
         )}

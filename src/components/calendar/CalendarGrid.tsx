@@ -13,6 +13,7 @@ import { Shift } from "../../lib/supabase";
 import { tokens } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
 import { getTheme } from "../../utils/theme";
+import { LoadingSpinner } from "../ui/LoadingSpinner";
 import { DayCell } from "./DayCell";
 
 interface CalendarGridProps {
@@ -47,10 +48,7 @@ export function CalendarGrid({
   if (loading) {
     return (
       <div className="text-center py-20">
-        <div
-          className={`inline-block animate-spin rounded-full h-12 w-12 border-b-2 ${theme.calendar.headerText}`}
-        />
-        <p className={`mt-4 ${theme.textSecondary}`}>Loading calendar...</p>
+        <LoadingSpinner size="lg" text="Loading calendar..." />
       </div>
     );
   }

@@ -169,7 +169,7 @@ export function ListView({
                 }
               />
               <div>
-                <h3 className="text-xl font-bold text-white">
+                <h3 className={`${tokens.typography.heading.h4} text-white`}>
                   {formatDate(entry.date)}
                 </h3>
                 {relativeDate && (

@@ -128,3 +128,22 @@ export function isValidDate(dateString: string | null | undefined): boolean {
     return false;
   }
 }
+
+/**
+ * Format station numbers consistently across the application
+ * @param station Station number (can be null)
+ * @param format 'short' for "#2", 'long' for "Station 2"
+ * @returns Formatted station string or empty string if null
+ * 
+ * @example
+ * formatStation('2', 'short') // "#2"
+ * formatStation('2', 'long')  // "Station 2"
+ * formatStation(null, 'short') // ""
+ */
+export function formatStation(
+  station: string | null,
+  format: 'short' | 'long' = 'short'
+): string {
+  if (!station) return '';
+  return format === 'short' ? `#${station}` : `Station ${station}`;
+}

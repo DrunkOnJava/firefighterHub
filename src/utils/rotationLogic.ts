@@ -1,4 +1,5 @@
 import { Firefighter } from '../lib/supabase';
+import { formatStation } from './dateUtils';
 
 export function sortFirefighters(firefighters: Firefighter[]): Firefighter[] {
   return [...firefighters].sort((a, b) => {
@@ -56,7 +57,7 @@ export function formatHoldListMessage(firefighters: Firefighter[], shiftName: st
   }
 
   const lines = available.map(ff => {
-    const station = ff.fire_station ? `Station #${ff.fire_station}` : 'Station #?';
+    const station = ff.fire_station ? formatStation(ff.fire_station, 'long') : 'Station ?';
     const date = ff.last_hold_date
       ? new Date(ff.last_hold_date).toLocaleDateString('en-US', { month: 'numeric', day: 'numeric' })
       : 'Not yet';

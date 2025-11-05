@@ -1,4 +1,5 @@
 import { Shift } from '../lib/supabase';
+import { formatStation } from './dateUtils';
 
 interface ScheduledHold {
   id: string;
@@ -75,12 +76,12 @@ function generateEvent(hold: ScheduledHold, timestamp: string): string {
   const description = [
     `Firefighter: ${hold.firefighter_name}`,
     `Shift: ${hold.shift}`,
-    hold.fire_station ? `Station: ${hold.fire_station}` : null,
+    hold.fire_station ? formatStation(hold.fire_station, 'long') : null,
     `Status: ${hold.status}${statusMark}`,
     hold.notes ? `Notes: ${hold.notes}` : null,
   ].filter(Boolean).join('\\n');
 
-  const location = hold.fire_station ? `Fire Station ${hold.fire_station}` : '';
+  const location = hold.fire_station ? formatStation(hold.fire_station, 'long') : '';
   const uid = `hold-${hold.id}@firefighterhub.app`;
 
   // Determine status

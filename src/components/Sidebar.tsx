@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
+import { formatStation } from "../utils/dateUtils";
 import { ShiftBadge } from "./ShiftBadge";
 
 type View = "calendar" | "reports";
@@ -256,7 +257,7 @@ export function Sidebar({
                               ${colors.structural.text.tertiary}
                             `}
                           >
-                            Station #{ff.fire_station}
+                            {formatStation(ff.fire_station, 'long')}
                           </p>
                         )}
                       </div>
@@ -361,7 +362,7 @@ export function Sidebar({
                               ${colors.structural.text.tertiary}
                             `}
                           >
-                            Station #{ff.fire_station}
+                            {formatStation(ff.fire_station, 'long')}
                           </p>
                         )}
                       </div>
@@ -474,7 +475,7 @@ export function Sidebar({
                                   ${colors.structural.text.tertiary}
                                 `}
                               >
-                                Station #{hold.fire_station}
+                                {formatStation(hold.fire_station, 'long')}
                               </p>
                             )}
                           </div>

@@ -14,6 +14,7 @@
 import { Shift } from "../../lib/supabase";
 import { tokens } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
+import { formatStation } from "../../utils/dateUtils";
 
 interface DayCellProps {
   day: CalendarDay;
@@ -120,13 +121,13 @@ export function DayCell({
               key={hold.id || index}
               className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
               title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+                hold.fire_station ? ` - ${formatStation(hold.fire_station, 'long')}` : ""
               }`}
             >
               <span className="truncate">{formattedName}</span>
               {hold.fire_station && (
                 <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
+                  ({formatStation(hold.fire_station, 'short')})
                 </span>
               )}
             </div>
@@ -141,13 +142,13 @@ export function DayCell({
               key={hold.id || index}
               className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
               title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+                hold.fire_station ? ` - ${formatStation(hold.fire_station, 'long')}` : ""
               } (completed)`}
             >
               <span className="truncate">{formattedName}</span>
               {hold.fire_station && (
                 <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
+                  ({formatStation(hold.fire_station, 'short')})
                 </span>
               )}
             </div>

@@ -64,7 +64,7 @@ export function Header({
             <div className="min-w-0">
               <h1
                 className={`
-                  text-xl sm:text-2xl font-bold truncate
+                  ${tokens.typography.heading.h1} truncate
                   ${
                     isDarkMode
                       ? colors.structural.text.primary

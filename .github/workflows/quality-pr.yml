@@ -1,0 +1,26 @@
+name: Quality CI (PR)
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "vite.config.*"
+      - "tailwind.config.*"
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality-reusable.yml
+    with:
+      run_visual_regression: true
+      run_lighthouse: true
+      run_accessibility: true
+      token_usage_threshold: 95
+    secrets: inherit

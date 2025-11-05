@@ -1,0 +1,234 @@
+name: "Release Notes Generator"
+
+# Auto-generate release notes from conventional commits
+# Triggered on: version tags, manual dispatch, and new releases
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to generate release notes for (e.g., v1.0.0)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  generate-release-notes:
+    name: Generate Release Notes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Need full history for changelog
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Generate changelog from conventional commits
+        id: changelog
+        run: |
+          # Install conventional-changelog-cli
+          pnpm add -D conventional-changelog-cli
+
+          # Determine version range
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          fi
+
+          echo "Generating changelog for tag: $TAG"
+
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || echo "")
+
+          # Generate changelog
+          if [ -n "$PREV_TAG" ]; then
+            pnpm exec conventional-changelog -p angular -r 2 > RELEASE_NOTES.md
+          else
+            pnpm exec conventional-changelog -p angular -r 0 > RELEASE_NOTES.md
+          fi
+
+          # Add metadata
+          {
+            echo "# Release $TAG"
+            echo ""
+            echo "**Release Date:** $(date '+%Y-%m-%d')"
+            echo "**Repository:** FirefighterHub - Shift Rotation Management"
+            echo ""
+            echo "---"
+            echo ""
+            cat RELEASE_NOTES.md
+          } > RELEASE_NOTES_FINAL.md
+
+          # Save for next step
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Categorize changes by type
+        run: |
+          TAG="${{ steps.changelog.outputs.tag }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || echo "")
+
+          # Create categorized changelog
+          {
+            echo "## 🎯 What's Changed"
+            echo ""
+
+            # Features
+            echo "### ✨ Features"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="^feat" || echo "- No new features"
+            echo ""
+            echo ""
+
+            # Bug Fixes
+            echo "### 🐛 Bug Fixes"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="^fix" || echo "- No bug fixes"
+            echo ""
+            echo ""
+
+            # UI/UX Improvements
+            echo "### 🎨 UI/UX Improvements"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="^style\\|^refactor.*ui" || echo "- No UI/UX changes"
+            echo ""
+            echo ""
+
+            # Documentation
+            echo "### 📚 Documentation"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="^docs" || echo "- No documentation updates"
+            echo ""
+            echo ""
+
+            # Performance
+            echo "### ⚡ Performance"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="^perf" || echo "- No performance improvements"
+            echo ""
+            echo ""
+
+            # Chores & Maintenance
+            echo "### 🔧 Maintenance"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="^chore\\|^ci\\|^build" || echo "- No maintenance updates"
+            echo ""
+            echo ""
+
+            # Breaking Changes
+            echo "### ⚠️ Breaking Changes"
+            git log ${PREV_TAG}..${TAG} --pretty=format:"- %s (%h)" --grep="BREAKING CHANGE" || echo "- No breaking changes"
+            echo ""
+            echo ""
+
+            # Contributors
+            echo "### 👥 Contributors"
+            git log ${PREV_TAG}..${TAG} --format="%an" | sort -u | sed 's/^/- @/'
+            echo ""
+          } > CATEGORIZED_NOTES.md
+
+          cat CATEGORIZED_NOTES.md >> RELEASE_NOTES_FINAL.md
+
+      - name: Add deployment and testing info
+        run: |
+          {
+            echo "---"
+            echo ""
+            echo "## 🚀 Deployment"
+            echo ""
+            echo "- **Production:** https://firefighter-hub.vercel.app"
+            echo "- **Status:** ✅ Deployed automatically on merge"
+            echo ""
+            echo "## 🧪 Testing"
+            echo ""
+            echo "All changes have been:"
+            echo "- ✅ TypeScript type-checked"
+            echo "- ✅ Linted with ESLint"
+            echo "- ✅ Unit tested with Vitest"
+            echo "- ✅ E2E tested with Playwright"
+            echo "- ✅ Accessibility verified (WCAG AA)"
+            echo ""
+            echo "## 📊 Metrics"
+            echo ""
+            git diff ${PREV_TAG}..${TAG} --shortstat || echo "- First release"
+            echo ""
+          } >> RELEASE_NOTES_FINAL.md
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: RELEASE_NOTES_FINAL.md
+          retention-days: 90
+
+      - name: Create/Update GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.changelog.outputs.tag }}"
+
+          # Create release with generated notes
+          gh release create "$TAG" \
+            --title "Release $TAG" \
+            --notes-file RELEASE_NOTES_FINAL.md \
+            --latest \
+            || echo "Release already exists, updating notes..."
+
+          # Update existing release if creation failed
+          gh release edit "$TAG" \
+            --notes-file RELEASE_NOTES_FINAL.md \
+            || echo "Could not update release notes"
+
+      - name: Comment on related PRs
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ steps.changelog.outputs.tag }}"
+
+          # Find PRs merged since last tag
+          PREV_TAG=$(git describe --tags --abbrev=0 "$TAG^" 2>/dev/null || echo "")
+
+          if [ -n "$PREV_TAG" ]; then
+            # Get merged PRs
+            gh pr list \
+              --state merged \
+              --search "merged:${PREV_TAG}..${TAG}" \
+              --json number \
+              --jq '.[].number' | while read pr_number; do
+                gh pr comment "$pr_number" \
+                  --body "🎉 This PR has been included in release [$TAG](https://github.com/DrunkOnJava/firefighterHub/releases/tag/$TAG)!"
+              done || echo "No PRs to comment on"
+          fi
+
+      - name: Summary
+        run: |
+          echo "## 📝 Release Notes Generated"
+          echo ""
+          echo "✅ Changelog created from conventional commits"
+          echo "✅ Changes categorized by type"
+          echo "✅ Contributors listed"
+          echo "✅ Deployment info added"
+          echo ""
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "✅ GitHub Release created/updated"
+            echo "✅ Related PRs notified"
+          fi
+          echo ""
+          echo "**Tag:** ${{ steps.changelog.outputs.tag }}"

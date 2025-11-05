@@ -1,0 +1,256 @@
+name: "Lighthouse CI"
+
+# Performance, Accessibility, Best Practices, and SEO audits
+# Runs on: PRs and pushes to main
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  lighthouse:
+    name: Lighthouse Performance & Accessibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm build
+        env:
+          NODE_ENV: production
+
+      - name: Start server for testing
+        run: |
+          pnpm preview &
+          echo $! > .lighthouse-server-pid
+
+          # Wait for server
+          timeout 60 bash -c 'until curl -s http://localhost:4173 > /dev/null; do sleep 1; done'
+          echo "✅ Server ready for Lighthouse"
+
+      - name: Run Lighthouse CI
+        id: lighthouse
+        run: |
+          # Install Lighthouse CI
+          npm install -g @lhci/cli@0.14.x
+
+          # Create Lighthouse CI config
+          cat > lighthouserc.json << 'CONFIG'
+          {
+            "ci": {
+              "collect": {
+                "url": [
+                  "http://localhost:4173",
+                  "http://localhost:4173?shift=A",
+                  "http://localhost:4173?shift=B",
+                  "http://localhost:4173?shift=C"
+                ],
+                "numberOfRuns": 3,
+                "settings": {
+                  "preset": "desktop",
+                  "throttling": {
+                    "rttMs": 40,
+                    "throughputKbps": 10240,
+                    "cpuSlowdownMultiplier": 1
+                  },
+                  "screenEmulation": {
+                    "mobile": false,
+                    "width": 1920,
+                    "height": 1080
+                  }
+                }
+              },
+              "assert": {
+                "preset": "lighthouse:recommended",
+                "assertions": {
+                  "categories:performance": ["error", {"minScore": 0.9}],
+                  "categories:accessibility": ["error", {"minScore": 1.0}],
+                  "categories:best-practices": ["error", {"minScore": 0.9}],
+                  "categories:seo": ["warn", {"minScore": 0.9}]
+                }
+              },
+              "upload": {
+                "target": "temporary-public-storage"
+              }
+            }
+          }
+          CONFIG
+
+          # Run Lighthouse
+          lhci autorun \
+            --config=lighthouserc.json \
+            || LHCI_EXIT=$?
+
+          echo "exit_code=${LHCI_EXIT:-0}" >> $GITHUB_OUTPUT
+
+      - name: Parse Lighthouse results
+        id: results
+        run: |
+          # Find latest Lighthouse report
+          REPORT=$(find .lighthouseci -name "lhr-*.json" | head -1)
+
+          if [ -f "$REPORT" ]; then
+            # Extract scores
+            PERFORMANCE=$(jq '.categories.performance.score * 100' "$REPORT" | cut -d. -f1)
+            ACCESSIBILITY=$(jq '.categories.accessibility.score * 100' "$REPORT" | cut -d. -f1)
+            BEST_PRACTICES=$(jq '.categories["best-practices"].score * 100' "$REPORT" | cut -d. -f1)
+            SEO=$(jq '.categories.seo.score * 100' "$REPORT" | cut -d. -f1)
+
+            echo "performance=$PERFORMANCE" >> $GITHUB_OUTPUT
+            echo "accessibility=$ACCESSIBILITY" >> $GITHUB_OUTPUT
+            echo "best_practices=$BEST_PRACTICES" >> $GITHUB_OUTPUT
+            echo "seo=$SEO" >> $GITHUB_OUTPUT
+
+            # Check if all pass thresholds
+            if [ "$PERFORMANCE" -ge 90 ] && \
+               [ "$ACCESSIBILITY" -ge 100 ] && \
+               [ "$BEST_PRACTICES" -ge 90 ]; then
+              echo "all_pass=true" >> $GITHUB_OUTPUT
+            else
+              echo "all_pass=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "all_pass=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate Lighthouse report summary
+        run: |
+          {
+            echo "# 🚦 Lighthouse CI Report"
+            echo ""
+            echo "**Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+            echo "**Commit:** ${{ github.sha }}"
+            echo ""
+            echo "## Scores"
+            echo ""
+            echo "| Category | Score | Status | Target |"
+            echo "|----------|-------|--------|--------|"
+
+            # Performance
+            PERF_STATUS=$([ "${{ steps.results.outputs.performance }}" -ge 90 ] && echo "✅" || echo "⚠️")
+            echo "| 🚀 Performance | **${{ steps.results.outputs.performance }}**/100 | $PERF_STATUS | ≥90 |"
+
+            # Accessibility
+            A11Y_STATUS=$([ "${{ steps.results.outputs.accessibility }}" -ge 100 ] && echo "✅" || echo "❌")
+            echo "| ♿ Accessibility | **${{ steps.results.outputs.accessibility }}**/100 | $A11Y_STATUS | 100 |"
+
+            # Best Practices
+            BP_STATUS=$([ "${{ steps.results.outputs.best_practices }}" -ge 90 ] && echo "✅" || echo "⚠️")
+            echo "| 🎯 Best Practices | **${{ steps.results.outputs.best_practices }}**/100 | $BP_STATUS | ≥90 |"
+
+            # SEO
+            SEO_STATUS=$([ "${{ steps.results.outputs.seo }}" -ge 90 ] && echo "✅" || echo "⚠️")
+            echo "| 🔍 SEO | **${{ steps.results.outputs.seo }}**/100 | $SEO_STATUS | ≥90 |"
+
+            echo ""
+
+            if [ "${{ steps.results.outputs.all_pass }}" = "true" ]; then
+              echo "### ✅ All Targets Met!"
+              echo ""
+              echo "Application meets all Lighthouse performance and quality thresholds."
+            else
+              echo "### ⚠️ Some Scores Below Target"
+              echo ""
+              echo "Review detailed report for improvement opportunities."
+            fi
+
+            echo ""
+            echo "## 📋 Key Metrics"
+            echo ""
+
+            # Extract key metrics from report
+            REPORT=$(find .lighthouseci -name "lhr-*.json" | head -1)
+            if [ -f "$REPORT" ]; then
+              FCP=$(jq '.audits["first-contentful-paint"].displayValue' "$REPORT" | tr -d '"')
+              LCP=$(jq '.audits["largest-contentful-paint"].displayValue' "$REPORT" | tr -d '"')
+              TBT=$(jq '.audits["total-blocking-time"].displayValue' "$REPORT" | tr -d '"')
+              CLS=$(jq '.audits["cumulative-layout-shift"].displayValue' "$REPORT" | tr -d '"')
+
+              echo "- **First Contentful Paint:** $FCP"
+              echo "- **Largest Contentful Paint:** $LCP"
+              echo "- **Total Blocking Time:** $TBT"
+              echo "- **Cumulative Layout Shift:** $CLS"
+            fi
+
+            echo ""
+            echo "---"
+            echo ""
+            echo "**Full report available in workflow artifacts.**"
+
+          } > LIGHTHOUSE_REPORT.md
+
+          cat LIGHTHOUSE_REPORT.md
+
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports-${{ github.sha }}
+          path: .lighthouseci/
+          retention-days: 30
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body-file LIGHTHOUSE_REPORT.md \
+            || echo "Could not comment on PR"
+
+      - name: Fail if accessibility score below 100
+        if: steps.results.outputs.accessibility != '100'
+        run: |
+          echo "::error::Accessibility score is ${{ steps.results.outputs.accessibility }}/100 - Must be 100 for WCAG AA compliance"
+          exit 1
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f .lighthouse-server-pid ]; then
+            kill $(cat .lighthouse-server-pid) || true
+          fi
+
+      - name: Job summary
+        if: always()
+        run: |
+          {
+            echo "## 🚦 Lighthouse Scores"
+            echo ""
+            echo "| Category | Score |"
+            echo "|----------|-------|"
+            echo "| Performance | ${{ steps.results.outputs.performance }}/100 |"
+            echo "| Accessibility | ${{ steps.results.outputs.accessibility }}/100 |"
+            echo "| Best Practices | ${{ steps.results.outputs.best_practices }}/100 |"
+            echo "| SEO | ${{ steps.results.outputs.seo }}/100 |"
+            echo ""
+
+            if [ "${{ steps.results.outputs.all_pass }}" = "true" ]; then
+              echo "### ✅ All thresholds met!"
+            else
+              echo "### ⚠️ Some scores below target - review report"
+            fi
+          } >> $GITHUB_STEP_SUMMARY

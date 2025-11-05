@@ -1,0 +1,59 @@
+{
+  "name": "Feature Branch Standards",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": [
+        "refs/heads/feature/**",
+        "refs/heads/feat/**",
+        "refs/heads/fix/**",
+        "refs/heads/bugfix/**",
+        "refs/heads/hotfix/**",
+        "refs/heads/refactor/**",
+        "refs/heads/chore/**",
+        "refs/heads/docs/**"
+      ],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "creation"
+    },
+    {
+      "type": "update",
+      "parameters": {
+        "update_allows_fetch_and_merge": true
+      }
+    },
+    {
+      "type": "required_linear_history"
+    },
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "name": "Conventional Commits Format",
+        "negate": false,
+        "operator": "starts_with",
+        "pattern": "^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\\(.+\\))?: .{1,100}"
+      }
+    },
+    {
+      "type": "commit_author_email_pattern",
+      "parameters": {
+        "name": "Valid Email Required",
+        "negate": true,
+        "operator": "contains",
+        "pattern": "noreply.github.com"
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
+}

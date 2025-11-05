@@ -1,0 +1,270 @@
+name: "Design Token Validation"
+
+# Ensure no arbitrary Tailwind values - all styling must use design tokens
+# Runs on: PRs, pushes to main, and manual dispatch
+
+on:
+  pull_request:
+    paths:
+      - 'src/**/*.tsx'
+      - 'src/**/*.ts'
+      - 'src/styles/**'
+  push:
+    branches: [main]
+    paths:
+      - 'src/**/*.tsx'
+      - 'src/**/*.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  validate-design-tokens:
+    name: Validate Design Token Usage
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Scan for arbitrary Tailwind values
+        id: scan
+        run: |
+          echo "🔍 Scanning for arbitrary Tailwind values..."
+
+          # Patterns to detect
+          PATTERNS=(
+            'bg-\[#[0-9A-Fa-f]{3,8}\]'      # bg-[#hex]
+            'text-\[#[0-9A-Fa-f]{3,8}\]'    # text-[#hex]
+            'border-\[#[0-9A-Fa-f]{3,8}\]'  # border-[#hex]
+            'bg-\[[0-9]+px\]'                # bg-[Npx]
+            'w-\[[0-9]+px\]'                 # w-[Npx]
+            'h-\[[0-9]+px\]'                 # h-[Npx]
+            'p-\[[0-9]+px\]'                 # p-[Npx]
+            'm-\[[0-9]+px\]'                 # m-[Npx]
+          )
+
+          VIOLATIONS=0
+          REPORT_FILE="design-token-violations.txt"
+          > "$REPORT_FILE"
+
+          for pattern in "${PATTERNS[@]}"; do
+            echo "Checking pattern: $pattern"
+
+            MATCHES=$(grep -rn --include="*.tsx" --include="*.ts" \
+              -E "$pattern" src/ 2>/dev/null || true)
+
+            if [ -n "$MATCHES" ]; then
+              echo "❌ Found violations for $pattern:" >> "$REPORT_FILE"
+              echo "$MATCHES" >> "$REPORT_FILE"
+              echo "" >> "$REPORT_FILE"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          done
+
+          # Check for violations
+          if [ $VIOLATIONS -gt 0 ]; then
+            echo "violations=true" >> $GITHUB_OUTPUT
+            echo "count=$VIOLATIONS" >> $GITHUB_OUTPUT
+          else
+            echo "violations=false" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate design token imports
+        id: imports
+        run: |
+          echo "🔍 Checking design token imports..."
+
+          # Files that should import design tokens
+          COMPONENT_FILES=$(find src/components -name "*.tsx" -type f)
+
+          MISSING_IMPORTS=0
+          MISSING_FILE="missing-imports.txt"
+          > "$MISSING_FILE"
+
+          for file in $COMPONENT_FILES; do
+            # Check if file uses className
+            if grep -q 'className=' "$file"; then
+              # Check if it imports design tokens
+              if ! grep -q "from.*['\"].*styles['\"]" "$file" && \
+                 ! grep -q "from.*['\"]@/styles['\"]" "$file"; then
+                echo "⚠️  $file uses className but doesn't import design tokens" >> "$MISSING_FILE"
+                MISSING_IMPORTS=$((MISSING_IMPORTS + 1))
+              fi
+            fi
+          done
+
+          if [ $MISSING_IMPORTS -gt 0 ]; then
+            echo "missing=true" >> $GITHUB_OUTPUT
+            echo "count=$MISSING_IMPORTS" >> $GITHUB_OUTPUT
+          else
+            echo "missing=false" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Calculate design token usage percentage
+        id: usage
+        run: |
+          echo "📊 Calculating design token usage..."
+
+          # Count total className usages
+          TOTAL_CLASSNAMES=$(grep -r --include="*.tsx" 'className=' src/ | wc -l)
+
+          # Count design token imports
+          TOKEN_IMPORTS=$(grep -r --include="*.tsx" "from.*['\"].*styles['\"]" src/ | wc -l)
+
+          # Calculate percentage
+          if [ $TOTAL_CLASSNAMES -gt 0 ]; then
+            PERCENTAGE=$((TOKEN_IMPORTS * 100 / TOTAL_CLASSNAMES))
+          else
+            PERCENTAGE=0
+          fi
+
+          echo "total=$TOTAL_CLASSNAMES" >> $GITHUB_OUTPUT
+          echo "using_tokens=$TOKEN_IMPORTS" >> $GITHUB_OUTPUT
+          echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
+
+          # Check if meets 95% threshold
+          if [ $PERCENTAGE -ge 95 ]; then
+            echo "meets_threshold=true" >> $GITHUB_OUTPUT
+          else
+            echo "meets_threshold=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate report
+        run: |
+          {
+            echo "# Design Token Validation Report"
+            echo ""
+            echo "**Date:** $(date '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "**Branch:** ${{ github.ref_name }}"
+            echo "**Commit:** ${{ github.sha }}"
+            echo ""
+            echo "## 📊 Summary"
+            echo ""
+            echo "- **Total Components with className:** ${{ steps.usage.outputs.total }}"
+            echo "- **Components using design tokens:** ${{ steps.usage.outputs.using_tokens }}"
+            echo "- **Token Usage:** ${{ steps.usage.outputs.percentage }}%"
+            echo "- **Target:** ≥95%"
+            echo ""
+
+            if [ "${{ steps.usage.outputs.meets_threshold }}" = "true" ]; then
+              echo "✅ **Status:** PASSED - Meets 95% threshold"
+            else
+              echo "⚠️ **Status:** WARNING - Below 95% threshold"
+            fi
+
+            echo ""
+            echo "---"
+            echo ""
+
+            if [ "${{ steps.scan.outputs.violations }}" = "true" ]; then
+              echo "## ❌ Arbitrary Tailwind Values Found (${{ steps.scan.outputs.count }} patterns)"
+              echo ""
+              echo "The following files use arbitrary Tailwind values instead of design tokens:"
+              echo ""
+              echo '```'
+              cat design-token-violations.txt
+              echo '```'
+              echo ""
+              echo "### 🔧 How to Fix"
+              echo ""
+              echo "Replace arbitrary values with design tokens:"
+              echo ""
+              echo '```typescript'
+              echo '// ❌ BAD - Arbitrary values'
+              echo 'className="bg-[#3A4149] p-4 text-[16px]"'
+              echo ''
+              echo '// ✅ GOOD - Design tokens'
+              echo 'import { colors, tokens } from "@/styles";'
+              echo 'className={`${colors.structural.bg.card} ${tokens.spacing.card.md} ${tokens.typography.body.primary}`}'
+              echo '```'
+            else
+              echo "## ✅ No Arbitrary Values Detected"
+              echo ""
+              echo "All styling uses proper design tokens!"
+            fi
+
+            echo ""
+            echo "---"
+            echo ""
+
+            if [ "${{ steps.imports.outputs.missing }}" = "true" ]; then
+              echo "## ⚠️ Missing Design Token Imports (${{ steps.imports.outputs.count }} files)"
+              echo ""
+              echo "These components use className but don't import design tokens:"
+              echo ""
+              echo '```'
+              cat missing-imports.txt
+              echo '```'
+              echo ""
+              echo "### 🔧 How to Fix"
+              echo ""
+              echo "Add design token import:"
+              echo '```typescript'
+              echo 'import { colors, tokens } from "@/styles";'
+              echo '```'
+            else
+              echo "## ✅ All Components Import Design Tokens"
+            fi
+
+          } > DESIGN_TOKEN_REPORT.md
+
+          cat DESIGN_TOKEN_REPORT.md
+
+      - name: Upload validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-token-validation-report
+          path: |
+            DESIGN_TOKEN_REPORT.md
+            design-token-violations.txt
+            missing-imports.txt
+          retention-days: 30
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Post validation report as PR comment
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body-file DESIGN_TOKEN_REPORT.md \
+            || echo "Could not comment on PR"
+
+      - name: Set check status
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ "${{ steps.scan.outputs.violations }}" = "true" ]; then
+            echo "::error::Found arbitrary Tailwind values - use design tokens instead"
+            exit 1
+          fi
+
+          if [ "${{ steps.usage.outputs.meets_threshold }}" = "false" ]; then
+            echo "::warning::Design token usage (${{ steps.usage.outputs.percentage }}%) below 95% threshold"
+          fi
+
+          echo "✅ Design token validation passed"
+
+      - name: Job summary
+        run: |
+          {
+            echo "## Design Token Validation"
+            echo ""
+            echo "| Metric | Value | Status |"
+            echo "|--------|-------|--------|"
+            echo "| Token Usage | ${{ steps.usage.outputs.percentage }}% | $([ "${{ steps.usage.outputs.meets_threshold }}" = "true" ] && echo "✅ Pass" || echo "⚠️ Warning") |"
+            echo "| Arbitrary Values | ${{ steps.scan.outputs.count }} | $([ "${{ steps.scan.outputs.violations }}" = "false" ] && echo "✅ None" || echo "❌ Found") |"
+            echo "| Missing Imports | ${{ steps.imports.outputs.count }} | $([ "${{ steps.imports.outputs.missing }}" = "false" ] && echo "✅ None" || echo "⚠️ Found") |"
+            echo ""
+            if [ "${{ steps.scan.outputs.violations }}" = "false" ] && [ "${{ steps.usage.outputs.meets_threshold }}" = "true" ]; then
+              echo "### ✅ All checks passed!"
+            else
+              echo "### ⚠️ Review violations above"
+            fi
+          } >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,47 @@
+{
+  "name": "All Branches Quality Standards",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["~ALL"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "name": "Conventional Commits",
+        "negate": false,
+        "operator": "starts_with",
+        "pattern": "^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert|merge)(\\(.+\\))?: .{1,100}"
+      }
+    },
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "name": "No Secret Keywords in Commits",
+        "negate": true,
+        "operator": "contains",
+        "pattern": "(password|secret|api[_-]?key|token|credential|private[_-]?key)"
+      }
+    },
+    {
+      "type": "commit_author_email_pattern",
+      "parameters": {
+        "name": "Valid Email Domain",
+        "negate": false,
+        "operator": "regex",
+        "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
+}

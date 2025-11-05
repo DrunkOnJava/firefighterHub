@@ -199,7 +199,7 @@ export function FirefighterProfileModal({
           max-w-2xl w-full max-h-[90vh] overflow-hidden
           ${colors.components.modal.background}
           ${colors.components.modal.border}
-          ${tokens.borders.radius.xl}
+          ${tokens.borders.radius['2xl']}
           ${colors.components.modal.shadow}
           animate-scale-in
         `}

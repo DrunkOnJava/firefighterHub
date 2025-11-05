@@ -173,7 +173,7 @@ export function FirefightersModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${colors.components.modal.shadow} ${tokens.borders.radius.xl} max-w-6xl w-full max-h-[90vh] overflow-hidden animate-scale-in`}
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${colors.components.modal.shadow} ${tokens.borders.radius['2xl']} max-w-6xl w-full max-h-[90vh] overflow-hidden animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

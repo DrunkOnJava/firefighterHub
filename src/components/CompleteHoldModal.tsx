@@ -112,7 +112,7 @@ export function CompleteHoldModal({
           max-w-lg w-full max-h-[90vh] overflow-y-auto
           ${colors.components.modal.background}
           ${colors.components.modal.border}
-          ${tokens.borders.radius.xl}
+          ${tokens.borders.radius['2xl']}
           ${colors.components.modal.shadow}
         `}
         onClick={(e) => e.stopPropagation()}

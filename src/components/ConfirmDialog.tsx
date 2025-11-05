@@ -101,7 +101,7 @@ export function ConfirmDialog({
 
       {/* Dialog */}
       <div
-        className={`relative w-full max-w-md rounded-lg shadow-2xl border ${config.borderColor} ${theme.confirmDialog.background}`}
+        className={`relative w-full max-w-md rounded-2xl shadow-2xl border ${config.borderColor} ${theme.confirmDialog.background}`}
         role="alertdialog"
         aria-labelledby="confirm-dialog-title"
         aria-describedby="confirm-dialog-description"
@@ -123,7 +123,7 @@ export function ConfirmDialog({
         <div className="p-6">
           {/* Icon and title */}
           <div className="flex items-start gap-4 mb-4">
-            <div className={`p-3 rounded-lg ${config.iconBg}`}>
+            <div className={`p-3 rounded-md ${config.iconBg}`}>
               <Icon className={`w-6 h-6 ${config.iconColor}`} />
             </div>
             <div className="flex-1">

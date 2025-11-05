@@ -173,7 +173,7 @@ export function QuickAddFirefighterModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius.xl} ${colors.components.modal.shadow} max-w-2xl w-full max-h-[90vh] overflow-hidden`}
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} max-w-2xl w-full max-h-[90vh] overflow-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`${colors.semantic.success.light} border-b-2 ${colors.semantic.success.border} px-6 py-5 flex items-center justify-between`}>

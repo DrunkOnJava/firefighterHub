@@ -26,20 +26,20 @@ export const colors = {
   structural: {
     /** Background colors */
     bg: {
-      app: "bg-[#2F3640]", // Main app background - dark slate grey
-      card: "bg-[#3A4149]", // Card backgrounds - medium slate grey
-      cardHover: "bg-[#424A54]", // Card hover state
+      app: "bg-slate-900", // Main app background (was #2F3640)
+      card: "bg-slate-825", // Card backgrounds (was #3A4149) - custom shade
+      cardHover: "bg-slate-700", // Card hover state (was #424A54)
       overlay: "bg-black/75", // Modal overlay
-      surface: "bg-[#353D47]", // Subtle surface difference
+      surface: "bg-slate-850", // Subtle surface difference (was #353D47) - custom shade
     },
 
     /** Border colors */
     border: {
-      default: "border-[#252A32]", // Standard borders - darker slate
-      emphasis: "border-[#1E2329]", // Emphasized borders
-      subtle: "border-[#2F3640]", // Subtle borders
-      hover: "border-[#4A5360]", // Hover state - lighter slate
-      strong: "border-[#4A5360]", // Strong borders
+      default: "border-slate-900", // Standard borders (was #252A32)
+      emphasis: "border-slate-950", // Emphasized borders (was #1E2329)
+      subtle: "border-slate-900", // Subtle borders (was #2F3640)
+      hover: "border-slate-600", // Hover state (was #4A5360)
+      strong: "border-slate-600", // Strong borders (was #4A5360)
     },
 
     /** Text colors */
@@ -166,14 +166,14 @@ export const colors = {
       shadow: "shadow-lg shadow-cyan-900/50",
     },
 
-    /** Accent/Action color (red-orange gradient) */
+    /** Accent/Event pill styling (subtle elevated card) */
     accent: {
-      gradient: "bg-gradient-to-r from-red-500 to-orange-600",
-      hover: "hover:from-red-600 hover:to-orange-700",
-      text: "text-orange-500",
-      border: "border-orange-600",
-      light: "bg-orange-500/20",
-      shadow: "shadow-lg",
+      bg: "bg-slate-700",
+      hover: "hover:bg-slate-600",
+      text: "text-slate-100",
+      border: "border-l-2 border-blue-500",
+      shadow: "shadow-md",
+      transition: "transition-colors",
     },
   },
 
@@ -211,35 +211,35 @@ export const colors = {
 
     /** Modal styles */
     modal: {
-      background: "bg-[#3A4149]",
-      border: "border border-[#252A32]",
+      background: "bg-slate-825",
+      border: "border border-slate-900",
       shadow: "shadow-2xl",
       overlay: "bg-black/75 backdrop-blur-sm",
     },
 
     /** Card styles */
     card: {
-      default: "bg-[#3A4149] border border-[#252A32]",
+      default: "bg-slate-825 border border-slate-900",
       hover:
-        "bg-[#3A4149] border border-[#252A32] hover:border-[#4A5360] hover:shadow-lg transition-all duration-150",
-      elevated: "bg-[#3A4149] border border-[#252A32] shadow-xl",
+        "bg-slate-825 border border-slate-900 hover:border-slate-600 hover:shadow-lg transition-all duration-150",
+      elevated: "bg-slate-825 border border-slate-900 shadow-xl",
       shadow: "shadow-lg shadow-black/50",
     },
 
     /** Day cell styles (Calendar-specific) */
     dayCell: {
       scheduled: "bg-blue-500/20 border-2 border-blue-500",
-      completed: "bg-[#353D47]/80 border-2 border-[#252A32]",
-      both: "bg-gradient-to-br from-blue-500/20 to-[#353D47]/80 border-2 border-blue-500",
-      empty: "bg-[#3A4149] border border-[#252A32] hover:border-[#4A5360]",
+      completed: "bg-slate-850/80 border-2 border-slate-900",
+      both: "bg-gradient-to-br from-blue-500/20 to-slate-850/80 border-2 border-blue-500",
+      empty: "bg-slate-825 border border-slate-900 hover:border-slate-600",
       today: "ring-2 ring-blue-400",
     },
 
     /** Hold card styles */
     hold: {
       border: "border-l-4",
-      scheduled: "border-l-blue-500 bg-[#3A4149]",
-      completed: "border-l-emerald-500 bg-[#3A4149]",
+      scheduled: "border-l-blue-500 bg-slate-825",
+      completed: "border-l-emerald-500 bg-slate-825",
     },
   },
 
@@ -252,8 +252,8 @@ export const colors = {
     primary: "bg-gradient-to-br from-red-600 to-rose-700",
     scheduled: "bg-gradient-to-br from-blue-600 to-blue-700",
     success: "bg-gradient-to-br from-emerald-600 to-green-700",
-    calendarHeader: "bg-gradient-to-r from-[#1E2329] to-[#252A32]",
-    cardHover: "bg-gradient-to-br from-[#3A4149] to-[#353D47]",
+    calendarHeader: "bg-gradient-to-r from-slate-950 to-slate-900",
+    cardHover: "bg-gradient-to-br from-slate-825 to-slate-850",
   },
 } as const;
 

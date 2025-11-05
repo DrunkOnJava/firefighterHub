@@ -2,9 +2,12 @@ import { Edit2, Save, Users, X, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
-import { Firefighter, Shift, supabase } from "../lib/supabase";
+import { Shift, supabase } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { ShiftBadge } from "./ShiftSelector";
+import type { Tables } from "../lib/database.types";
+
+type Firefighter = Tables<"firefighters">;
 
 interface FirefightersModalProps {
   isOpen: boolean;

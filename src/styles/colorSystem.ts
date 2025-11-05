@@ -166,14 +166,14 @@ export const colors = {
       shadow: "shadow-lg shadow-cyan-900/50",
     },
 
-    /** Accent/Action color (teal-cyan gradient) */
+    /** Accent/Event pill styling (subtle elevated card) */
     accent: {
-      gradient: "bg-gradient-to-r from-teal-500 to-cyan-600",
-      hover: "hover:from-teal-600 hover:to-cyan-700",
-      text: "text-teal-500",
-      border: "border-teal-600",
-      light: "bg-teal-500/20",
-      shadow: "shadow-lg shadow-teal-900/30",
+      bg: "bg-slate-700",
+      hover: "hover:bg-slate-600",
+      text: "text-slate-100",
+      border: "border-l-2 border-blue-500",
+      shadow: "shadow-md",
+      transition: "transition-colors",
     },
   },
 

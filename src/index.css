@@ -293,3 +293,221 @@
     animation: none;
   }
 }
+
+/* Print Stylesheet - Issue #33 */
+@media print {
+  /* Force light theme for print - saves ink and improves readability */
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Hide non-essential UI elements */
+  header,
+  aside,
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset page margins for better print layout */
+  @page {
+    margin: 1cm;
+    size: landscape;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-size: 12pt;
+  }
+
+  /* Main content should take full width */
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Optimize calendar for print */
+  .calendar-container,
+  [role="main"] > div,
+  section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Remove grid gaps and unnecessary spacing for print */
+  .grid {
+    gap: 0 !important;
+  }
+
+  /* Ensure table/grid elements print well */
+  table,
+  .grid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Force borders to be visible in print */
+  table,
+  th,
+  td,
+  .border,
+  [class*="border-"] {
+    border: 1px solid black !important;
+  }
+
+  /* Optimize links for print - hide URLs to save space */
+  a[href]:after {
+    content: "";
+  }
+
+  /* Remove link underlines in print */
+  a {
+    text-decoration: none;
+  }
+
+  /* Page breaks for better pagination */
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid breaking lists and cards */
+  ul,
+  ol,
+  .card,
+  [class*="rounded"],
+  [class*="bg-"] {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Show all content - remove any hidden elements needed for print */
+  .print-show {
+    display: block !important;
+  }
+
+  /* Add print header with app title and shift info */
+  body::before {
+    content: "FirefighterHub - Hold Rotation Schedule";
+    display: block;
+    font-size: 18pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0.5cm;
+    padding-bottom: 0.3cm;
+    border-bottom: 2px solid black;
+  }
+
+  /* Optimize typography for print */
+  h1 {
+    font-size: 16pt !important;
+    margin-bottom: 0.3cm;
+  }
+
+  h2 {
+    font-size: 14pt !important;
+    margin-bottom: 0.2cm;
+  }
+
+  h3 {
+    font-size: 12pt !important;
+    margin-bottom: 0.2cm;
+  }
+
+  /* Ensure proper spacing */
+  p,
+  div,
+  section {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Calendar-specific optimizations */
+  /* Calendar grid should be visible and properly formatted */
+  [class*="grid-cols-7"] {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+  }
+
+  /* Day cells should have proper borders */
+  [class*="aspect-square"],
+  [class*="calendar"],
+  [role="gridcell"] {
+    border: 1px solid #666 !important;
+    padding: 0.2cm !important;
+    min-height: 2cm !important;
+  }
+
+  /* Weekday headers should be bold */
+  [class*="grid-cols-7"] > div:nth-child(-n+7) {
+    font-weight: bold !important;
+    background: #f0f0f0 !important;
+    text-align: center !important;
+  }
+
+  /* Hold cards should be compact in print */
+  [class*="border-l-"] {
+    border-left: 3px solid black !important;
+    padding: 0.1cm !important;
+    margin: 0.05cm 0 !important;
+    font-size: 10pt !important;
+  }
+
+  /* Month navigation should be printed as text */
+  time,
+  [aria-label*="month"] {
+    display: block !important;
+    text-align: center !important;
+    font-size: 14pt !important;
+    font-weight: bold !important;
+    margin-bottom: 0.3cm !important;
+  }
+
+  /* Legends should be compact */
+  [class*="legend"],
+  [class*="flex"] > div {
+    display: inline-block !important;
+    margin-right: 0.5cm !important;
+    font-size: 10pt !important;
+  }
+
+  /* Remove shadows and gradients that don't print well */
+  [class*="shadow"],
+  [class*="gradient"] {
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  /* Status badges should be clear */
+  [class*="badge"],
+  [class*="bg-blue"],
+  [class*="bg-green"],
+  [class*="bg-red"],
+  [class*="bg-emerald"] {
+    border: 1px solid black !important;
+    padding: 0.05cm 0.2cm !important;
+    background: white !important;
+  }
+
+  /* Scheduled holds indicator */
+  [class*="bg-blue-500"] {
+    background: #e6f0ff !important;
+  }
+
+  /* Completed holds indicator */
+  [class*="bg-emerald"],
+  [class*="bg-green"] {
+    background: #e6f5e6 !important;
+  }
+}

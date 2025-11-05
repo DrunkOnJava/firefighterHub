@@ -3,6 +3,7 @@ import {
   HelpCircle,
   Menu,
   Moon,
+  Printer,
   Shield,
   Sun,
   UserPlus,
@@ -135,6 +136,18 @@ export function Header({
 
             {/* Secondary Actions */}
             <div className="hidden sm:flex items-center gap-1">
+              <button
+                onClick={() => window.print()}
+                className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
+                  isDarkMode
+                    ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
+                    : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
+                }`}
+                aria-label="Print calendar"
+              >
+                <Printer size={20} />
+                <span className="text-xs font-medium">Print</span>
+              </button>
               <button
                 onClick={onShowActivityLog}
                 className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${

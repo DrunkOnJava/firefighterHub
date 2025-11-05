@@ -27,6 +27,12 @@ const SHIFT_BADGE_COLORS = {
   C: "bg-sky-600 border-2 border-sky-800 text-white shadow-sm shadow-sky-900/50",
 };
 
+const SHIFT_ICONS = {
+  A: { icon: "●", label: "Shift A (circle)" },
+  B: { icon: "■", label: "Shift B (square)" },
+  C: { icon: "▲", label: "Shift C (triangle)" },
+};
+
 export function ShiftSelector({
   currentShift,
   onShiftChange,
@@ -70,14 +76,18 @@ export function ShiftSelector({
 }
 
 export function ShiftBadge({ shift }: { shift: Shift }) {
+  const iconData = SHIFT_ICONS[shift];
+  
   return (
     <span
       className={`
-      inline-flex items-center justify-center px-2.5 py-0.5 ${tokens.borders.radius.md} ${tokens.typography.body.small} font-bold
+      inline-flex items-center gap-1 px-2.5 py-0.5 ${tokens.borders.radius.md} ${tokens.typography.body.small} font-bold
       ${SHIFT_BADGE_COLORS[shift]}
     `}
+      aria-label={iconData.label}
     >
-      Shift {shift}
+      <span aria-hidden="true">{iconData.icon}</span>
+      <span>Shift {shift}</span>
     </span>
   );
 }

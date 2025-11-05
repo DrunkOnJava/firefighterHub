@@ -329,7 +329,7 @@ export function FirefighterList({
                 isDarkMode ? colors.structural.text.muted : "text-slate-400"
               }
             >
-              <History size={64} />
+              <History className={tokens.icons.xl} />
             </div>
             <p
               className={`
@@ -404,7 +404,7 @@ export function FirefighterList({
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <ArrowUpDown size={14} />
+                      <ArrowUpDown className={tokens.icons.xs} />
                       Order
                     </div>
                   </th>
@@ -700,7 +700,7 @@ export function FirefighterList({
                               title="View hold history"
                               aria-label="View hold history"
                             >
-                              <History size={14} />
+                              <History className={tokens.icons.xs} />
                             </button>
                           )}
                         </div>
@@ -709,14 +709,14 @@ export function FirefighterList({
                         <td className="px-4 py-4 whitespace-nowrap text-center">
                           <div className="flex flex-col items-center gap-1">
                             <div className="flex items-center gap-2">
-                              <Clock size={14} className={isDarkMode ? "text-gray-400" : "text-gray-500"} />
+                              <Clock className={`${tokens.icons.xs} {isDarkMode ? "text-gray-400" : "text-gray-500"} />
                               <span className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
                                 {firefighter.hours_worked_this_period || 0}h / 72h
                               </span>
                             </div>
                             {(firefighter.hours_worked_this_period || 0) > 60 && (
                               <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-900/70 text-amber-200 text-[10px] rounded">
-                                <AlertTriangle size={10} className="mr-0.5" />
+                                <AlertTriangle className={`${tokens.icons.xs} mr-0.5`} />
                                 Near Limit
                               </span>
                             )}
@@ -735,7 +735,7 @@ export function FirefighterList({
                               }`}
                               title="Transfer shift"
                             >
-                              <Repeat size={16} />
+                              <Repeat className={tokens.icons.sm} />
                             </button>
                             <button
                               onClick={() => onDeactivate(firefighter.id)}
@@ -746,7 +746,7 @@ export function FirefighterList({
                               }`}
                               title="Deactivate"
                             >
-                              <UserX size={16} />
+                              <UserX className={tokens.icons.sm} />
                             </button>
                             <button
                               onClick={() => onDelete(firefighter.id)}
@@ -757,7 +757,7 @@ export function FirefighterList({
                               }`}
                               title="Delete permanently"
                             >
-                              <Trash2 size={16} />
+                              <Trash2 className={tokens.icons.sm} />
                             </button>
                           </div>
                         </td>
@@ -834,7 +834,7 @@ export function FirefighterList({
                         }`}
                         title="View profile and hold history"
                       >
-                        <Eye size={16} />
+                        <Eye className={tokens.icons.sm} />
                       </button>
                       <button
                         onClick={() => {
@@ -848,7 +848,7 @@ export function FirefighterList({
                         }`}
                         title="Reactivate firefighter"
                       >
-                        <RotateCcw size={16} />
+                        <RotateCcw className={tokens.icons.sm} />
                       </button>
                       <span
                         className={`text-xs px-2 py-1 rounded ${

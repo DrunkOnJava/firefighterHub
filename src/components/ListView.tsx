@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Firefighter } from "../lib/supabase";
+import { tokens } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
 
 interface ListViewProps {
@@ -290,7 +291,7 @@ export function ListView({
             <CalendarIcon className="text-white" size={28} />
           </div>
           <div>
-            <h2 id="list-heading" className="text-2xl font-bold text-white">
+            <h2 id="list-heading" className={`${tokens.typography.heading.h2} text-white`}>
               Hold List View
             </h2>
             <p className="text-base text-gray-400">
@@ -303,7 +304,7 @@ export function ListView({
       <div className="p-6 space-y-8">
         {upcomingHolds.length > 0 && (
           <div>
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <h3 className={`${tokens.typography.heading.h3} text-white mb-4 flex items-center gap-2`}>
               <Clock className="text-blue-400" size={24} />
               Upcoming Holds ({upcomingHolds.length})
             </h3>
@@ -329,7 +330,7 @@ export function ListView({
 
         {pastHolds.length > 0 && (
           <div>
-            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <h3 className={`${tokens.typography.heading.h3} text-white mb-4 flex items-center gap-2`}>
               <CheckCircle2 className="text-green-400" size={24} />
               Past Holds ({pastHolds.length})
             </h3>

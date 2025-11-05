@@ -1253,7 +1253,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 
 **Task 2: Copy MaterialM CSS**
 ```bash
-cp /tmp/materialm-react-tailwind-pro-main/materialM-react-tailwind-pro-main/packages/default/src/css/theme/default-theme.css \
+# Note: Path has nested materialM-react-tailwind-pro-main directory
+cp "/Users/griffin/Documents/Templates/01-Coded-Templates/materialM-react-tailwind-pro-main/materialM-react-tailwind-pro-main/packages/default/src/css/theme/default-theme.css" \
    src/styles/materialM.css
 ```
 
@@ -1577,13 +1578,25 @@ Copilot will automatically create new PR.
 - `docs/LIGHT_MODE_WCAG_AUDIT.md` - Light mode fixes (PR #61)
 - `docs/TOUCH_TARGET_AUDIT.md` - Touch target compliance (PR #60)
 
-### Template Source
-- **Local:** `/tmp/materialm-react-tailwind-pro-main/`
+### Template Source Locations
+
+**MaterialM React/Tailwind Pro:**
+- **Base Path:** `/Users/griffin/Documents/Templates/01-Coded-Templates/materialM-react-tailwind-pro-main/materialM-react-tailwind-pro-main/`
+- **Original ZIP:** `/Users/griffin/Downloads/materialm-react-tailwind-pro-main_NjgxNWI1NjhiMDIxNzMwMDMzM2QxMDJi.zip`
 - **Package:** `packages/default/` (main template variant)
-- **Key Files:**
-  - `src/css/theme/default-theme.css` (700 lines CSS variables)
-  - `src/utils/theme/custom-theme.tsx` (740 lines Flowbite config)
-  - `src/components/apps/calendar/` (calendar implementation)
+
+**Exact File Paths:**
+- **CSS Theme:** `packages/default/src/css/theme/default-theme.css`
+  - Full path: `/Users/griffin/Documents/Templates/01-Coded-Templates/materialM-react-tailwind-pro-main/materialM-react-tailwind-pro-main/packages/default/src/css/theme/default-theme.css`
+- **Flowbite Config:** `packages/default/src/utils/theme/custom-theme.tsx`
+  - Full path: `/Users/griffin/Documents/Templates/01-Coded-Templates/materialM-react-tailwind-pro-main/materialM-react-tailwind-pro-main/packages/default/src/utils/theme/custom-theme.tsx`
+- **Calendar:** `packages/default/src/components/apps/calendar/index.tsx`
+  - Full path: `/Users/griffin/Documents/Templates/01-Coded-Templates/materialM-react-tailwind-pro-main/materialM-react-tailwind-pro-main/packages/default/src/components/apps/calendar/index.tsx`
+
+**Additional Resources:**
+- **Actify Source:** `/Users/griffin/Downloads/actify-main/`
+- **MaterialM PDF:** `/Users/griffin/Downloads/01-Documents/PDFs/MaterialM.pdf`
+- **Next.js Versions:** `/Users/griffin/Documents/Templates/01-Coded-Templates/Next.js-Admin-Dashboards/`
 
 ---
 

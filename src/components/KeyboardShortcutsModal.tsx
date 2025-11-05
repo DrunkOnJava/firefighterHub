@@ -69,7 +69,7 @@ export function KeyboardShortcutsModal({
           </div>
           <button
             onClick={onClose}
-            className={`p-2 ${tokens.borders.radius.md} ${colors.interactive.hover.bg} ${colors.structural.text.secondary} hover:${colors.structural.text.primary} transition-colors`}
+            className={`p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.md} ${colors.interactive.hover.bg} ${colors.structural.text.secondary} hover:${colors.structural.text.primary} transition-colors flex items-center justify-center`}
             aria-label="Close shortcuts modal"
           >
             <X className="w-5 h-5" />

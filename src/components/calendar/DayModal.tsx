@@ -183,10 +183,12 @@ export function DayModal({
             onClick={handleClose}
             className={`
               ${tokens.spacing.section.sm}
+              ${tokens.touchTarget.min}
               ${tokens.borders.radius.lg}
               ${theme.modal.background}
               hover:opacity-80
               ${tokens.transitions.fast}
+              flex items-center justify-center
             `}
             aria-label="Close date dialog"
           >

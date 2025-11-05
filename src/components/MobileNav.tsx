@@ -116,7 +116,7 @@ export function MobileNav({
             </div>
             <button
               onClick={onClose}
-              className={`p-2 rounded-lg transition-colors focus-ring ${
+              className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex items-center justify-center ${
                 isDarkMode
                   ? "hover:bg-gray-700 text-gray-400"
                   : "hover:bg-slate-200 text-slate-600"

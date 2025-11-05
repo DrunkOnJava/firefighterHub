@@ -81,7 +81,7 @@ export function ReactivateModal({
           </div>
           <button
             onClick={onClose}
-            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring`}
+            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
             aria-label="Close reactivate dialog"
           >
             <X className={`${tokens.icons.lg} ${colors.structural.text.secondary}`} />

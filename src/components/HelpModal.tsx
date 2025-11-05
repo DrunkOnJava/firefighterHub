@@ -84,7 +84,7 @@ export function HelpModal({
           </div>
           <button
             onClick={onClose}
-            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring`}
+            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
             aria-label="Close help dialog"
           >
             <X size={24} className={colors.structural.text.secondary} />

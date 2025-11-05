@@ -1,0 +1,300 @@
+name: Quality Reusable
+
+on:
+  workflow_call:
+    inputs:
+      run_visual_regression:
+        description: "Run Playwright VRT"
+        type: boolean
+        default: true
+      run_lighthouse:
+        description: "Run Lighthouse CI"
+        type: boolean
+        default: true
+      run_accessibility:
+        description: "Run axe-core and pa11y"
+        type: boolean
+        default: true
+      token_usage_threshold:
+        description: "Min % of components importing tokens"
+        type: number
+        default: 95
+    secrets:
+      GH_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+      - name: Build (Vite)
+        env:
+          NODE_ENV: production
+        run: pnpm build
+      - name: Upload web dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: |
+            dist/**
+          retention-days: 7
+
+  design_tokens:
+    name: Design Token Validation
+    runs-on: ubuntu-24.04
+    needs: build
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Scan for arbitrary Tailwind values
+        id: scan
+        run: |
+          set -e
+          PATTERNS=('bg-\[#[0-9A-Fa-f]{3,8}\]' 'text-\[#[0-9A-Fa-f]{3,8}\]' 'border-\[#[0-9A-Fa-f]{3,8}\]' 'w-\[[0-9]+px\]' 'h-\[[0-9]+px\]' 'p-\[[0-9]+px\]' 'm-\[[0-9]+px\]')
+          VIOLATIONS=0; > design-token-violations.txt
+          for pattern in "${PATTERNS[@]}"; do
+            MATCHES=$(grep -rn --include="*.tsx" --include="*.ts" -E "$pattern" src/ || true)
+            if [ -n "$MATCHES" ]; then
+              echo "Pattern: $pattern" >> design-token-violations.txt
+              echo "$MATCHES" >> design-token-violations.txt
+              echo >> design-token-violations.txt
+              VIOLATIONS=$((VIOLATIONS+1))
+            fi
+          done
+          echo "violations=$VIOLATIONS" >> $GITHUB_OUTPUT
+      - name: Token usage %
+        id: usage
+        run: |
+          TOTAL=$(grep -r --include="*.tsx" 'className=' src/ | wc -l | xargs)
+          IMPORTS=$(grep -r --include="*.tsx" "from.*['\"].*styles['\"]" src/ | wc -l | xargs)
+          PCT=0; if [ "$TOTAL" -gt 0 ]; then PCT=$((IMPORTS*100/TOTAL)); fi
+          echo "percentage=$PCT" >> $GITHUB_OUTPUT
+      - name: Upload token reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: token-report
+          path: |
+            design-token-violations.txt
+          retention-days: 7
+      - name: Enforce thresholds
+        run: |
+          if [ "${{ steps.scan.outputs.violations }}" != "0" ]; then
+            echo "::error::Arbitrary Tailwind values found"
+            exit 1
+          fi
+          REQ=${{ inputs.token_usage_threshold }}
+          ACT=${{ steps.usage.outputs.percentage }}
+          if [ "$ACT" -lt "$REQ" ]; then
+            echo "::error::Design token usage ${ACT}% below ${REQ}%"
+            exit 1
+          fi
+
+  accessibility:
+    if: ${{ inputs.run_accessibility }}
+    name: Accessibility (axe+pa11y)
+    runs-on: ubuntu-24.04
+    needs: build
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: dist
+      - name: Start preview
+        run: |
+          pnpm preview --port 4173 --strictPort &
+          timeout 60 bash -c 'until curl -s http://localhost:4173 > /dev/null; do sleep 1; done'
+      - name: Install auditors
+        run: |
+          pnpm add -D @axe-core/cli pa11y-ci
+      - name: axe (desktop + mobile)
+        id: axe
+        run: |
+          mkdir -p a11y
+          pnpm exec axe http://localhost:4173 --stdout --tags wcag2a,wcag2aa,wcag21a,wcag21aa > a11y/axe-desktop.json || true
+          pnpm exec axe http://localhost:4173 --stdout --viewport-width 375 --tags wcag2a,wcag2aa,wcag21a,wcag21aa > a11y/axe-mobile.json || true
+          DESK=$(jq '.violations|length' a11y/axe-desktop.json); MOB=$(jq '.violations|length' a11y/axe-mobile.json)
+          echo "desk=$DESK" >> $GITHUB_OUTPUT; echo "mob=$MOB" >> $GITHUB_OUTPUT
+      - name: pa11y
+        id: pa11y
+        run: |
+          cat > .pa11yci.json <<'JSON'
+          { "defaults": { "standard": "WCAG2AA", "timeout": 10000 },
+            "urls": ["http://localhost:4173","http://localhost:4173?shift=A","http://localhost:4173?shift=B","http://localhost:4173?shift=C"] }
+          JSON
+          pnpm exec pa11y-ci --json > a11y/pa11y.json || true
+          ERR=$(jq '[.results[].issues|length]|add' a11y/pa11y.json); echo "errors=$ERR" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-reports
+          path: a11y
+          retention-days: 14
+      - name: Enforce (fail only on serious/critical axe or any pa11y errors)
+        run: |
+          CRIT=$(jq '[.violations[]|select(.impact=="critical" or .impact=="serious")]|length' a11y/axe-desktop.json)
+          CRIT_M=$(jq '[.violations[]|select(.impact=="critical" or .impact=="serious")]|length' a11y/axe-mobile.json)
+          if [ $CRIT -gt 0 ] || [ $CRIT_M -gt 0 ] || [ "${{ steps.pa11y.outputs.errors }}" != "0" ]; then
+            echo "::error::Accessibility issues found"
+            exit 1
+          fi
+
+  lighthouse:
+    if: ${{ inputs.run_lighthouse }}
+    name: Lighthouse
+    runs-on: ubuntu-24.04
+    needs: build
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: dist
+      - name: Start preview
+        run: |
+          pnpm preview --port 4173 --strictPort &
+          timeout 60 bash -c 'until curl -s http://localhost:4173 > /dev/null; do sleep 1; done'
+      - name: Run LHCI
+        id: lhci
+        run: |
+          npm i -g @lhci/cli@0.14.x
+          cat > lighthouserc.json <<'JSON'
+          { "ci": {
+              "collect": { "url": ["http://localhost:4173","http://localhost:4173?shift=A","http://localhost:4173?shift=B","http://localhost:4173?shift=C"],
+                           "numberOfRuns": 2,
+                           "settings": { "preset": "desktop" } },
+              "assert": { "assertions": { "categories:performance": ["warn",{"minScore":0.90}],
+                                           "categories:accessibility": ["error",{"minScore":1.00}],
+                                           "categories:best-practices": ["warn",{"minScore":0.90}] } },
+              "upload": { "target": "temporary-public-storage" } } }
+          JSON
+          lhci autorun || true
+          REPORT=$(find .lighthouseci -name "lhr-*.json" | head -1)
+          ACC=$(jq '.categories.accessibility.score * 100' "$REPORT" | cut -d. -f1)
+          echo "accessibility=$ACC" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci
+          retention-days: 14
+      - name: Enforce A11y == 100
+        run: |
+          if [ "${{ steps.lhci.outputs.accessibility }}" != "100" ]; then
+            echo "::error::Lighthouse accessibility is ${{ steps.lhci.outputs.accessibility }}/100 (require 100)"
+            exit 1
+          fi
+
+  vrt:
+    if: ${{ inputs.run_visual_regression }}
+    name: Visual Regression
+    runs-on: ubuntu-24.04
+    needs: build
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install chromium --with-deps
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: dist
+      - name: Start preview
+        run: |
+          pnpm preview --port 4173 --strictPort &
+          timeout 60 bash -c 'until curl -s http://localhost:4173 > /dev/null; do sleep 1; done'
+      - name: Capture snapshots
+        run: |
+          mkdir -p visual-snapshots visual-snapshots-base
+          # current
+          pnpm exec playwright screenshot http://localhost:4173 visual-snapshots/home-1920.png --viewport-size=1920,1080 --full-page
+          pnpm exec playwright screenshot http://localhost:4173 visual-snapshots/home-375.png --viewport-size=375,667 --full-page
+          # base (origin/${GITHUB_BASE_REF} for PRs; fallback to main)
+          git fetch origin ${{ github.base_ref || 'main' }} --depth=1 || true
+          git checkout -f origin/${{ github.base_ref || 'main' }} || true
+          pnpm install --frozen-lockfile
+          pnpm build
+          pnpm preview --port 5174 --strictPort &
+          timeout 60 bash -c 'until curl -s http://localhost:5174 > /dev/null; do sleep 1; done'
+          pnpm exec playwright screenshot http://localhost:5174 visual-snapshots-base/home-1920.png --viewport-size=1920,1080 --full-page || true
+          pnpm exec playwright screenshot http://localhost:5174 visual-snapshots-base/home-375.png --viewport-size=375,667 --full-page || true
+      - name: Compare
+        id: compare
+        run: |
+          pnpm add -D pixelmatch pngjs
+          cat > compare.js <<'JS'
+          const fs = require('fs'); const PNG = require('pngjs').PNG; const pixelmatch = require('pixelmatch');
+          function diff(a,b,out){ const A=PNG.sync.read(fs.readFileSync(a)); const B=PNG.sync.read(fs.readFileSync(b));
+            const D=new PNG({width:A.width,height:A.height}); const n=pixelmatch(A.data,B.data,D.data,A.width,A.height,{threshold:0.1});
+            fs.writeFileSync(out,PNG.sync.write(D)); return (n/(A.width*A.height))*100; }
+          const pairs=[['home-1920.png','home-1920.png'],['home-375.png','home-375.png']];
+          let total=0,cnt=0; for (const [f] of pairs){ const p=diff(`visual-snapshots-base/${f}`,`visual-snapshots/${f}`,`visual-snapshots/diff-${f}`);
+            if(!isNaN(p)){ total+=p; cnt++; console.log(`${f}: ${p.toFixed(2)}%`); } }
+          const avg = cnt ? (total/cnt) : 0; console.log(JSON.stringify({avg}));
+          JS
+          RES=$(node compare.js | tail -1)
+          AVG=$(echo "$RES" | jq -r '.avg // 0')
+          echo "avg=$AVG" >> $GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-snapshots
+          path: visual-snapshots
+          retention-days: 14
+      - name: Enforce threshold
+        run: |
+          THRESHOLD=1.0
+          awk "BEGIN {exit !(${{ steps.compare.outputs.avg }} > THRESHOLD)}" || { echo "OK: avg diff ${{ steps.compare.outputs.avg }}%"; exit 0; }
+          echo "::error::Visual diff ${{ steps.compare.outputs.avg }}% exceeds ${THRESHOLD}%"
+          exit 1

@@ -9,6 +9,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  /**
+   * Enable ripple effect on click for important actions.
+   * Automatically respects prefers-reduced-motion.
+   * @default false
+   */
+  withRipple?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -18,6 +24,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       isLoading = false,
       fullWidth = false,
+      withRipple = false,
       leftIcon,
       rightIcon,
       children,
@@ -65,6 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           ${variants[variant]}
           ${sizes[size]}
           ${fullWidth ? "w-full" : ""}
+          ${withRipple ? "btn-ripple" : ""}
           ${className}
         `}
         disabled={disabled || isLoading}

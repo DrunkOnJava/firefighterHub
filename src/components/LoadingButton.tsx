@@ -31,6 +31,9 @@ export function LoadingButton({
         relative flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${tokens.borders.radius.lg}
         font-medium transition-all duration-200
         disabled:cursor-not-allowed disabled:opacity-60
+        active:scale-95 overflow-hidden
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+        shadow-sm hover:shadow-md
         ${variantClasses[variant]}
         ${className}
       `}

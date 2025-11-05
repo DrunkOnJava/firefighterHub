@@ -46,7 +46,7 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
         <p className="text-white font-medium flex-1">{toast.message}</p>
         <button
           onClick={() => onClose(toast.id)}
-          className="p-1.5 hover:bg-white/10 rounded transition-colors focus-ring"
+          className={`p-1.5 ${tokens.touchTarget.min} hover:bg-white/10 rounded transition-colors focus-ring flex items-center justify-center`}
           aria-label="Close notification"
         >
           <X className={`${tokens.icons.sm} text-white`} />

@@ -116,6 +116,7 @@ export function Header({
                   onClick={onQuickAddFirefighter}
                   className={`
                     px-4 py-2
+                    ${tokens.touchTarget.min}
                     ${tokens.borders.radius.lg}
                     ${tokens.shadows.lg}
                     font-semibold
@@ -136,7 +137,7 @@ export function Header({
             <div className="hidden sm:flex items-center gap-1">
               <button
                 onClick={onShowActivityLog}
-                className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
+                className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
                     : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
@@ -148,7 +149,7 @@ export function Header({
               </button>
               <button
                 onClick={onToggleDarkMode}
-                className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
+                className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
                     : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
@@ -164,7 +165,7 @@ export function Header({
               </button>
               <button
                 onClick={onShowHelp}
-                className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
+                className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
                     ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
                     : "hover:bg-slate-200 text-slate-600 hover:text-slate-700"
@@ -198,7 +199,7 @@ export function Header({
             {/* Mobile Menu Button */}
             <button
               onClick={onOpenMobileMenu}
-              className={`sm:hidden p-2 rounded-lg transition-colors focus-ring ${
+              className={`sm:hidden p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring ${
                 isDarkMode
                   ? "hover:bg-gray-800 text-gray-300"
                   : "hover:bg-slate-200 text-slate-600"
@@ -215,7 +216,7 @@ export function Header({
           <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t">
             <button
               onClick={onQuickAddFirefighter}
-              className="w-full px-4 py-2 rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 shadow-lg focus-ring"
+              className={`w-full px-4 py-2 ${tokens.touchTarget.min} rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 shadow-lg focus-ring`}
             >
               <UserPlus size={16} />
               <span className="text-sm">Add Member</span>

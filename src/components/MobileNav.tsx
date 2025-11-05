@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
+import { tokens } from "../styles";
 import { ShiftSelector } from "./ShiftSelector";
 
 interface MobileNavProps {
@@ -91,7 +92,7 @@ export function MobileNav({
             <div>
               <h2
                 id="mobile-nav-title"
-                className={`text-xl font-bold ${
+                className={`${tokens.typography.heading.h3} ${
                   isDarkMode ? "text-white" : "text-slate-900"
                 }`}
               >

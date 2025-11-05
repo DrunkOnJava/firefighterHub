@@ -214,7 +214,10 @@ export const colors = {
       background: "bg-[#3A4149]",
       border: "border border-[#252A32]",
       shadow: "shadow-2xl",
-      overlay: "bg-black/75 backdrop-blur-sm",
+      overlay: "bg-black/75 backdrop-blur-sm", // Default overlay (standard modals)
+      overlayDefault: "bg-black/75 backdrop-blur-sm", // Standard modals
+      overlayLight: "bg-black/50 backdrop-blur-sm", // Non-blocking overlays
+      overlayHeavy: "bg-black/85 backdrop-blur-md", // Critical modals
     },
 
     /** Card styles */

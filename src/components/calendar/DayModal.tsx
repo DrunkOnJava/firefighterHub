@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useFocusReturn } from "../../hooks/useFocusReturn";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
+import { colors, tokens } from "../../styles";
 import { CalendarDay, ScheduledHold } from "../../utils/calendarUtils";
 import { getTheme } from "../../utils/theme";
 import { HoldForm } from "./HoldForm";
@@ -120,7 +120,7 @@ export function DayModal({
     >
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 ${theme.confirmDialog.overlay}`}
+        className={`absolute inset-0 ${colors.components.modal.overlay}`}
         aria-hidden="true"
       />
 

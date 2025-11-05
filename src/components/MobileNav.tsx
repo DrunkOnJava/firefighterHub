@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
+import { colors } from "../styles";
 import { ShiftSelector } from "./ShiftSelector";
 
 interface MobileNavProps {
@@ -65,7 +66,7 @@ export function MobileNav({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 animate-fade-in"
+        className={`fixed inset-0 ${colors.components.modal.overlayLight} z-50 animate-fade-in`}
         onClick={onClose}
         role="dialog"
         aria-modal="true"

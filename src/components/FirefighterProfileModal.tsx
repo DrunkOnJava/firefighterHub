@@ -186,7 +186,7 @@ export function FirefighterProfileModal({
       className={`
         fixed inset-0 z-50 flex items-center justify-center
         ${tokens.spacing.card.md}
-        bg-black/90 animate-fade-in
+        ${colors.components.modal.overlayHeavy} animate-fade-in
       `}
       onClick={onClose}
       role="dialog"

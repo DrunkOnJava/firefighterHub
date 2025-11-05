@@ -141,7 +141,7 @@ export function Sidebar({
           `}
           title="View Reports"
         >
-          <BarChart3 size={18} />
+          <BarChart3 className={tokens.icons.sm} />
           <span className="hidden sm:inline">Reports</span>
         </button>
       )}
@@ -169,7 +169,7 @@ export function Sidebar({
                 ${colors.semantic.primary.gradient}
               `}
             >
-              <Calendar className="text-white" size={20} />
+              <Calendar className={`${tokens.icons.md} text-white`} />
             </div>
             <h2
               className={`
@@ -446,7 +446,7 @@ export function Sidebar({
                             ${colors.structural.text.secondary}
                           `}
                         >
-                          <Users size={12} />
+                          <Users className={tokens.icons.xs} />
                           {group.holds.length}
                         </span>
                       )}

@@ -188,6 +188,36 @@ export const tokens = {
     min: 'min-h-[44px]',                // WCAG 2.1 AA minimum
     comfortable: 'min-h-[48px]',
   },
+
+  /**
+   * Icon Sizing System
+   * 
+   * Standardized icon sizes to match text sizes for visual harmony.
+   * Use these classes on icon components to ensure consistency.
+   * 
+   * Matching Guide:
+   * - xs (12px): Inline with small/fine print text (text-xs)
+   * - sm (16px): Inline with secondary text (text-sm) or small buttons
+   * - md (20px): Inline with base text (text-base) or medium buttons
+   * - lg (24px): Inline with large text (text-lg) or large buttons, standalone icons
+   * - xl (32px): Feature icons, empty states, large touch targets
+   * 
+   * Usage:
+   * ```tsx
+   * import { tokens } from '@/styles';
+   * import { Calendar } from 'lucide-react';
+   * 
+   * // Instead of: <Calendar size={20} />
+   * <Calendar className={tokens.icons.md} />
+   * ```
+   */
+  icons: {
+    xs: 'w-3 h-3',      // 12px - Inline small text
+    sm: 'w-4 h-4',      // 16px - Inline base text, small buttons
+    md: 'w-5 h-5',      // 20px - Inline large text, medium buttons
+    lg: 'w-6 h-6',      // 24px - Standalone icons, large buttons
+    xl: 'w-8 h-8',      // 32px - Feature icons, empty states
+  },
 } as const;
 
 /**

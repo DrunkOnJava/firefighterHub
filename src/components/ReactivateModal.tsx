@@ -70,7 +70,7 @@ export function ReactivateModal({
         <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between`}>
           <div className={`flex items-center ${tokens.spacing.gap.md}`}>
             <div className={`${colors.semantic.success.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}>
-              <UserPlus className="text-white" size={24} />
+              <UserPlus className={`${tokens.icons.lg} text-white`} />
             </div>
             <div>
               <h2 id="reactivate-modal-title" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>
@@ -84,7 +84,7 @@ export function ReactivateModal({
             className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring`}
             aria-label="Close reactivate dialog"
           >
-            <X size={24} className={colors.structural.text.secondary} />
+            <X className={`${tokens.icons.lg} ${colors.structural.text.secondary}`} />
           </button>
         </div>
 
@@ -147,7 +147,7 @@ export function ReactivateModal({
               onClick={handleConfirm}
               className={`flex-1 px-6 py-3 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white ${tokens.borders.radius.lg} font-semibold transition-all ${colors.semantic.success.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm}`}
             >
-              <UserPlus size={18} />
+              <UserPlus className={tokens.icons.sm} />
               Reactivate
             </button>
           </div>

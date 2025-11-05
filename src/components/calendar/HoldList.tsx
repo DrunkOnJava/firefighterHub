@@ -47,7 +47,7 @@ export function HoldList({
     return (
       <div>
         <EmptyState
-          icon={<Calendar size={48} className={colors.structural.text.tertiary} />}
+          icon={<Calendar className={`${tokens.icons.xl} ${colors.structural.text.tertiary}`} />}
           title="No holds scheduled"
           description="Click 'Add Hold' below to schedule someone"
         />
@@ -65,7 +65,7 @@ export function HoldList({
               flex items-center justify-center gap-2
             `}
           >
-            <Plus size={20} />
+            <Plus className={tokens.icons.md} />
             Add Hold
           </button>
         )}
@@ -130,7 +130,7 @@ export function HoldList({
                           : "text-gray-500"
                       } mt-1 flex items-center gap-1`}
                     >
-                      <Clock size={14} />
+                      <Clock className={tokens.icons.xs} />
                       {hold.duration === "12h" ? "12 Hour" : "24 Hour"} Hold
                       {hold.start_time && ` • Starts ${hold.start_time}`}
                     </p>
@@ -157,7 +157,7 @@ export function HoldList({
                       <span
                         className={`inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
                       >
-                        <Lock size={12} />
+                        <Lock className={tokens.icons.xs} />
                       </span>
                     )}
                   </div>
@@ -186,7 +186,7 @@ export function HoldList({
                       `}
                       title="Mark as completed and move to end of rotation"
                     >
-                      <CheckCircle2 size={16} />
+                      <CheckCircle2 className={tokens.icons.sm} />
                       <span className={tokens.typography.body.small}>
                         Complete
                       </span>
@@ -220,10 +220,10 @@ export function HoldList({
                       }
                     >
                       {locked ? (
-                        <Lock size={16} />
+                        <Lock className={tokens.icons.sm} />
                       ) : (
                         <>
-                          <Trash2 size={16} />
+                          <Trash2 className={tokens.icons.sm} />
                           <span className={tokens.typography.body.small}>
                             Cancel
                           </span>
@@ -252,7 +252,7 @@ export function HoldList({
             flex items-center justify-center gap-2
           `}
         >
-          <Plus size={20} />
+          <Plus className={tokens.icons.md} />
           Add Another Hold
         </button>
       )}

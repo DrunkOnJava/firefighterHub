@@ -22,19 +22,19 @@ interface ShiftBadgeProps {
 export function ShiftBadge({ shift, className = "" }: ShiftBadgeProps) {
   const shiftStyles = {
     A: {
-      color: "bg-green-600 text-white border-black shadow-green-900/50",
-      icon: "●",
+      color: "bg-green-600 text-white border-white shadow-green-900/50",
+      shape: "rounded-full",
       label: "Shift A (circle)",
     },
     B: {
-      color: "bg-red-600 text-white border-black shadow-red-900/50",
-      icon: "■",
+      color: "bg-red-600 text-white border-white shadow-red-900/50",
+      shape: "rounded-none",
       label: "Shift B (square)",
     },
     C: {
-      color: "bg-sky-600 text-white border-black shadow-sky-900/50",
-      icon: "▲",
-      label: "Shift C (triangle)",
+      color: "bg-sky-600 text-white border-white shadow-sky-900/50",
+      shape: "rounded-sm rotate-45",
+      label: "Shift C (diamond)",
     },
   };
 
@@ -43,18 +43,18 @@ export function ShiftBadge({ shift, className = "" }: ShiftBadgeProps) {
   return (
     <span
       className={`
-        inline-flex items-center gap-1
-        px-2 py-0.5
+        inline-flex items-center justify-center
+        w-7 h-7
         text-xs font-bold
-        rounded
-        border-2 shadow-sm
+        ${style.shape}
+        border shadow-sm
         ${style.color}
         ${className}
+        ${shift === 'C' ? '' : ''}
       `}
       aria-label={style.label}
     >
-      <span aria-hidden="true">{style.icon}</span>
-      <span>{shift}</span>
+      <span className={shift === 'C' ? '-rotate-45' : ''}>{shift}</span>
     </span>
   );
 }

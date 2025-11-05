@@ -22,15 +22,15 @@ const SHIFT_COLORS = {
 };
 
 const SHIFT_BADGE_COLORS = {
-  A: "bg-green-600 border-2 border-green-800 text-white shadow-sm shadow-green-900/50",
-  B: "bg-red-600 border-2 border-red-800 text-white shadow-sm shadow-red-900/50",
-  C: "bg-sky-600 border-2 border-sky-800 text-white shadow-sm shadow-sky-900/50",
+  A: "bg-green-600 border border-white text-white shadow-sm shadow-green-900/50",
+  B: "bg-red-600 border border-white text-white shadow-sm shadow-red-900/50",
+  C: "bg-sky-600 border border-white text-white shadow-sm shadow-sky-900/50",
 };
 
-const SHIFT_ICONS = {
-  A: { icon: "●", label: "Shift A (circle)" },
-  B: { icon: "■", label: "Shift B (square)" },
-  C: { icon: "▲", label: "Shift C (triangle)" },
+const SHIFT_SHAPES = {
+  A: { shape: "rounded-full", label: "Shift A (circle)" },
+  B: { shape: "rounded-none", label: "Shift B (square)" },
+  C: { shape: "rounded-sm rotate-45", label: "Shift C (diamond)", needsRotateText: true },
 };
 
 export function ShiftSelector({
@@ -76,18 +76,18 @@ export function ShiftSelector({
 }
 
 export function ShiftBadge({ shift }: { shift: Shift }) {
-  const iconData = SHIFT_ICONS[shift];
-  
+  const shapeData = SHIFT_SHAPES[shift];
+
   return (
     <span
       className={`
-      inline-flex items-center gap-1 px-2.5 py-0.5 ${tokens.borders.radius.md} ${tokens.typography.body.small} font-bold
+      inline-flex items-center justify-center w-8 h-8 ${tokens.typography.body.small} font-bold
+      ${shapeData.shape}
       ${SHIFT_BADGE_COLORS[shift]}
     `}
-      aria-label={iconData.label}
+      aria-label={shapeData.label}
     >
-      <span aria-hidden="true">{iconData.icon}</span>
-      <span>Shift {shift}</span>
+      <span className={shift === 'C' ? '-rotate-45' : ''}>Shift {shift}</span>
     </span>
   );
 }

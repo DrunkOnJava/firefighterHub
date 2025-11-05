@@ -166,14 +166,14 @@ export const colors = {
       shadow: "shadow-lg shadow-cyan-900/50",
     },
 
-    /** Accent/Action color (red-orange gradient) */
+    /** Accent/Action color (teal-cyan gradient) */
     accent: {
-      gradient: "bg-gradient-to-r from-red-500 to-orange-600",
-      hover: "hover:from-red-600 hover:to-orange-700",
-      text: "text-orange-500",
-      border: "border-orange-600",
-      light: "bg-orange-500/20",
-      shadow: "shadow-lg",
+      gradient: "bg-gradient-to-r from-teal-500 to-cyan-600",
+      hover: "hover:from-teal-600 hover:to-cyan-700",
+      text: "text-teal-500",
+      border: "border-teal-600",
+      light: "bg-teal-500/20",
+      shadow: "shadow-lg shadow-teal-900/30",
     },
   },
 

@@ -9,10 +9,8 @@ on:
       - 'src/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
-  push:
-    branches: [main]
-    paths:
-      - 'src/**'
+  # Removed push trigger to prevent duplicate runs on PRs
+  # Quality checks run on PRs before merge, no need to re-run on push to main
   workflow_dispatch:
 
 permissions:

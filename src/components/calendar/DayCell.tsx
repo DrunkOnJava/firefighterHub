@@ -95,22 +95,22 @@ export function DayCell({
       }
     >
       {/* Day content wrapper */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-3">
         {/* Day number */}
-        <div className={`text-sm font-semibold ${day.isCurrentMonth ? 'text-gray-300' : 'text-gray-600'}`}>
+        <div className={`text-base font-bold ${day.isCurrentMonth ? 'text-slate-200' : 'text-gray-600'}`}>
           {day.date.getDate()}
         </div>
 
         {/* Hold count badge */}
         {hasHolds && day.isCurrentMonth && (
-          <div className="bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+          <div className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
             {day.scheduledHolds.length}
           </div>
         )}
       </div>
 
       {/* Holds list */}
-      <div className="space-y-1">
+      <div className="space-y-1.5">
         {/* Show first 2 holds */}
         {scheduledHolds.slice(0, 2).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
@@ -118,7 +118,7 @@ export function DayCell({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
+              className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
@@ -139,7 +139,7 @@ export function DayCell({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
+              className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
@@ -156,7 +156,7 @@ export function DayCell({
 
         {/* Show "more" indicator if there are additional holds */}
         {day.scheduledHolds.length > 2 && (
-          <div className="text-xs text-gray-500 px-2">
+          <div className="text-xs text-gray-500 px-2.5">
             +{day.scheduledHolds.length - 2} more
           </div>
         )}

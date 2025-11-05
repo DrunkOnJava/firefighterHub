@@ -158,6 +158,54 @@ export const tokens = {
   },
 
   /**
+   * Animation System - Micro-interactions
+   * 
+   * Predefined animations for common UI interactions.
+   * All animations respect `prefers-reduced-motion` media query.
+   * 
+   * Button Interactions:
+   * - active:scale-95: Tactile feedback on press
+   * - hover:shadow-md: Elevation feedback on hover
+   * 
+   * Loading States:
+   * - animate-spin: Continuous rotation (spinners)
+   * - animate-shimmer: Skeleton loader effect
+   * 
+   * Ripple Effect:
+   * - Use 'btn-ripple' class for important actions
+   * 
+   * Usage:
+   * ```tsx
+   * <button className="active:scale-95 hover:shadow-md btn-ripple">
+   *   Click me
+   * </button>
+   * ```
+   * 
+   * @see src/index.css for animation keyframes
+   */
+  animations: {
+    /** Button micro-interactions */
+    button: {
+      scale: 'active:scale-95',
+      hover: 'hover:shadow-md',
+      ripple: 'btn-ripple',
+    },
+    /** Loading animations */
+    loading: {
+      spin: 'animate-spin',
+      shimmer: 'animate-shimmer',
+      pulse: 'animate-pulse',
+    },
+    /** Entrance animations */
+    entrance: {
+      fadeIn: 'animate-fade-in',
+      scaleIn: 'animate-scale-in',
+      slideUp: 'animate-slide-up',
+      slideInRight: 'animate-slide-in-right',
+    },
+  },
+
+  /**
    * Z-Index System
    */
   zIndex: {

@@ -80,7 +80,7 @@ export function FilterPanel({
           </div>
           <button
             onClick={onClose}
-            className={`p-2 ${tokens.borders.radius.lg} transition-colors ${colors.interactive.hover.bg} ${colors.structural.text.secondary} hover:${colors.structural.text.primary}`}
+            className={`p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.lg} transition-colors ${colors.interactive.hover.bg} ${colors.structural.text.secondary} hover:${colors.structural.text.primary} flex items-center justify-center`}
             aria-label="Close filter panel"
           >
             <X className="w-5 h-5" />

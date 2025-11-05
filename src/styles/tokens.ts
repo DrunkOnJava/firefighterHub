@@ -275,6 +275,54 @@ export const tokens = {
     lg: 'w-6 h-6',      // 24px - Standalone icons, large buttons
     xl: 'w-8 h-8',      // 32px - Feature icons, empty states
   },
+
+  /**
+   * Focus Ring System (WCAG 2.1 AA Compliant)
+   * 
+   * Standardized focus indicators for keyboard navigation accessibility.
+   * All focus rings use 2px width with 3:1 contrast ratio minimum (WCAG 2.1 AA).
+   * 
+   * Focus Ring Hierarchy:
+   * - default: Blue-500 (primary interactive elements)
+   * - primary: Blue-500 (buttons, links, primary actions)
+   * - danger: Red-500 (destructive actions, delete buttons)
+   * - success: Green-500 (positive actions, save/complete buttons)
+   * - input: Blue-500 with ring offset (form inputs)
+   * - inset: Blue-500 inset (compact elements like checkboxes)
+   * 
+   * Usage:
+   * ```tsx
+   * import { tokens } from '@/styles';
+   * 
+   * // Standard focus ring
+   * <button className={tokens.focus.default}>Click me</button>
+   * 
+   * // Danger action focus ring
+   * <button className={tokens.focus.danger}>Delete</button>
+   * 
+   * // Input focus ring
+   * <input className={tokens.focus.input} />
+   * ```
+   * 
+   * @see Issue #15 - Standardize Focus Ring Indicators
+   */
+  focus: {
+    // Standard focus ring (most common use case)
+    default: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+    
+    // Semantic focus rings for different action types
+    primary: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+    danger: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+    success: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+    warning: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900',
+    
+    // Specialized focus rings
+    input: 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+    inset: 'focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500',
+    
+    // Focus ring without offset (for elements with backgrounds)
+    noOffset: 'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500',
+  },
 } as const;
 
 /**

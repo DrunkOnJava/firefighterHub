@@ -19,6 +19,7 @@ import { Firefighter, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { formatHoldDate } from "../utils/dateUtils";
 import { AddFirefighterForm } from "./AddFirefighterForm";
+import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyState";
 import { FilterPanel } from "./FilterPanel";
 import { FirefighterProfileModal } from "./FirefighterProfileModal";
 import { ReactivateModal } from "./ReactivateModal";
@@ -312,51 +313,10 @@ export function FirefighterList({
         />
 
         {firefighters.length === 0 ? (
-          <div
-            className={`
-              border-2 border-dashed
-              ${tokens.borders.radius.xl}
-              p-12 text-center
-              ${
-                isDarkMode
-                  ? `${colors.structural.bg.surface} ${colors.structural.border.subtle}`
-                  : "bg-slate-50 border-slate-300"
-              }
-            `}
-          >
-            <div
-              className={
-                isDarkMode ? colors.structural.text.muted : "text-slate-400"
-              }
-            >
-              <History className={tokens.icons.xl} />
-            </div>
-            <p
-              className={`
-                ${tokens.typography.heading.h4}
-                ${tokens.spacing.margin.sm}
-                ${
-                  isDarkMode
-                    ? colors.structural.text.secondary
-                    : "text-slate-600"
-                }
-              `}
-            >
-              Your roster is empty
-            </p>
-            <p
-              className={`
-                ${tokens.typography.body.secondary}
-                ${
-                  isDarkMode
-                    ? colors.structural.text.tertiary
-                    : "text-slate-500"
-                }
-              `}
-            >
-              Add your first team member to begin scheduling holds
-            </p>
-          </div>
+          <NoFirefightersEmptyState 
+            onAddFirefighter={() => setShowAddForm(true)}
+            isAdminMode={isAdminMode}
+          />
         ) : (
           <div className="overflow-x-auto -mx-6">
             <table className="w-full min-w-max">
@@ -768,6 +728,19 @@ export function FirefighterList({
               </tbody>
             </table>
           </div>
+        )}
+
+        {/* Empty state for search with no results */}
+        {firefighters.length > 0 && 
+         filteredAndAdvancedFiltered.length === 0 && 
+         (searchQuery.trim() || activeFilterCount > 0) && (
+          <NoSearchResultsEmptyState 
+            searchTerm={searchQuery.trim() || 'applied filters'}
+            onClearSearch={() => {
+              setSearchQuery('');
+              clearAllFilters();
+            }}
+          />
         )}
 
         {isAdminMode && deactivatedFirefighters.length > 0 && (

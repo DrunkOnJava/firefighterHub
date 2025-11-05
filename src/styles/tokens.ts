@@ -60,15 +60,16 @@ export const tokens = {
    * Typography System
    * 
    * Consistent font sizes, weights, and line heights.
+   * Enhanced with 1.25x type scale and responsive variants for better visual hierarchy.
    */
   typography: {
-    /** Heading styles */
+    /** Heading styles with responsive scaling */
     heading: {
-      h1: 'text-3xl font-bold',          // Main page titles
-      h2: 'text-2xl font-semibold',      // Section headers
-      h3: 'text-xl font-semibold',       // Subsection headers
-      h4: 'text-lg font-semibold',       // Card titles
-      h5: 'text-base font-semibold',     // Small headers
+      h1: 'text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight',      // Main page titles (24px → 30px → 36px)
+      h2: 'text-xl sm:text-2xl font-semibold leading-snug',                 // Section headers (20px → 24px)
+      h3: 'text-xl font-semibold leading-snug',                             // Subsection headers (20px)
+      h4: 'text-lg font-semibold leading-normal',                           // Card titles (18px)
+      h5: 'text-base font-semibold leading-normal',                         // Small headers (16px)
     },
     
     /** Body text styles */

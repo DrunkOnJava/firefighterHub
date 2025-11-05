@@ -297,33 +297,33 @@ export function getTheme(isDarkMode: boolean): Theme {
     };
   }
 
-  // Light mode - Firefighter themed
+  // Light mode - WCAG AA Compliant
   return {
-    appBackground: "bg-gradient-to-br from-gray-800 via-gray-850 to-gray-900",
-    cardBackground: "bg-gray-800",
-    cardBorder: "border-gray-700",
+    appBackground: "bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200",
+    cardBackground: "bg-white",
+    cardBorder: "border-gray-200",
 
-    textPrimary: "text-gray-50",
-    textSecondary: "text-gray-300",
-    textTertiary: "text-gray-400",
+    textPrimary: "text-gray-900",
+    textSecondary: "text-gray-700",
+    textTertiary: "text-gray-600",
 
     button: {
       primary: "bg-red-600 hover:bg-red-700 text-white",
-      secondary: "bg-gray-700 hover:bg-gray-600 text-gray-100",
+      secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900",
       danger: "bg-red-600 hover:bg-red-700 text-white",
     },
 
     input: {
-      background: "bg-gray-900",
-      border: "border-gray-600",
-      text: "text-gray-100",
-      placeholder: "placeholder-gray-500",
+      background: "bg-white",
+      border: "border-gray-300",
+      text: "text-gray-900",
+      placeholder: "placeholder-gray-400",
     },
 
     modal: {
-      overlay: "bg-black/75",
-      background: "bg-gray-800",
-      border: "border-gray-700",
+      overlay: "bg-black/60",
+      background: "bg-white",
+      border: "border-gray-200",
     },
 
     badge: {

@@ -118,7 +118,7 @@ export function DayCell({
           return (
             <div
               key={hold.id || index}
-              className="text-[10px] px-2 py-0.5 rounded bg-slate-700 text-slate-100 font-medium border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
@@ -139,7 +139,7 @@ export function DayCell({
           return (
             <div
               key={hold.id || index}
-              className="text-[10px] px-2 py-0.5 rounded bg-slate-700 text-slate-100 font-medium border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}

@@ -92,16 +92,25 @@ export const tokens = {
 
   /**
    * Border Radius System
+   * 
+   * Hierarchy for consistent visual language:
+   * - md (6px): Small elements (badges, tags, pills)
+   * - lg (8px): Interactive elements (buttons, inputs, dropdowns)
+   * - xl (12px): Containers (cards, panels, sections)
+   * - 2xl (16px): Overlays (modals, drawers, dialogs)
+   * - full (9999px): Circular elements (avatars, indicators)
+   * 
+   * @see Issue #24 - Border Radius Hierarchy
    */
   borders: {
     radius: {
       none: 'rounded-none',
-      sm: 'rounded-sm',                  // 2px
-      md: 'rounded-md',                  // 6px
-      lg: 'rounded-lg',                  // 8px
-      xl: 'rounded-xl',                  // 12px
-      '2xl': 'rounded-2xl',              // 16px
-      full: 'rounded-full',              // 9999px
+      sm: 'rounded-sm',                  // 2px - Reserved for special cases
+      md: 'rounded-md',                  // 6px - Badges, tags, small elements
+      lg: 'rounded-lg',                  // 8px - Buttons, inputs, interactive
+      xl: 'rounded-xl',                  // 12px - Cards, panels, containers
+      '2xl': 'rounded-2xl',              // 16px - Modals, dialogs, overlays
+      full: 'rounded-full',              // 9999px - Circular elements
     },
     width: {
       thin: 'border',                    // 1px

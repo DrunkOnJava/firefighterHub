@@ -126,7 +126,7 @@ export function FirefighterItem({
                 <ShiftBadge shift={firefighter.shift as Shift} />
                 {firefighter.fire_station && (
                   <div
-                    className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-lg ${theme.firefighterItem.stationBadge}`}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md ${theme.firefighterItem.stationBadge}`}
                   >
                     <span className="text-xs font-semibold">
                       Station #{firefighter.fire_station}
@@ -134,7 +134,7 @@ export function FirefighterItem({
                   </div>
                 )}
                 <div
-                  className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-lg ${theme.firefighterItem.lastHoldBadge}`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md ${theme.firefighterItem.lastHoldBadge}`}
                 >
                   <span className="text-xs font-medium">Last Hold:</span>
                   <span className="text-xs font-semibold">
@@ -186,7 +186,7 @@ export function FirefighterItem({
                     Medical Certification:
                   </span>
                   <div
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-lg ${theme.firefighterItem.medicalCertBadge}`}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-md ${theme.firefighterItem.medicalCertBadge}`}
                   >
                     <span className="text-xs font-semibold">
                       {firefighter.certification_level}

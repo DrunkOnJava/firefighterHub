@@ -65,7 +65,7 @@ export function TransferShiftModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius.xl} ${colors.components.modal.shadow} max-w-lg w-full max-h-[90vh] overflow-y-auto`}
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} max-w-lg w-full max-h-[90vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         <div

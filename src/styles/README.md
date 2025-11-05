@@ -198,6 +198,79 @@ colors.components.modal.border     // Modal border
 colors.components.modal.overlay    // Modal overlay
 ```
 
+## 📐 Border Radius Hierarchy
+
+A consistent border radius system creates visual hierarchy and helps users distinguish between element types.
+
+### Hierarchy Rules
+
+```tsx
+// Small elements (badges, tags, pills) - 6px
+tokens.borders.radius.md  // rounded-md
+
+// Interactive elements (buttons, inputs, dropdowns) - 8px
+tokens.borders.radius.lg  // rounded-lg
+
+// Containers (cards, panels, sections) - 12px
+tokens.borders.radius.xl  // rounded-xl
+
+// Overlays (modals, dialogs, drawers) - 16px
+tokens.borders.radius['2xl']  // rounded-2xl
+
+// Circular elements (avatars, indicators) - 9999px
+tokens.borders.radius.full  // rounded-full
+```
+
+### Usage Examples
+
+```tsx
+// Badge (small element)
+<span className={`px-2 py-1 ${tokens.borders.radius.md} bg-blue-600 text-white`}>
+  Shift A
+</span>
+
+// Button (interactive)
+<button className={`px-4 py-2 ${tokens.borders.radius.lg} bg-red-600 text-white`}>
+  Complete Hold
+</button>
+
+// Card (container)
+<div className={`${tokens.spacing.card.md} ${tokens.borders.radius.xl} bg-slate-800`}>
+  Card content
+</div>
+
+// Modal (overlay)
+<div className={`${tokens.spacing.modal.md} ${tokens.borders.radius['2xl']} bg-slate-800`}>
+  Modal content
+</div>
+
+// Avatar (circular)
+<div className={`w-10 h-10 ${tokens.borders.radius.full} bg-red-600`}>
+  JD
+</div>
+```
+
+### Why This Matters
+
+- **Visual Hierarchy**: Larger radius = higher in visual hierarchy (modals > cards > buttons > badges)
+- **Consistency**: Users learn to recognize element types by their corner radius
+- **Professional**: Consistent radius values avoid a "random" appearance
+- **Accessibility**: Predictable patterns help users navigate the interface
+
+### Migration Examples
+
+```tsx
+// ❌ BEFORE: Inconsistent
+<div className="rounded-lg">  {/* Modal using button radius */}
+<button className="rounded-xl"> {/* Button using card radius */}
+<span className="rounded-lg">   {/* Badge using button radius */}
+
+// ✅ AFTER: Consistent hierarchy
+<div className={tokens.borders.radius['2xl']}>  {/* Modal: 16px */}
+<button className={tokens.borders.radius.lg}>    {/* Button: 8px */}
+<span className={tokens.borders.radius.md}>     {/* Badge: 6px */}
+```
+
 ## 🔤 Typography
 
 ### Headings

@@ -64,7 +64,7 @@ export function ReactivateModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius.xl} max-w-lg w-full ${colors.components.modal.shadow} animate-scale-in`}
+        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} max-w-lg w-full ${colors.components.modal.shadow} animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between`}>

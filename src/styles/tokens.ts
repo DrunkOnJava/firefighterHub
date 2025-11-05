@@ -227,6 +227,64 @@ export const tokens = {
     lg: 'w-6 h-6',      // 24px - Standalone icons, large buttons
     xl: 'w-8 h-8',      // 32px - Feature icons, empty states
   },
+
+  /**
+   * Responsive Design Strategy
+   * 
+   * Defines breakpoint strategy and component-specific responsive behavior.
+   * FirefighterHub uses a simplified 2-breakpoint approach (sm: and lg:) for most components.
+   * 
+   * @see docs/RESPONSIVE_DESIGN_STRATEGY.md for complete implementation guide
+   */
+  responsive: {
+    /**
+     * Tailwind Breakpoint Definitions
+     */
+    breakpoints: {
+      sm: '640px',   // Small devices (landscape phones, tablets)
+      md: '768px',   // Medium devices (tablets)
+      lg: '1024px',  // Large devices (desktops)
+      xl: '1280px',  // Extra large devices
+      '2xl': '1536px', // 2X extra large devices
+    },
+
+    /**
+     * Simplified Strategy - Use sm: and lg: for most components
+     */
+    strategy: {
+      MOBILE: '< 640px',       // Base styles (no prefix)
+      TABLET: '640px-1023px',  // sm: prefix
+      DESKTOP: '≥ 1024px',     // lg: prefix
+    },
+
+    /**
+     * Component-Specific Breakpoints
+     * 
+     * Use these only when component behavior requires finer control.
+     * Default to sm: and lg: for consistency.
+     */
+    componentBreakpoints: {
+      SIDEBAR_COLLAPSE: 'xl',    // 1280px - Sidebar hidden below this
+      NAV_MOBILE: 'lg',          // 1024px - Mobile menu below this
+      CALENDAR_COMPACT: 'sm',    // 640px - Compact calendar below this
+      MODAL_PADDING: 'md',       // 768px - Modal padding adjustments
+      GRID_COLUMNS: 'md',        // 768px - Form grid column changes
+    },
+
+    /**
+     * Testing Breakpoints
+     * 
+     * Use these viewport widths for manual/automated testing.
+     */
+    testBreakpoints: {
+      MOBILE_PORTRAIT: 375,    // iPhone SE, small phones
+      MOBILE_LANDSCAPE: 667,   // iPhone SE landscape
+      TABLET_PORTRAIT: 768,    // iPad portrait
+      TABLET_LANDSCAPE: 1024,  // iPad landscape
+      DESKTOP_SMALL: 1280,     // Laptop
+      DESKTOP_LARGE: 1920,     // Full HD desktop
+    },
+  },
 } as const;
 
 /**

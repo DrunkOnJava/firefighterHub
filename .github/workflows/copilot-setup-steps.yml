@@ -121,21 +121,22 @@ jobs:
             libatspi2.0-0
           echo "✅ MCP browser dependencies installed"
 
-      # Step 14: Pre-install MCP servers
+      # Step 14: Pre-install MCP servers (pinned versions)
       - name: Pre-install MCP servers
         run: |
-          npx -y @modelcontextprotocol/server-puppeteer --version || echo "Puppeteer MCP installed"
-          npx -y @modelcontextprotocol/server-playwright --version || echo "Playwright MCP installed"
-          npx -y @modelcontextprotocol/server-filesystem --version || echo "Filesystem MCP installed"
-          npx -y @modelcontextprotocol/server-memory --version || echo "Memory MCP installed"
-          npx -y @modelcontextprotocol/server-fetch --version || echo "Fetch MCP installed"
+          npx -y @modelcontextprotocol/server-puppeteer@1.0.0 --version || echo "Puppeteer MCP installed"
+          npx -y @modelcontextprotocol/server-playwright@1.0.0 --version || echo "Playwright MCP installed"
+          npx -y @modelcontextprotocol/server-filesystem@1.0.0 --version || echo "Filesystem MCP installed"
+          npx -y @modelcontextprotocol/server-memory@1.0.0 --version || echo "Memory MCP installed"
+          npx -y @modelcontextprotocol/server-fetch@1.0.0 --version || echo "Fetch MCP installed"
           echo "✅ MCP servers pre-installed"
 
-      # Step 15: Install accessibility testing tools
+      # Step 15: Install accessibility testing tools (pinned versions)
       - name: Install accessibility testing tools
         run: |
-          pnpm add -D @axe-core/cli pa11y-ci
-          echo "✅ Accessibility testing tools installed"
+          pnpm dlx @axe-core/cli@4.10.2 --version || echo "axe-core installed"
+          pnpm dlx pa11y-ci@3.1.0 --version || echo "pa11y-ci installed"
+          echo "✅ Accessibility testing tools available"
 
       # Step 16: Create test artifacts directories
       - name: Setup test artifacts directories

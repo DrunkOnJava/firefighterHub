@@ -97,7 +97,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           </div>
           <button
             onClick={onClose}
-            className={`p-2 ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors`}
+            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors flex items-center justify-center`}
             aria-label="Close login modal"
           >
             <X className={`w-5 h-5 ${colors.structural.text.secondary}`} />

@@ -110,7 +110,7 @@ export function ConfirmDialog({
         {/* Close button */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 p-1 rounded-lg transition-colors ${
+          className={`absolute top-4 right-4 p-1 ${tokens.touchTarget.min} rounded-lg transition-colors flex items-center justify-center ${
             isDarkMode
               ? "hover:bg-gray-700 text-gray-400 hover:text-white"
               : "hover:bg-slate-100 text-slate-400 hover:text-slate-900"

@@ -151,9 +151,9 @@ export interface Theme {
 export function getTheme(isDarkMode: boolean): Theme {
   if (isDarkMode) {
     return {
-      appBackground: "bg-gradient-to-br from-[#2F3640] via-[#2A3039] to-[#252A32]",
-      cardBackground: "bg-gradient-to-br from-[#3A4149] to-[#353D47]",
-      cardBorder: "border-[#252A32]",
+      appBackground: "bg-gradient-to-br from-slate-900 via-slate-875 to-slate-900",
+      cardBackground: "bg-gradient-to-br from-slate-825 to-slate-850",
+      cardBorder: "border-slate-900",
 
       textPrimary: "text-gray-50",
       textSecondary: "text-gray-300",
@@ -175,8 +175,8 @@ export function getTheme(isDarkMode: boolean): Theme {
 
       modal: {
         overlay: "bg-black/75",
-        background: "bg-[#3A4149]",
-        border: "border-[#252A32]",
+        background: "bg-slate-825",
+        border: "border-slate-900",
       },
 
       badge: {
@@ -188,9 +188,9 @@ export function getTheme(isDarkMode: boolean): Theme {
 
       firefighterItem: {
         available:
-          "bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-[#252A32] hover:border-[#4A5360]",
+          "bg-gradient-to-br from-slate-825 to-slate-850 border-2 border-slate-900 hover:border-slate-600",
         unavailable:
-          "bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-[#252A32] opacity-75",
+          "bg-gradient-to-br from-slate-825 to-slate-850 border-2 border-slate-900 opacity-75",
         nextInRotation:
           "bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-2 border-blue-500 shadow-blue-500/20",
         nextInRotationBadge:
@@ -227,13 +227,13 @@ export function getTheme(isDarkMode: boolean): Theme {
       },
 
       calendar: {
-        gridBackground: "bg-[#3A4149]",
-        headerBackground: "bg-[#1E2329]",
+        gridBackground: "bg-slate-825",
+        headerBackground: "bg-slate-950",
         headerText: "text-gray-100",
-        dayCell: "bg-[#3A4149] border-[#252A32]",
-        dayCellHover: "hover:bg-[#424A54]",
+        dayCell: "bg-slate-825 border-slate-900",
+        dayCellHover: "hover:bg-slate-700",
         dayCellToday: "bg-blue-900/30 border-blue-400",
-        dayCellOtherMonth: "bg-[#2A3039]",
+        dayCellOtherMonth: "bg-slate-875",
         dayCellText: "text-gray-100",
         dayCellTextOtherMonth: "text-gray-500",
         holdBadge: "bg-red-900/60 text-red-200 border-red-700",
@@ -254,8 +254,8 @@ export function getTheme(isDarkMode: boolean): Theme {
           "bg-blue-700 hover:bg-blue-600 text-white border-blue-600",
         exportButton:
           "bg-gray-700 hover:bg-gray-600 text-gray-100 border-gray-600",
-        headerGradient: "bg-gradient-to-r from-[#1E2329] to-[#252A32]",
-        headerBorder: "border-[#252A32]",
+        headerGradient: "bg-gradient-to-r from-slate-950 to-slate-900",
+        headerBorder: "border-slate-900",
         headerIconGradient: "bg-gradient-to-br from-blue-500 to-blue-600",
         headerTitle: "text-gray-100",
         headerDescription: "text-gray-400",
@@ -278,8 +278,8 @@ export function getTheme(isDarkMode: boolean): Theme {
       },
 
       metricCard: {
-        background: "bg-gradient-to-br from-[#3A4149] to-[#353D47]",
-        border: "border-[#252A32]",
+        background: "bg-gradient-to-br from-slate-825 to-slate-850",
+        border: "border-slate-900",
         titleText: "text-gray-300",
         valueText: "text-gray-50",
         icon: "text-blue-400",
@@ -287,8 +287,8 @@ export function getTheme(isDarkMode: boolean): Theme {
 
       confirmDialog: {
         overlay: "bg-black/75",
-        background: "bg-gradient-to-br from-[#3A4149] to-[#353D47]",
-        border: "border-[#252A32]",
+        background: "bg-gradient-to-br from-slate-825 to-slate-850",
+        border: "border-slate-900",
         title: "text-gray-100",
         message: "text-gray-300",
         confirmButton: "bg-red-700 hover:bg-red-600 text-white",

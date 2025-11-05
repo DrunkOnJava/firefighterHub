@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "node",
+      "args": [
+        "/Users/griffin/Projects/firefighterHub/chrome-devtools/build/index.js"
+      ]
+    },
+    "playwright": {
+      "command": "node",
+      "args": [
+        "/Users/griffin/Projects/firefighterHub/playwright-mcp-server/build/index.js"
+      ]
+    },
+    "github": {
+      "command": "node",
+      "args": [
+        "/Users/griffin/Projects/firefighterHub/github-mcp-server/build/index.js"
+      ]
+    },
+    "supabase": {
+      "command": "node",
+      "args": [
+        "/Users/griffin/Projects/firefighterHub/supabase-mcp-server/build/index.js"
+      ]
+    }
+  }
+}

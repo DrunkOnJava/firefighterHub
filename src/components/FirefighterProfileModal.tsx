@@ -294,11 +294,12 @@ export function FirefighterProfileModal({
             <button
               onClick={onClose}
               className={`
-                p-2 ${tokens.borders.radius.lg}
+                p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.lg}
                 ${tokens.transitions.fast}
                 ${colors.structural.text.tertiary}
                 hover:bg-gray-700
                 focus-ring
+                flex items-center justify-center
               `}
               aria-label="Close profile dialog"
             >

@@ -151,10 +151,12 @@ export function CompleteHoldModal({
             onClick={onClose}
             className={`
               ${tokens.spacing.section.md}
+              ${tokens.touchTarget.min}
               ${colors.interactive.hover.bg}
               ${tokens.borders.radius.lg}
               ${tokens.transitions.fast}
               focus-ring
+              flex items-center justify-center
             `}
             aria-label="Close dialog"
           >

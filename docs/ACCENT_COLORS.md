@@ -1,8 +1,8 @@
 # Accent Colors
 
-## Orange Gradient Accent
+## Teal-Cyan Gradient Accent
 
-A **red-to-orange gradient** (`from-red-500 to-orange-600`) has been documented as an accent color for future use throughout the application.
+A **teal-to-cyan gradient** (`from-teal-500 to-cyan-600`) serves as the primary accent color for event pills and important UI elements throughout the application.
 
 ### Usage
 
@@ -10,12 +10,12 @@ This accent color is defined in the color system at `src/styles/colorSystem.ts`:
 
 ```typescript
 accent: {
-  gradient: "bg-gradient-to-r from-red-500 to-orange-600",
-  hover: "hover:from-red-600 hover:to-orange-700",
-  text: "text-orange-500",
-  border: "border-orange-600",
-  light: "bg-orange-500/20",
-  shadow: "shadow-lg",
+  gradient: "bg-gradient-to-r from-teal-500 to-cyan-600",
+  hover: "hover:from-teal-600 hover:to-cyan-700",
+  text: "text-teal-500",
+  border: "border-teal-600",
+  light: "bg-teal-500/20",
+  shadow: "shadow-lg shadow-teal-900/30",
 }
 ```
 
@@ -23,7 +23,7 @@ accent: {
 
 #### Button with Accent Gradient
 ```tsx
-<button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-red-500 to-orange-600 text-white rounded-lg font-medium hover:from-red-600 hover:to-orange-700 transition shadow-lg">
+<button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg font-medium hover:from-teal-600 hover:to-cyan-700 transition shadow-lg shadow-teal-900/30">
   <PlusIcon className="w-5 h-5" />
   Create Vacancy
 </button>
@@ -48,11 +48,12 @@ import { colors } from '@/styles';
 
 ### Design Rationale
 
-The red-to-orange gradient complements the existing color palette:
-- **Red** aligns with the firefighter theme and existing primary colors
-- **Orange** adds warmth and energy, creating visual interest
-- **Gradient** provides depth and modern aesthetic
-- **High contrast** ensures visibility in both light and dark modes
+The teal-to-cyan gradient provides a professional, modern look that complements the existing color palette:
+- **Teal** is distinct from shift colors (green, red, blue) preventing confusion
+- **Cyan** adds freshness and visual interest without being overwhelming
+- **Gradient** provides depth and contemporary aesthetic
+- **High contrast** with dark slate backgrounds ensures visibility
+- **Professional appearance** suitable for emergency services applications
 
 ### Complementary Colors
 
@@ -69,4 +70,5 @@ Works well with:
 
 ---
 
-**Last Updated:** November 4, 2025
+**Last Updated:** November 5, 2025
+**Change:** Updated from red-orange to teal-cyan gradient for more professional appearance and better distinction from shift colors

@@ -108,7 +108,7 @@ export function CalendarSubscribeModal({
           </div>
           <button
             onClick={onClose}
-            className={`p-2 ${tokens.borders.radius.md} ${colors.interactive.hover.bg} transition-colors`}
+            className={`p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.md} ${colors.interactive.hover.bg} transition-colors flex items-center justify-center`}
             aria-label="Close calendar subscription modal"
           >
             <X

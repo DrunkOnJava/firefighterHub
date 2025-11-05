@@ -14,6 +14,7 @@
 import { Shift } from "../../lib/supabase";
 import { tokens } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
+import { Tooltip } from "../Tooltip";
 
 interface DayCellProps {
   day: CalendarDay;
@@ -114,43 +115,53 @@ export function DayCell({
         {/* Show first 2 holds */}
         {scheduledHolds.slice(0, 2).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
+          const fullTooltip = `${hold.firefighter_name || "Unknown"}${
+            hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+          }`;
           
           return (
-            <div
+            <Tooltip
               key={hold.id || index}
-              className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
-              title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-              }`}
+              content={fullTooltip}
+              position="top"
             >
-              <span className="truncate">{formattedName}</span>
-              {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
-                </span>
-              )}
-            </div>
+              <div
+                className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
+              >
+                <span className="truncate">{formattedName}</span>
+                {hold.fire_station && (
+                  <span className="ml-1 flex-shrink-0">
+                    (#{hold.fire_station})
+                  </span>
+                )}
+              </div>
+            </Tooltip>
           );
         })}
         
         {completedHolds.slice(0, 2 - scheduledHolds.length).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
+          const fullTooltip = `${hold.firefighter_name || "Unknown"}${
+            hold.fire_station ? ` - Station ${hold.fire_station}` : ""
+          } (completed)`;
           
           return (
-            <div
+            <Tooltip
               key={hold.id || index}
-              className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
-              title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-              } (completed)`}
+              content={fullTooltip}
+              position="top"
             >
-              <span className="truncate">{formattedName}</span>
-              {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
-                </span>
-              )}
-            </div>
+              <div
+                className="text-xs px-2.5 py-1.5 rounded-md bg-gradient-to-r from-red-500 to-orange-600 text-white font-semibold flex items-center justify-between shadow-md"
+              >
+                <span className="truncate">{formattedName}</span>
+                {hold.fire_station && (
+                  <span className="ml-1 flex-shrink-0">
+                    (#{hold.fire_station})
+                  </span>
+                )}
+              </div>
+            </Tooltip>
           );
         })}
 

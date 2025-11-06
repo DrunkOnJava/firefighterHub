@@ -11,14 +11,19 @@ function App() {
   const { toasts, showToast } = useToast();
 
   const {
-    firefighters,
+    firefighters = [],
     loading: firefightersLoading,
   } = useFirefighters(showToast, currentShift);
 
   const {
-    scheduledHolds,
+    scheduledHolds = [],
     loading: holdsLoading,
   } = useScheduledHolds(showToast, currentShift);
+
+  // Handle loading state
+  if (firefightersLoading || holdsLoading) {
+    return <div style={{ padding: 20, color: 'var(--text)' }}>Loading...</div>;
+  }
 
   // Get calendar data
   const year = currentDate.getFullYear();

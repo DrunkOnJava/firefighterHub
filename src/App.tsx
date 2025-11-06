@@ -20,7 +20,8 @@ import { Sidebar } from "./components/Sidebar";
 import { ToastContainer } from "./components/Toast";
 import { TransferShiftModal } from "./components/TransferShiftModal";
 import { UpdateNotification } from "./components/UpdateNotification";
-import { MaterialMPilot } from "./components/MaterialMPilot";
+// MaterialMPilot removed - MaterialM is now the default, no need for preview panel
+// import { MaterialMPilot } from "./components/MaterialMPilot";
 import {
   A11Y,
   GRID_COLS,
@@ -441,8 +442,8 @@ function App() {
       {/* Update notification for new app versions */}
       <UpdateNotification />
 
-      {/* MaterialM Design Preview Pilot */}
-      <MaterialMPilot />
+      {/* MaterialM Design Preview Pilot - REMOVED: MaterialM is now default */}
+      {/* <MaterialMPilot /> */}
     </div>
   );
 }

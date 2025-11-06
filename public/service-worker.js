@@ -1,6 +1,6 @@
 // IMPORTANT: Increment this version number whenever you deploy updates
 // This forces all clients to download fresh content
-const CACHE_VERSION = "v7";
+const CACHE_VERSION = "v8"; // MaterialM deployment - force cache refresh
 const CACHE_NAME = `hold-manager-${CACHE_VERSION}`;
 
 // Static assets that rarely change (icons, manifest)

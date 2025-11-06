@@ -17,7 +17,6 @@
 
 import { ArrowRightLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift } from "../lib/supabase";
@@ -25,7 +24,6 @@ import { DialogM3 } from "./m3/DialogM3";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { CardM3 } from "./m3/CardM3";
 import { ShiftBadge } from "./ShiftBadge";
-import { TransferShiftModalLegacy } from "./TransferShiftModalLegacy";
 
 interface TransferShiftModalProps {
   isOpen: boolean;
@@ -35,9 +33,9 @@ interface TransferShiftModalProps {
 }
 
 /**
- * MaterialM Transfer Shift Modal
+ * Transfer Shift Modal - MaterialM Design
  */
-function TransferShiftModalM3({
+export function TransferShiftModal({
   isOpen,
   firefighter,
   onClose,
@@ -150,19 +148,4 @@ function TransferShiftModalM3({
       </DialogM3.Footer>
     </DialogM3>
   );
-}
-
-/**
- * Transfer Shift Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function TransferShiftModal(props: TransferShiftModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <TransferShiftModalLegacy {...props} />;
-  }
-
-  return <TransferShiftModalM3 {...props} />;
 }

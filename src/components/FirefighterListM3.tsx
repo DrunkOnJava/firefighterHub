@@ -25,7 +25,7 @@ import { FirefighterProfileModalM3 } from "./FirefighterProfileModalM3";
 import { ReactivateModalM3 } from "./ReactivateModalM3";
 import { BulkActionsM3, RosterHeaderM3, RosterSearchBarM3 } from "./roster";
 
-interface FirefighterListM3Props {
+export interface FirefighterListM3Props {
   firefighters: Firefighter[];
   deactivatedFirefighters?: Firefighter[];
   onAdd: (name: string, station: string) => void;
@@ -42,6 +42,9 @@ interface FirefighterListM3Props {
   searchInputRef?: React.RefObject<HTMLInputElement>;
   confirmAction?: (options: ConfirmOptions) => Promise<boolean>;
 }
+
+// Type alias for backward compatibility
+export type FirefighterListProps = FirefighterListM3Props;
 
 export function FirefighterListM3({
   firefighters,

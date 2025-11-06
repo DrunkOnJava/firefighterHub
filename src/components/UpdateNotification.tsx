@@ -1,8 +1,8 @@
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { UpdateNotificationLegacy } from "./UpdateNotificationLegacy";
-import { UpdateNotificationM3 } from "./UpdateNotificationM3";
+/**
+ * UpdateNotification - Direct M3 Export
+ *
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in UpdateNotificationLegacy.tsx
+ */
 
-export function UpdateNotification() {
-  const useMaterialM = useFeatureFlag("MATERIALM");
-  return useMaterialM ? <UpdateNotificationM3 /> : <UpdateNotificationLegacy />;
-}
+export { UpdateNotificationM3 as UpdateNotification } from './UpdateNotificationM3';

@@ -1,30 +1,8 @@
 /**
- * ConfirmDialog - Routing Wrapper
+ * ConfirmDialog - Direct M3 Export
  *
- * Routes between MaterialM (M3) and Legacy confirm dialog implementations
- * based on the MATERIALM feature flag.
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in ConfirmDialogLegacy.tsx
  */
 
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { ConfirmDialogLegacy } from "./ConfirmDialogLegacy";
-import { ConfirmDialogM3 } from "./ConfirmDialogM3";
-
-type ConfirmVariant = "danger" | "warning" | "info";
-
-interface ConfirmDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  variant?: ConfirmVariant;
-  consequences?: string[];
-  isDarkMode?: boolean;
-}
-
-export function ConfirmDialog(props: ConfirmDialogProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-  return useMaterialM ? <ConfirmDialogM3 {...props} /> : <ConfirmDialogLegacy {...props} />;
-}
+export { ConfirmDialogM3 as ConfirmDialog } from './ConfirmDialogM3';

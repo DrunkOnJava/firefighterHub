@@ -1,13 +1,8 @@
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { ActivityLog as ActivityLogLegacy } from "./ActivityLogLegacy";
-import { ActivityLogM3 } from "./ActivityLogM3";
+/**
+ * ActivityLog - Direct M3 Export
+ *
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in ActivityLogLegacy.tsx
+ */
 
-export function ActivityLog() {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <ActivityLogLegacy />;
-  }
-
-  return <ActivityLogM3 />;
-}
+export { ActivityLogM3 as ActivityLog } from './ActivityLogM3';

@@ -15,12 +15,10 @@
 
 import { Clock } from 'lucide-react';
 import { useEffect } from 'react';
-import { useFeatureFlag } from '../hooks/useFeatureFlag';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
 import { DialogM3 } from './m3/DialogM3';
 import { ActivityLog } from './ActivityLog';
-import { ActivityLogModalLegacy } from './ActivityLogModalLegacy';
 
 interface ActivityLogModalProps {
   isOpen: boolean;
@@ -28,9 +26,9 @@ interface ActivityLogModalProps {
 }
 
 /**
- * MaterialM Activity Log Modal
+ * Activity Log Modal - MaterialM Design
  */
-function ActivityLogModalM3({ isOpen, onClose }: ActivityLogModalProps) {
+export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -74,19 +72,4 @@ function ActivityLogModalM3({ isOpen, onClose }: ActivityLogModalProps) {
       </DialogM3.Body>
     </DialogM3>
   );
-}
-
-/**
- * Activity Log Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function ActivityLogModal(props: ActivityLogModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <ActivityLogModalLegacy {...props} />;
-  }
-
-  return <ActivityLogModalM3 {...props} />;
 }

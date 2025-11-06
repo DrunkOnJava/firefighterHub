@@ -1,8 +1,8 @@
 /**
  * Toast - Notification Component
  *
- * Displays temporary notification messages with MaterialM or legacy styling.
- * Automatically switches between designs based on feature flag.
+ * Displays temporary notification messages.
+ * Uses MaterialM design system.
  *
  * @example
  * ```tsx
@@ -13,9 +13,7 @@
 
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
 import { Toast as FlowbiteToast, ToastToggle } from 'flowbite-react';
-import { useFeatureFlag } from '../hooks/useFeatureFlag';
 import { Toast as ToastType } from '../hooks/useToast';
-import { ToastContainerLegacy, ToastLegacy } from './ToastLegacy';
 
 export type { ToastType } from '../hooks/useToast';
 
@@ -87,16 +85,8 @@ interface ToastContainerProps {
 }
 
 export function ToastContainer({ toasts, onClose }: ToastContainerProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
   if (toasts.length === 0) return null;
 
-  // Use legacy container if MaterialM is disabled
-  if (!useMaterialM) {
-    return <ToastContainerLegacy toasts={toasts} onClose={onClose} />;
-  }
-
-  // MaterialM Toast Container
   return (
     <div
       className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col-reverse gap-3"
@@ -127,8 +117,6 @@ interface LegacyToastProps {
 }
 
 export function Toast({ message, type, onClose }: LegacyToastProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
   const tempToast: ToastType = {
     id: 'legacy',
     message,
@@ -136,12 +124,6 @@ export function Toast({ message, type, onClose }: LegacyToastProps) {
     timestamp: Date.now()
   };
 
-  // Use legacy toast if MaterialM is disabled
-  if (!useMaterialM) {
-    return <ToastLegacy message={message} type={type} onClose={onClose} />;
-  }
-
-  // MaterialM Single Toast
   return (
     <div
       className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"

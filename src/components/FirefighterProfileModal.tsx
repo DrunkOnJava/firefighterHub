@@ -1,21 +1,8 @@
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { FirefighterProfileModal as FirefighterProfileModalLegacy } from "./FirefighterProfileModalLegacy";
-import { FirefighterProfileModalM3 } from "./FirefighterProfileModalM3";
-import { Firefighter } from "../lib/supabase";
+/**
+ * FirefighterProfileModal - Direct M3 Export
+ *
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in FirefighterProfileModalLegacy.tsx
+ */
 
-interface FirefighterProfileModalProps {
-  isOpen: boolean;
-  firefighter: Firefighter | null;
-  onClose: () => void;
-  isAdminMode?: boolean;
-}
-
-export function FirefighterProfileModal(props: FirefighterProfileModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <FirefighterProfileModalLegacy {...props} />;
-  }
-
-  return <FirefighterProfileModalM3 {...props} />;
-}
+export { FirefighterProfileModalM3 as FirefighterProfileModal } from './FirefighterProfileModalM3';

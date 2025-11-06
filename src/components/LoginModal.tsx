@@ -1,21 +1,8 @@
 /**
- * LoginModal - Routing Wrapper
+ * LoginModal - Direct M3 Export
  *
- * Routes between MaterialM (M3) and Legacy login modal implementations
- * based on the MATERIALM feature flag.
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in LoginModalLegacy.tsx
  */
 
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { LoginModalLegacy } from "./LoginModalLegacy";
-import { LoginModalM3 } from "./LoginModalM3";
-
-interface LoginModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSuccess?: () => void;
-}
-
-export function LoginModal(props: LoginModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-  return useMaterialM ? <LoginModalM3 {...props} /> : <LoginModalLegacy {...props} />;
-}
+export { LoginModalM3 as LoginModal } from './LoginModalM3';

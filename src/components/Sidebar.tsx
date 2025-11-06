@@ -2,7 +2,7 @@
  * Sidebar - Upcoming Schedule Panel
  *
  * Displays upcoming holds and rotation information.
- * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Uses MaterialM design system.
  *
  * @example
  * ```tsx
@@ -17,7 +17,6 @@
 
 import { BarChart3, Calendar, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { CardM3 } from "./m3/CardM3";
@@ -25,7 +24,6 @@ import { ButtonM3 } from "./m3/ButtonM3";
 import { BadgeM3, CountBadgeM3 } from "./m3/BadgeM3";
 import { NoScheduledHoldsEmptyState } from "./EmptyState";
 import { ShiftBadge } from "./ShiftBadge";
-import { SidebarLegacy } from "./SidebarLegacy";
 
 type View = "calendar" | "reports";
 
@@ -332,16 +330,8 @@ function SidebarM3({
 }
 
 /**
- * Sidebar Component with Feature Flag
+ * Sidebar Component
  *
- * Switches between MaterialM and legacy versions.
+ * Uses MaterialM design system.
  */
-export function Sidebar(props: SidebarProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <SidebarLegacy {...props} />;
-  }
-
-  return <SidebarM3 {...props} />;
-}
+export const Sidebar = SidebarM3;

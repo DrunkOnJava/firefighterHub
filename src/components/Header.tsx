@@ -2,7 +2,7 @@
  * Header - Navigation Bar
  *
  * Main navigation header with logo, actions, and responsive design.
- * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Uses MaterialM design system.
  *
  * @example
  * ```tsx
@@ -27,7 +27,6 @@ import {
   UserPlus,
 } from "lucide-react";
 import { Navbar } from 'flowbite-react';
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Shift } from "../lib/supabase";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { BadgeM3 } from "./m3/BadgeM3";
@@ -36,7 +35,6 @@ import {
   ConnectionStatusDotM3,
 } from "./ConnectionStatusIndicatorM3";
 import { ShiftSelector } from "./ShiftSelector";
-import { HeaderLegacy } from "./HeaderLegacy";
 
 interface HeaderProps {
   onShowHelp: () => void;
@@ -53,7 +51,7 @@ interface HeaderProps {
 /**
  * MaterialM Header Component
  */
-function HeaderM3({
+export function Header({
   onShowHelp,
   onShowActivityLog,
   onQuickAddFirefighter,
@@ -207,19 +205,4 @@ function HeaderM3({
       </div>
     </Navbar>
   );
-}
-
-/**
- * Header Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function Header(props: HeaderProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <HeaderLegacy {...props} />;
-  }
-
-  return <HeaderM3 {...props} />;
 }

@@ -1,17 +1,8 @@
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { AddFirefighterForm as AddFirefighterFormLegacy } from "./AddFirefighterFormLegacy";
-import { AddFirefighterFormM3 } from "./AddFirefighterFormM3";
+/**
+ * AddFirefighterForm - Direct M3 Export
+ *
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in AddFirefighterFormLegacy.tsx
+ */
 
-interface AddFirefighterFormProps {
-  onAdd: (name: string, fireStation: string) => void;
-}
-
-export function AddFirefighterForm(props: AddFirefighterFormProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <AddFirefighterFormLegacy {...props} />;
-  }
-
-  return <AddFirefighterFormM3 {...props} />;
-}
+export { AddFirefighterFormM3 as AddFirefighterForm } from './AddFirefighterFormM3';

@@ -23,7 +23,6 @@ import {
   Clock,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
@@ -32,7 +31,6 @@ import { ButtonM3 } from "./m3/ButtonM3";
 import { SelectM3 } from "./m3/InputM3";
 import { CardM3 } from "./m3/CardM3";
 import { StationSelector } from "./StationSelector";
-import { CompleteHoldModalLegacy } from "./CompleteHoldModalLegacy";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
@@ -51,9 +49,9 @@ interface CompleteHoldModalProps {
 }
 
 /**
- * MaterialM Complete Hold Modal
+ * Complete Hold Modal - MaterialM Design
  */
-function CompleteHoldModalM3({
+export function CompleteHoldModal({
   isOpen,
   firefighter,
   totalFirefighters,
@@ -256,19 +254,4 @@ function CompleteHoldModalM3({
       </DialogM3.Footer>
     </DialogM3>
   );
-}
-
-/**
- * Complete Hold Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function CompleteHoldModal(props: CompleteHoldModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <CompleteHoldModalLegacy {...props} />;
-  }
-
-  return <CompleteHoldModalM3 {...props} />;
 }

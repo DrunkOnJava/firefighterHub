@@ -23,18 +23,14 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
-import { useFeatureFlag } from "../../hooks/useFeatureFlag";
 import { useFocusReturn } from "../../hooks/useFocusReturn";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../../lib/supabase";
 import { CalendarDay, ScheduledHold } from "../../utils/calendarUtils";
 import { DialogM3 } from "../m3/DialogM3";
 import { BadgeM3 } from "../m3/BadgeM3";
-import { HoldForm } from "./HoldForm";
-import { HoldList } from "./HoldList";
 import { HoldFormM3 } from "./HoldFormM3";
 import { HoldListM3 } from "./HoldListM3";
-import { DayModalLegacy } from "./DayModalLegacy";
 
 interface DayModalProps {
   isOpen: boolean;
@@ -58,9 +54,9 @@ interface DayModalProps {
 }
 
 /**
- * MaterialM Day Modal Component
+ * Day Modal Component - MaterialM Design
  */
-function DayModalM3({
+export function DayModal({
   isOpen,
   selectedDay,
   onClose,
@@ -199,19 +195,4 @@ function DayModalM3({
       </DialogM3.Body>
     </DialogM3>
   );
-}
-
-/**
- * Day Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function DayModal(props: DayModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <DayModalLegacy {...props} />;
-  }
-
-  return <DayModalM3 {...props} />;
 }

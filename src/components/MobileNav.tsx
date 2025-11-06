@@ -2,7 +2,7 @@
  * MobileNav - Mobile Navigation Menu
  *
  * Slide-out mobile menu with actions and preferences.
- * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Uses MaterialM design system.
  *
  * @example
  * ```tsx
@@ -26,14 +26,12 @@ import {
   X,
 } from "lucide-react";
 import { useEffect } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { BadgeM3 } from "./m3/BadgeM3";
 import { ShiftSelector } from "./ShiftSelector";
-import { MobileNavLegacy } from "./MobileNavLegacy";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -272,16 +270,8 @@ function MobileNavM3({
 }
 
 /**
- * MobileNav Component with Feature Flag
+ * MobileNav Component
  *
- * Switches between MaterialM and legacy versions.
+ * Uses MaterialM design system.
  */
-export function MobileNav(props: MobileNavProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <MobileNavLegacy {...props} />;
-  }
-
-  return <MobileNavM3 {...props} />;
-}
+export const MobileNav = MobileNavM3;

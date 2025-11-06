@@ -2,7 +2,7 @@
  * MetricCard - Metric Display Component
  *
  * Displays metrics and statistics in a card format.
- * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Uses MaterialM design system.
  *
  * @example
  * ```tsx
@@ -19,9 +19,7 @@
  */
 
 import { LucideIcon } from "lucide-react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { MetricCardM3 } from "./m3/CardM3";
-import { MetricCardLegacy } from "./MetricCardLegacy";
 
 interface MetricCardProps {
   title: string;
@@ -48,28 +46,9 @@ export function MetricCard({
   value,
   subtitle,
   icon: Icon,
-  isDarkMode,
-  colorClass = "blue",
   trend,
   onClick,
 }: MetricCardProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  // Use legacy card if MaterialM is disabled
-  if (!useMaterialM) {
-    return (
-      <MetricCardLegacy
-        title={title}
-        value={value}
-        subtitle={subtitle}
-        icon={Icon}
-        isDarkMode={isDarkMode}
-        colorClass={colorClass}
-      />
-    );
-  }
-
-  // MaterialM Metric Card
   return (
     <MetricCardM3
       title={title}

@@ -1,22 +1,8 @@
 /**
- * KeyboardShortcutsModal - Routing Wrapper
+ * KeyboardShortcutsModal - Direct M3 Export
  *
- * Routes between MaterialM (M3) and Legacy keyboard shortcuts modal implementations
- * based on the MATERIALM feature flag.
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in KeyboardShortcutsModalLegacy.tsx
  */
 
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { KeyboardShortcut } from "../hooks/useKeyboardShortcuts";
-import { KeyboardShortcutsModalLegacy } from "./KeyboardShortcutsModalLegacy";
-import { KeyboardShortcutsModalM3 } from "./KeyboardShortcutsModalM3";
-
-interface KeyboardShortcutsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  shortcuts: KeyboardShortcut[];
-}
-
-export function KeyboardShortcutsModal(props: KeyboardShortcutsModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-  return useMaterialM ? <KeyboardShortcutsModalM3 {...props} /> : <KeyboardShortcutsModalLegacy {...props} />;
-}
+export { KeyboardShortcutsModalM3 as KeyboardShortcutsModal } from './KeyboardShortcutsModalM3';

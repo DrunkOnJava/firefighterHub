@@ -28,14 +28,12 @@ import {
   Users,
 } from "lucide-react";
 import { useEffect } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { DialogM3 } from "./m3/DialogM3";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { CardM3 } from "./m3/CardM3";
-import { HelpModalLegacy } from "./HelpModalLegacy";
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -47,9 +45,9 @@ interface HelpModalProps {
 }
 
 /**
- * MaterialM Help Modal
+ * Help Modal - MaterialM Design
  */
-function HelpModalM3({
+export function HelpModal({
   isOpen,
   onClose,
   onMasterReset,
@@ -350,19 +348,4 @@ function HelpModalM3({
       </DialogM3.Footer>
     </DialogM3>
   );
-}
-
-/**
- * Help Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function HelpModal(props: HelpModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <HelpModalLegacy {...props} />;
-  }
-
-  return <HelpModalM3 {...props} />;
 }

@@ -1,22 +1,8 @@
 /**
- * CalendarSubscribeModal - Routing Wrapper
+ * CalendarSubscribeModal - Direct M3 Export
  *
- * Routes between MaterialM (M3) and Legacy calendar subscription modal implementations
- * based on the MATERIALM feature flag.
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in CalendarSubscribeModalLegacy.tsx
  */
 
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { Shift } from "../lib/supabase";
-import { CalendarSubscribeModalLegacy } from "./CalendarSubscribeModalLegacy";
-import { CalendarSubscribeModalM3 } from "./CalendarSubscribeModalM3";
-
-interface CalendarSubscribeModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  currentShift?: Shift;
-}
-
-export function CalendarSubscribeModal(props: CalendarSubscribeModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-  return useMaterialM ? <CalendarSubscribeModalM3 {...props} /> : <CalendarSubscribeModalLegacy {...props} />;
-}
+export { CalendarSubscribeModalM3 as CalendarSubscribeModal } from './CalendarSubscribeModalM3';

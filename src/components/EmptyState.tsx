@@ -2,7 +2,7 @@
  * Empty State Components
  *
  * User-friendly messages when no data is available.
- * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Uses MaterialM design system.
  * Improves UX by guiding users on next actions.
  *
  * @example
@@ -17,18 +17,7 @@
  */
 
 import { Users, Calendar, AlertCircle, Plus, Search } from 'lucide-react';
-import { useFeatureFlag } from '../hooks/useFeatureFlag';
 import { ButtonM3 } from './m3/ButtonM3';
-import {
-  EmptyStateLegacy,
-  NoFirefightersEmptyStateLegacy,
-  NoScheduledHoldsEmptyStateLegacy,
-  NoSearchResultsEmptyStateLegacy,
-  ConnectionErrorEmptyStateLegacy,
-  NoDeactivatedFirefightersEmptyStateLegacy,
-  NoActivityEmptyStateLegacy,
-  NoReportsDataEmptyStateLegacy,
-} from './EmptyStateLegacy';
 
 interface EmptyStateProps {
   title: string;
@@ -80,17 +69,9 @@ function EmptyStateM3({ title, description, icon, action }: EmptyStateProps) {
 /**
  * Base Empty State Component
  *
- * Switches between MaterialM and legacy versions based on feature flag.
+ * Uses MaterialM design system.
  */
-export function EmptyState(props: EmptyStateProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <EmptyStateLegacy {...props} />;
-  }
-
-  return <EmptyStateM3 {...props} />;
-}
+export const EmptyState = EmptyStateM3;
 
 // ============================================================================
 // Specialized Empty State Components
@@ -108,17 +89,6 @@ export function NoFirefightersEmptyState({
   onAddFirefighter,
   isAdminMode = false,
 }: NoFirefightersEmptyStateProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return (
-      <NoFirefightersEmptyStateLegacy
-        onAddFirefighter={onAddFirefighter}
-        isAdminMode={isAdminMode}
-      />
-    );
-  }
-
   return (
     <EmptyState
       title="No Team Members Yet"
@@ -152,17 +122,6 @@ export function NoScheduledHoldsEmptyState({
   onScheduleHold,
   isAdminMode = false,
 }: NoScheduledHoldsEmptyStateProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return (
-      <NoScheduledHoldsEmptyStateLegacy
-        onScheduleHold={onScheduleHold}
-        isAdminMode={isAdminMode}
-      />
-    );
-  }
-
   return (
     <EmptyState
       title="No Holds Scheduled"
@@ -196,17 +155,6 @@ export function NoSearchResultsEmptyState({
   searchTerm,
   onClearSearch,
 }: NoSearchResultsEmptyStateProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return (
-      <NoSearchResultsEmptyStateLegacy
-        searchTerm={searchTerm}
-        onClearSearch={onClearSearch}
-      />
-    );
-  }
-
   return (
     <EmptyState
       title="No Results Found"
@@ -230,12 +178,6 @@ interface ConnectionErrorEmptyStateProps {
 export function ConnectionErrorEmptyState({
   onRetry,
 }: ConnectionErrorEmptyStateProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <ConnectionErrorEmptyStateLegacy onRetry={onRetry} />;
-  }
-
   return (
     <EmptyState
       title="Connection Error"
@@ -253,12 +195,6 @@ export function ConnectionErrorEmptyState({
  * Empty state for deactivated firefighters
  */
 export function NoDeactivatedFirefightersEmptyState() {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <NoDeactivatedFirefightersEmptyStateLegacy />;
-  }
-
   return (
     <EmptyState
       title="No Deactivated Members"
@@ -272,12 +208,6 @@ export function NoDeactivatedFirefightersEmptyState() {
  * Empty state for activity log
  */
 export function NoActivityEmptyState() {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <NoActivityEmptyStateLegacy />;
-  }
-
   return (
     <EmptyState
       title="No Activity Yet"
@@ -291,12 +221,6 @@ export function NoActivityEmptyState() {
  * Empty state for reports
  */
 export function NoReportsDataEmptyState() {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <NoReportsDataEmptyStateLegacy />;
-  }
-
   return (
     <EmptyState
       title="No Data Available"

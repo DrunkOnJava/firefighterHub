@@ -2,7 +2,7 @@
  * LoadingButton - Button with Loading State
  *
  * Button component with loading state and spinner.
- * Automatically switches between MaterialM and legacy styling based on feature flag.
+ * Uses MaterialM design system.
  *
  * @example
  * ```tsx
@@ -18,9 +18,7 @@
  */
 
 import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { useFeatureFlag } from '../hooks/useFeatureFlag';
 import { ButtonM3, type ButtonM3Color } from './m3/ButtonM3';
-import { LoadingButtonLegacy } from './LoadingButtonLegacy';
 
 interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -38,24 +36,6 @@ export function LoadingButton({
   disabled,
   ...props
 }: LoadingButtonProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  // Use legacy button if MaterialM is disabled
-  if (!useMaterialM) {
-    return (
-      <LoadingButtonLegacy
-        isLoading={isLoading}
-        loadingText={loadingText}
-        variant={variant}
-        className={className}
-        disabled={disabled}
-        {...props}
-      >
-        {children}
-      </LoadingButtonLegacy>
-    );
-  }
-
   // Map legacy variants to MaterialM colors
   let materialMColor: ButtonM3Color = 'primary';
 
@@ -74,7 +54,6 @@ export function LoadingButton({
       break;
   }
 
-  // MaterialM Loading Button
   return (
     <ButtonM3
       color={materialMColor}

@@ -23,7 +23,6 @@
 
 import { Edit2, Save, Users, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift, supabase } from "../lib/supabase";
@@ -32,7 +31,6 @@ import { ButtonM3, IconButtonM3 } from "./m3/ButtonM3";
 import { SelectM3 } from "./m3/InputM3";
 import { BadgeM3 } from "./m3/BadgeM3";
 import { ShiftBadge } from "./ShiftBadge";
-import { FirefightersModalLegacy } from "./FirefightersModalLegacy";
 import type { Tables } from "../lib/database.types";
 
 type Firefighter = Tables<"firefighters">;
@@ -49,9 +47,9 @@ interface EditingProfile extends Firefighter {
 }
 
 /**
- * MaterialM Firefighters Modal
+ * Firefighters Modal - MaterialM Design
  */
-function FirefightersModalM3({
+export function FirefightersModal({
   isOpen,
   onClose,
   onUpdate,
@@ -341,19 +339,4 @@ function FirefightersModalM3({
       </DialogM3.Footer>
     </DialogM3>
   );
-}
-
-/**
- * Firefighters Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function FirefightersModal(props: FirefightersModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <FirefightersModalLegacy {...props} />;
-  }
-
-  return <FirefightersModalM3 {...props} />;
 }

@@ -1,16 +1,8 @@
-import { ReactNode } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
-import { TooltipLegacy } from "./TooltipLegacy";
-import { TooltipM3 } from "./TooltipM3";
+/**
+ * Tooltip - Direct M3 Export
+ *
+ * Exports the MaterialM (M3) implementation directly.
+ * Legacy version available in TooltipLegacy.tsx
+ */
 
-interface TooltipProps {
-  content: string;
-  children: ReactNode;
-  delay?: number;
-  position?: "top" | "bottom" | "left" | "right";
-}
-
-export function Tooltip(props: TooltipProps) {
-  const useMaterialM = useFeatureFlag("MATERIALM");
-  return useMaterialM ? <TooltipM3 {...props} /> : <TooltipLegacy {...props} />;
-}
+export { TooltipM3 as Tooltip } from './TooltipM3';

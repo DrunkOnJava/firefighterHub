@@ -17,7 +17,6 @@
 
 import { ChevronDown, ChevronUp, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
@@ -25,7 +24,6 @@ import { DialogM3 } from "./m3/DialogM3";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { InputM3, SelectM3, CheckboxM3, FormGroupM3 } from "./m3/InputM3";
 import { BadgeM3 } from "./m3/BadgeM3";
-import { QuickAddFirefighterModalLegacy } from "./QuickAddFirefighterModalLegacy";
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;
@@ -54,9 +52,9 @@ interface QuickAddFirefighterModalProps {
 }
 
 /**
- * MaterialM Quick Add Modal
+ * Quick Add Firefighter Modal - MaterialM Design
  */
-function QuickAddFirefighterModalM3({
+export function QuickAddFirefighterModal({
   isOpen,
   currentShift,
   onClose,
@@ -378,19 +376,4 @@ function QuickAddFirefighterModalM3({
       </form>
     </DialogM3>
   );
-}
-
-/**
- * Quick Add Firefighter Modal Component with Feature Flag
- *
- * Switches between MaterialM and legacy versions.
- */
-export function QuickAddFirefighterModal(props: QuickAddFirefighterModalProps) {
-  const useMaterialM = useFeatureFlag('MATERIALM');
-
-  if (!useMaterialM) {
-    return <QuickAddFirefighterModalLegacy {...props} />;
-  }
-
-  return <QuickAddFirefighterModalM3 {...props} />;
 }

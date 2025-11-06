@@ -191,7 +191,7 @@ export function StatusBadgeM3({ status, children, className = '' }: StatusBadgeM
     { color: BadgeM3Color; dotColor: string }
   > = {
     active: { color: 'success', dotColor: 'bg-materialm-success' },
-    inactive: { color: 'neutral', dotColor: 'bg-gray-400' },
+    inactive: { color: 'neutral', dotColor: 'bg-materialm-text-secondary' },
     pending: { color: 'warning', dotColor: 'bg-materialm-warning' },
     error: { color: 'error', dotColor: 'bg-materialm-error' },
     success: { color: 'success', dotColor: 'bg-materialm-success' },
@@ -387,7 +387,7 @@ export function AvatarBadgeM3({
 }: AvatarBadgeM3Props) {
   const statusColors: Record<string, string> = {
     active: 'bg-materialm-success',
-    inactive: 'bg-gray-400',
+    inactive: 'bg-materialm-text-secondary',
     busy: 'bg-materialm-error',
     away: 'bg-materialm-warning',
   };
@@ -401,7 +401,7 @@ export function AvatarBadgeM3({
 
   return (
     <span
-      className={`absolute w-3 h-3 ${statusColors[status]} border-2 border-white dark:border-gray-800 rounded-full ${positionClasses[position]} ${className}`}
+      className={`absolute w-3 h-3 ${statusColors[status]} border-2 border-materialm-surface dark:border-materialm-dark rounded-full ${positionClasses[position]} ${className}`}
       aria-label={`Status: ${status}`}
     />
   );

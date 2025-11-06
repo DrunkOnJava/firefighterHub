@@ -235,16 +235,16 @@ export function ConfirmDialogM3({
   };
 
   const confirmColorClasses: Record<string, string> = {
-    primary: 'bg-blue-600 hover:bg-blue-700',
-    error: 'bg-red-600 hover:bg-red-700',
-    warning: 'bg-amber-600 hover:bg-amber-700',
-    success: 'bg-emerald-600 hover:bg-emerald-700',
+    primary: 'bg-materialm-primary hover:bg-materialm-primary-hover',
+    error: 'bg-materialm-error hover:bg-materialm-error-hover',
+    warning: 'bg-materialm-warning hover:bg-materialm-warning-hover',
+    success: 'bg-materialm-success hover:bg-materialm-success-hover',
   };
 
   return (
     <DialogM3 show={show} onClose={onClose} title={title} size="md">
       <DialogM3.Body>
-        <p className="text-base leading-relaxed text-gray-700 dark:text-gray-400">
+        <p className="text-base leading-relaxed text-materialm-text-secondary">
           {message}
         </p>
       </DialogM3.Body>
@@ -252,7 +252,7 @@ export function ConfirmDialogM3({
         <button
           onClick={onClose}
           disabled={loading}
-          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
+          className="px-4 py-2 border border-materialm-border-light rounded-lg hover:bg-materialm-surface-hover dark:border-materialm-border-dark dark:hover:bg-materialm-darkgray"
         >
           {cancelText}
         </button>
@@ -327,16 +327,16 @@ export function AlertDialogM3({
   buttonText = 'OK',
 }: AlertDialogM3Props) {
   const severityColors: Record<string, string> = {
-    info: 'bg-blue-600 hover:bg-blue-700',
-    success: 'bg-emerald-600 hover:bg-emerald-700',
-    warning: 'bg-amber-600 hover:bg-amber-700',
-    error: 'bg-red-600 hover:bg-red-700',
+    info: 'bg-materialm-primary hover:bg-materialm-primary-hover',
+    success: 'bg-materialm-success hover:bg-materialm-success-hover',
+    warning: 'bg-materialm-warning hover:bg-materialm-warning-hover',
+    error: 'bg-materialm-error hover:bg-materialm-error-hover',
   };
 
   return (
     <DialogM3 show={show} onClose={onClose} title={title} size="sm">
       <DialogM3.Body>
-        <p className="text-base leading-relaxed text-gray-700 dark:text-gray-400">
+        <p className="text-base leading-relaxed text-materialm-text-secondary">
           {message}
         </p>
       </DialogM3.Body>
@@ -399,14 +399,14 @@ export function FullScreenDialogM3({
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white dark:bg-slate-900">
+    <div className="fixed inset-0 z-50 bg-materialm-surface dark:bg-materialm-dark">
       <div className="h-full flex flex-col">
         {/* Header with close button */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{title}</h2>
+        <div className="flex items-center justify-between p-4 border-b border-materialm-border-light dark:border-materialm-border-dark">
+          <h2 className="text-xl font-semibold text-materialm-text">{title}</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            className="text-materialm-text-secondary hover:text-materialm-text"
             aria-label="Close dialog"
           >
             <svg

@@ -144,11 +144,11 @@ export function DayModal({
       >
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-white mb-1">
+            <h3 className="text-xl font-bold text-materialm-text mb-1">
               {modalTitle}
             </h3>
             {hasHolds && !showAddAnother && (
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-materialm-text-secondary">
                 {selectedDay.scheduledHolds.length} hold
                 {selectedDay.scheduledHolds.length !== 1 ? "s" : ""} scheduled
               </p>
@@ -156,7 +156,7 @@ export function DayModal({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 rounded-lg hover:bg-materialm-dark text-gray-400 transition-colors focus-ring"
+            className="p-2 rounded-lg hover:bg-materialm-dark text-materialm-text-secondary transition-colors focus-ring"
             aria-label="Close date dialog"
           >
             <X className="w-6 h-6" />

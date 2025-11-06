@@ -45,11 +45,11 @@ function EmptyStateM3({ title, description, icon, action }: EmptyStateProps) {
         </div>
       )}
 
-      <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+      <h3 className="text-2xl font-bold mb-2 text-materialm-text-primary dark:text-white">
         {title}
       </h3>
 
-      <p className="max-w-md mb-6 text-gray-600 dark:text-gray-400">
+      <p className="max-w-md mb-6 text-materialm-text-secondary dark:text-materialm-text-secondary">
         {description}
       </p>
 
@@ -97,7 +97,7 @@ export function NoFirefightersEmptyState({
           ? "Get started by adding your first firefighter to the rotation. Click the button below to begin building your team."
           : "Your roster is empty. Contact an administrator to add team members to the rotation."
       }
-      icon={<Users size={48} className="text-gray-400" />}
+      icon={<Users size={48} className="text-materialm-text-tertiary" />}
       action={
         isAdminMode
           ? {
@@ -130,7 +130,7 @@ export function NoScheduledHoldsEmptyState({
           ? "Click on any date in the calendar to schedule a hold. The calendar will show scheduled and completed holds."
           : "No holds have been scheduled yet. Check back later or contact an administrator."
       }
-      icon={<Calendar size={48} className="text-gray-400" />}
+      icon={<Calendar size={48} className="text-materialm-text-tertiary" />}
       action={
         isAdminMode
           ? {
@@ -159,7 +159,7 @@ export function NoSearchResultsEmptyState({
     <EmptyState
       title="No Results Found"
       description={`No firefighters match "${searchTerm}". Try adjusting your search or clearing filters.`}
-      icon={<Search size={48} className="text-gray-400" />}
+      icon={<Search size={48} className="text-materialm-text-tertiary" />}
       action={{
         label: 'Clear Search',
         onClick: onClearSearch,
@@ -199,7 +199,7 @@ export function NoDeactivatedFirefightersEmptyState() {
     <EmptyState
       title="No Deactivated Members"
       description="All team members are currently active. Deactivated firefighters will appear here while preserving their history."
-      icon={<Users size={48} className="text-gray-400" />}
+      icon={<Users size={48} className="text-materialm-text-tertiary" />}
     />
   );
 }
@@ -212,7 +212,7 @@ export function NoActivityEmptyState() {
     <EmptyState
       title="No Activity Yet"
       description="Team actions and changes will be logged here. This helps track roster modifications and hold assignments."
-      icon={<AlertCircle size={48} className="text-gray-400" />}
+      icon={<AlertCircle size={48} className="text-materialm-text-tertiary" />}
     />
   );
 }
@@ -225,7 +225,7 @@ export function NoReportsDataEmptyState() {
     <EmptyState
       title="No Data Available"
       description="Reports will be generated once you have scheduled holds and team member activity. Add firefighters and schedule holds to see analytics."
-      icon={<Calendar size={48} className="text-gray-400" />}
+      icon={<Calendar size={48} className="text-materialm-text-tertiary" />}
     />
   );
 }

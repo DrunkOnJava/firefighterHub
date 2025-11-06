@@ -67,7 +67,7 @@ export function FilterPanelM3({
             <div>
               <h2
                 id="filter-panel-title"
-                className="text-xl font-semibold text-gray-900 dark:text-white"
+                className="text-xl font-semibold text-materialm-text-primary"
               >
                 Filter Firefighters
               </h2>
@@ -92,7 +92,7 @@ export function FilterPanelM3({
         <div className="p-6 overflow-y-auto max-h-[60vh]">
           {/* Availability Filter */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+            <label className="block text-sm font-semibold mb-3 text-materialm-text-primary">
               Availability Status
             </label>
             <div className="flex gap-2">
@@ -112,7 +112,7 @@ export function FilterPanelM3({
 
           {/* Certification Filter */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+            <label className="block text-sm font-semibold mb-3 text-materialm-text-primary">
               Certification Level
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -122,7 +122,7 @@ export function FilterPanelM3({
                   className={`flex items-center gap-2 p-3 rounded-materialm-lg cursor-pointer transition-all ${
                     filters.certifications.includes(cert)
                       ? 'bg-materialm-primary-light border-2 border-materialm-primary'
-                      : 'bg-gray-50 dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
+                      : 'bg-materialm-surface-bright dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
                   }`}
                 >
                   <input
@@ -131,7 +131,7 @@ export function FilterPanelM3({
                     onChange={() => onToggleArrayFilter('certifications', cert)}
                     className="w-4 h-4 rounded border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-primary focus:ring-2 focus:ring-materialm-primary"
                   />
-                  <span className="font-medium text-gray-900 dark:text-white">{cert}</span>
+                  <span className="font-medium text-materialm-text-primary">{cert}</span>
                 </label>
               ))}
             </div>
@@ -139,7 +139,7 @@ export function FilterPanelM3({
 
           {/* Station Filter */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+            <label className="block text-sm font-semibold mb-3 text-materialm-text-primary">
               Fire Stations
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -149,7 +149,7 @@ export function FilterPanelM3({
                   className={`flex items-center gap-2 p-3 rounded-materialm-lg cursor-pointer transition-all ${
                     filters.stations.includes(station)
                       ? 'bg-materialm-primary-light border-2 border-materialm-primary'
-                      : 'bg-gray-50 dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
+                      : 'bg-materialm-surface-bright dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
                   }`}
                 >
                   <input
@@ -158,7 +158,7 @@ export function FilterPanelM3({
                     onChange={() => onToggleArrayFilter('stations', station)}
                     className="w-4 h-4 rounded border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-primary focus:ring-2 focus:ring-materialm-primary"
                   />
-                  <span className="font-medium text-gray-900 dark:text-white">Station {station}</span>
+                  <span className="font-medium text-materialm-text-primary">Station {station}</span>
                 </label>
               ))}
             </div>
@@ -166,7 +166,7 @@ export function FilterPanelM3({
 
           {/* Apparatus Filter */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+            <label className="block text-sm font-semibold mb-3 text-materialm-text-primary">
               Apparatus Clearances
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -176,7 +176,7 @@ export function FilterPanelM3({
                   className={`flex items-center gap-2 p-3 rounded-materialm-lg cursor-pointer transition-all ${
                     filters.apparatus.includes(value)
                       ? 'bg-materialm-primary-light border-2 border-materialm-primary'
-                      : 'bg-gray-50 dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
+                      : 'bg-materialm-surface-bright dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
                   }`}
                 >
                   <input
@@ -185,7 +185,7 @@ export function FilterPanelM3({
                     onChange={() => onToggleArrayFilter('apparatus', value)}
                     className="w-4 h-4 rounded border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-primary focus:ring-2 focus:ring-materialm-primary"
                   />
-                  <span className="font-medium text-gray-900 dark:text-white">{label}</span>
+                  <span className="font-medium text-materialm-text-primary">{label}</span>
                 </label>
               ))}
             </div>
@@ -193,7 +193,7 @@ export function FilterPanelM3({
 
           {/* Qualifications Filter */}
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-3 text-gray-900 dark:text-white">
+            <label className="block text-sm font-semibold mb-3 text-materialm-text-primary">
               Special Qualifications
             </label>
             <div className="grid grid-cols-1 gap-2">
@@ -203,7 +203,7 @@ export function FilterPanelM3({
                   className={`flex items-center gap-2 p-3 rounded-materialm-lg cursor-pointer transition-all ${
                     filters.qualifications.includes(value)
                       ? 'bg-materialm-primary-light border-2 border-materialm-primary'
-                      : 'bg-gray-50 dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
+                      : 'bg-materialm-surface-bright dark:bg-materialm-darkgray border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary'
                   }`}
                 >
                   <input
@@ -212,7 +212,7 @@ export function FilterPanelM3({
                     onChange={() => onToggleArrayFilter('qualifications', value)}
                     className="w-4 h-4 rounded border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-primary focus:ring-2 focus:ring-materialm-primary"
                   />
-                  <span className="font-medium text-gray-900 dark:text-white">{label}</span>
+                  <span className="font-medium text-materialm-text-primary">{label}</span>
                 </label>
               ))}
             </div>
@@ -220,7 +220,7 @@ export function FilterPanelM3({
         </div>
 
         {/* Footer */}
-        <div className="flex gap-4 p-6 border-t border-materialm-border dark:border-materialm-border-dark bg-gray-50 dark:bg-materialm-darkgray">
+        <div className="flex gap-4 p-6 border-t border-materialm-border dark:border-materialm-border-dark bg-materialm-surface-bright dark:bg-materialm-darkgray">
           <ButtonM3
             onClick={onClearAll}
             variant="outlined"

@@ -22,30 +22,32 @@ html, body {
   overflow: hidden;
 }
 
-/* Main layout container */
+/* Main layout container - HORIZONTAL SPLIT */
 main {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0; /* Critical for flex children to shrink */
-}
-
-/* Calendar/sidebar grid container */
-.calendar-grid-container {
-  flex: 0 1 auto; /* Don't grow, allow shrink */
-  overflow: hidden;
-  max-height: 50vh; /* Constrain calendar to half viewport */
-  min-height: 400px; /* Minimum usable height */
-}
-
-/* Roster section container */
-.roster-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 400px; /* Calendar left, Roster right (400px) */
+  gap: 1rem;
   overflow: hidden;
   min-height: 0;
+  padding: 1rem;
+}
+
+/* Calendar/sidebar grid container - LEFT SIDE */
+.calendar-grid-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow calendar to scroll if needed */
+  min-height: 0;
+}
+
+/* Roster section container - RIGHT SIDE */
+.roster-container {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow roster to scroll to show all 20 firefighters */
+  min-height: 0;
+  max-width: 400px;
 }
 
 /* Single-line text requirements */

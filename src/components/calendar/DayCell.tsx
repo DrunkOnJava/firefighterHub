@@ -76,14 +76,14 @@ function DayCellM3({
   let cellClasses = "relative w-full min-h-[100px] p-2.5 text-left transition-all duration-200 flex flex-col rounded-materialm-md border";
 
   if (!day.isCurrentMonth) {
-    cellClasses += " bg-materialm-darkgray opacity-40 text-gray-400 cursor-default border-transparent";
+    cellClasses += " bg-materialm-darkgray opacity-40 text-materialm-text-disabled cursor-default border-transparent";
   } else {
-    cellClasses += " bg-white dark:bg-materialm-dark text-gray-900 dark:text-white hover:shadow-materialm-2 cursor-pointer border-materialm-border-dark";
+    cellClasses += " bg-materialm-dark text-materialm-text hover:shadow-materialm-2 cursor-pointer border-materialm-border-dark";
   }
 
   // Today indicator (red ring + today badge)
   if (day.isToday && day.isCurrentMonth) {
-    cellClasses += " ring-2 ring-inset ring-red-500";
+    cellClasses += " ring-2 ring-inset ring-materialm-error";
   }
 
   // Has holds - add elevation
@@ -109,7 +109,7 @@ function DayCellM3({
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           {/* Day number */}
-          <span className={`text-base font-bold ${day.isCurrentMonth ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>
+          <span className={`text-base font-bold ${day.isCurrentMonth ? 'text-materialm-text' : 'text-materialm-text-disabled'}`}>
             {day.date.getDate()}
           </span>
 
@@ -160,7 +160,7 @@ function DayCellM3({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded-md bg-materialm-darkgray text-gray-400 font-medium border-l-3 border-l-materialm-border-dark shadow-sm opacity-70"
+              className="text-xs px-2 py-1 rounded-md bg-materialm-darkgray text-materialm-text-secondary font-medium border-l-3 border-l-materialm-border-dark shadow-sm opacity-70"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
@@ -179,7 +179,7 @@ function DayCellM3({
 
         {/* "More" indicator */}
         {day.scheduledHolds.length > 8 && (
-          <div className="text-xs text-gray-400 px-2 pt-0.5 font-medium">
+          <div className="text-xs text-materialm-text-secondary px-2 pt-0.5 font-medium">
             +{day.scheduledHolds.length - 8} more
           </div>
         )}

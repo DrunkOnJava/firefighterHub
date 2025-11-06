@@ -13,7 +13,7 @@ import {
 import { DialogM3 } from "./m3/DialogM3";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { BadgeM3 } from "./m3/BadgeM3";
-import { m3Classes, colorsM3 } from "../styles/colorSystemM3";
+import { m3Classes } from "../styles/colorSystemM3";
 
 interface KeyboardShortcutsModalM3Props {
   isOpen: boolean;
@@ -50,10 +50,10 @@ export function KeyboardShortcutsModalM3({
       <div>
         {/* Header */}
         <div
-          className={`${m3Classes.surface.containerHigh} border-b border-gray-600 p-6 flex items-center justify-between`}
+          className={`${m3Classes.surface.containerHigh} border-b border-materialm-border-dark p-6 flex items-center justify-between`}
         >
           <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-3 rounded-lg shadow-materialm-2">
+            <div className="bg-gradient-to-br from-materialm-primary to-materialm-primary-emphasis p-3 rounded-lg shadow-materialm-2">
               <Keyboard className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -133,7 +133,7 @@ export function KeyboardShortcutsModalM3({
 
             {/* Tip */}
             <div
-              className={`mt-6 p-4 rounded-lg border border-gray-600 ${m3Classes.surface.containerLow}`}
+              className={`mt-6 p-4 rounded-lg border border-materialm-border-dark ${m3Classes.surface.containerLow}`}
             >
               <p className={`text-sm ${m3Classes.onSurface.medium}`}>
                 <strong className={m3Classes.onSurface.high}>Tip:</strong> Press{" "}

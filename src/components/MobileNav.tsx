@@ -201,7 +201,7 @@ function MobileNavM3({
                   }}
                   className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-materialm-surface dark:hover:bg-materialm-darkgray transition-colors text-left focus-ring"
                 >
-                  <HelpCircle size={22} className="text-purple-600 dark:text-purple-400" />
+                  <HelpCircle size={22} className="text-materialm-primary dark:text-materialm-primary-light" />
                   <div className="flex-1">
                     <div className="font-semibold text-materialm-text dark:text-materialm-text-dark">
                       Help & Guide
@@ -225,7 +225,7 @@ function MobileNavM3({
               >
                 <div className="flex items-center gap-3">
                   {isDarkMode ? (
-                    <Sun size={22} className="text-amber-500" />
+                    <Sun size={22} className="text-materialm-warning" />
                   ) : (
                     <Moon size={22} className="text-materialm-text dark:text-materialm-text-dark" />
                   )}

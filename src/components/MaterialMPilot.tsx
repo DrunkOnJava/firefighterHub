@@ -17,6 +17,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "flowbite-react";
+import { colorsM3 } from "../styles";
 import { ShiftBadge } from "./ShiftBadge";
 import { CalendarMaterialMPreview } from "./CalendarMaterialMPreview";
 
@@ -34,7 +35,8 @@ export function MaterialMPilot() {
               <h2 className="text-2xl font-bold text-white">MaterialM Calendar Preview</h2>
               <button
                 onClick={() => setUseMaterialM(false)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                style={{ backgroundColor: colorsM3.primary.primary }}
+                className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity"
               >
                 Close Preview
               </button>
@@ -46,12 +48,13 @@ export function MaterialMPilot() {
 
       {/* Pilot Control Panel */}
       <div className="fixed bottom-4 right-4 z-50 max-w-md">
-        <Card className="bg-white dark:bg-slate-800 p-6 shadow-2xl">
+        <Card className="p-6 shadow-2xl" style={{ backgroundColor: colorsM3.surface.container }}>
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">MaterialM Preview</h3>
+          <h3 className="text-lg font-semibold" style={{ color: colorsM3.neutral.onSurface }}>MaterialM Preview</h3>
           <button
             onClick={() => setUseMaterialM(!useMaterialM)}
-            className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700"
+            style={{ backgroundColor: colorsM3.primary.primary }}
+            className="px-3 py-1 text-white rounded-md text-sm hover:opacity-90 transition-opacity"
           >
             Toggle: {useMaterialM ? "MaterialM" : "Current"}
           </button>
@@ -60,7 +63,7 @@ export function MaterialMPilot() {
         <div className="space-y-4">
           {/* Shift Badges Comparison */}
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm mb-2" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Shift Badges:
             </p>
             {useMaterialM ? (
@@ -86,7 +89,7 @@ export function MaterialMPilot() {
 
           {/* Button Comparison */}
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm mb-2" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Primary Button:
             </p>
             {useMaterialM ? (
@@ -94,7 +97,7 @@ export function MaterialMPilot() {
                 Schedule Hold
               </Button>
             ) : (
-              <button className="h-[42px] px-5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium">
+              <button style={{ backgroundColor: colorsM3.primary.primary }} className="h-[42px] px-5 hover:opacity-90 text-white rounded-lg text-sm font-medium transition-opacity">
                 Schedule Hold
               </button>
             )}
@@ -102,23 +105,23 @@ export function MaterialMPilot() {
 
           {/* Card Preview */}
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm mb-2" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Card Style:
             </p>
             {useMaterialM ? (
               <Card>
                 <h5 className="text-base font-semibold">MaterialM Card</h5>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
                   Rounded corners, subtle shadow, Flowbite design
                 </p>
               </Card>
             ) : (
-              <div className="bg-slate-700 rounded-lg p-4 shadow-md">
-                <h5 className="text-base font-semibold text-slate-100">
+              <div style={{ backgroundColor: colorsM3.surface.containerHigh }} className="rounded-lg p-4 shadow-md">
+                <h5 className="text-base font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
                   Current Card
                 </h5>
-                <p className="text-sm text-slate-400">
-                  Current dark slate design
+                <p className="text-sm" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
+                  Current M3 design
                 </p>
               </div>
             )}
@@ -126,7 +129,7 @@ export function MaterialMPilot() {
 
           {/* Form Input Comparison */}
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm mb-2" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Form Input:
             </p>
             {useMaterialM ? (
@@ -141,13 +144,18 @@ export function MaterialMPilot() {
               </div>
             ) : (
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-100">
+                <label className="text-sm font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
                   Firefighter Name
                 </label>
                 <input
                   type="text"
                   placeholder="Enter name..."
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-600 rounded-lg text-slate-100 focus:ring-2 focus:ring-blue-500"
+                  style={{
+                    backgroundColor: colorsM3.surface.containerLow,
+                    borderColor: colorsM3.neutral.outline,
+                    color: colorsM3.neutral.onSurface
+                  }}
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:outline-none"
                 />
               </div>
             )}
@@ -155,7 +163,7 @@ export function MaterialMPilot() {
 
           {/* Button Variants */}
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm mb-2" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Button Variants:
             </p>
             {useMaterialM ? (
@@ -172,13 +180,13 @@ export function MaterialMPilot() {
               </div>
             ) : (
               <div className="flex gap-2 flex-wrap">
-                <button className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm">
+                <button style={{ backgroundColor: colorsM3.success.success }} className="px-3 py-1.5 hover:opacity-90 text-white rounded-lg text-sm transition-opacity">
                   Save
                 </button>
-                <button className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm">
+                <button style={{ backgroundColor: colorsM3.error.error }} className="px-3 py-1.5 hover:opacity-90 text-white rounded-lg text-sm transition-opacity">
                   Delete
                 </button>
-                <button className="px-3 py-1.5 border border-slate-600 text-slate-100 hover:bg-slate-700 rounded-lg text-sm">
+                <button style={{ borderColor: colorsM3.neutral.outline, color: colorsM3.neutral.onSurface }} className="px-3 py-1.5 border rounded-lg text-sm hover:bg-white/8 transition-colors">
                   Cancel
                 </button>
               </div>
@@ -187,7 +195,7 @@ export function MaterialMPilot() {
 
           {/* Modal Demo Button */}
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm mb-2" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Modal Dialog:
             </p>
             <Button size="sm" onClick={() => setShowModal(true)}>
@@ -195,9 +203,9 @@ export function MaterialMPilot() {
             </Button>
           </div>
 
-          <div className="pt-2 border-t border-slate-600">
-            <p className="text-xs text-gray-500">
-              Live preview with {useMaterialM ? "Flowbite/MaterialM" : "current"} design. Click Toggle to compare.
+          <div className="pt-2" style={{ borderTopColor: colorsM3.neutral.outline }} className="pt-2 border-t">
+            <p className="text-xs" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
+              Live preview with {useMaterialM ? "Flowbite/MaterialM" : "MaterialM"} design. Click Toggle to compare.
             </p>
           </div>
         </div>
@@ -209,7 +217,7 @@ export function MaterialMPilot() {
           <ModalHeader>Schedule Hold</ModalHeader>
           <ModalBody>
             <div className="space-y-4">
-              <p className="text-sm text-gray-700 dark:text-gray-400">
+              <p className="text-sm" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
                 This is how modals look in MaterialM/Flowbite design.
               </p>
               <div>

@@ -190,7 +190,7 @@ export function Reports({
       className={`
         min-h-screen ${tokens.spacing.card.xl}
         ${tokens.transitions.fast}
-        ${isDarkMode ? colors.structural.bg.app : "bg-gray-50"}
+        ${isDarkMode ? colors.structural.bg.app : colors.structural.bg.surface}
       `}
     >
       <div className="max-w-7xl mx-auto">
@@ -203,14 +203,14 @@ export function Reports({
               className={`
                 ${tokens.typography.heading.h1}
                 ${tokens.spacing.margin.sm}
-                ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
+                ${isDarkMode ? colors.structural.text.primary : colors.structural.text.primary}
               `}
             >
               Hold Metrics Dashboard
             </h1>
             <p
               className={
-                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
+                isDarkMode ? colors.structural.text.secondary : colors.structural.text.secondary
               }
             >
               Comprehensive analytics for hold management
@@ -264,7 +264,7 @@ export function Reports({
             ${
               isDarkMode
                 ? `${colors.structural.bg.card} ${colors.structural.border.default}`
-                : "bg-white border-gray-200"
+                : `${colors.structural.bg.card} ${colors.structural.border.default}`
             }
           `}
         >
@@ -274,7 +274,7 @@ export function Reports({
                 className={`${tokens.icons.sm} ${
                   isDarkMode
                     ? colors.structural.text.secondary
-                    : "text-gray-600"
+                    : colors.structural.text.secondary
                 }`}
               />
               <span
@@ -283,7 +283,7 @@ export function Reports({
                   ${
                     isDarkMode
                       ? colors.structural.text.primary
-                      : "text-gray-900"
+                      : colors.structural.text.primary
                   }
                 `}
               >
@@ -295,7 +295,7 @@ export function Reports({
                 className={
                   isDarkMode
                     ? colors.structural.text.secondary
-                    : "text-gray-600"
+                    : colors.structural.text.secondary
                 }
               >
                 From:
@@ -312,7 +312,7 @@ export function Reports({
                   ${
                     isDarkMode
                       ? `${colors.components.input.default}`
-                      : "bg-white border-gray-300 text-gray-900"
+                      : `${colors.components.input.default}`
                   }
                 `}
               />
@@ -322,7 +322,7 @@ export function Reports({
                 className={
                   isDarkMode
                     ? colors.structural.text.secondary
-                    : "text-gray-600"
+                    : colors.structural.text.secondary
                 }
               >
                 To:
@@ -339,7 +339,7 @@ export function Reports({
                   ${
                     isDarkMode
                       ? `${colors.components.input.default}`
-                      : "bg-white border-gray-300 text-gray-900"
+                      : `${colors.components.input.default}`
                   }
                 `}
               />
@@ -414,7 +414,7 @@ export function Reports({
             ${
               isDarkMode
                 ? `${colors.structural.bg.card} ${colors.structural.border.default}`
-                : "bg-white border-gray-200"
+                : `${colors.structural.bg.card} ${colors.structural.border.default}`
             }
           `}
         >
@@ -422,7 +422,7 @@ export function Reports({
             className={`
               ${tokens.typography.heading.h2}
               ${tokens.spacing.margin.lg}
-              ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
+              ${isDarkMode ? colors.structural.text.primary : colors.structural.text.primary}
             `}
           >
             Holds by Shift
@@ -442,7 +442,7 @@ export function Reports({
                         ${
                           isDarkMode
                             ? colors.structural.text.primary
-                            : "text-gray-900"
+                            : colors.structural.text.primary
                         }
                       `}
                     >
@@ -454,7 +454,7 @@ export function Reports({
                         ${
                           isDarkMode
                             ? colors.structural.text.primary
-                            : "text-gray-900"
+                            : colors.structural.text.primary
                         }
                       `}
                     >
@@ -467,7 +467,7 @@ export function Reports({
                       ${
                         isDarkMode
                           ? colors.structural.bg.surface
-                          : "bg-gray-200"
+                          : colors.structural.bg.surface
                       }
                     `}
                   >
@@ -507,7 +507,7 @@ export function Reports({
             ${
               isDarkMode
                 ? `${colors.structural.bg.card} ${colors.structural.border.default}`
-                : "bg-white border-gray-200"
+                : `${colors.structural.bg.card} ${colors.structural.border.default}`
             }
           `}
         >
@@ -515,7 +515,7 @@ export function Reports({
             className={`
               ${tokens.typography.heading.h2}
               ${tokens.spacing.margin.lg}
-              ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
+              ${isDarkMode ? colors.structural.text.primary : colors.structural.text.primary}
             `}
           >
             Holds Per Firefighter
@@ -525,7 +525,7 @@ export function Reports({
               <thead>
                 <tr
                   className={
-                    isDarkMode ? colors.structural.bg.surface : "bg-gray-100"
+                    isDarkMode ? colors.structural.bg.surface : colors.structural.bg.surface
                   }
                 >
                   <th
@@ -534,7 +534,7 @@ export function Reports({
                       ${
                         isDarkMode
                           ? colors.structural.text.primary
-                          : "text-gray-900"
+                          : colors.structural.text.primary
                       }
                     `}
                   >
@@ -546,7 +546,7 @@ export function Reports({
                       ${
                         isDarkMode
                           ? colors.structural.text.primary
-                          : "text-gray-900"
+                          : colors.structural.text.primary
                       }
                     `}
                   >
@@ -558,7 +558,7 @@ export function Reports({
                       ${
                         isDarkMode
                           ? colors.structural.text.primary
-                          : "text-gray-900"
+                          : colors.structural.text.primary
                       }
                     `}
                   >
@@ -576,15 +576,15 @@ export function Reports({
                         index % 2 === 0
                           ? isDarkMode
                             ? colors.structural.bg.card
-                            : "bg-white"
+                            : colors.structural.bg.card
                           : isDarkMode
                           ? colors.structural.bg.surface
-                          : "bg-gray-50"
+                          : colors.structural.bg.surface
                       }
                       ${
                         isDarkMode
                           ? colors.structural.border.default
-                          : "border-gray-200"
+                          : colors.structural.border.default
                       }
                     `}
                   >
@@ -594,7 +594,7 @@ export function Reports({
                         ${
                           isDarkMode
                             ? colors.structural.text.primary
-                            : "text-gray-900"
+                            : colors.structural.text.primary
                         }
                       `}
                     >
@@ -606,7 +606,7 @@ export function Reports({
                         ${
                           isDarkMode
                             ? colors.structural.text.primary
-                            : "text-gray-900"
+                            : colors.structural.text.primary
                         }
                       `}
                     >
@@ -618,7 +618,7 @@ export function Reports({
                         ${
                           isDarkMode
                             ? colors.structural.text.primary
-                            : "text-gray-900"
+                            : colors.structural.text.primary
                         }
                       `}
                     >

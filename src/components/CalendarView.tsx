@@ -15,6 +15,7 @@ import {
   CalendarDay,
 } from "../utils/calendarUtils";
 import { DayModal } from './calendar/DayModal';
+import { colors, tokens } from "../styles";
 
 interface CalendarViewProps {
   firefighters: Firefighter[];
@@ -112,19 +113,19 @@ export function CalendarView({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="bg-[#3A4149] border-b-2 border-[#252A32] px-6 py-4">
+      <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} px-6 py-4`}>
         <div className="flex items-center justify-between">
           {/* Month/Year Display */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <Calendar className="w-6 h-6 text-red-500" />
-              <h2 className="text-2xl font-bold text-gray-100">
+              <Calendar className={`w-6 h-6 ${colors.semantic.error.text}`} />
+              <h2 className={`text-2xl font-bold ${colors.structural.text.primary}`}>
                 {MONTH_NAMES[month]} {year}
               </h2>
             </div>
             <button
               onClick={goToToday}
-              className="px-3 py-1 text-sm bg-[#2F3640] hover:bg-[#353D47] text-gray-300 rounded-md border border-[#252A32] transition-colors"
+              className={`px-3 py-1 text-sm ${colors.interactive.button.default} ${colors.interactive.hover.bg} ${colors.structural.text.secondary} rounded-md border ${colors.structural.border.default} transition-colors`}
             >
               Today
             </button>
@@ -134,20 +135,20 @@ export function CalendarView({
           <div className="flex items-center gap-2">
             <button
               onClick={goToPreviousMonth}
-              className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
+              className={`p-2 ${colors.interactive.hover.bg} rounded-md transition-colors`}
               aria-label="Previous month"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-300" />
+              <ChevronLeft className={`w-5 h-5 ${colors.structural.text.secondary}`} />
             </button>
             <button
               onClick={goToNextMonth}
-              className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
+              className={`p-2 ${colors.interactive.hover.bg} rounded-md transition-colors`}
               aria-label="Next month"
             >
-              <ChevronRight className="w-5 h-5 text-gray-300" />
+              <ChevronRight className={`w-5 h-5 ${colors.structural.text.secondary}`} />
             </button>
             <button
-              className="ml-2 px-4 py-2 bg-gradient-to-br from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white rounded-md font-medium shadow-lg shadow-red-900/50 transition-all flex items-center gap-2"
+              className={`ml-2 px-4 py-2 ${colors.semantic.error.gradient} ${colors.semantic.error.hover} text-white rounded-md font-medium ${tokens.shadows.lg} transition-all flex items-center gap-2`}
               onClick={() => {
                 const today = calendarDays.find(d => isToday(d));
                 if (today) handleDayClick(today);
@@ -162,12 +163,12 @@ export function CalendarView({
 
       {/* Calendar Grid */}
       <div className="flex-1 p-6 overflow-auto">
-        <div className="grid grid-cols-7 gap-px bg-[#252A32] border border-[#252A32] rounded-lg overflow-hidden shadow-xl">
+        <div className={`grid grid-cols-7 gap-px ${colors.structural.border.default} border ${colors.structural.border.default} rounded-lg overflow-hidden ${tokens.shadows.xl}`}>
           {/* Weekday Headers */}
           {WEEKDAYS.map((day) => (
             <div
               key={day}
-              className="bg-[#2F3640] px-3 py-4 text-center font-semibold text-gray-400 text-sm"
+              className={`${colors.structural.bg.surface} px-3 py-4 text-center font-semibold ${colors.structural.text.secondary} text-sm`}
             >
               {day}
             </div>
@@ -187,8 +188,8 @@ export function CalendarView({
                 className={`
                   relative min-h-[100px] p-3 text-left transition-all
                   ${isOtherMonth
-                    ? 'bg-[#2A3039] text-gray-600 cursor-default'
-                    : 'bg-[#3A4149] text-gray-100 hover:bg-[#424A54] cursor-pointer'
+                    ? `${colors.structural.bg.app} ${colors.structural.text.tertiary} cursor-default`
+                    : `${colors.structural.bg.card} ${colors.structural.text.primary} ${colors.interactive.hover.bg} cursor-pointer`
                   }
                   ${isCurrentDay && !isOtherMonth ? 'ring-2 ring-inset ring-red-500' : ''}
                   ${hasScheduled && !isOtherMonth ? 'border-l-4 border-l-red-500' : ''}
@@ -197,15 +198,15 @@ export function CalendarView({
                 {/* Day Number */}
                 <div className={`
                   text-sm font-semibold mb-2
-                  ${isCurrentDay ? 'text-red-400' : ''}
-                  ${isOtherMonth ? 'text-gray-600' : 'text-gray-300'}
+                  ${isCurrentDay ? colors.semantic.error.text : ''}
+                  ${isOtherMonth ? colors.structural.text.tertiary : colors.structural.text.secondary}
                 `}>
                   {day.date.getDate()}
                 </div>
 
                 {/* Hold Indicator Badge */}
                 {hasScheduled && !isOtherMonth && (
-                  <div className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                  <div className={`absolute top-2 right-2 ${colors.semantic.error.solid} text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold`}>
                     {day.scheduledHolds.length}
                   </div>
                 )}
@@ -219,8 +220,8 @@ export function CalendarView({
                         className={`
                           text-xs px-2 py-1 rounded truncate
                           ${hold.status === 'completed'
-                            ? 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/50'
-                            : 'bg-blue-900/40 text-blue-300 border border-blue-700/50'
+                            ? `${colors.semantic.success.light} ${colors.semantic.success.text} border ${colors.semantic.success.border}`
+                            : `${colors.semantic.scheduled.light} ${colors.semantic.scheduled.text} border ${colors.semantic.scheduled.border}`
                           }
                         `}
                       >
@@ -228,7 +229,7 @@ export function CalendarView({
                       </div>
                     ))}
                     {day.scheduledHolds.length > 2 && (
-                      <div className="text-xs text-gray-500 px-2">
+                      <div className={`text-xs ${colors.structural.text.tertiary} px-2`}>
                         +{day.scheduledHolds.length - 2} more
                       </div>
                     )}
@@ -243,39 +244,39 @@ export function CalendarView({
       {/* Statistics Cards */}
       <div className="grid grid-cols-4 gap-4 px-6 pb-6">
         {/* Open Vacancies */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-red-900/50 rounded-lg p-4">
+        <div className={`${colors.structural.bg.card} border-2 ${colors.semantic.error.border} rounded-lg p-4`}>
           <div className="flex items-center justify-between mb-2">
-            <Clock className="w-8 h-8 text-red-500" />
-            <span className="text-3xl font-bold text-gray-100">{stats.openVacancies}</span>
+            <Clock className={`w-8 h-8 ${colors.semantic.error.text}`} />
+            <span className={`text-3xl font-bold ${colors.structural.text.primary}`}>{stats.openVacancies}</span>
           </div>
-          <div className="text-sm text-gray-400">Open Vacancies</div>
+          <div className={`text-sm ${colors.structural.text.secondary}`}>Open Vacancies</div>
         </div>
 
         {/* Scheduled */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-[#252A32] rounded-lg p-4">
+        <div className={`${colors.structural.bg.card} border-2 ${colors.structural.border.default} rounded-lg p-4`}>
           <div className="flex items-center justify-between mb-2">
-            <Calendar className="w-8 h-8 text-blue-400" />
-            <span className="text-3xl font-bold text-gray-100">{stats.scheduled}</span>
+            <Calendar className={`w-8 h-8 ${colors.semantic.scheduled.text}`} />
+            <span className={`text-3xl font-bold ${colors.structural.text.primary}`}>{stats.scheduled}</span>
           </div>
-          <div className="text-sm text-gray-400">Scheduled</div>
+          <div className={`text-sm ${colors.structural.text.secondary}`}>Scheduled</div>
         </div>
 
         {/* Completed */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-emerald-900/50 rounded-lg p-4">
+        <div className={`${colors.structural.bg.card} border-2 ${colors.semantic.success.border} rounded-lg p-4`}>
           <div className="flex items-center justify-between mb-2">
-            <CheckCircle2 className="w-8 h-8 text-emerald-500" />
-            <span className="text-3xl font-bold text-gray-100">{stats.completed}</span>
+            <CheckCircle2 className={`w-8 h-8 ${colors.semantic.success.text}`} />
+            <span className={`text-3xl font-bold ${colors.structural.text.primary}`}>{stats.completed}</span>
           </div>
-          <div className="text-sm text-gray-400">Completed</div>
+          <div className={`text-sm ${colors.structural.text.secondary}`}>Completed</div>
         </div>
 
         {/* Active Members */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-amber-900/50 rounded-lg p-4">
+        <div className={`${colors.structural.bg.card} border-2 ${colors.semantic.warning.border} rounded-lg p-4`}>
           <div className="flex items-center justify-between mb-2">
-            <Users className="w-8 h-8 text-amber-500" />
-            <span className="text-3xl font-bold text-gray-100">{stats.activeMembers}</span>
+            <Users className={`w-8 h-8 ${colors.semantic.warning.text}`} />
+            <span className={`text-3xl font-bold ${colors.structural.text.primary}`}>{stats.activeMembers}</span>
           </div>
-          <div className="text-sm text-gray-400">Active Members</div>
+          <div className={`text-sm ${colors.structural.text.secondary}`}>Active Members</div>
         </div>
       </div>
 

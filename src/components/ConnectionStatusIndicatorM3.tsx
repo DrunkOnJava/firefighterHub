@@ -135,12 +135,12 @@ export function ConnectionStatusIndicatorM3({
           <Icon size={20} className={config.color} />
           <div className="flex-1">
             <p
-              className={`font-semibold ${tokens.typography.body.secondary} text-slate-900 dark:text-white`}
+              className={`font-semibold ${tokens.typography.body.secondary} text-materialm-text-primary`}
             >
               {config.label}
             </p>
             <p
-              className={`${tokens.typography.body.small} mt-1 text-slate-600 dark:text-slate-400`}
+              className={`${tokens.typography.body.small} mt-1 text-materialm-text-secondary`}
             >
               {config.description}
             </p>
@@ -148,7 +148,7 @@ export function ConnectionStatusIndicatorM3({
             {/* Detailed Status Info */}
             {!isOnline && (
               <p
-                className={`${tokens.typography.body.small} mt-2 text-slate-600 dark:text-slate-400`}
+                className={`${tokens.typography.body.small} mt-2 text-materialm-text-secondary`}
               >
                 Check your internet connection and try again.
               </p>
@@ -240,7 +240,7 @@ export function ConnectionStatusDotM3() {
         className={`
           absolute top-full right-0 mt-1 px-2 py-1 rounded ${tokens.typography.body.small} whitespace-nowrap
           opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all
-          bg-white dark:bg-materialm-dark text-slate-900 dark:text-white
+          bg-white dark:bg-materialm-dark text-materialm-text-primary
         `}
       >
         {getLabel()}

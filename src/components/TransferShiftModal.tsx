@@ -87,7 +87,7 @@ export function TransferShiftModal({
             <h2 className="text-2xl font-bold text-white">
               Transfer Shift
             </h2>
-            <p className="text-sm text-blue-100 mt-1">
+            <p className="text-sm text-white/90 mt-1">
               {firefighter.name}
             </p>
           </div>
@@ -97,8 +97,8 @@ export function TransferShiftModal({
       <DialogM3.Body>
         <div className="space-y-6">
           {/* Info Card */}
-          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-blue-200 dark:border-blue-700">
-            <p className="text-sm text-blue-900 dark:text-blue-100">
+          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-materialm-primary dark:border-materialm-primary">
+            <p className="text-sm text-materialm-text-primary dark:text-materialm-text-primary">
               Transfer <strong>{firefighter.name}</strong> from{" "}
               <strong>Shift {firefighter.shift}</strong> to a different shift.
               All history and records will be preserved.

@@ -138,7 +138,7 @@ export interface CardM3HeaderProps {
 
 function CardM3Header({ children, className = '' }: CardM3HeaderProps) {
   return (
-    <div className={`pb-4 border-b border-slate-600 dark:border-slate-700 ${className}`}>
+    <div className={`pb-4 border-b border-materialm-border-light dark:border-materialm-border-dark ${className}`}>
       {children}
     </div>
   );
@@ -183,7 +183,7 @@ function CardM3Footer({ children, className = '', align = 'right' }: CardM3Foote
 
   return (
     <div
-      className={`pt-4 border-t border-slate-600 dark:border-slate-700 flex gap-2 ${alignClasses[align]} ${className}`}
+      className={`pt-4 border-t border-materialm-border-light dark:border-materialm-border-dark flex gap-2 ${alignClasses[align]} ${className}`}
     >
       {children}
     </div>
@@ -280,7 +280,7 @@ export function MetricCardM3({
       ? 'text-materialm-success'
       : trend.direction === 'down'
         ? 'text-materialm-error'
-        : 'text-gray-500'
+        : 'text-materialm-text-secondary'
     : '';
 
   return (
@@ -292,10 +292,10 @@ export function MetricCardM3({
     >
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{value}</p>
+          <p className="text-sm text-materialm-text-secondary mb-1">{title}</p>
+          <p className="text-3xl font-bold text-materialm-text mb-1">{value}</p>
           {subtitle && (
-            <p className="text-xs text-gray-500 dark:text-gray-400">{subtitle}</p>
+            <p className="text-xs text-materialm-text-secondary">{subtitle}</p>
           )}
           {trend && (
             <div className={`flex items-center gap-1 mt-2 text-sm ${trendColor}`}>
@@ -306,7 +306,7 @@ export function MetricCardM3({
             </div>
           )}
         </div>
-        {icon && <div className="text-gray-400">{icon}</div>}
+        {icon && <div className="text-materialm-text-secondary">{icon}</div>}
       </div>
     </CardM3>
   );

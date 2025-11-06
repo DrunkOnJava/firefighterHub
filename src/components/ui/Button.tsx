@@ -1,6 +1,6 @@
 import { Loader2 } from "lucide-react";
 import { ButtonHTMLAttributes, forwardRef } from "react";
-import { tokens } from "../../styles";
+import { tokens, colorsM3 } from "../../styles";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "ghost" | "danger" | "success";
@@ -40,16 +40,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       "inline-flex items-center justify-center font-semibold rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95 relative overflow-hidden";
 
     const variants = {
-      primary:
-        "bg-primary-500 hover:bg-primary-600 active:bg-primary-700 text-white focus:ring-primary-500 shadow-sm hover:shadow-md",
-      secondary:
-        "bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-text-primary dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-text-dark-primary focus:ring-gray-400 shadow-sm hover:shadow-md",
-      ghost:
-        "bg-transparent hover:bg-gray-100 active:bg-gray-200 text-text-secondary dark:hover:bg-gray-800 dark:text-text-dark-secondary focus:ring-gray-400",
-      danger:
-        "bg-error-500 hover:bg-error-600 active:bg-error-700 text-white focus:ring-error-500 shadow-sm hover:shadow-md",
-      success:
-        "bg-success-500 hover:bg-success-600 active:bg-success-700 text-white focus:ring-success-500 shadow-sm hover:shadow-md",
+      primary: `bg-[${colorsM3.primary.primary}] hover:bg-[#5a4095] active:bg-[#4a3080] text-white focus:ring-[${colorsM3.primary.primary}] shadow-sm hover:shadow-md`,
+      secondary: `bg-[${colorsM3.secondary.secondary}] hover:bg-[#54524a] active:bg-[#3f3b35] text-white focus:ring-[${colorsM3.secondary.secondary}] shadow-sm hover:shadow-md`,
+      ghost: `bg-transparent hover:bg-white/8 active:bg-white/12 text-[${colorsM3.neutral.onSurface}] focus:ring-[${colorsM3.secondary.secondary}]`,
+      danger: `bg-[${colorsM3.error.error}] hover:bg-[#dc2626] active:bg-[#b91c1c] text-white focus:ring-[${colorsM3.error.error}] shadow-sm hover:shadow-md`,
+      success: `bg-[${colorsM3.success.success}] hover:bg-[#059669] active:bg-[#047857] text-white focus:ring-[${colorsM3.success.success}] shadow-sm hover:shadow-md`,
     };
 
     const sizes = {

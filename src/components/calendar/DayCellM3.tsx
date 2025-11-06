@@ -86,8 +86,8 @@ export function DayCellM3({
     // Out-of-month days: darkgray background with reduced opacity
     cellClasses += " bg-materialm-darkgray opacity-40 text-materialm-text-disabled cursor-default border-transparent";
   } else {
-    // Current month days: white (light mode) or dark (dark mode)
-    cellClasses += " bg-white dark:bg-materialm-dark text-gray-900 dark:text-materialm-text hover:shadow-materialm-2 cursor-pointer border-materialm-border-dark";
+    // Current month days: dark background with MaterialM text
+    cellClasses += " bg-materialm-dark text-materialm-text hover:shadow-materialm-2 cursor-pointer border-materialm-border-dark";
   }
 
   // Today indicator: MaterialM error color (red) with ring
@@ -118,7 +118,7 @@ export function DayCellM3({
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           {/* Day number with MaterialM text colors */}
-          <span className={`text-base font-bold ${day.isCurrentMonth ? 'text-gray-900 dark:text-materialm-text' : 'text-materialm-text-disabled'}`}>
+          <span className={`text-base font-bold ${day.isCurrentMonth ? 'text-materialm-text' : 'text-materialm-text-disabled'}`}>
             {day.date.getDate()}
           </span>
 

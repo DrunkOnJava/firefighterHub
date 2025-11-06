@@ -205,7 +205,7 @@ export function HoldForm({
             type="checkbox"
             checked={showAddAnother}
             onChange={(e) => onAddAnotherChange(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-600"
+            className="w-4 h-4 rounded border-materialm-border-dark"
           />
           <span
             className={`${tokens.typography.body.secondary} ${theme.textSecondary}`}

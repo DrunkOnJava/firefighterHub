@@ -70,9 +70,9 @@ export function ReactivateModalM3({
     >
       <div ref={trapRef}>
         {/* Header with icon and title */}
-        <div className={`${m3Classes.surface.containerHigh} border-b border-gray-600 p-6 flex items-center justify-between`}>
+        <div className={`${m3Classes.surface.containerHigh} border-b border-materialm-border-dark p-6 flex items-center justify-between`}>
           <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-3 rounded-lg shadow-materialm-2">
+            <div className="bg-gradient-to-br from-materialm-success to-materialm-success-emphasis p-3 rounded-lg shadow-materialm-2">
               <UserPlus className="w-6 h-6 text-white" />
             </div>
             <div>

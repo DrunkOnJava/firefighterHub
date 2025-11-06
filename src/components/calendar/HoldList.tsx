@@ -93,8 +93,8 @@ export function HoldList({
                 ${tokens.spacing.card.md}
                 ${
                   hold.status === "scheduled"
-                    ? "border-l-blue-500"
-                    : "border-l-emerald-500"
+                    ? "border-l-materialm-primary"
+                    : "border-l-materialm-success"
                 }
               `}
             >
@@ -104,7 +104,7 @@ export function HoldList({
                     className={`${tokens.typography.heading.h4} ${
                       isDarkMode
                         ? colors.structural.text.primary
-                        : "text-gray-900"
+                        : "text-materialm-text"
                     }`}
                   >
                     {hold.firefighter_name}
@@ -115,7 +115,7 @@ export function HoldList({
                       className={`${tokens.typography.body.secondary} ${
                         isDarkMode
                           ? colors.structural.text.secondary
-                          : "text-gray-600"
+                          : "text-materialm-text-secondary"
                       } mt-1 font-semibold`}
                     >
                       Station #{hold.fire_station}
@@ -127,7 +127,7 @@ export function HoldList({
                       className={`${tokens.typography.body.small} ${
                         isDarkMode
                           ? colors.structural.text.tertiary
-                          : "text-gray-500"
+                          : "text-materialm-text-disabled"
                       } mt-1 flex items-center gap-1`}
                     >
                       <Clock className={tokens.icons.xs} />
@@ -145,8 +145,8 @@ export function HoldList({
                         font-bold
                         ${
                           hold.status === "scheduled"
-                            ? "bg-sky-900/70 text-sky-300"
-                            : "bg-emerald-900/70 text-emerald-300"
+                            ? "bg-materialm-primary text-materialm-text"
+                            : "bg-materialm-success text-materialm-text"
                         }
                       `}
                     >
@@ -155,7 +155,7 @@ export function HoldList({
 
                     {locked && (
                       <span
-                        className={`inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
+                        className={`inline-flex items-center px-2 py-1 bg-materialm-warning text-materialm-text ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
                       >
                         <Lock className={tokens.icons.xs} />
                       </span>
@@ -168,7 +168,7 @@ export function HoldList({
               {isAdminMode && (
                 <div
                   className={`flex gap-2 pt-3 border-t ${
-                    isDarkMode ? "border-gray-700" : "border-gray-200"
+                    isDarkMode ? "border-materialm-border-dark" : "border-materialm-border-dark"
                   }`}
                 >
                   {/* Complete Button: For 'scheduled' holds */}

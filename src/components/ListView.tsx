@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Firefighter } from "../lib/supabase";
-import { tokens } from "../styles";
+import { colors, tokens } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
 
 interface ListViewProps {
@@ -144,15 +144,15 @@ export function ListView({
     return (
       <div
         className={`
-        bg-gradient-to-br border-2 rounded-xl p-5 transition-all
+        border-2 rounded-xl p-5 transition-all
         ${
           entry.status === "scheduled"
-            ? "from-blue-900/30 to-blue-800/20 border-blue-600/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20"
-            : "from-green-900/30 to-green-800/20 border-green-600/50 hover:border-green-500"
+            ? `${colors.structural.bg.card} ${colors.structural.border.default} hover:${colors.structural.border.hover} ${tokens.shadows.md}`
+            : `${colors.structural.bg.surface} ${colors.semantic.success.border} hover:${colors.structural.border.hover}`
         }
         ${
           entry.isToday
-            ? "ring-4 ring-red-500 ring-offset-2 ring-offset-gray-800 shadow-lg shadow-red-500/30"
+            ? `ring-4 ring-red-500 ring-offset-2 ring-offset-${colors.structural.bg.app} ${tokens.shadows.lg}`
             : ""
         }
       `}
@@ -164,37 +164,37 @@ export function ListView({
                 size={20}
                 className={
                   entry.status === "scheduled"
-                    ? "text-blue-400"
-                    : "text-green-400"
+                    ? colors.semantic.scheduled.text
+                    : colors.semantic.success.text
                 }
               />
               <div>
-                <h3 className={`${tokens.typography.heading.h4} text-white`}>
+                <h3 className={`${tokens.typography.heading.h4} ${colors.structural.text.primary}`}>
                   {formatDate(entry.date)}
                 </h3>
                 {relativeDate && (
-                  <p className="text-sm text-gray-400 mt-0.5">{relativeDate}</p>
+                  <p className={`text-sm ${colors.structural.text.secondary} mt-0.5`}>{relativeDate}</p>
                 )}
               </div>
             </div>
 
             <div className="flex flex-col gap-2 ml-8">
               <div className="flex items-center gap-2">
-                <User size={18} className="text-gray-400" />
-                <span className="text-lg font-semibold text-white">
+                <User size={18} className={colors.structural.text.secondary} />
+                <span className={`text-lg font-semibold ${colors.structural.text.primary}`}>
                   {entry.firefighterName}
                 </span>
               </div>
 
               {entry.fireStation && (
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 bg-orange-500/20 rounded-md flex items-center justify-center border border-orange-500/30">
-                    <span className="text-orange-300 text-sm font-bold">
+                  <div className={`w-7 h-7 ${colors.semantic.warning.light} rounded-md flex items-center justify-center border ${colors.semantic.warning.border}`}>
+                    <span className={`${colors.semantic.warning.text} text-sm font-bold`}>
                       {entry.fireStation}
                     </span>
                   </div>
-                  <MapPin size={18} className="text-orange-400" />
-                  <span className="text-lg text-white font-bold">
+                  <MapPin size={18} className={colors.semantic.warning.text} />
+                  <span className={`text-lg ${colors.structural.text.primary} font-bold`}>
                     Station #{entry.fireStation}
                   </span>
                 </div>
@@ -203,15 +203,15 @@ export function ListView({
               <div className="flex items-center gap-2">
                 {entry.status === "scheduled" ? (
                   <>
-                    <Clock size={18} className="text-blue-400" />
-                    <span className="text-sm text-blue-300 font-semibold">
+                    <Clock size={18} className={colors.semantic.scheduled.text} />
+                    <span className={`text-sm ${colors.semantic.scheduled.text} font-semibold`}>
                       Scheduled
                     </span>
                   </>
                 ) : (
                   <>
-                    <CheckCircle2 size={18} className="text-green-400" />
-                    <span className="text-sm text-green-300 font-semibold">
+                    <CheckCircle2 size={18} className={colors.semantic.success.text} />
+                    <span className={`text-sm ${colors.semantic.success.text} font-semibold`}>
                       Completed
                     </span>
                   </>
@@ -223,20 +223,20 @@ export function ListView({
           {entry.hold && isAdminMode && (
             <div className="flex flex-col gap-2 md:ml-4">
               {showDeleteConfirm === entry.id ? (
-                <div className="bg-gray-900/80 border border-red-600 rounded-lg p-3 space-y-2">
-                  <p className="text-sm text-red-300 font-semibold mb-2">
+                <div className={`${colors.structural.bg.app} border ${colors.semantic.error.border} rounded-lg p-3 space-y-2`}>
+                  <p className={`text-sm ${colors.semantic.error.text} font-semibold mb-2`}>
                     Cancel this hold?
                   </p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleRemoveHold(entry.id)}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg whitespace-nowrap text-sm"
+                      className={`flex-1 ${colors.semantic.error.solid} ${colors.semantic.error.hover} text-white font-semibold py-2 px-3 rounded-lg transition-colors ${tokens.shadows.lg} whitespace-nowrap text-sm`}
                     >
                       Yes, Cancel
                     </button>
                     <button
                       onClick={() => setShowDeleteConfirm(null)}
-                      className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg whitespace-nowrap text-sm"
+                      className={`flex-1 ${colors.interactive.button.default} ${colors.interactive.hover.bg} text-white font-semibold py-2 px-3 rounded-lg transition-colors ${tokens.shadows.lg} whitespace-nowrap text-sm`}
                     >
                       No, Keep
                     </button>
@@ -247,7 +247,7 @@ export function ListView({
                   {entry.status === "scheduled" && !entry.isPast && (
                     <button
                       onClick={() => onMarkCompleted(entry.hold!)}
-                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors shadow-lg whitespace-nowrap flex items-center justify-center gap-2"
+                      className={`px-4 py-2 ${colors.semantic.success.solid} ${colors.semantic.success.hover} text-white font-semibold rounded-lg transition-colors ${tokens.shadows.lg} whitespace-nowrap flex items-center justify-center gap-2`}
                     >
                       <CheckCircle2 size={16} />
                       Mark Completed
@@ -257,7 +257,7 @@ export function ListView({
                     !entry.id.startsWith("past-") && (
                       <button
                         onClick={() => setShowDeleteConfirm(entry.id)}
-                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors shadow-lg whitespace-nowrap flex items-center justify-center gap-2"
+                        className={`px-4 py-2 ${colors.semantic.error.solid} ${colors.semantic.error.hover} text-white font-semibold rounded-lg transition-colors ${tokens.shadows.lg} whitespace-nowrap flex items-center justify-center gap-2`}
                       >
                         <Trash2 size={16} />
                         Cancel Hold
@@ -274,27 +274,27 @@ export function ListView({
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl shadow-2xl p-8">
+      <div className={`${colors.structural.bg.card} border-2 ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.shadows['2xl']} p-8`}>
         <div className="text-center py-20">
-          <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400 text-lg">Loading holds...</p>
+          <div className={`w-12 h-12 border-4 ${colors.semantic.warning.border} border-t-transparent rounded-full animate-spin mx-auto mb-4`}></div>
+          <p className={`${colors.structural.text.secondary} text-lg`}>Loading holds...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
-      <div className="bg-gradient-to-r from-orange-900/30 via-gray-900 to-gray-800 border-b-2 border-gray-700 p-6">
+    <div className={`${colors.structural.bg.card} border-2 ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.shadows['2xl']} overflow-hidden`}>
+      <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} p-6`}>
         <div className="flex items-center gap-4">
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl shadow-lg">
+          <div className={`${colors.semantic.warning.gradient} p-3 ${tokens.borders.radius.lg} ${tokens.shadows.lg}`}>
             <CalendarIcon className="text-white" size={28} />
           </div>
           <div>
-            <h2 id="list-heading" className={`${tokens.typography.heading.h2} text-white`}>
+            <h2 id="list-heading" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>
               Hold List View
             </h2>
-            <p className="text-base text-gray-400">
+            <p className={`text-base ${colors.structural.text.secondary}`}>
               All scheduled and completed holds
             </p>
           </div>
@@ -304,8 +304,8 @@ export function ListView({
       <div className="p-6 space-y-8">
         {upcomingHolds.length > 0 && (
           <div>
-            <h3 className={`${tokens.typography.heading.h3} text-white mb-4 flex items-center gap-2`}>
-              <Clock className="text-blue-400" size={24} />
+            <h3 className={`${tokens.typography.heading.h3} ${colors.structural.text.primary} mb-4 flex items-center gap-2`}>
+              <Clock className={colors.semantic.scheduled.text} size={24} />
               Upcoming Holds ({upcomingHolds.length})
             </h3>
             <div className="space-y-3">
@@ -318,11 +318,11 @@ export function ListView({
 
         {upcomingHolds.length === 0 && (
           <div className="text-center py-12">
-            <Clock className="text-gray-600 mx-auto mb-4" size={48} />
-            <p className="text-gray-400 text-lg font-semibold">
+            <Clock className={`${colors.structural.text.tertiary} mx-auto mb-4`} size={48} />
+            <p className={`${colors.structural.text.secondary} text-lg font-semibold`}>
               No upcoming holds scheduled
             </p>
-            <p className="text-gray-500 text-sm mt-2">
+            <p className={`${colors.structural.text.tertiary} text-sm mt-2`}>
               Switch to calendar view to schedule holds
             </p>
           </div>
@@ -330,8 +330,8 @@ export function ListView({
 
         {pastHolds.length > 0 && (
           <div>
-            <h3 className={`${tokens.typography.heading.h3} text-white mb-4 flex items-center gap-2`}>
-              <CheckCircle2 className="text-green-400" size={24} />
+            <h3 className={`${tokens.typography.heading.h3} ${colors.structural.text.primary} mb-4 flex items-center gap-2`}>
+              <CheckCircle2 className={colors.semantic.success.text} size={24} />
               Past Holds ({pastHolds.length})
             </h3>
             <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">

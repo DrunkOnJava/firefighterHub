@@ -107,7 +107,7 @@ export function FirefighterItemM3({
     >
       {/* NEXT UP badge */}
       {isNextInRotation && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-materialm-3 z-10 bg-materialm-warning text-gray-900 border-2 border-black">
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-materialm-3 z-10 bg-materialm-warning text-black border-2 border-black">
           <Star size={14} fill="currentColor" />
           NEXT UP
         </div>

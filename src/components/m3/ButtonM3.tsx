@@ -128,7 +128,7 @@ export function ButtonM3({
     // Tonal variant gets light background
     variant === 'tonal' ? 'bg-opacity-10 hover:bg-opacity-20' : '',
     // Text variant gets no background
-    isText ? 'bg-transparent hover:bg-gray-100 dark:hover:bg-slate-700' : '',
+    isText ? 'bg-transparent hover:bg-materialm-surface-hover dark:hover:bg-materialm-darkgray' : '',
   ]
     .filter(Boolean)
     .join(' ');

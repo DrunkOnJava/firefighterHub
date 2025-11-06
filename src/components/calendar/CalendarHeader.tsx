@@ -51,13 +51,13 @@ function CalendarHeaderM3({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="p-3 rounded-lg bg-materialm-primary shadow-materialm-2">
-            <CalendarIcon className="w-6 h-6 text-white" />
+            <CalendarIcon className="w-6 h-6 text-materialm-text" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-bold text-materialm-text">
               Hold Calendar
             </h2>
-            <p className="text-sm text-gray-400 hidden sm:block">
+            <p className="text-sm text-materialm-text-secondary hidden sm:block">
               Click any date to schedule or manage holds
             </p>
           </div>
@@ -79,7 +79,7 @@ function CalendarHeaderM3({
           <ChevronLeft className="w-5 h-5" />
         </IconButtonM3>
 
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white min-w-[200px] text-center">
+        <h3 className="text-xl font-bold text-materialm-text min-w-[200px] text-center">
           {formatMonthYear(currentDate)}
         </h3>
 

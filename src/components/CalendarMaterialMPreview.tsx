@@ -6,6 +6,7 @@
  */
 
 import { Card } from "flowbite-react";
+import { colorsM3 } from "../styles";
 
 export function CalendarMaterialMPreview() {
   return (
@@ -13,7 +14,7 @@ export function CalendarMaterialMPreview() {
       {/* Calendar Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+          <div style={{ backgroundColor: colorsM3.error.error }} className="w-10 h-10 rounded-lg flex items-center justify-center">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <rect x="3" y="4" width="18" height="18" rx="2" ry="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <line x1="16" y1="2" x2="16" y2="6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -22,30 +23,30 @@ export function CalendarMaterialMPreview() {
             </svg>
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
               Hold Calendar
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm" style={{ color: colorsM3.neutral.onSurfaceVariant }}>
               Click any date to schedule or manage holds
             </p>
           </div>
         </div>
-        <div className="px-3 py-1.5 bg-blue-600 text-white rounded-full text-sm font-medium">
+        <div style={{ backgroundColor: colorsM3.primary.primary }} className="px-3 py-1.5 text-white rounded-full text-sm font-medium">
           SHIFT A
         </div>
       </div>
 
       {/* Month Navigation */}
       <div className="flex items-center justify-between mb-4 px-2">
-        <button className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg">
+        <button className="p-2 hover:bg-white/8 rounded-lg transition-colors" style={{ color: colorsM3.neutral.onSurface }}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+        <h3 className="text-base font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
           November 2025
         </h3>
-        <button className="p-2 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg">
+        <button className="p-2 hover:bg-white/8 rounded-lg transition-colors" style={{ color: colorsM3.neutral.onSurface }}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
@@ -57,7 +58,8 @@ export function CalendarMaterialMPreview() {
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
           <div
             key={day}
-            className="text-center text-xs font-medium text-gray-600 dark:text-gray-400 py-2"
+            className="text-center text-xs font-medium py-2"
+            style={{ color: colorsM3.neutral.onSurfaceVariant }}
           >
             {day}
           </div>
@@ -67,39 +69,49 @@ export function CalendarMaterialMPreview() {
       {/* Sample Calendar Days (MaterialM Style) */}
       <div className="grid grid-cols-7 gap-1">
         {/* Day with holds */}
-        <div className="min-h-[100px] p-2 bg-gray-50 dark:bg-slate-700/50 rounded-lg border border-gray-200 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-colors">
+        <div style={{
+          backgroundColor: colorsM3.surface.containerLow,
+          borderColor: colorsM3.neutral.outline
+        }} className="min-h-[100px] p-2 rounded-lg border hover:border-opacity-60 cursor-pointer transition-colors">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-sm font-semibold text-gray-900 dark:text-white">
+            <span className="text-sm font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
               4
             </span>
-            <span className="w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium">
+            <span style={{ backgroundColor: colorsM3.error.error }} className="w-5 h-5 text-white text-xs rounded-full flex items-center justify-center font-medium">
               2
             </span>
           </div>
           <div className="space-y-1">
-            <div className="text-[10px] px-1.5 py-0.5 bg-blue-600 text-white rounded font-medium truncate">
+            <div style={{ backgroundColor: colorsM3.primary.primary }} className="text-[10px] px-1.5 py-0.5 text-white rounded font-medium truncate">
               J. Bryson
             </div>
-            <div className="text-[10px] px-1.5 py-0.5 bg-blue-600 text-white rounded font-medium truncate">
+            <div style={{ backgroundColor: colorsM3.primary.primary }} className="text-[10px] px-1.5 py-0.5 text-white rounded font-medium truncate">
               C. McCauley
             </div>
           </div>
         </div>
 
         {/* Empty day */}
-        <div className="min-h-[100px] p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-colors">
-          <span className="text-sm font-semibold text-gray-900 dark:text-white">
+        <div style={{
+          backgroundColor: colorsM3.surface.container,
+          borderColor: colorsM3.neutral.outline
+        }} className="min-h-[100px] p-2 rounded-lg border hover:border-opacity-60 cursor-pointer transition-colors">
+          <span className="text-sm font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
             5
           </span>
         </div>
 
         {/* Today */}
-        <div className="min-h-[100px] p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border-2 border-blue-500 cursor-pointer">
+        <div style={{
+          backgroundColor: colorsM3.primary.primaryContainer,
+          borderColor: colorsM3.primary.primary,
+          borderWidth: '2px'
+        }} className="min-h-[100px] p-2 rounded-lg cursor-pointer">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+            <span className="text-sm font-semibold" style={{ color: colorsM3.primary.primary }}>
               6
             </span>
-            <span className="text-[10px] px-1.5 py-0.5 bg-blue-600 text-white rounded-full font-medium">
+            <span style={{ backgroundColor: colorsM3.primary.primary }} className="text-[10px] px-1.5 py-0.5 text-white rounded-full font-medium">
               Today
             </span>
           </div>
@@ -109,9 +121,13 @@ export function CalendarMaterialMPreview() {
         {[7, 8, 9, 10].map((day) => (
           <div
             key={day}
-            className="min-h-[100px] p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-colors"
+            style={{
+              backgroundColor: colorsM3.surface.container,
+              borderColor: colorsM3.neutral.outline
+            }}
+            className="min-h-[100px] p-2 rounded-lg border hover:border-opacity-60 cursor-pointer transition-colors"
           >
-            <span className="text-sm font-semibold text-gray-900 dark:text-white">
+            <span className="text-sm font-semibold" style={{ color: colorsM3.neutral.onSurface }}>
               {day}
             </span>
           </div>
@@ -119,18 +135,21 @@ export function CalendarMaterialMPreview() {
       </div>
 
       {/* Legend */}
-      <div className="flex gap-4 mt-4 pt-4 border-t border-gray-200 dark:border-slate-700">
+      <div className="flex gap-4 mt-4 pt-4" style={{ borderTopColor: colorsM3.neutral.outline }} className="flex gap-4 mt-4 pt-4 border-t">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-blue-600 rounded"></div>
-          <span className="text-xs text-gray-600 dark:text-gray-400">Scheduled</span>
+          <div style={{ backgroundColor: colorsM3.primary.primary }} className="w-3 h-3 rounded"></div>
+          <span className="text-xs" style={{ color: colorsM3.neutral.onSurfaceVariant }}>Scheduled</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-emerald-600 rounded"></div>
-          <span className="text-xs text-gray-600 dark:text-gray-400">Completed</span>
+          <div style={{ backgroundColor: colorsM3.success.success }} className="w-3 h-3 rounded"></div>
+          <span className="text-xs" style={{ color: colorsM3.neutral.onSurfaceVariant }}>Completed</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-blue-500 rounded ring-2 ring-blue-500/30"></div>
-          <span className="text-xs text-gray-600 dark:text-gray-400">Today</span>
+          <div style={{
+            backgroundColor: colorsM3.primary.primary,
+            boxShadow: `0 0 0 2px ${colorsM3.primary.primary}33`
+          }} className="w-3 h-3 rounded"></div>
+          <span className="text-xs" style={{ color: colorsM3.neutral.onSurfaceVariant }}>Today</span>
         </div>
       </div>
     </Card>

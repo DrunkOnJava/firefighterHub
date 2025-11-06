@@ -17,7 +17,7 @@ export function StationSelectorM3({
 }: StationSelectorM3Props) {
   return (
     <div className={`space-y-3 ${className}`}>
-      <label className="flex items-center gap-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
+      <label className="flex items-center gap-2 text-sm font-semibold text-materialm-text-secondary">
         <MapPin size={18} className="text-materialm-warning" />
         <span>Fire Station (Optional)</span>
       </label>
@@ -30,7 +30,7 @@ export function StationSelectorM3({
             h-14 rounded-lg font-bold text-base transition-all border-2
             ${selectedStation === ''
               ? 'bg-materialm-darkgray border-materialm-border-dark text-white shadow-materialm-2'
-              : 'bg-white dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-materialm-darkgray hover:border-gray-400 dark:hover:border-gray-500'
+              : 'bg-white dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark text-materialm-text-primary hover:bg-materialm-surface-bright dark:hover:bg-materialm-darkgray hover:border-materialm-primary-emphasis'
             }
           `}
         >
@@ -52,7 +52,7 @@ export function StationSelectorM3({
                   ? 'bg-gradient-to-r from-materialm-warning to-materialm-error border-materialm-warning text-white shadow-materialm-3 scale-105'
                   : isDefault
                   ? 'bg-materialm-primary-light border-materialm-primary text-materialm-primary hover:bg-materialm-primary-light/50 hover:border-materialm-primary-emphasis'
-                  : 'bg-white dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-materialm-darkgray hover:border-gray-400 dark:hover:border-gray-500'
+                  : 'bg-white dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark text-materialm-text-primary hover:bg-materialm-surface-bright dark:hover:bg-materialm-darkgray hover:border-materialm-primary-emphasis'
                 }
               `}
             >

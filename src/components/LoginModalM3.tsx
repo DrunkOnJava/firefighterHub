@@ -115,7 +115,7 @@ export function LoginModalM3({ isOpen, onClose, onSuccess }: LoginModalM3Props) 
               required
               autoComplete="email"
               placeholder="admin@example.com"
-              startIcon={<Mail className="w-5 h-5 text-gray-400" />}
+              startIcon={<Mail className="w-5 h-5 text-materialm-text-secondary" />}
               disabled={isLoading}
               error={error ? "" : undefined}
             />
@@ -130,7 +130,7 @@ export function LoginModalM3({ isOpen, onClose, onSuccess }: LoginModalM3Props) 
               required
               autoComplete="current-password"
               placeholder="Enter your password"
-              startIcon={<Lock className="w-5 h-5 text-gray-400" />}
+              startIcon={<Lock className="w-5 h-5 text-materialm-text-secondary" />}
               disabled={isLoading}
               error={error ? "" : undefined}
             />

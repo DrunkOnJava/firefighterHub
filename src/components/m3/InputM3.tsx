@@ -132,7 +132,7 @@ export function InputM3({
       </div>
       {(helperText || error) && (
         <p
-          className={`text-sm ${error ? 'text-materialm-error' : 'text-gray-500 dark:text-gray-400'}`}
+          className={`text-sm ${error ? 'text-materialm-error' : 'text-materialm-text-secondary'}`}
         >
           {error || helperText}
         </p>
@@ -183,7 +183,7 @@ export function TextareaM3({
       />
       {(helperText || error) && (
         <p
-          className={`text-sm ${error ? 'text-materialm-error' : 'text-gray-500 dark:text-gray-400'}`}
+          className={`text-sm ${error ? 'text-materialm-error' : 'text-materialm-text-secondary'}`}
         >
           {error || helperText}
         </p>
@@ -245,7 +245,7 @@ export function SelectM3({
       </Select>
       {(helperText || error) && (
         <p
-          className={`text-sm ${error ? 'text-materialm-error' : 'text-gray-500 dark:text-gray-400'}`}
+          className={`text-sm ${error ? 'text-materialm-error' : 'text-materialm-text-secondary'}`}
         >
           {error || helperText}
         </p>
@@ -304,7 +304,7 @@ export function CheckboxM3({
       </div>
       {(helperText || error) && (
         <p
-          className={`text-sm ml-6 ${error ? 'text-materialm-error' : 'text-gray-500 dark:text-gray-400'}`}
+          className={`text-sm ml-6 ${error ? 'text-materialm-error' : 'text-materialm-text-secondary'}`}
         >
           {error || helperText}
         </p>
@@ -359,10 +359,10 @@ export function FormGroupM3({
       {(title || description) && (
         <div className="space-y-1">
           {title && (
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+            <h3 className="text-lg font-semibold text-materialm-text">{title}</h3>
           )}
           {description && (
-            <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
+            <p className="text-sm text-materialm-text-secondary">{description}</p>
           )}
         </div>
       )}
@@ -473,7 +473,7 @@ export function FieldArrayM3<T>({
           <div className="flex-1">{renderItem(item, index)}</div>
           <button
             onClick={() => onRemove(index)}
-            className="px-3 py-1.5 text-sm border border-red-600 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+            className="px-3 py-1.5 text-sm border border-materialm-error text-materialm-error rounded-lg hover:bg-materialm-error-light dark:hover:bg-materialm-error/20"
             aria-label="Remove item"
           >
             Remove
@@ -482,7 +482,7 @@ export function FieldArrayM3<T>({
       ))}
       <button
         onClick={onAdd}
-        className="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+        className="px-3 py-1.5 text-sm border border-materialm-border-light dark:border-materialm-border-dark rounded-lg hover:bg-materialm-surface-hover dark:hover:bg-materialm-darkgray"
       >
         + {addButtonText}
       </button>

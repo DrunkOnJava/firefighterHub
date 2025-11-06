@@ -130,7 +130,7 @@ export function CompleteHoldModal({
             <h2 className="text-2xl font-bold text-white">
               Complete Hold
             </h2>
-            <p className="text-sm text-emerald-100 mt-1">
+            <p className="text-sm text-white/90 mt-1">
               {firefighter.name}
             </p>
           </div>
@@ -140,8 +140,8 @@ export function CompleteHoldModal({
       <DialogM3.Body>
         <div className="space-y-6">
           {/* Info Card */}
-          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-blue-200 dark:border-blue-700">
-            <p className="text-sm text-blue-900 dark:text-blue-100">
+          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-materialm-primary dark:border-materialm-primary">
+            <p className="text-sm text-materialm-text-primary dark:text-materialm-text-primary">
               This will mark the hold as completed and update{" "}
               <strong>{firefighter.name}</strong>'s position in the rotation.
             </p>

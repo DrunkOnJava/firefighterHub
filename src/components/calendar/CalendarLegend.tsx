@@ -27,7 +27,7 @@ export function CalendarLegend(_props: CalendarLegendProps) {
     },
     {
       label: 'Today',
-      borderClass: 'ring-2 ring-red-500',
+      borderClass: 'ring-2 ring-materialm-error',
       description: 'Current date'
     }
   ];
@@ -58,7 +58,7 @@ export function CalendarLegend(_props: CalendarLegendProps) {
             `}
             aria-label={item.description}
           />
-          <span className="text-gray-400">
+          <span className="text-materialm-text-secondary">
             {item.label}
           </span>
         </div>

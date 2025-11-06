@@ -61,10 +61,10 @@ function SingleToastM3({ toast, onClose, index }: SingleToastM3Props) {
     >
       <div className="flex items-center gap-3">
         <div className="flex-shrink-0">{icons[toast.type]}</div>
-        <p className="font-medium flex-1 text-gray-900 dark:text-white">{toast.message}</p>
+        <p className="font-medium flex-1 text-materialm-text-primary dark:text-white">{toast.message}</p>
         <button
           onClick={() => onClose(toast.id)}
-          className="flex-shrink-0 p-1.5 hover:bg-black/10 dark:hover:bg-white/10 rounded transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-current"
+          className="flex-shrink-0 p-1.5 hover:bg-materialm-text-primary/10 dark:hover:bg-white/10 rounded transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-current"
           aria-label="Close notification"
         >
           <X className="w-4 h-4" />
@@ -160,16 +160,16 @@ export function FlowbiteToastWrapper({
   children,
 }: FlowbiteToastWrapperProps) {
   const icons = {
-    success: <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />,
-    error: <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />,
-    info: <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+    success: <CheckCircle className="w-5 h-5 text-materialm-success dark:text-materialm-success" />,
+    error: <XCircle className="w-5 h-5 text-materialm-error dark:text-materialm-error" />,
+    info: <AlertCircle className="w-5 h-5 text-materialm-info dark:text-materialm-info" />,
   };
 
   return (
     <FlowbiteToast className="shadow-materialm-3">
       <div className="flex items-center gap-3">
         {icons[type]}
-        <div className="text-sm font-medium text-gray-900 dark:text-white">{children}</div>
+        <div className="text-sm font-medium text-materialm-text-primary dark:text-white">{children}</div>
       </div>
       <ToastToggle onDismiss={onClose} />
     </FlowbiteToast>

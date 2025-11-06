@@ -6,6 +6,7 @@
 
 import { Tooltip } from './Tooltip';
 import { Trash2, Eye, UserX, RefreshCw } from 'lucide-react';
+import { colorsM3 } from '../styles';
 
 /**
  * EXAMPLE 1: Icon button with tooltip
@@ -15,7 +16,11 @@ export function IconButtonExample() {
     <Tooltip content="Delete firefighter" position="top">
       <button
         onClick={() => console.log('Delete')}
-        className="p-2 hover:bg-red-900/50 text-red-400 rounded transition-colors"
+        style={{
+          color: colorsM3.error.error,
+          backgroundColor: `${colorsM3.error.error}14`
+        }}
+        className="p-2 hover:bg-opacity-60 rounded transition-colors"
       >
         <Trash2 size={16} />
       </button>
@@ -29,7 +34,10 @@ export function IconButtonExample() {
 export function BadgeExample() {
   return (
     <Tooltip content="Basic Life Support certified" position="top">
-      <span className="px-2 py-1 text-xs font-semibold rounded bg-green-900/70 text-green-100">
+      <span style={{
+        backgroundColor: `${colorsM3.success.success}B3`,
+        color: colorsM3.success.onSuccess
+      }} className="px-2 py-1 text-xs font-semibold rounded">
         BLS
       </span>
     </Tooltip>
@@ -42,7 +50,7 @@ export function BadgeExample() {
 export function ShortcutButtonExample() {
   return (
     <Tooltip content="Quick add firefighter (Ctrl+N)" position="bottom">
-      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">
+      <button style={{ backgroundColor: colorsM3.primary.primary }} className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-opacity">
         Add Firefighter
       </button>
     </Tooltip>
@@ -56,20 +64,23 @@ export function ButtonGroupExample() {
   return (
     <div className="flex gap-2">
       <Tooltip content="View profile">
-        <button className="p-2 hover:bg-gray-700 rounded">
-          <Eye size={16} />
+        <button style={{ backgroundColor: colorsM3.surface.containerHigh }} className="p-2 hover:bg-opacity-80 rounded transition-colors" >
+          <Eye size={16} style={{ color: colorsM3.neutral.onSurface }} />
         </button>
       </Tooltip>
 
       <Tooltip content="Deactivate firefighter">
-        <button className="p-2 hover:bg-yellow-900/50 text-yellow-400 rounded">
+        <button style={{
+          color: colorsM3.warning.warning,
+          backgroundColor: `${colorsM3.warning.warning}14`
+        }} className="p-2 hover:bg-opacity-60 rounded transition-colors">
           <UserX size={16} />
         </button>
       </Tooltip>
 
       <Tooltip content="Reset roster order">
-        <button className="p-2 hover:bg-gray-700 rounded">
-          <RefreshCw size={16} />
+        <button style={{ backgroundColor: colorsM3.surface.containerHigh }} className="p-2 hover:bg-opacity-80 rounded transition-colors">
+          <RefreshCw size={16} style={{ color: colorsM3.neutral.onSurface }} />
         </button>
       </Tooltip>
     </div>

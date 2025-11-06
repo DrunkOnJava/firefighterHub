@@ -71,13 +71,13 @@ export function HoldFormM3({
   if (!selectedFirefighter) {
     return (
       <div>
-        <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h4 className="text-xl font-semibold text-materialm-text mb-4">
           Select Firefighter:
         </h4>
 
         <div className="space-y-2 max-h-96 overflow-y-auto mb-6">
           {availableFirefighters.length === 0 ? (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
+            <p className="text-sm text-materialm-text-disabled text-center py-8">
               No available firefighters
             </p>
           ) : (
@@ -87,18 +87,18 @@ export function HoldFormM3({
                 onClick={() => onFirefighterSelect(ff)}
                 className="
                   w-full text-left p-4 rounded-xl border-2
-                  bg-white dark:bg-slate-800
-                  border-gray-200 dark:border-slate-700
-                  hover:bg-gray-50 dark:hover:bg-slate-700
-                  hover:border-[var(--primary)] dark:hover:border-[var(--primary)]
+                  bg-materialm-dark
+                  border-materialm-border-dark
+                  hover:bg-materialm-darkgray
+                  hover:border-materialm-primary
                   transition-all duration-200
                   materialm-shadow-1 hover:materialm-shadow-2
                 "
               >
-                <div className="font-medium text-gray-900 dark:text-white">
+                <div className="font-medium text-materialm-text">
                   {ff.name}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-materialm-text-secondary">
                   Position: {ff.order_position + 1}
                   {ff.fire_station && ` • Station ${ff.fire_station}`}
                 </div>
@@ -122,14 +122,14 @@ export function HoldFormM3({
   // Hold details form
   return (
     <div>
-      <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+      <h4 className="text-xl font-semibold text-materialm-text mb-4">
         Scheduling: {selectedFirefighter.name}
       </h4>
 
       <div className="space-y-4">
         {/* Station selector */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-materialm-text-secondary mb-2">
             Hold Station
           </label>
           <StationSelector

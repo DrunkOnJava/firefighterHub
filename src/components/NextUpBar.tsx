@@ -28,12 +28,6 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
   const nextC = getNextForShift('C');
 
   const renderShiftBadge = (shift: 'A' | 'B' | 'C') => {
-    const badgeStyles = {
-      A: 'w-6 h-6 rounded-full', // Circle
-      B: 'w-6 h-6 rounded-sm',   // Square
-      C: 'w-6 h-6 rotate-45',    // Diamond (rotated square)
-    };
-
     const badgeColors = {
       A: isDarkMode
         ? 'bg-gradient-to-br from-cyan-500 to-blue-600'
@@ -47,7 +41,11 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
     };
 
     return (
-      <div className={`${badgeStyles[shift]} ${badgeColors[shift]} flex-shrink-0`} />
+      <div className={`${badgeColors[shift]} px-2.5 py-1 rounded flex items-center justify-center flex-shrink-0`}>
+        <span className="text-white text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+          Shift {shift}
+        </span>
+      </div>
     );
   };
 
@@ -58,21 +56,21 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
     return (
       <div
         className={`
-          flex items-center gap-3 px-6 py-4 rounded-lg
+          flex items-center gap-2 px-3 py-4 rounded-lg relative
           ${tokens.transitions.fast}
           ${
             isDarkMode
-              ? `${colors.structural.bg.elevated} ${colors.structural.border.subtle} border`
+              ? 'bg-slate-700 border border-slate-600 shadow-lg'
               : 'bg-gray-50 border border-gray-200'
           }
         `}
       >
         {renderShiftBadge(shift)}
 
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 relative z-10">
           <div
             className={`
-              text-lg font-semibold
+              text-base font-medium flex items-center gap-2.5 whitespace-nowrap overflow-hidden
               ${
                 isDarkMode
                   ? colors.structural.text.primary
@@ -82,29 +80,21 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
           >
             {firefighter ? (
               <>
-                <span className="font-bold">{shift}:</span> {firefighter.name}
-              </>
-            ) : (
-              <span className="font-normal opacity-60">
-                {shift}: No available firefighters
-              </span>
-            )}
-          </div>
-
-          {firefighter && (
-            <div
-              className={`
-                text-sm mt-0.5
-                ${
+                <span className="truncate font-semibold">{firefighter.name}</span>
+                <span className={`flex-shrink-0 text-sm font-normal ${
                   isDarkMode
                     ? colors.structural.text.secondary
                     : 'text-gray-600'
-                }
-              `}
-            >
-              Station #{firefighter.fire_station || 'Unassigned'}
-            </div>
-          )}
+                }`}>
+                  Station #{firefighter.fire_station || 'Unassigned'}
+                </span>
+              </>
+            ) : (
+              <span className="font-normal opacity-60 text-sm">
+                No available firefighters
+              </span>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -113,22 +103,22 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
   return (
     <div
       className={`
-        px-4 sm:px-6 py-4
+        px-4 sm:px-6 py-3
         ${
           isDarkMode
-            ? `${colors.structural.bg.base} ${colors.structural.border.subtle} border-b`
+            ? 'bg-slate-950 border-b border-slate-800'
             : 'bg-white border-b border-gray-200'
         }
       `}
     >
-      <div className="flex items-center gap-2 mb-3 overflow-hidden">
+      <div className="flex items-center gap-2 mb-2.5">
         <h2
           className={`
-            text-base font-bold uppercase tracking-wide truncate
+            text-sm font-bold uppercase tracking-wider overflow-hidden truncate
             ${
               isDarkMode
-                ? colors.structural.text.primary
-                : 'text-gray-900'
+                ? colors.structural.text.secondary
+                : 'text-gray-600'
             }
           `}
         >
@@ -136,7 +126,7 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
         {renderShiftSection('A', nextA)}
         {renderShiftSection('B', nextB)}
         {renderShiftSection('C', nextC)}

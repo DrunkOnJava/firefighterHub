@@ -146,16 +146,16 @@ function App() {
         onToggleDarkMode={toggleDarkMode}
       />
 
-      {/* Next Up Bar - Shows all shifts */}
-      <NextUpBar
-        firefighters={allFirefighters}
-        isDarkMode={isDarkMode}
-      />
-
       {/* Main Layout: Calendar + Roster */}
       <div className="layout">
-        {/* Calendar Section */}
-        <section className="calendar card">
+        {/* Calendar Section with Next Up Bar */}
+        <section className="calendar card flex flex-col">
+          {/* Next Up Bar - Shows all shifts */}
+          <NextUpBar
+            firefighters={allFirefighters}
+            isDarkMode={isDarkMode}
+          />
+          
           <BigCalendar
             firefighters={firefighters}
             scheduledHolds={scheduledHolds}

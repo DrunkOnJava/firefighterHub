@@ -108,18 +108,18 @@ export function MaterialMCalendar({
           nav_button_previous: "absolute left-1",
           nav_button_next: "absolute right-1",
           table: "w-full border-collapse space-y-1",
-          head_row: "flex justify-between",
+          head_row: "flex",
           head_cell: cn(
-            "rounded-md w-24 font-medium text-base text-center",
+            "rounded-md w-20 font-medium text-sm text-center",
             isDarkMode ? "text-slate-400" : "text-gray-500"
           ),
-          row: "flex w-full mt-2 justify-between",
+          row: "flex w-full mt-2",
           cell: cn(
-            "h-24 w-24 text-center text-base p-0 relative",
+            "h-20 w-20 text-center text-sm p-0 relative",
             "focus-within:relative focus-within:z-20"
           ),
           day: cn(
-            "h-24 w-24 p-0 font-normal text-lg",
+            "h-20 w-20 p-0 font-normal text-base",
             "inline-flex items-center justify-center rounded-lg",
             "hover:bg-primary-500/10 transition-colors",
             "focus:outline-none focus:ring-2 focus:ring-primary-500",

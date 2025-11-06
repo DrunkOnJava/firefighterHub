@@ -48,19 +48,19 @@ export function DayCellLegacy({
   `;
 
   if (!day.isCurrentMonth) {
-    cellClasses += ` bg-slate-800 text-gray-600 cursor-default opacity-50`;
+    cellClasses += ` bg-materialm-surface-container text-materialm-text-disabled cursor-default opacity-50`;
   } else {
-    cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer`;
+    cellClasses += ` bg-materialm-surface-container text-materialm-text hover:bg-materialm-surface-container-high cursor-pointer`;
   }
 
   // Today indicator
   if (day.isToday && day.isCurrentMonth) {
-    cellClasses += ` ring-2 ring-inset ring-red-500`;
+    cellClasses += ` ring-2 ring-inset ring-materialm-error`;
   }
 
   // Has holds - add left border
   if (hasHolds && day.isCurrentMonth) {
-    cellClasses += ` border-l-4 border-l-red-500`;
+    cellClasses += ` border-l-4 border-l-materialm-error`;
   }
 
   // Past date and not admin - make read-only
@@ -91,13 +91,13 @@ export function DayCellLegacy({
       {/* Day content wrapper */}
       <div className="flex items-center justify-between mb-3">
         {/* Day number */}
-        <div className={`text-base font-bold ${day.isCurrentMonth ? 'text-slate-200' : 'text-gray-600'}`}>
+        <div className={`text-base font-bold ${day.isCurrentMonth ? 'text-materialm-text' : 'text-materialm-text-disabled'}`}>
           {day.date.getDate()}
         </div>
 
         {/* Hold count badge */}
         {hasHolds && day.isCurrentMonth && (
-          <div className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+          <div className="bg-materialm-error text-materialm-on-error rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
             {day.scheduledHolds.length}
           </div>
         )}
@@ -112,7 +112,7 @@ export function DayCellLegacy({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-materialm-surface-container-high text-materialm-text font-semibold border-l-2 border-materialm-primary flex items-center justify-between shadow-sm hover:bg-materialm-surface-container-highest transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
@@ -133,7 +133,7 @@ export function DayCellLegacy({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-emerald-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-materialm-surface-container-high text-materialm-text font-semibold border-l-2 border-materialm-tertiary flex items-center justify-between shadow-sm hover:bg-materialm-surface-container-highest transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
@@ -150,7 +150,7 @@ export function DayCellLegacy({
 
         {/* Show "more" indicator if there are additional holds */}
         {day.scheduledHolds.length > 8 && (
-          <div className="text-[10px] text-gray-500 px-1.5">
+          <div className="text-[10px] text-materialm-text-disabled px-1.5">
             +{day.scheduledHolds.length - 8} more
           </div>
         )}

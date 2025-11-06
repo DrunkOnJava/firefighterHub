@@ -50,14 +50,14 @@ export function CalendarHeaderLegacy({
           <div>
             <h2
               className={`${tokens.typography.heading.h2} ${
-                isDarkMode ? colors.structural.text.primary : "text-gray-900"
+                isDarkMode ? colors.structural.text.primary : "text-materialm-text"
               }`}
             >
               Hold Calendar
             </h2>
             <p
               className={`${tokens.typography.body.secondary} ${
-                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
+                isDarkMode ? colors.structural.text.secondary : "text-materialm-text-secondary"
               } hidden sm:block`}
             >
               Click any date to schedule or manage holds
@@ -76,7 +76,7 @@ export function CalendarHeaderLegacy({
           className={`
             ${tokens.spacing.section.md}
             ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
+            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-materialm-surface"}
             ${tokens.transitions.fast}
             ${tokens.touchTarget.min}
           `}
@@ -84,14 +84,14 @@ export function CalendarHeaderLegacy({
         >
           <ChevronLeft
             className={`${tokens.icons.md} ${
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
+              isDarkMode ? colors.structural.text.primary : "text-materialm-text"
             }`}
           />
         </button>
 
         <h3
           className={`${tokens.typography.heading.h3} ${
-            isDarkMode ? colors.structural.text.primary : "text-gray-900"
+            isDarkMode ? colors.structural.text.primary : "text-materialm-text"
           } min-w-[200px] text-center`}
         >
           {formatMonthYear(currentDate)}
@@ -102,7 +102,7 @@ export function CalendarHeaderLegacy({
           className={`
             ${tokens.spacing.section.md}
             ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
+            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-materialm-surface"}
             ${tokens.transitions.fast}
             ${tokens.touchTarget.min}
           `}
@@ -110,7 +110,7 @@ export function CalendarHeaderLegacy({
         >
           <ChevronRight
             className={`${tokens.icons.md} ${
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
+              isDarkMode ? colors.structural.text.primary : "text-materialm-text"
             }`}
           />
         </button>

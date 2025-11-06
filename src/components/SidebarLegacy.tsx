@@ -242,8 +242,8 @@ export function SidebarLegacy({
                           border-2 shadow-sm
                           ${
                             index === 0
-                              ? "bg-amber-500 text-gray-900 border-black shadow-black/50"
-                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-gray-700`
+                              ? "bg-materialm-warning text-materialm-on-warning border-materialm-border-dark shadow-black/50"
+                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} ${colors.structural.border.default}`
                           }
                         `}
                       >
@@ -287,8 +287,8 @@ export function SidebarLegacy({
                             ${tokens.typography.body.small}
                             ${tokens.typography.weight.bold}
                             ${tokens.borders.radius.md}
-                            bg-amber-500 text-white
-                            border-2 border-black
+                            bg-materialm-warning text-materialm-on-warning
+                            border-2 border-materialm-border-dark
                           `}
                         >
                           Next Up
@@ -343,8 +343,8 @@ export function SidebarLegacy({
                           border-2 shadow-sm
                           ${
                             index === 0
-                              ? "bg-amber-500 text-gray-900 border-black shadow-black/50"
-                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-gray-700`
+                              ? "bg-materialm-warning text-materialm-on-warning border-materialm-border-dark shadow-black/50"
+                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} ${colors.structural.border.default}`
                           }
                         `}
                       >
@@ -388,8 +388,8 @@ export function SidebarLegacy({
                             ${tokens.typography.body.small}
                             ${tokens.typography.weight.bold}
                             ${tokens.borders.radius.md}
-                            bg-amber-500 text-white
-                            border-2 border-black
+                            bg-materialm-warning text-materialm-on-warning
+                            border-2 border-materialm-border-dark
                           `}
                         >
                           Next Up

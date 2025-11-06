@@ -160,7 +160,7 @@ function SidebarM3({
             <div className="p-2 rounded-lg bg-materialm-primary">
               <Calendar className="w-5 h-5 text-white" />
             </div>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-materialm-text dark:text-materialm-text-dark">
               Upcoming Schedule
             </h2>
           </div>
@@ -181,7 +181,7 @@ function SidebarM3({
             {/* Next Up for Hold (All Shifts) */}
             {allShiftFirefighters.length > 0 && (
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                   Next Up for Hold (All Shifts)
                 </h3>
                 <div className="space-y-2">
@@ -190,25 +190,25 @@ function SidebarM3({
                       key={ff.id}
                       className={`
                         p-3 rounded-lg border-2
-                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-500' : 'bg-gray-50 dark:bg-materialm-dark border-gray-300 dark:border-materialm-border-dark'}
+                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-500' : 'bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
                       `}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`
                             w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 shadow-sm
-                            ${index === 0 ? 'bg-amber-500 text-white border-amber-700' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-400 dark:border-gray-600'}
+                            ${index === 0 ? 'bg-amber-500 text-white border-amber-700' : 'bg-materialm-surface-light dark:bg-materialm-darkgray text-materialm-text dark:text-materialm-text-dark border-materialm-border dark:border-materialm-border-dark'}
                           `}
                         >
                           {index + 1}
                         </div>
                         <ShiftBadge shift={ff.shift as "A" | "B" | "C"} />
                         <div className="flex-1 min-w-0">
-                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-white'}`}>
+                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-amber-900 dark:text-amber-100' : 'text-materialm-text dark:text-materialm-text-dark'}`}>
                             {ff.name}
                           </p>
                           {ff.fire_station && (
-                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                            <p className="text-xs text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                               Station #{ff.fire_station}
                             </p>
                           )}
@@ -228,7 +228,7 @@ function SidebarM3({
             {/* Current Shift Rotation */}
             {currentShiftRotation.length > 0 && (
               <div className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
-                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                   Shift {currentShift} Rotation (Next 5)
                 </h3>
                 <div className="space-y-2">
@@ -237,24 +237,24 @@ function SidebarM3({
                       key={ff.id}
                       className={`
                         p-3 rounded-lg border
-                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700' : 'bg-gray-50 dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
+                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700' : 'bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
                       `}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`
                             w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2
-                            ${index === 0 ? 'bg-amber-500 text-white border-amber-700' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-400 dark:border-gray-600'}
+                            ${index === 0 ? 'bg-amber-500 text-white border-amber-700' : 'bg-materialm-surface-light dark:bg-materialm-darkgray text-materialm-text dark:text-materialm-text-dark border-materialm-border dark:border-materialm-border-dark'}
                           `}
                         >
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-amber-900 dark:text-amber-100' : 'text-gray-900 dark:text-white'}`}>
+                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-amber-900 dark:text-amber-100' : 'text-materialm-text dark:text-materialm-text-dark'}`}>
                             {ff.name}
                           </p>
                           {ff.fire_station && (
-                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                            <p className="text-xs text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                               Station #{ff.fire_station}
                             </p>
                           )}
@@ -269,14 +269,14 @@ function SidebarM3({
             {/* Scheduled Holds */}
             {displayedHolds.length > 0 && (
               <div className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
-                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                   Scheduled Holds
                 </h3>
                 <div className="space-y-3">
                   {displayedHolds.map((group) => (
                     <div
                       key={group.date}
-                      className="p-3 border rounded-lg bg-gray-50 dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                      className="p-3 border rounded-lg bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary dark:hover:border-materialm-primary-light transition-colors"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <BadgeM3 color="primary" size="xs">
@@ -284,7 +284,7 @@ function SidebarM3({
                         </BadgeM3>
                         {group.holds.length > 1 && (
                           <div className="flex items-center gap-1">
-                            <Users className="w-3 h-3 text-gray-500" />
+                            <Users className="w-3 h-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark" />
                             <CountBadgeM3 count={group.holds.length} color="neutral" />
                           </div>
                         )}
@@ -292,11 +292,11 @@ function SidebarM3({
                       <div className="space-y-1.5">
                         {group.holds.map((hold) => (
                           <div key={hold.id}>
-                            <p className="font-semibold text-sm text-gray-900 dark:text-white">
+                            <p className="font-semibold text-sm text-materialm-text dark:text-materialm-text-dark">
                               {hold.firefighter_name}
                             </p>
                             {hold.fire_station && (
-                              <p className="text-xs text-gray-600 dark:text-gray-400">
+                              <p className="text-xs text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                                 Station #{hold.fire_station}
                               </p>
                             )}
@@ -314,11 +314,11 @@ function SidebarM3({
              (allShiftFirefighters.length > 0 || currentShiftRotation.length > 0) && (
               <div className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
                 <div className="text-center py-8">
-                  <Calendar className="w-12 h-12 mx-auto mb-3 text-gray-400" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                  <Calendar className="w-12 h-12 mx-auto mb-3 text-materialm-text-disabled dark:text-materialm-text-disabled-dark" />
+                  <p className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary-dark mb-1">
                     No Upcoming Holds
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-500">
+                  <p className="text-xs text-materialm-text-disabled dark:text-materialm-text-disabled-dark">
                     Click any date to schedule
                   </p>
                 </div>

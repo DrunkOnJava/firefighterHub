@@ -8,23 +8,23 @@ interface ShiftSelectorProps {
 
 const SHIFT_COLORS = {
   A: {
-    active: "bg-green-700 text-white shadow-lg",
-    inactive: "bg-green-950/60 text-green-300 hover:bg-green-600",
+    active: "bg-materialm-success text-white shadow-lg",
+    inactive: "bg-materialm-success/20 text-materialm-success hover:bg-materialm-success/60",
   },
   B: {
-    active: "bg-red-700 text-white shadow-lg",
-    inactive: "bg-red-950/60 text-red-300 hover:bg-red-600",
+    active: "bg-materialm-error text-white shadow-lg",
+    inactive: "bg-materialm-error/20 text-materialm-error hover:bg-materialm-error/60",
   },
   C: {
-    active: "bg-sky-700 text-white shadow-lg",
-    inactive: "bg-sky-950/60 text-sky-300 hover:bg-sky-600",
+    active: "bg-materialm-primary text-white shadow-lg",
+    inactive: "bg-materialm-primary/20 text-materialm-primary hover:bg-materialm-primary/60",
   },
 };
 
 const SHIFT_BADGE_COLORS = {
-  A: "bg-green-600 border border-white text-white shadow-sm shadow-green-900/50",
-  B: "bg-red-600 border border-white text-white shadow-sm shadow-red-900/50",
-  C: "bg-sky-600 border border-white text-white shadow-sm shadow-sky-900/50",
+  A: "bg-materialm-success border border-white text-white shadow-sm shadow-materialm-success/50",
+  B: "bg-materialm-error border border-white text-white shadow-sm shadow-materialm-error/50",
+  C: "bg-materialm-primary border border-white text-white shadow-sm shadow-materialm-primary/50",
 };
 
 const SHIFT_SHAPES = {

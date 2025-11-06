@@ -7,17 +7,45 @@
 
 html, body {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
   overflow: hidden; /* No page-level scrolling */
+  position: fixed; /* Prevent mobile Safari scroll bounce */
 }
 
 #root {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
+}
+
+/* Main layout container */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0; /* Critical for flex children to shrink */
+}
+
+/* Calendar/sidebar grid container */
+.calendar-grid-container {
+  flex: 0 1 auto; /* Don't grow, allow shrink */
+  overflow: hidden;
+  max-height: 50vh; /* Constrain calendar to half viewport */
+  min-height: 400px; /* Minimum usable height */
+}
+
+/* Roster section container */
+.roster-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 /* Single-line text requirements */

@@ -73,12 +73,12 @@ function DayCellM3({
   };
 
   // Build cell classes with MaterialM OKLCH color palette
-  let cellClasses = "relative w-full min-h-[120px] p-3 text-left transition-all duration-200 flex flex-col rounded-materialm-md border";
+  let cellClasses = "relative w-full min-h-[100px] p-2.5 text-left transition-all duration-200 flex flex-col rounded-materialm-md border";
 
   if (!day.isCurrentMonth) {
     cellClasses += " bg-materialm-darkgray opacity-40 text-gray-400 cursor-default border-transparent";
   } else {
-    cellClasses += " bg-white dark:bg-materialm-dark text-gray-900 dark:text-white hover:shadow-materialm-2 cursor-pointer border-materialm-border dark:border-materialm-border-dark";
+    cellClasses += " bg-white dark:bg-materialm-dark text-gray-900 dark:text-white hover:shadow-materialm-2 cursor-pointer border-materialm-border-dark";
   }
 
   // Today indicator (red ring + today badge)
@@ -122,21 +122,21 @@ function DayCellM3({
         </div>
 
         {/* Hold count badge */}
-        {hasHolds && day.isCurrentMonth && day.scheduledHolds.length > 2 && (
+        {hasHolds && day.isCurrentMonth && day.scheduledHolds.length > 8 && (
           <CountBadgeM3 count={day.scheduledHolds.length} color="info" />
         )}
       </div>
 
-      {/* Holds list - Event pills */}
-      <div className="space-y-1.5 flex-1 overflow-hidden">
+      {/* Holds list - Event pills (now supports 8 pills) */}
+      <div className="space-y-1 flex-1 overflow-hidden">
         {/* Scheduled holds - Blue theme */}
-        {scheduledHolds.slice(0, 2).map((hold, index) => {
+        {scheduledHolds.slice(0, 8).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
 
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2.5 py-1.5 rounded-md bg-materialm-primary-light text-materialm-primary font-medium border-l-3 border-materialm-primary shadow-sm hover:opacity-80 transition-all"
+              className="text-xs px-2 py-1 rounded-md bg-materialm-primary-light text-materialm-primary font-medium border-l-3 border-materialm-primary shadow-sm hover:opacity-80 transition-all"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
@@ -144,7 +144,7 @@ function DayCellM3({
               <div className="flex items-center justify-between gap-2">
                 <span className="truncate font-semibold">{formattedName}</span>
                 {hold.fire_station && (
-                  <span className="flex-shrink-0 text-blue-700 dark:text-blue-300 font-bold">
+                  <span className="flex-shrink-0 text-materialm-primary font-bold">
                     #{hold.fire_station}
                   </span>
                 )}
@@ -153,14 +153,14 @@ function DayCellM3({
           );
         })}
 
-        {/* Completed holds - Gray theme with strikethrough */}
-        {completedHolds.slice(0, Math.max(0, 2 - scheduledHolds.length)).map((hold, index) => {
+        {/* Completed holds - MaterialM darkgray theme with strikethrough */}
+        {completedHolds.slice(0, Math.max(0, 8 - scheduledHolds.length)).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
 
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2.5 py-1.5 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-medium border-l-3 border-l-gray-400 dark:border-l-gray-600 shadow-sm opacity-70"
+              className="text-xs px-2 py-1 rounded-md bg-materialm-darkgray text-gray-400 font-medium border-l-3 border-l-materialm-border-dark shadow-sm opacity-70"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
@@ -178,9 +178,9 @@ function DayCellM3({
         })}
 
         {/* "More" indicator */}
-        {day.scheduledHolds.length > 2 && (
-          <div className="text-xs text-gray-500 dark:text-gray-400 px-2 pt-1 font-medium">
-            +{day.scheduledHolds.length - 2} more
+        {day.scheduledHolds.length > 8 && (
+          <div className="text-xs text-gray-400 px-2 pt-0.5 font-medium">
+            +{day.scheduledHolds.length - 8} more
           </div>
         )}
       </div>

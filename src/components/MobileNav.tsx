@@ -104,17 +104,17 @@ function MobileNavM3({
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-5 border-b border-materialm-border dark:border-materialm-border-dark bg-gray-50 dark:bg-materialm-dark">
+          <div className="p-5 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-surface dark:bg-materialm-dark">
             <div className="flex items-center justify-between mb-2">
               <h2
                 id="mobile-nav-title"
-                className="text-xl font-bold text-gray-900 dark:text-white"
+                className="text-xl font-bold text-materialm-text dark:text-materialm-text-dark"
               >
                 Menu
               </h2>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors focus-ring"
+                className="p-2 rounded-lg hover:bg-materialm-surface dark:hover:bg-materialm-darkgray text-materialm-text-secondary dark:text-materialm-text-secondary-dark transition-colors focus-ring"
                 aria-label="Close menu"
               >
                 <X size={24} />
@@ -136,11 +136,11 @@ function MobileNavM3({
           <div className="flex-1 overflow-y-auto p-5 space-y-6">
             {/* Context Section */}
             <section>
-              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                 Current Context
               </h3>
               <div>
-                <label className="text-xs font-semibold mb-2 block text-gray-600 dark:text-gray-400">
+                <label className="text-xs font-semibold mb-2 block text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                   Active Shift
                 </label>
                 <ShiftSelector
@@ -153,7 +153,7 @@ function MobileNavM3({
             {/* Quick Actions */}
             {isAdminMode && (
               <section>
-                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+                <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                   Quick Actions
                 </h3>
                 <ButtonM3
@@ -174,7 +174,7 @@ function MobileNavM3({
 
             {/* Tools */}
             <section>
-              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                 Tools
               </h3>
               <div className="space-y-2">
@@ -183,14 +183,14 @@ function MobileNavM3({
                     onShowActivityLog();
                     onClose();
                   }}
-                  className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
+                  className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-materialm-surface dark:hover:bg-materialm-darkgray transition-colors text-left focus-ring"
                 >
-                  <Clock size={22} className="text-blue-600 dark:text-blue-400" />
+                  <Clock size={22} className="text-materialm-primary dark:text-materialm-primary-light" />
                   <div className="flex-1">
-                    <div className="font-semibold text-gray-900 dark:text-white">
+                    <div className="font-semibold text-materialm-text dark:text-materialm-text-dark">
                       Activity History
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                       View recent actions
                     </div>
                   </div>
@@ -201,14 +201,14 @@ function MobileNavM3({
                     onShowHelp();
                     onClose();
                   }}
-                  className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
+                  className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-materialm-surface dark:hover:bg-materialm-darkgray transition-colors text-left focus-ring"
                 >
                   <HelpCircle size={22} className="text-purple-600 dark:text-purple-400" />
                   <div className="flex-1">
-                    <div className="font-semibold text-gray-900 dark:text-white">
+                    <div className="font-semibold text-materialm-text dark:text-materialm-text-dark">
                       Help & Guide
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                       Learn about features
                     </div>
                   </div>
@@ -218,24 +218,24 @@ function MobileNavM3({
 
             {/* Preferences */}
             <section>
-              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
+              <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                 Preferences
               </h3>
               <button
                 onClick={onToggleDarkMode}
-                className="w-full flex items-center justify-between p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus-ring"
+                className="w-full flex items-center justify-between p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-materialm-surface dark:hover:bg-materialm-darkgray transition-colors focus-ring"
               >
                 <div className="flex items-center gap-3">
                   {isDarkMode ? (
                     <Sun size={22} className="text-amber-500" />
                   ) : (
-                    <Moon size={22} className="text-gray-700" />
+                    <Moon size={22} className="text-materialm-text dark:text-materialm-text-dark" />
                   )}
                   <div className="text-left">
-                    <div className="font-semibold text-gray-900 dark:text-white">
+                    <div className="font-semibold text-materialm-text dark:text-materialm-text-dark">
                       Theme
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                    <div className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                       {isDarkMode ? "Dark mode" : "Light mode"}
                     </div>
                   </div>
@@ -249,14 +249,14 @@ function MobileNavM3({
             {/* Info Section for Non-Admin */}
             {!isAdminMode && (
               <section className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
-                <div className="bg-materialm-primary-light dark:bg-materialm-primary-light border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div className="bg-materialm-primary-light dark:bg-materialm-primary-light border-2 border-materialm-primary dark:border-materialm-primary-light rounded-lg p-4">
                   <div className="flex gap-3">
-                    <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                    <Lightbulb className="w-5 h-5 text-materialm-primary dark:text-materialm-primary-light flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold mb-1 text-gray-900 dark:text-white">
+                      <h3 className="font-semibold mb-1 text-materialm-text dark:text-materialm-text-dark">
                         Quick Tip
                       </h3>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                      <p className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary-dark">
                         Enable Admin mode to add firefighters and schedule holds.
                       </p>
                     </div>

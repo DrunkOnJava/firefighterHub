@@ -104,22 +104,22 @@ export function DayCellLegacy({
       </div>
 
       {/* Holds list */}
-      <div className="space-y-1.5">
-        {/* Show first 2 holds */}
-        {scheduledHolds.slice(0, 2).map((hold, index) => {
+      <div className="space-y-1">
+        {/* Show first 8 holds */}
+        {scheduledHolds.slice(0, 8).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
 
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
             >
               <span className="truncate">{formattedName}</span>
               {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
+                <span className="ml-1 flex-shrink-0 text-[10px]">
                   (#{hold.fire_station})
                 </span>
               )}
@@ -127,20 +127,20 @@ export function DayCellLegacy({
           );
         })}
 
-        {completedHolds.slice(0, 2 - scheduledHolds.length).map((hold, index) => {
+        {completedHolds.slice(0, Math.max(0, 8 - scheduledHolds.length)).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
 
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-emerald-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
             >
               <span className="truncate">{formattedName}</span>
               {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
+                <span className="ml-1 flex-shrink-0 text-[10px]">
                   (#{hold.fire_station})
                 </span>
               )}
@@ -149,9 +149,9 @@ export function DayCellLegacy({
         })}
 
         {/* Show "more" indicator if there are additional holds */}
-        {day.scheduledHolds.length > 2 && (
-          <div className="text-xs text-gray-500 px-2.5">
-            +{day.scheduledHolds.length - 2} more
+        {day.scheduledHolds.length > 8 && (
+          <div className="text-[10px] text-gray-500 px-1.5">
+            +{day.scheduledHolds.length - 8} more
           </div>
         )}
       </div>

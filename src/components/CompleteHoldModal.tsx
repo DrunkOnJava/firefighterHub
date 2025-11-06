@@ -151,8 +151,8 @@ function CompleteHoldModalM3({
 
           {/* Date Input */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              <CalendarIcon size={18} className="text-orange-500" />
+            <label className="flex items-center gap-2 text-sm font-semibold text-materialm-text-primary dark:text-materialm-text-primary mb-2">
+              <CalendarIcon size={18} className="text-materialm-warning" />
               <span>Hold Date</span>
             </label>
             <input
@@ -161,7 +161,7 @@ function CompleteHoldModalM3({
               onChange={(e) => setSelectedDate(e.target.value)}
               min={today}
               max={maxDateStr}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-materialm-border dark:border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-text-primary dark:text-materialm-text-primary focus:ring-2 focus:ring-materialm-primary transition-all"
             />
           </div>
 
@@ -174,57 +174,57 @@ function CompleteHoldModalM3({
 
           {/* Lent To Shift */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              <ArrowRight size={18} className="text-blue-600 dark:text-blue-400" />
+            <label className="flex items-center gap-2 text-sm font-semibold text-materialm-text-primary dark:text-materialm-text-primary mb-2">
+              <ArrowRight size={18} className="text-materialm-primary" />
               <span>Lent to Shift (Optional)</span>
             </label>
             <select
               value={lentToShift || ""}
               onChange={(e) => setLentToShift((e.target.value as Shift | null) || null)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-materialm-border dark:border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-text-primary dark:text-materialm-text-primary focus:ring-2 focus:ring-materialm-primary transition-all"
             >
               <option value="">None (not being lent out)</option>
               <option value="A">A-Shift</option>
               <option value="B">B-Shift</option>
               <option value="C">C-Shift</option>
             </select>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs text-materialm-text-tertiary dark:text-materialm-text-tertiary mt-2">
               Select which shift this firefighter is being lent to, if applicable.
             </p>
           </div>
 
           {/* Duration */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              <Clock size={18} className="text-purple-500 dark:text-purple-400" />
+            <label className="flex items-center gap-2 text-sm font-semibold text-materialm-text-primary dark:text-materialm-text-primary mb-2">
+              <Clock size={18} className="text-materialm-info" />
               <span>Hold Duration</span>
             </label>
             <select
               value={duration}
               onChange={(e) => setDuration(e.target.value as HoldDuration)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-materialm-border dark:border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-text-primary dark:text-materialm-text-primary focus:ring-2 focus:ring-materialm-primary transition-all"
             >
               <option value="12h">12 Hours</option>
               <option value="24h">24 Hours (Default)</option>
             </select>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs text-materialm-text-tertiary dark:text-materialm-text-tertiary mt-2">
               Length of the hold shift. Most holds are 24 hours.
             </p>
           </div>
 
           {/* Start Time */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-              <Clock size={18} className="text-purple-500 dark:text-purple-400" />
+            <label className="flex items-center gap-2 text-sm font-semibold text-materialm-text-primary dark:text-materialm-text-primary mb-2">
+              <Clock size={18} className="text-materialm-info" />
               <span>Start Time</span>
             </label>
             <input
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-materialm-border dark:border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-text-primary dark:text-materialm-text-primary focus:ring-2 focus:ring-materialm-primary transition-all"
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs text-materialm-text-tertiary dark:text-materialm-text-tertiary mt-2">
               Hold start time (default: 07:00). Member may be called back mid-shift if needed.
             </p>
           </div>

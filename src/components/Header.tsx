@@ -81,7 +81,7 @@ function HeaderM3({
               />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-bold truncate text-gray-900 dark:text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold truncate text-gray-900 dark:text-gray-100">
                 Hold List Manager
               </h1>
               <p className="text-sm sm:text-base mt-0.5 hidden sm:block text-gray-600 dark:text-gray-400">
@@ -95,7 +95,7 @@ function HeaderM3({
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-3">
               {/* Context Section - Shift */}
-              <div className="flex items-center gap-2 pr-3 border-r border-gray-300 dark:border-materialm-border-dark">
+              <div className="flex items-center gap-2 pr-3 border-r border-materialm-border dark:border-materialm-border-dark">
                 <ShiftSelector
                   currentShift={currentShift}
                   onShiftChange={onShiftChange}
@@ -127,7 +127,7 @@ function HeaderM3({
                 onClick={() => window.print()}
                 className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
                   isDarkMode
-                    ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
+                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
                     : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label="Print calendar"
@@ -139,7 +139,7 @@ function HeaderM3({
                 onClick={onShowActivityLog}
                 className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
-                    ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
+                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
                     : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label="View activity history"
@@ -151,7 +151,7 @@ function HeaderM3({
                 onClick={onToggleDarkMode}
                 className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
-                    ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
+                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
                     : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label={
@@ -167,7 +167,7 @@ function HeaderM3({
                 onClick={onShowHelp}
                 className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
                   isDarkMode
-                    ? "hover:bg-gray-800 text-gray-400 hover:text-gray-300"
+                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
                     : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
                 }`}
                 aria-label="Show help"
@@ -199,7 +199,7 @@ function HeaderM3({
               onClick={onOpenMobileMenu}
               className={`sm:hidden p-2 min-h-[44px] rounded-lg transition-colors focus-ring ${
                 isDarkMode
-                  ? "hover:bg-gray-800 text-gray-300"
+                  ? "hover:bg-materialm-dark text-gray-200"
                   : "hover:bg-gray-100 text-gray-600"
               }`}
               aria-label="Open menu"

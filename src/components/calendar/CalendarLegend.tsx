@@ -13,7 +13,7 @@ interface CalendarLegendProps {
   isDarkMode?: boolean;
 }
 
-export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
+export function CalendarLegend(_props: CalendarLegendProps) {
   const legendItems = [
     {
       label: 'Scheduled',
@@ -48,17 +48,17 @@ export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
           className="flex items-center gap-2"
           role="listitem"
         >
-          <div 
+          <div
             className={`
               w-4 h-4
               ${tokens.borders.radius.sm}
               ${item.colorClass || ''}
               ${item.borderClass || ''}
-              ${!item.colorClass && !item.borderClass ? (isDarkMode ? 'bg-gray-700 border border-gray-600' : 'bg-gray-200 border border-gray-300') : ''}
+              ${!item.colorClass && !item.borderClass ? 'bg-materialm-darkgray border border-materialm-border-dark' : ''}
             `}
             aria-label={item.description}
           />
-          <span className={isDarkMode ? colors.structural.text.secondary : 'text-gray-700'}>
+          <span className="text-gray-400">
             {item.label}
           </span>
         </div>

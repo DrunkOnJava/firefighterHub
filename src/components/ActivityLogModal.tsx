@@ -60,7 +60,7 @@ function ActivityLogModalM3({ isOpen, onClose }: ActivityLogModalProps) {
           <div className="p-2 rounded-lg bg-materialm-primary">
             <Clock className="w-6 h-6 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-bold text-materialm-text-primary dark:text-materialm-text-primary">
             Activity Log
           </h2>
         </div>

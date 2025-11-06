@@ -265,55 +265,57 @@ function App() {
         <main
           id={A11Y.SKIP_LINK_ID}
           role="main"
-          className={`${LAYOUT.PADDING.MOBILE} ${LAYOUT.PADDING.DESKTOP}`}
+          className={`${LAYOUT.PADDING.MOBILE} ${LAYOUT.PADDING.DESKTOP} flex flex-col overflow-hidden min-h-0`}
         >
           {currentView === "calendar" ? (
             <>
-              <div
-                className={`grid grid-cols-1 xl:grid-cols-12 ${LAYOUT.GRID_GAP.MOBILE} ${LAYOUT.GRID_GAP.DESKTOP} ${LAYOUT.SPACING.SECTION}`}
-              >
-                <div className={GRID_COLS.CALENDAR}>
-                  <section aria-labelledby="calendar-heading">
-                    <ErrorBoundary componentName="Calendar">
-                      <Calendar
+              <div className="calendar-grid-container">
+                <div
+                  className={`grid grid-cols-1 xl:grid-cols-12 ${LAYOUT.GRID_GAP.MOBILE} ${LAYOUT.GRID_GAP.DESKTOP} mb-4`}
+                >
+                  <div className={GRID_COLS.CALENDAR}>
+                    <section aria-labelledby="calendar-heading">
+                      <ErrorBoundary componentName="Calendar">
+                        <Calendar
+                          firefighters={firefighters}
+                          scheduledHolds={scheduledHolds}
+                          onScheduleHold={isAdminMode ? scheduleHold : () => {}}
+                          onRemoveHold={
+                            isAdminMode ? removeScheduledHold : () => {}
+                          }
+                          onMarkCompleted={
+                            isAdminMode ? markHoldCompleted : () => {}
+                          }
+                          loading={holdsLoading}
+                          isAdminMode={isAdminMode}
+                          isDarkMode={isDarkMode}
+                          currentShift={currentShift}
+                        />
+                      </ErrorBoundary>
+                    </section>
+                  </div>
+
+                  <aside
+                    className={GRID_COLS.SIDEBAR}
+                    role="complementary"
+                    aria-label="Team statistics and information"
+                  >
+                    <ErrorBoundary componentName="Sidebar">
+                      <Sidebar
                         firefighters={firefighters}
                         scheduledHolds={scheduledHolds}
-                        onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                        onRemoveHold={
-                          isAdminMode ? removeScheduledHold : () => {}
-                        }
-                        onMarkCompleted={
-                          isAdminMode ? markHoldCompleted : () => {}
-                        }
-                        loading={holdsLoading}
-                        isAdminMode={isAdminMode}
                         isDarkMode={isDarkMode}
                         currentShift={currentShift}
+                        onNavigate={setCurrentView}
+                        isAdminMode={isAdminMode}
                       />
                     </ErrorBoundary>
-                  </section>
+                  </aside>
                 </div>
-
-                <aside
-                  className={GRID_COLS.SIDEBAR}
-                  role="complementary"
-                  aria-label="Team statistics and information"
-                >
-                  <ErrorBoundary componentName="Sidebar">
-                    <Sidebar
-                      firefighters={firefighters}
-                      scheduledHolds={scheduledHolds}
-                      isDarkMode={isDarkMode}
-                      currentShift={currentShift}
-                      onNavigate={setCurrentView}
-                      isAdminMode={isAdminMode}
-                    />
-                  </ErrorBoundary>
-                </aside>
               </div>
 
-              <div className={LAYOUT.SPACING.SECTION}>
-                <section aria-labelledby="roster-heading">
+              <div className="roster-container flex-1 min-h-0">
+                <section aria-labelledby="roster-heading" className="h-full flex flex-col overflow-hidden">
                   <ErrorBoundary componentName="FirefighterList">
                     <FirefighterList
                       firefighters={firefighters}

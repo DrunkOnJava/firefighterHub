@@ -142,15 +142,15 @@ function DayModalM3({
       {/* Custom header with hold count */}
       <div
         ref={modalTrapRef}
-        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-gray-50 dark:bg-materialm-dark"
+        className="p-6 border-b border-materialm-border-dark bg-materialm-darkgray"
       >
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+            <h3 className="text-xl font-bold text-white mb-1">
               {modalTitle}
             </h3>
             {hasHolds && !showAddAnother && (
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-gray-400">
                 {selectedDay.scheduledHolds.length} hold
                 {selectedDay.scheduledHolds.length !== 1 ? "s" : ""} scheduled
               </p>
@@ -158,7 +158,7 @@ function DayModalM3({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 transition-colors focus-ring"
+            className="p-2 rounded-lg hover:bg-materialm-dark text-gray-400 transition-colors focus-ring"
             aria-label="Close date dialog"
           >
             <X className="w-6 h-6" />

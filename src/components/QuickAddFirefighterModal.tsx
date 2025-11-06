@@ -197,10 +197,10 @@ function QuickAddFirefighterModalM3({
             <UserPlus className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-2xl font-bold text-materialm-text-primary dark:text-materialm-text-primary">
               Add Team Member
             </h2>
-            <p className="text-sm text-emerald-700 dark:text-emerald-300 mt-1">
+            <p className="text-sm text-materialm-success dark:text-materialm-success mt-1">
               Shift {currentShift}
             </p>
           </div>
@@ -248,19 +248,19 @@ function QuickAddFirefighterModalM3({
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center justify-between w-full p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors bg-gray-50 dark:bg-materialm-dark"
+                className="flex items-center justify-between w-full p-4 rounded-lg border-2 border-materialm-border dark:border-materialm-border-dark hover:border-materialm-primary dark:hover:border-materialm-primary transition-colors bg-materialm-surface-light dark:bg-materialm-dark"
               >
                 <div className="flex items-center gap-3">
                   {showAdvanced ? (
-                    <ChevronUp className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <ChevronUp className="w-5 h-5 text-materialm-text-secondary dark:text-materialm-text-secondary" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <ChevronDown className="w-5 h-5 text-materialm-text-secondary dark:text-materialm-text-secondary" />
                   )}
                   <div className="text-left">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                    <h3 className="font-semibold text-materialm-text-primary dark:text-materialm-text-primary">
                       Advanced Options
                     </h3>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                    <p className="text-xs text-materialm-text-secondary dark:text-materialm-text-secondary">
                       Apparatus clearances and certifications
                     </p>
                   </div>

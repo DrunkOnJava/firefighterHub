@@ -109,7 +109,7 @@ function TransferShiftModalM3({
 
           {/* Shift Selector */}
           <div className="space-y-3">
-            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+            <label className="text-sm font-semibold text-materialm-text-primary dark:text-materialm-text-primary">
               Select New Shift
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -121,8 +121,8 @@ function TransferShiftModalM3({
                     py-4 px-6 rounded-lg font-bold text-lg transition-all border-2 flex items-center justify-center gap-2
                     ${
                       selectedShift === shift
-                        ? "bg-materialm-primary dark:bg-materialm-primary-emphasis border-blue-700 dark:border-blue-600 text-white shadow-materialm-2"
-                        : "bg-white dark:bg-materialm-dark border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-500 dark:hover:border-blue-400"
+                        ? "bg-materialm-primary dark:bg-materialm-primary-emphasis border-materialm-primary dark:border-materialm-primary text-white shadow-materialm-2"
+                        : "bg-white dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark text-materialm-text-primary dark:text-materialm-text-primary hover:border-materialm-primary dark:hover:border-materialm-primary"
                     }
                   `}
                 >

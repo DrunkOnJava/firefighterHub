@@ -57,7 +57,7 @@ function CalendarHeaderM3({
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
               Hold Calendar
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 hidden sm:block">
+            <p className="text-sm text-gray-400 hidden sm:block">
               Click any date to schedule or manage holds
             </p>
           </div>

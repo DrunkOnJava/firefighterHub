@@ -183,10 +183,10 @@ function FirefightersModalM3({
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-2xl font-bold text-materialm-text-primary dark:text-materialm-text-primary">
                 Manage Team
               </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary mt-1">
                 {filteredFirefighters.length} firefighter
                 {filteredFirefighters.length !== 1 ? "s" : ""}
                 {filterShift !== "ALL" && ` in Shift ${filterShift}`}
@@ -211,32 +211,32 @@ function FirefightersModalM3({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-materialm-dark border-b border-materialm-border dark:border-materialm-border-dark">
+              <thead className="bg-materialm-surface-light dark:bg-materialm-dark border-b border-materialm-border dark:border-materialm-border-dark">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-materialm-text-primary dark:text-materialm-text-primary">
                     Name
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-materialm-text-primary dark:text-materialm-text-primary">
                     Shift
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-materialm-text-primary dark:text-materialm-text-primary">
                     Station
                   </th>
-                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                  <th className="px-4 py-3 text-left text-xs font-bold uppercase text-materialm-text-primary dark:text-materialm-text-primary">
                     Status
                   </th>
                   {isAdminMode && (
-                    <th className="px-4 py-3 text-right text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    <th className="px-4 py-3 text-right text-xs font-bold uppercase text-materialm-text-primary dark:text-materialm-text-primary">
                       Actions
                     </th>
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-materialm-border dark:divide-materialm-border-dark">
                 {filteredFirefighters.map((ff) => (
                   <tr
                     key={ff.id}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="hover:bg-materialm-surface-light dark:hover:bg-materialm-surface-dark transition-colors"
                   >
                     <td className="px-4 py-3">
                       {ff.isEditing ? (
@@ -244,10 +244,10 @@ function FirefightersModalM3({
                           type="text"
                           value={ff.name}
                           onChange={(e) => updateField(ff.id, "name", e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 rounded-lg border border-materialm-border dark:border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-text-primary dark:text-materialm-text-primary focus:ring-2 focus:ring-materialm-primary"
                         />
                       ) : (
-                        <span className="font-medium text-gray-900 dark:text-white">
+                        <span className="font-medium text-materialm-text-primary dark:text-materialm-text-primary">
                           {ff.name}
                         </span>
                       )}
@@ -264,10 +264,10 @@ function FirefightersModalM3({
                             updateField(ff.id, "fire_station", e.target.value)
                           }
                           placeholder="Station #"
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 rounded-lg border border-materialm-border dark:border-materialm-border-dark bg-white dark:bg-materialm-dark text-materialm-text-primary dark:text-materialm-text-primary focus:ring-2 focus:ring-materialm-primary"
                         />
                       ) : (
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
+                        <span className="text-sm text-materialm-text-secondary dark:text-materialm-text-secondary">
                           {ff.fire_station ? `#${ff.fire_station}` : "—"}
                         </span>
                       )}
@@ -323,8 +323,8 @@ function FirefightersModalM3({
 
             {filteredFirefighters.length === 0 && !loading && (
               <div className="text-center py-12">
-                <Users className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                <p className="text-gray-600 dark:text-gray-400">
+                <Users className="w-16 h-16 mx-auto mb-4 text-materialm-text-tertiary" />
+                <p className="text-materialm-text-secondary dark:text-materialm-text-secondary">
                   No firefighters found
                   {filterShift !== "ALL" && ` in Shift ${filterShift}`}
                 </p>

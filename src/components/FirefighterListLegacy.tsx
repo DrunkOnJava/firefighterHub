@@ -258,6 +258,9 @@ export function FirefighterListLegacy({
         ${tokens.shadows["2xl"]}
         border-2
         overflow-hidden
+        h-full
+        flex
+        flex-col
       `}
     >
       {/* Header with sub-component */}
@@ -275,7 +278,7 @@ export function FirefighterListLegacy({
         deactivatedCount={deactivatedFirefighters.length}
       />
 
-      <div className={tokens.spacing.card.lg}>
+      <div className={`${tokens.spacing.card.lg} flex-shrink-0`}>
         {/* Add Firefighter Form (Collapsible) */}
         {isAdminMode && showAddForm && (
           <div className={tokens.spacing.margin.lg}>
@@ -311,14 +314,18 @@ export function FirefighterListLegacy({
           isAdminMode={isAdminMode}
           isDarkMode={isDarkMode}
         />
+      </div>
 
+      <div className="flex-1 overflow-auto min-h-0">
         {firefighters.length === 0 ? (
-          <NoFirefightersEmptyState 
-            onAddFirefighter={() => setShowAddForm(true)}
-            isAdminMode={isAdminMode}
-          />
+          <div className={tokens.spacing.card.lg}>
+            <NoFirefightersEmptyState
+              onAddFirefighter={() => setShowAddForm(true)}
+              isAdminMode={isAdminMode}
+            />
+          </div>
         ) : (
-          <div className="overflow-x-auto -mx-6">
+          <div className="overflow-x-auto">
             <table className="w-full min-w-max">
               <thead>
                 <tr
@@ -727,116 +734,117 @@ export function FirefighterListLegacy({
                 })}
               </tbody>
             </table>
-          </div>
-        )}
 
-        {/* Empty state for search with no results */}
-        {firefighters.length > 0 && 
-         filteredAndAdvancedFiltered.length === 0 && 
-         (searchQuery.trim() || activeFilterCount > 0) && (
-          <NoSearchResultsEmptyState 
-            searchTerm={searchQuery.trim() || 'applied filters'}
-            onClearSearch={() => {
-              setSearchQuery('');
-              clearAllFilters();
-            }}
-          />
-        )}
+            {/* Empty state for search with no results */}
+            {filteredAndAdvancedFiltered.length === 0 &&
+             (searchQuery.trim() || activeFilterCount > 0) && (
+              <div className={tokens.spacing.card.lg}>
+                <NoSearchResultsEmptyState
+                  searchTerm={searchQuery.trim() || 'applied filters'}
+                  onClearSearch={() => {
+                    setSearchQuery('');
+                    clearAllFilters();
+                  }}
+                />
+              </div>
+            )}
 
-        {isAdminMode && deactivatedFirefighters.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <h3
-              className={`text-sm font-bold mb-3 ${
-                isDarkMode ? "text-gray-400" : "text-slate-600"
-              }`}
-            >
-              Deactivated ({deactivatedFirefighters.length})
-            </h3>
-            <div className="space-y-2">
-              {deactivatedFirefighters.map((firefighter) => (
-                <div
-                  key={firefighter.id}
-                  className={`rounded-lg p-3 border ${
-                    isDarkMode
-                      ? "bg-gray-800/40 border-gray-700/50 hover:bg-gray-800/60"
-                      : "bg-gray-100 border-gray-300 hover:bg-gray-200"
-                  } transition-colors`}
+            {isAdminMode && deactivatedFirefighters.length > 0 && (
+              <div className={`mt-6 pt-6 border-t border-gray-700 ${tokens.spacing.card.lg}`}>
+                <h3
+                  className={`text-sm font-bold mb-3 ${
+                    isDarkMode ? "text-gray-400" : "text-slate-600"
+                  }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div
-                        className={`w-2 h-2 rounded-full ${
-                          isDarkMode ? "bg-gray-600" : "bg-gray-400"
-                        }`}
-                      />
-                      <div className="flex-1">
-                        <button
-                          onClick={() => {
-                            setSelectedFirefighter(firefighter);
-                            setShowProfileModal(true);
-                          }}
-                          className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
-                            isDarkMode
-                              ? "text-gray-400 hover:text-gray-300"
-                              : "text-gray-600 hover:text-gray-800"
-                          }`}
-                        >
-                          {firefighter.name}
-                        </button>
-                        {firefighter.fire_station && (
-                          <p
-                            className={`text-xs ${
-                              isDarkMode ? "text-gray-500" : "text-gray-500"
+                  Deactivated ({deactivatedFirefighters.length})
+                </h3>
+                <div className="space-y-2">
+                  {deactivatedFirefighters.map((firefighter) => (
+                    <div
+                      key={firefighter.id}
+                      className={`rounded-lg p-3 border ${
+                        isDarkMode
+                          ? "bg-gray-800/40 border-gray-700/50 hover:bg-gray-800/60"
+                          : "bg-gray-100 border-gray-300 hover:bg-gray-200"
+                      } transition-colors`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 flex-1">
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              isDarkMode ? "bg-gray-600" : "bg-gray-400"
+                            }`}
+                          />
+                          <div className="flex-1">
+                            <button
+                              onClick={() => {
+                                setSelectedFirefighter(firefighter);
+                                setShowProfileModal(true);
+                              }}
+                              className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
+                                isDarkMode
+                                  ? "text-gray-400 hover:text-gray-300"
+                                  : "text-gray-600 hover:text-gray-800"
+                              }`}
+                            >
+                              {firefighter.name}
+                            </button>
+                            {firefighter.fire_station && (
+                              <p
+                                className={`text-xs ${
+                                  isDarkMode ? "text-gray-500" : "text-gray-500"
+                                }`}
+                              >
+                                Station #{firefighter.fire_station}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedFirefighter(firefighter);
+                              setShowProfileModal(true);
+                            }}
+                            className={`p-1.5 rounded transition-colors focus-ring ${
+                              isDarkMode
+                                ? "hover:bg-blue-900/50 text-blue-400"
+                                : "hover:bg-blue-100 text-blue-600"
+                            }`}
+                            title="View profile and hold history"
+                          >
+                            <Eye className={tokens.icons.sm} />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedFirefighter(firefighter);
+                              setShowReactivateModal(true);
+                            }}
+                            className={`p-1.5 rounded transition-colors focus-ring ${
+                              isDarkMode
+                                ? "hover:bg-emerald-900/50 text-emerald-400"
+                                : "hover:bg-emerald-100 text-emerald-600"
+                            }`}
+                            title="Reactivate firefighter"
+                          >
+                            <RotateCcw className={tokens.icons.sm} />
+                          </button>
+                          <span
+                            className={`text-xs px-2 py-1 rounded ${
+                              isDarkMode
+                                ? "bg-gray-700/50 text-gray-500"
+                                : "bg-gray-200 text-gray-600"
                             }`}
                           >
-                            Station #{firefighter.fire_station}
-                          </p>
-                        )}
+                            Inactive
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedFirefighter(firefighter);
-                          setShowProfileModal(true);
-                        }}
-                        className={`p-1.5 rounded transition-colors focus-ring ${
-                          isDarkMode
-                            ? "hover:bg-blue-900/50 text-blue-400"
-                            : "hover:bg-blue-100 text-blue-600"
-                        }`}
-                        title="View profile and hold history"
-                      >
-                        <Eye className={tokens.icons.sm} />
-                      </button>
-                      <button
-                        onClick={() => {
-                          setSelectedFirefighter(firefighter);
-                          setShowReactivateModal(true);
-                        }}
-                        className={`p-1.5 rounded transition-colors focus-ring ${
-                          isDarkMode
-                            ? "hover:bg-emerald-900/50 text-emerald-400"
-                            : "hover:bg-emerald-100 text-emerald-600"
-                        }`}
-                        title="Reactivate firefighter"
-                      >
-                        <RotateCcw className={tokens.icons.sm} />
-                      </button>
-                      <span
-                        className={`text-xs px-2 py-1 rounded ${
-                          isDarkMode
-                            ? "bg-gray-700/50 text-gray-500"
-                            : "bg-gray-200 text-gray-600"
-                        }`}
-                      >
-                        Inactive
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </div>

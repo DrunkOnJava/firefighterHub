@@ -10,15 +10,20 @@ function App() {
   const [currentDate] = useState(new Date());
   const { toasts, showToast } = useToast();
 
-  const {
-    firefighters = [],
-    loading: firefightersLoading,
-  } = useFirefighters(showToast, currentShift);
+  // Load ALL shifts for Next Up section
+  const { firefighters: ffA = [], loading: loadingA } = useFirefighters(showToast, 'A');
+  const { firefighters: ffB = [], loading: loadingB } = useFirefighters(showToast, 'B');
+  const { firefighters: ffC = [], loading: loadingC } = useFirefighters(showToast, 'C');
 
   const {
     scheduledHolds = [],
     loading: holdsLoading,
   } = useScheduledHolds(showToast, currentShift);
+
+  // Combine all firefighters and filter for current shift
+  const allFirefighters = [...ffA, ...ffB, ...ffC];
+  const firefighters = allFirefighters.filter(ff => ff.shift === currentShift);
+  const firefightersLoading = loadingA || loadingB || loadingC;
 
   // Handle loading state
   if (firefightersLoading || holdsLoading) {
@@ -42,11 +47,10 @@ function App() {
   const today = new Date();
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-  // Get next up for ALL shifts (not just current)
-  const allFirefighters = firefighters; // Get from all shifts
-  const shiftA = allFirefighters.filter(ff => ff.shift === 'A' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-  const shiftB = allFirefighters.filter(ff => ff.shift === 'B' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-  const shiftC = allFirefighters.filter(ff => ff.shift === 'C' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  // Get next up for each shift from their respective loaded data
+  const shiftA = ffA.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  const shiftB = ffB.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  const shiftC = ffC.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
 
   // Current shift firefighters (first 20)
   const currentShiftFFs = firefighters

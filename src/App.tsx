@@ -14,6 +14,7 @@ import { ActivityLogModal } from './components/ActivityLogModal';
 import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
+import { MobileNav } from './components/MobileNav';
 
 // Big Calendar
 import { BigCalendar } from './components/calendar/BigCalendar';
@@ -28,8 +29,8 @@ function App() {
   // State: Shift
   const [currentShift, setCurrentShift] = useState<Shift>('A');
 
-  // State: View management
-  const [currentView, setCurrentView] = useState<'calendar' | 'reports'>('calendar');
+  // State: View management (reserved for future Reports feature)
+  // const [currentView, setCurrentView] = useState<'calendar' | 'reports'>('calendar');
 
   // State: Modal visibility
   const [showHelp, setShowHelp] = useState(false);
@@ -72,8 +73,8 @@ function App() {
     markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
 
-  // Admin mode (will be integrated in Phase 6: Authentication)
-  const isAdminMode = false; // Phase 6: Will integrate authentication
+  // Admin mode (TEMP: Enabled for testing - will integrate authentication in Phase 6)
+  const isAdminMode = true; // TEMP: Enable all features for testing
 
   // Combine all firefighters and filter for current shift
   const allFirefighters = [...ffA, ...ffB, ...ffC];
@@ -137,7 +138,7 @@ function App() {
         onShowHelp={() => setShowHelp(true)}
         onShowActivityLog={() => setShowActivityLog(true)}
         onQuickAddFirefighter={() => setShowQuickAdd(true)}
-        onNavigateToReports={() => setCurrentView('reports')}
+        onNavigateToReports={() => {}} // TODO: Implement Reports view
         onOpenMobileMenu={() => setShowMobileMenu(true)}
         isAdminMode={isAdminMode}
         currentShift={currentShift}
@@ -248,6 +249,31 @@ function App() {
           setSelectedFirefighterForTransfer(null);
         }}
         onConfirm={handleConfirmTransferShift}
+      />
+
+      <MobileNav
+        isOpen={showMobileMenu}
+        onClose={() => setShowMobileMenu(false)}
+        onShowHelp={() => {
+          setShowMobileMenu(false);
+          setShowHelp(true);
+        }}
+        onShowActivityLog={() => {
+          setShowMobileMenu(false);
+          setShowActivityLog(true);
+        }}
+        onQuickAddFirefighter={() => {
+          setShowMobileMenu(false);
+          setShowQuickAdd(true);
+        }}
+        currentShift={currentShift}
+        onShiftChange={(shift) => {
+          setShowMobileMenu(false);
+          setCurrentShift(shift);
+        }}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={toggleDarkMode}
+        isAdminMode={isAdminMode}
       />
     </>
   );

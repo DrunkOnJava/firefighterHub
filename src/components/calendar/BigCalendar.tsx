@@ -6,7 +6,7 @@
  */
 
 import { useMemo } from 'react';
-import { Calendar, momentLocalizer, View } from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { Firefighter, Shift, HoldDuration } from '../../lib/supabase';
 import { ScheduledHold } from '../../utils/calendarUtils';
@@ -42,18 +42,24 @@ interface CalendarEvent {
 }
 
 export function BigCalendar({
+  firefighters,
   scheduledHolds,
+  onScheduleHold,
+  onRemoveHold,
+  onMarkCompleted,
   loading,
+  isAdminMode = false,
   isDarkMode = true,
+  currentShift,
 }: BigCalendarProps) {
 
   // Convert scheduled holds to calendar events
   const events: CalendarEvent[] = useMemo(() => {
     return scheduledHolds.map(hold => {
-      const date = new Date(hold.hold_date);
+      const date = hold.hold_date ? new Date(hold.hold_date) : new Date();
       return {
         id: hold.id,
-        title: hold.firefighter_name,
+        title: hold.firefighter_name || 'Unknown',
         start: date,
         end: date,
         resource: hold,
@@ -94,6 +100,44 @@ export function BigCalendar({
     );
   }
 
+  // Handle clicking a hold event
+  const handleSelectEvent = (event: CalendarEvent) => {
+    if (!isAdminMode) return;
+
+    const hold = event.resource;
+    // If hold is scheduled (not completed), allow marking as completed
+    if (hold.status === 'scheduled') {
+      if (window.confirm(`Mark ${hold.firefighter_name}'s hold as completed?`)) {
+        onMarkCompleted(hold);
+      }
+    } else if (hold.status === 'completed') {
+      // If already completed, offer to remove
+      if (window.confirm(`Remove ${hold.firefighter_name}'s completed hold?`)) {
+        onRemoveHold(hold.id);
+      }
+    }
+  };
+
+  // Handle clicking an empty day (optional scheduling feature)
+  const handleSelectSlot = ({ start }: { start: Date }) => {
+    if (!isAdminMode) return;
+
+    // Get next available firefighter for this shift
+    const availableFF = firefighters
+      .filter(ff => ff.is_available && ff.shift === currentShift)
+      .sort((a, b) => a.order_position - b.order_position)[0];
+
+    if (!availableFF) {
+      alert('No available firefighters on this shift');
+      return;
+    }
+
+    const dateStr = start.toISOString().split('T')[0];
+    if (window.confirm(`Schedule hold for ${availableFF.name} on ${moment(start).format('MMM D, YYYY')}?`)) {
+      onScheduleHold(dateStr, availableFF);
+    }
+  };
+
   return (
     <div className={`big-calendar-container ${isDarkMode ? 'dark-theme' : 'light-theme'} h-full`}>
       <Calendar
@@ -105,6 +149,9 @@ export function BigCalendar({
         eventPropGetter={eventStyleGetter}
         views={['month', 'week', 'day']}
         defaultView="month"
+        onSelectEvent={handleSelectEvent}
+        onSelectSlot={handleSelectSlot}
+        selectable={isAdminMode}
       />
     </div>
   );

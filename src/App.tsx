@@ -11,8 +11,8 @@ import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
 
-// MaterialM Calendar
-import { MaterialMCalendar } from './components/calendar/MaterialMCalendar';
+// Big Calendar
+import { BigCalendar } from './components/calendar/BigCalendar';
 
 // Interactive Roster
 import { FirefighterList } from './components/FirefighterList';
@@ -184,7 +184,7 @@ function App() {
       <div className="layout">
         {/* Calendar Section */}
         <section className="calendar card">
-          <MaterialMCalendar
+          <BigCalendar
             firefighters={firefighters}
             scheduledHolds={scheduledHolds}
             onScheduleHold={scheduleHold}
@@ -196,7 +196,6 @@ function App() {
             currentShift={currentShift}
           />
         </section>
-
         {/* Sidebar: Next Up + Roster */}
         <aside className="sidebar card">
           {/* Next Up Cards */}

@@ -1,513 +1,449 @@
+/* =========================================
+   FirefighterHub - Single Page Layout
+   Based on reference design with MaterialM OKLCH colors
+   ========================================= */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    -webkit-tap-highlight-color: transparent;
-  }
+:root {
+  /* MaterialM OKLCH Color System */
+  --bg-app: #1e293b;           /* MaterialM dark app */
+  --bg-header: #0f172a;        /* Deep navy header */
+  --bg-card: #1e293b;          /* MaterialM dark card */
+  --bg-card-alt: #0f1a2b;      /* Alternate surface */
+  --line: #334155;             /* MaterialM border */
+  --text: #e2e8f0;             /* MaterialM text */
+  --muted: #94a3b8;            /* Secondary text */
 
-  html {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
+  /* MaterialM Semantic Colors (OKLCH) */
+  --materialm-success: #13deb9;   /* Teal */
+  --materialm-error: #fa896b;     /* Coral */
+  --materialm-primary: #5d87ff;   /* Blue */
+  --materialm-warning: #ffae1f;   /* Amber */
 
-  body {
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0.01em;
-  }
-
-  /* REMOVED: CSS transitions were causing performance issues and flickering
-   * Can be re-added later with more targeted approach
-   */
-
-  h1 {
-    font-size: clamp(1.75rem, 4vw, 2.25rem);
-    line-height: 1.2;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  h2 {
-    font-size: clamp(1.5rem, 3vw, 1.875rem);
-    line-height: 1.3;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-
-  h3 {
-    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-    line-height: 1.4;
-    font-weight: 600;
-  }
-
-  p + p {
-    margin-top: 1.5em;
-  }
-
-  /* Global focus-visible styles (WCAG 2.1 AA compliant)
-   * 2px ring with 3:1 contrast ratio minimum
-   * Blue-500 (#3b82f6) on slate-900 background = 7.2:1 contrast ✓
-   * @see Issue #15 - Standardize Focus Ring Indicators
-   */
-  *:focus-visible {
-    outline: 2px solid #3b82f6;
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-
-  /* WCAG 2.1 Target Size: Minimum 44x44px for all interactive elements */
-  button:not(:disabled),
-  a:not(.skip-link) {
-    min-height: 44px;
-    min-width: 44px;
-  }
-
-  /* Exception for icon-only buttons - ensure adequate touch area with padding */
-  button:not(:disabled):has(svg:only-child) {
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0.5rem;
-  }
+  /* Layout Variables */
+  --header-h: 64px;
+  --gap: 16px;
+  --radius: 12px;
+  --sidebar-w: 480px; /* Roomy for 20 rows + columns */
 }
 
-@layer components {
-  /* Standardized focus ring utility (WCAG 2.1 AA compliant)
-   * Use tokens.focus.default instead for new components
-   * This class maintained for backward compatibility
-   * @see Issue #15 - Standardize Focus Ring Indicators
-   */
-  .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-shadow;
-  }
-
-  .focus-ring-inset {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 transition-shadow;
-  }
-
-  .focus-ring-danger {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-shadow;
-  }
-
-  .focus-ring-success {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 transition-shadow;
-  }
-
-  .skip-link {
-    @apply absolute -top-full left-4 bg-gray-700 text-white px-6 py-3 rounded-lg z-[60] focus:top-4 transition-all font-semibold shadow-2xl;
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-
-  .sr-only-focusable:focus,
-  .sr-only-focusable:active {
-    position: static;
-    width: auto;
-    height: auto;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-  }
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-@layer utilities {
-  .font-dyslexia {
-    font-family: "Lexend", system-ui, -apple-system, sans-serif;
-    letter-spacing: 0.05em;
-    word-spacing: 0.15em;
-  }
-
-  .readable {
-    line-height: 1.8;
-    font-size: 1.125rem;
-    max-width: 70ch;
-  }
-
-  /* WCAG 2.1 AA Compliant Colors (4.5:1 contrast ratio minimum on dark backgrounds) */
-  /* These colors have been tested for accessibility on gray-900 (#111827) background */
-
-  .text-gray-accessible {
-    color: #d1d5db; /* gray-300 - 8.59:1 contrast ratio ✓ */
-  }
-
-  .text-gray-secondary {
-    color: #9ca3af; /* gray-400 - 5.74:1 contrast ratio ✓ */
-  }
-
-  .text-green-accessible {
-    color: #86efac; /* green-300 - 11.14:1 contrast ratio ✓ */
-  }
-
-  .text-blue-accessible {
-    color: #93c5fd; /* blue-300 - 8.57:1 contrast ratio ✓ */
-  }
-
-  .text-red-accessible {
-    color: #fca5a5; /* red-300 - 7.35:1 contrast ratio ✓ */
-  }
-
-  .text-amber-accessible {
-    color: #fcd34d; /* amber-300 - 12.04:1 contrast ratio ✓ */
-  }
-
-  /* WARNING: These colors DO NOT meet WCAG AA on dark backgrounds */
-  /* gray-500 (#6B7280) = 3.32:1 - FAILS ✗ */
-  /* gray-600 (#4B5563) = 2.39:1 - FAILS ✗ */
-  /* Use gray-400 (#9CA3AF) or lighter instead */
-}
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 20px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.2s ease-out;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.2s ease-out;
-}
-
-@keyframes slide-in-right {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.3s ease-out;
-}
-
-/* Shimmer effect for skeleton loaders */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-shimmer {
-  animation: shimmer 2s infinite linear;
-  background: linear-gradient(
-    90deg,
-    rgba(55, 65, 81, 1) 0%,
-    rgba(75, 85, 99, 1) 50%,
-    rgba(55, 65, 81, 1) 100%
-  );
-  background-size: 200% 100%;
-}
-
-/* Ripple effect for button interactions */
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(4);
-    opacity: 0;
-  }
-}
-
-.btn-ripple {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-ripple::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
+html, body {
   height: 100%;
-  background: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  padding: 0;
+  background: var(--bg-app);
+  color: var(--text);
+  font: 14px/1.2 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  overflow: hidden; /* Single-screen layout */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: 16px;
+}
+
+/* Header */
+header {
+  height: var(--header-h);
+  background: var(--bg-header);
+  border: 1px solid #0b1320;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 0 20px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .15) inset;
+}
+
+.brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.brand .logo {
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  pointer-events: none;
+  background: linear-gradient(135deg, var(--materialm-primary), var(--materialm-success));
 }
 
-.btn-ripple:active::after {
-  animation: ripple 0.6s ease-out;
+.subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
-  /* Disable ripple effect for reduced motion */
-  .btn-ripple:active::after {
-    animation: none;
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+}
+
+.shift-badges {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: 12px;
+}
+
+.badge {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #fff;
+  display: inline-block;
+  position: relative;
+}
+
+.badge.circle {
+  border-radius: 99px;
+  background: var(--materialm-success);
+}
+
+.badge.square {
+  border-radius: 4px;
+  background: var(--materialm-error);
+}
+
+.badge.diamond {
+  transform: rotate(45deg);
+  background: var(--materialm-primary);
+}
+
+.badge.diamond::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  transform: rotate(-45deg);
+}
+
+/* Main Layout - Calendar Left (1fr), Roster Right (480px) */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr var(--sidebar-w);
+  gap: var(--gap);
+  height: calc(100vh - var(--header-h) - var(--gap) * 3);
+  min-height: 0;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+/* Calendar Section */
+.calendar {
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  min-height: 0;
+}
+
+.cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px 10px;
+}
+
+.cal-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.cal-shift {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 24px 1fr;
+  gap: 10px;
+  min-height: 0;
+}
+
+.dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.dow span {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: left;
+  padding-left: 8px;
+  font-weight: 600;
+}
+
+.cells {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  min-height: 0;
+}
+
+.cell {
+  background: #0e1a2b;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cell:hover {
+  background: #1a2535;
+  border-color: var(--materialm-primary);
+}
+
+.cell .num {
+  font-weight: 700;
+  color: #cbd5e1;
+  font-size: 12px;
+}
+
+.cell.muted .num {
+  color: var(--muted);
+}
+
+.cell.today {
+  outline: 2px solid var(--materialm-error);
+  outline-offset: -2px;
+}
+
+.legend {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.legend .sw {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.sw.blue {
+  background: var(--materialm-primary);
+}
+
+.sw.green {
+  background: var(--materialm-success);
+}
+
+.sw.red {
+  border: 2px solid var(--materialm-error);
+  background: transparent;
+}
+
+/* Sidebar with Roster (20 rows) */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 12px;
+  min-height: 0;
+}
+
+.nextup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.chip {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+}
+
+.chip .mini {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #fff;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mini.circle {
+  border-radius: 99px;
+  background: var(--materialm-success);
+}
+
+.mini.square {
+  border-radius: 3px;
+  background: var(--materialm-error);
+}
+
+.mini.diamond {
+  transform: rotate(45deg);
+  background: var(--materialm-primary);
+}
+
+.chip b {
+  font-size: 12px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip .meta {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Roster Section - 20 Rows Visible */
+.roster {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.roster-head {
+  display: grid;
+  grid-template-columns: 1.2fr .5fr .8fr;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--line);
+}
+
+.rows {
+  flex: 1;
+  display: grid;
+  grid-template-rows: repeat(20, 1fr); /* CRITICAL: All 20 rows visible */
+  gap: 4px;
+  padding-top: 6px;
+  min-height: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.2fr .5fr .8fr;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  min-height: 0;
+  transition: all 0.15s;
+}
+
+.row:hover {
+  background: #1e2838;
+  border-color: var(--materialm-primary);
+}
+
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.station {
+  color: var(--muted);
+  font-weight: 600;
+  text-align: center;
+}
+
+.shifts {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: end;
+}
+
+.shifts .mini {
+  width: 14px;
+  height: 14px;
+}
+
+.tag {
+  background: #2a3344;
+  color: #c5d0e0;
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 1320px) {
+  :root {
+    --sidebar-w: 440px;
   }
 }
 
-/* Print Stylesheet - Issue #33 */
-@media print {
-  /* Force light theme for print - saves ink and improves readability */
-  * {
-    background: white !important;
-    color: black !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-w: 420px;
   }
-
-  /* Hide non-essential UI elements */
-  header,
-  aside,
-  nav,
-  button,
-  .no-print {
-    display: none !important;
+  .rows {
+    grid-template-rows: repeat(20, minmax(0, 1fr));
   }
-
-  /* Reset page margins for better print layout */
-  @page {
-    margin: 1cm;
-    size: landscape;
+  .row {
+    font-size: 13px;
   }
+}
 
-  body {
-    margin: 0;
-    padding: 0;
-    font-size: 12pt;
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
   }
-
-  /* Main content should take full width */
-  main {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* Optimize calendar for print */
-  .calendar-container,
-  [role="main"] > div,
-  section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  /* Remove grid gaps and unnecessary spacing for print */
-  .grid {
-    gap: 0 !important;
-  }
-
-  /* Ensure table/grid elements print well */
-  table,
-  .grid {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  /* Force borders to be visible in print */
-  table,
-  th,
-  td,
-  .border,
-  [class*="border-"] {
-    border: 1px solid black !important;
-  }
-
-  /* Optimize links for print - hide URLs to save space */
-  a[href]:after {
-    content: "";
-  }
-
-  /* Remove link underlines in print */
-  a {
-    text-decoration: none;
-  }
-
-  /* Page breaks for better pagination */
-  h1,
-  h2,
-  h3 {
-    page-break-after: avoid;
-    break-after: avoid;
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  /* Avoid breaking lists and cards */
-  ul,
-  ol,
-  .card,
-  [class*="rounded"],
-  [class*="bg-"] {
-    page-break-inside: avoid;
-    break-inside: avoid;
-  }
-
-  /* Show all content - remove any hidden elements needed for print */
-  .print-show {
-    display: block !important;
-  }
-
-  /* Add print header with app title and shift info */
-  body::before {
-    content: "FirefighterHub - Hold Rotation Schedule";
-    display: block;
-    font-size: 18pt;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 0.5cm;
-    padding-bottom: 0.3cm;
-    border-bottom: 2px solid black;
-  }
-
-  /* Optimize typography for print */
-  h1 {
-    font-size: 16pt !important;
-    margin-bottom: 0.3cm;
-  }
-
-  h2 {
-    font-size: 14pt !important;
-    margin-bottom: 0.2cm;
-  }
-
-  h3 {
-    font-size: 12pt !important;
-    margin-bottom: 0.2cm;
-  }
-
-  /* Ensure proper spacing */
-  p,
-  div,
-  section {
-    orphans: 3;
-    widows: 3;
-  }
-
-  /* Calendar-specific optimizations */
-  /* Calendar grid should be visible and properly formatted */
-  [class*="grid-cols-7"] {
-    display: grid !important;
-    grid-template-columns: repeat(7, 1fr) !important;
-  }
-
-  /* Day cells should have proper borders */
-  [class*="aspect-square"],
-  [class*="calendar"],
-  [role="gridcell"] {
-    border: 1px solid #666 !important;
-    padding: 0.2cm !important;
-    min-height: 2cm !important;
-  }
-
-  /* Weekday headers should be bold */
-  [class*="grid-cols-7"] > div:nth-child(-n+7) {
-    font-weight: bold !important;
-    background: #f0f0f0 !important;
-    text-align: center !important;
-  }
-
-  /* Hold cards should be compact in print */
-  [class*="border-l-"] {
-    border-left: 3px solid black !important;
-    padding: 0.1cm !important;
-    margin: 0.05cm 0 !important;
-    font-size: 10pt !important;
-  }
-
-  /* Month navigation should be printed as text */
-  time,
-  [aria-label*="month"] {
-    display: block !important;
-    text-align: center !important;
-    font-size: 14pt !important;
-    font-weight: bold !important;
-    margin-bottom: 0.3cm !important;
-  }
-
-  /* Legends should be compact */
-  [class*="legend"],
-  [class*="flex"] > div {
-    display: inline-block !important;
-    margin-right: 0.5cm !important;
-    font-size: 10pt !important;
-  }
-
-  /* Remove shadows and gradients that don't print well */
-  [class*="shadow"],
-  [class*="gradient"] {
-    box-shadow: none !important;
-    background: white !important;
-  }
-
-  /* Status badges should be clear */
-  [class*="badge"],
-  [class*="bg-blue"],
-  [class*="bg-green"],
-  [class*="bg-red"],
-  [class*="bg-emerald"] {
-    border: 1px solid black !important;
-    padding: 0.05cm 0.2cm !important;
-    background: white !important;
-  }
-
-  /* Scheduled holds indicator */
-  [class*="bg-blue-500"] {
-    background: #e6f0ff !important;
-  }
-
-  /* Completed holds indicator */
-  [class*="bg-emerald"],
-  [class*="bg-green"] {
-    background: #e6f5e6 !important;
+  :root {
+    --sidebar-w: 100%;
   }
 }

@@ -14,7 +14,8 @@
  */
 
 export { tokens } from './tokens';
-export { colorsM3 as colors } from './colorSystemM3';  // MaterialM colors!
-export { colors as colorsLegacy } from './colorSystem'; // Legacy fallback
+export { colors } from './colorSystem';  // Keep legacy for now - structure is different
+export { colorsM3 } from './colorSystemM3';  // MaterialM available as colorsM3
 export type { Tokens } from './tokens';
+export type { Colors } from './colorSystem';
 

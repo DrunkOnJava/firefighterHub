@@ -42,10 +42,11 @@ function App() {
   const today = new Date();
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-  // Get next up for each shift
-  const shiftA = firefighters.filter(ff => ff.shift === 'A' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-  const shiftB = firefighters.filter(ff => ff.shift === 'B' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-  const shiftC = firefighters.filter(ff => ff.shift === 'C' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  // Get next up for ALL shifts (not just current)
+  const allFirefighters = firefighters; // Get from all shifts
+  const shiftA = allFirefighters.filter(ff => ff.shift === 'A' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  const shiftB = allFirefighters.filter(ff => ff.shift === 'B' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  const shiftC = allFirefighters.filter(ff => ff.shift === 'C' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
 
   // Current shift firefighters (first 20)
   const currentShiftFFs = firefighters
@@ -102,21 +103,15 @@ function App() {
 
             {/* Calendar Cells (6 rows x 7 days) */}
             <div className="cells">
-              {calendarDays.map((day) => {
-                const dayKey = `${day.year}-${String(day.month + 1).padStart(2, '0')}-${String(day.date).padStart(2, '0')}`;
-                const isToday = dayKey === todayKey;
-                const isMuted = !day.isCurrentMonth;
-
-                return (
-                  <div
-                    key={dayKey}
-                    className={`cell ${isMuted ? 'muted' : ''} ${isToday ? 'today' : ''}`}
-                  >
-                    <span className="num">{day.date}</span>
-                    {/* Event pills would go here */}
-                  </div>
-                );
-              })}
+              {calendarDays.map((day, idx) => (
+                <div
+                  key={idx}
+                  className={`cell ${!day.isCurrentMonth ? 'muted' : ''} ${day.isToday ? 'today' : ''}`}
+                >
+                  <span className="num">{day.dayNumber}</span>
+                  {/* Event pills would go here */}
+                </div>
+              ))}
             </div>
           </div>
 

@@ -7,18 +7,18 @@ interface ShiftIndicatorProps {
 
 const SHIFT_COLORS = {
   A: {
-    bg: 'bg-sky-700',
-    border: 'border-sky-600',
+    bg: 'bg-materialm-success',
+    border: 'border-materialm-success',
     text: 'text-white'
   },
   B: {
-    bg: 'bg-emerald-700',
-    border: 'border-emerald-600',
+    bg: 'bg-materialm-error',
+    border: 'border-materialm-error',
     text: 'text-white'
   },
   C: {
-    bg: 'bg-red-700',
-    border: 'border-red-600',
+    bg: 'bg-materialm-primary',
+    border: 'border-materialm-primary',
     text: 'text-white'
   }
 };

@@ -1,25 +1,20 @@
 /**
  * Design System Barrel Export
- * 
- * Import design tokens and colors from a single location:
- * 
+ *
+ * NOW EXPORTS MaterialM color system by default!
+ *
+ * Import design tokens and MaterialM colors:
+ *
  * ```tsx
  * import { tokens, colors } from '@/styles';
- * 
- * // Use tokens
- * <div className={tokens.spacing.card.md}>
- *   Content
- * </div>
- * 
- * // Use colors
- * <button className={colors.components.button.primary}>
- *   Click
- * </button>
+ *
+ * // MaterialM colors are now the default
+ * // Legacy color system available via ./colorSystem if needed
  * ```
  */
 
 export { tokens } from './tokens';
-export { colors } from './colorSystem';
+export { colorsM3 as colors } from './colorSystemM3';  // MaterialM colors!
+export { colors as colorsLegacy } from './colorSystem'; // Legacy fallback
 export type { Tokens } from './tokens';
-export type { Colors } from './colorSystem';
 

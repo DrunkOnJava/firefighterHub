@@ -117,9 +117,17 @@ function CalendarM3({
   }
 
   return (
-    <CardM3 elevation={1} className="overflow-hidden">
+    <div
+      className={`
+        bg-white dark:bg-slate-800
+        border border-gray-200 dark:border-gray-700
+        rounded-xl
+        shadow-sm
+        overflow-hidden
+      `}
+    >
       {/* Header section */}
-      <CardM3.Header>
+      <div className="border-b-2 border-gray-200 dark:border-gray-700 p-6">
         <CalendarHeader
           currentDate={currentDate}
           onPreviousMonth={goToPreviousMonth}
@@ -127,10 +135,10 @@ function CalendarM3({
           currentShift={currentShift}
           isDarkMode={isDarkMode}
         />
-      </CardM3.Header>
+      </div>
 
       {/* Calendar grid section */}
-      <CardM3.Body>
+      <div className="p-6 w-full">
         <CalendarGrid
           calendarDays={calendarDays}
           onDayClick={handleDayClick}
@@ -139,12 +147,12 @@ function CalendarM3({
           currentShift={currentShift}
           isDarkMode={isDarkMode}
         />
-      </CardM3.Body>
+      </div>
 
       {/* Legend section */}
-      <CardM3.Footer>
+      <div className="border-t-2 border-gray-200 dark:border-gray-700 p-6">
         <CalendarLegend isDarkMode={isDarkMode} />
-      </CardM3.Footer>
+      </div>
 
       {/* Day modal */}
       <DayModal
@@ -161,7 +169,7 @@ function CalendarM3({
         isDarkMode={isDarkMode}
         currentShift={currentShift}
       />
-    </CardM3>
+    </div>
   );
 }
 

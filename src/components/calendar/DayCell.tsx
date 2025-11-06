@@ -72,13 +72,13 @@ function DayCellM3({
     }
   };
 
-  // Build cell classes with MaterialM styling
+  // Build cell classes with MaterialM OKLCH color palette
   let cellClasses = "relative w-full min-h-[120px] p-3 text-left transition-all duration-200 flex flex-col rounded-materialm-md border";
 
   if (!day.isCurrentMonth) {
-    cellClasses += " bg-gray-50 dark:bg-gray-900 text-gray-400 cursor-default opacity-40 border-transparent";
+    cellClasses += " bg-materialm-darkgray opacity-40 text-gray-400 cursor-default border-transparent";
   } else {
-    cellClasses += " bg-white dark:bg-slate-800 text-gray-900 dark:text-white hover:shadow-materialm-2 cursor-pointer border-gray-200 dark:border-slate-700";
+    cellClasses += " bg-white dark:bg-materialm-dark text-gray-900 dark:text-white hover:shadow-materialm-2 cursor-pointer border-materialm-border dark:border-materialm-border-dark";
   }
 
   // Today indicator (red ring + today badge)
@@ -136,7 +136,7 @@ function DayCellM3({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2.5 py-1.5 rounded-md bg-blue-50 dark:bg-blue-900/20 text-blue-900 dark:text-blue-100 font-medium border-l-3 border-l-blue-600 dark:border-l-blue-400 shadow-sm hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-all"
+              className="text-xs px-2.5 py-1.5 rounded-md bg-materialm-primary-light text-materialm-primary font-medium border-l-3 border-materialm-primary shadow-sm hover:opacity-80 transition-all"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}

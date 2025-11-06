@@ -190,21 +190,21 @@ function SidebarM3({
                       key={ff.id}
                       className={`
                         p-3 rounded-lg border-2
-                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-500' : 'bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
+                        ${index === 0 ? 'bg-materialm-warning/10 dark:bg-materialm-warning/20 border-materialm-warning' : 'bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
                       `}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`
                             w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 shadow-sm
-                            ${index === 0 ? 'bg-amber-500 text-white border-amber-700' : 'bg-materialm-surface-light dark:bg-materialm-darkgray text-materialm-text dark:text-materialm-text-dark border-materialm-border dark:border-materialm-border-dark'}
+                            ${index === 0 ? 'bg-materialm-warning text-materialm-on-warning border-materialm-border-dark' : 'bg-materialm-surface-light dark:bg-materialm-darkgray text-materialm-text dark:text-materialm-text-dark border-materialm-border dark:border-materialm-border-dark'}
                           `}
                         >
                           {index + 1}
                         </div>
                         <ShiftBadge shift={ff.shift as "A" | "B" | "C"} />
                         <div className="flex-1 min-w-0">
-                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-amber-900 dark:text-amber-100' : 'text-materialm-text dark:text-materialm-text-dark'}`}>
+                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-materialm-warning dark:text-materialm-warning-light' : 'text-materialm-text dark:text-materialm-text-dark'}`}>
                             {ff.name}
                           </p>
                           {ff.fire_station && (
@@ -237,20 +237,20 @@ function SidebarM3({
                       key={ff.id}
                       className={`
                         p-3 rounded-lg border
-                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700' : 'bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
+                        ${index === 0 ? 'bg-materialm-warning/10 dark:bg-materialm-warning/20 border-materialm-warning' : 'bg-materialm-surface dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
                       `}
                     >
                       <div className="flex items-center gap-3">
                         <div
                           className={`
                             w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2
-                            ${index === 0 ? 'bg-amber-500 text-white border-amber-700' : 'bg-materialm-surface-light dark:bg-materialm-darkgray text-materialm-text dark:text-materialm-text-dark border-materialm-border dark:border-materialm-border-dark'}
+                            ${index === 0 ? 'bg-materialm-warning text-materialm-on-warning border-materialm-border-dark' : 'bg-materialm-surface-light dark:bg-materialm-darkgray text-materialm-text dark:text-materialm-text-dark border-materialm-border dark:border-materialm-border-dark'}
                           `}
                         >
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-amber-900 dark:text-amber-100' : 'text-materialm-text dark:text-materialm-text-dark'}`}>
+                          <p className={`font-semibold text-sm truncate ${index === 0 ? 'text-materialm-warning dark:text-materialm-warning-light' : 'text-materialm-text dark:text-materialm-text-dark'}`}>
                             {ff.name}
                           </p>
                           {ff.fire_station && (

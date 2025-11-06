@@ -329,17 +329,11 @@ export function FirefighterListLegacy({
             <table className="w-full min-w-max">
               <thead>
                 <tr
-                  className={`border-b-2 ${
-                    isDarkMode
-                      ? "border-materialm-border-dark bg-materialm-dark/50"
-                      : "border-materialm-border-dark bg-materialm-surface"
-                  }`}
+                  className="border-b-2 border-materialm-border-dark bg-materialm-dark/50"
                 >
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-center ${
-                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                      }`}
+                      className="px-4 py-3 text-center text-materialm-text"
                     >
                       <button
                         onClick={
@@ -366,9 +360,7 @@ export function FirefighterListLegacy({
                     </th>
                   )}
                   <th
-                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                    }`}
+                    className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                   >
                     <div className="flex items-center gap-2">
                       <ArrowUpDown className={tokens.icons.xs} />
@@ -376,52 +368,40 @@ export function FirefighterListLegacy({
                     </div>
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                    }`}
+                    className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                   >
                     Name
                   </th>
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                      }`}
+                      className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                     >
                       Shift
                     </th>
                   )}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                      }`}
+                      className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                     >
                       Station
                     </th>
                   )}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                      }`}
+                      className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                     >
                       Cert Level
                     </th>
                   )}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                      }`}
+                      className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                     >
                       Qualifications
                     </th>
                   )}
                   <th
-                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                    }`}
+                    className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-materialm-text"
                   >
                     Last Hold
                   </th>
@@ -440,9 +420,7 @@ export function FirefighterListLegacy({
                     */}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                      }`}
+                      className="px-4 py-3 text-right text-xs font-bold uppercase tracking-wider text-materialm-text"
                     >
                       Actions
                     </th>
@@ -467,21 +445,13 @@ export function FirefighterListLegacy({
                       onDragOver={(e) => handleDragOver(e, firefighter.id)}
                       onDrop={(e) => handleDrop(e, firefighter.id)}
                       onDragEnd={handleDragEnd}
-                      className={`transition-colors ${
-                        isDarkMode
-                          ? "hover:bg-materialm-darkgray/50"
-                          : "hover:bg-materialm-surface"
-                      } ${draggedId === firefighter.id ? "opacity-50" : ""} ${
+                      className={`transition-colors hover:bg-materialm-darkgray/50 ${draggedId === firefighter.id ? "opacity-50" : ""} ${
                         dragOverId === firefighter.id
-                          ? isDarkMode
-                            ? "bg-materialm-primary/20 border-l-4 border-materialm-primary"
-                            : "bg-materialm-primary/10 border-l-4 border-materialm-primary"
+                          ? "bg-materialm-primary/20 border-l-4 border-materialm-primary"
                           : ""
                       } ${
                         isNext
-                          ? isDarkMode
-                            ? "bg-materialm-primary/30 ring-2 ring-inset ring-materialm-primary/50"
-                            : "bg-materialm-primary/10 ring-2 ring-inset ring-materialm-primary"
+                          ? "bg-materialm-primary/30 ring-2 ring-inset ring-materialm-primary/50"
                           : ""
                       } ${isAdminMode ? "cursor-move" : ""}`}
                     >
@@ -489,35 +459,23 @@ export function FirefighterListLegacy({
                         <td className="px-4 py-4 whitespace-nowrap text-center">
                           <button
                             onClick={() => toggleSelection(firefighter.id)}
-                            className={`p-1 rounded transition-colors ${
-                              isDarkMode
-                                ? "hover:bg-materialm-darkgray"
-                                : "hover:bg-materialm-surface"
-                            }`}
+                            className="p-1 rounded transition-colors hover:bg-materialm-darkgray"
                             aria-label={`Select ${firefighter.name}`}
                           >
                             {selectedIds.has(firefighter.id) ? (
                               <CheckSquare
-                                className={`w-5 h-5 ${
-                                  isDarkMode ? "text-materialm-primary" : "text-materialm-primary"
-                                }`}
+                                className="w-5 h-5 text-materialm-primary"
                               />
                             ) : (
                               <Square
-                                className={`w-5 h-5 ${
-                                  isDarkMode
-                                    ? "text-materialm-text-disabled"
-                                    : "text-materialm-text-secondary"
-                                }`}
+                                className="w-5 h-5 text-materialm-text-disabled"
                               />
                             )}
                           </button>
                         </td>
                       )}
                       <td
-                        className={`px-4 py-4 whitespace-nowrap text-sm ${
-                          isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                        }`}
+                        className="px-4 py-4 whitespace-nowrap text-sm text-materialm-text"
                       >
                         <div className="flex items-center gap-2">
                           {isNext && (
@@ -529,9 +487,7 @@ export function FirefighterListLegacy({
                         </div>
                       </td>
                       <td
-                        className={`px-4 py-4 whitespace-nowrap ${
-                          isDarkMode ? "text-white" : "text-white"
-                        }`}
+                        className="px-4 py-4 whitespace-nowrap text-white"
                       >
                         <button
                           onClick={() => handleViewProfile(firefighter)}
@@ -543,9 +499,7 @@ export function FirefighterListLegacy({
                       </td>
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-4 whitespace-nowrap ${
-                            isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                          }`}
+                          className="px-4 py-4 whitespace-nowrap text-materialm-text"
                         >
                           <span
                             className={`inline-flex items-center justify-center px-2 py-1 rounded font-bold text-xs ${
@@ -562,9 +516,7 @@ export function FirefighterListLegacy({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-4 whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                          }`}
+                          className="px-4 py-4 whitespace-nowrap text-sm text-materialm-text"
                         >
                           {firefighter.fire_station ? (
                             <span className="font-semibold">
@@ -572,9 +524,7 @@ export function FirefighterListLegacy({
                             </span>
                           ) : (
                             <span
-                              className={
-                                isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-secondary"
-                              }
+                              className="text-materialm-text-disabled"
                             >
                               —
                             </span>
@@ -583,25 +533,17 @@ export function FirefighterListLegacy({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-4 whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-materialm-text" : "text-materialm-text"
-                          }`}
+                          className="px-4 py-4 whitespace-nowrap text-sm text-materialm-text"
                         >
                           {firefighter.certification_level ? (
                             <span
-                              className={`px-2 py-1 text-xs font-bold rounded ${
-                                isDarkMode
-                                  ? "bg-materialm-warning/70 text-materialm-warning"
-                                  : "bg-materialm-warning/20 text-materialm-warning"
-                              }`}
+                              className="px-2 py-1 text-xs font-bold rounded bg-materialm-warning/70 text-materialm-warning"
                             >
                               {firefighter.certification_level}
                             </span>
                           ) : (
                             <span
-                              className={
-                                isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-secondary"
-                              }
+                              className="text-materialm-text-disabled"
                             >
                               —
                             </span>
@@ -623,9 +565,7 @@ export function FirefighterListLegacy({
                             </div>
                           ) : (
                             <span
-                              className={
-                                isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-secondary"
-                              }
+                              className="text-materialm-text-disabled"
                             >
                               —
                             </span>
@@ -633,9 +573,7 @@ export function FirefighterListLegacy({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-4 whitespace-nowrap text-sm ${
-                          isDarkMode ? "text-materialm-text-secondary" : "text-materialm-text-secondary"
-                        }`}
+                        className="px-4 py-4 whitespace-nowrap text-sm text-materialm-text-secondary"
                       >
                         <div className="flex items-center gap-2">
                           <span>
@@ -643,11 +581,7 @@ export function FirefighterListLegacy({
                               formatHoldDate(firefighter.last_hold_date)
                             ) : (
                               <span
-                                className={
-                                  isDarkMode
-                                    ? "text-materialm-text-disabled"
-                                    : "text-materialm-text-secondary"
-                                }
+                                className="text-materialm-text-disabled"
                               >
                                 Never
                               </span>
@@ -659,11 +593,7 @@ export function FirefighterListLegacy({
                                 setSelectedFirefighter(firefighter);
                                 setShowProfileModal(true);
                               }}
-                              className={`p-1 rounded transition-colors ${
-                                isDarkMode
-                                  ? "hover:bg-materialm-darkgray text-materialm-text-disabled hover:text-materialm-text"
-                                  : "hover:bg-materialm-surface text-materialm-text-secondary hover:text-materialm-text"
-                              }`}
+                              className="p-1 rounded transition-colors hover:bg-materialm-darkgray text-materialm-text-disabled hover:text-materialm-text"
                               title="View hold history"
                               aria-label="View hold history"
                             >
@@ -695,33 +625,21 @@ export function FirefighterListLegacy({
                           <div className="flex items-center justify-end gap-1">
                             <button
                               onClick={() => onTransferShift(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                isDarkMode
-                                  ? "hover:bg-materialm-primary/20 text-materialm-primary"
-                                  : "hover:bg-materialm-primary/10 text-materialm-primary"
-                              }`}
+                              className="p-1.5 rounded transition-colors focus-ring hover:bg-materialm-primary/20 text-materialm-primary"
                               title="Transfer shift"
                             >
                               <Repeat className={tokens.icons.sm} />
                             </button>
                             <button
                               onClick={() => onDeactivate(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                isDarkMode
-                                  ? "hover:bg-materialm-darkgray text-materialm-text-secondary"
-                                  : "hover:bg-materialm-surface text-materialm-text-secondary"
-                              }`}
+                              className="p-1.5 rounded transition-colors focus-ring hover:bg-materialm-darkgray text-materialm-text-secondary"
                               title="Deactivate"
                             >
                               <UserX className={tokens.icons.sm} />
                             </button>
                             <button
                               onClick={() => onDelete(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                isDarkMode
-                                  ? "hover:bg-materialm-error/20 text-materialm-error"
-                                  : "hover:bg-materialm-error/10 text-materialm-error"
-                              }`}
+                              className="p-1.5 rounded transition-colors focus-ring hover:bg-materialm-error/20 text-materialm-error"
                               title="Delete permanently"
                             >
                               <Trash2 className={tokens.icons.sm} />
@@ -752,9 +670,7 @@ export function FirefighterListLegacy({
             {isAdminMode && deactivatedFirefighters.length > 0 && (
               <div className={`mt-6 pt-6 border-t border-materialm-border-dark ${tokens.spacing.card.lg}`}>
                 <h3
-                  className={`text-sm font-bold mb-3 ${
-                    isDarkMode ? "text-materialm-text-secondary" : "text-materialm-text-secondary"
-                  }`}
+                  className="text-sm font-bold mb-3 text-materialm-text-secondary"
                 >
                   Deactivated ({deactivatedFirefighters.length})
                 </h3>
@@ -762,18 +678,12 @@ export function FirefighterListLegacy({
                   {deactivatedFirefighters.map((firefighter) => (
                     <div
                       key={firefighter.id}
-                      className={`rounded-lg p-3 border ${
-                        isDarkMode
-                          ? "bg-materialm-darkgray/40 border-materialm-border-dark/50 hover:bg-materialm-darkgray/60"
-                          : "bg-materialm-surface border-materialm-border-dark hover:bg-materialm-surface"
-                      } transition-colors`}
+                      className="rounded-lg p-3 border bg-materialm-darkgray/40 border-materialm-border-dark/50 hover:bg-materialm-darkgray/60 transition-colors"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 flex-1">
                           <div
-                            className={`w-2 h-2 rounded-full ${
-                              isDarkMode ? "bg-materialm-text-disabled" : "bg-materialm-text-secondary"
-                            }`}
+                            className="w-2 h-2 rounded-full bg-materialm-text-disabled"
                           />
                           <div className="flex-1">
                             <button
@@ -781,19 +691,13 @@ export function FirefighterListLegacy({
                                 setSelectedFirefighter(firefighter);
                                 setShowProfileModal(true);
                               }}
-                              className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
-                                isDarkMode
-                                  ? "text-materialm-text-secondary hover:text-materialm-text"
-                                  : "text-materialm-text-secondary hover:text-materialm-text"
-                              }`}
+                              className="font-semibold text-sm text-left hover:underline focus:outline-none focus:underline text-materialm-text-secondary hover:text-materialm-text"
                             >
                               {firefighter.name}
                             </button>
                             {firefighter.fire_station && (
                               <p
-                                className={`text-xs ${
-                                  isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-disabled"
-                                }`}
+                                className="text-xs text-materialm-text-disabled"
                               >
                                 Station #{firefighter.fire_station}
                               </p>
@@ -806,11 +710,7 @@ export function FirefighterListLegacy({
                               setSelectedFirefighter(firefighter);
                               setShowProfileModal(true);
                             }}
-                            className={`p-1.5 rounded transition-colors focus-ring ${
-                              isDarkMode
-                                ? "hover:bg-materialm-primary/20 text-materialm-primary"
-                                : "hover:bg-materialm-primary/10 text-materialm-primary"
-                            }`}
+                            className="p-1.5 rounded transition-colors focus-ring hover:bg-materialm-primary/20 text-materialm-primary"
                             title="View profile and hold history"
                           >
                             <Eye className={tokens.icons.sm} />
@@ -820,21 +720,13 @@ export function FirefighterListLegacy({
                               setSelectedFirefighter(firefighter);
                               setShowReactivateModal(true);
                             }}
-                            className={`p-1.5 rounded transition-colors focus-ring ${
-                              isDarkMode
-                                ? "hover:bg-materialm-success/20 text-materialm-success"
-                                : "hover:bg-materialm-success/10 text-materialm-success"
-                            }`}
+                            className="p-1.5 rounded transition-colors focus-ring hover:bg-materialm-success/20 text-materialm-success"
                             title="Reactivate firefighter"
                           >
                             <RotateCcw className={tokens.icons.sm} />
                           </button>
                           <span
-                            className={`text-xs px-2 py-1 rounded ${
-                              isDarkMode
-                                ? "bg-materialm-darkgray/50 text-materialm-text-disabled"
-                                : "bg-materialm-surface text-materialm-text-secondary"
-                            }`}
+                            className="text-xs px-2 py-1 rounded bg-materialm-darkgray/50 text-materialm-text-disabled"
                           >
                             Inactive
                           </span>

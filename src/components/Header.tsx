@@ -81,10 +81,10 @@ function HeaderM3({
               />
             </div>
             <div className="min-w-0">
-              <h1 className="text-2xl sm:text-3xl font-bold truncate text-gray-900 dark:text-gray-100">
+              <h1 className="text-2xl sm:text-3xl font-bold truncate text-materialm-text dark:text-materialm-text">
                 Hold List Manager
               </h1>
-              <p className="text-sm sm:text-base mt-0.5 hidden sm:block text-gray-600 dark:text-gray-400">
+              <p className="text-sm sm:text-base mt-0.5 hidden sm:block text-materialm-text-secondary dark:text-materialm-text-secondary">
                 Organize your team's hold rotation schedule
               </p>
             </div>
@@ -125,11 +125,7 @@ function HeaderM3({
             <div className="hidden sm:flex items-center gap-1">
               <button
                 onClick={() => window.print()}
-                className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
-                  isDarkMode
-                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
-                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
-                }`}
+                className="p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 hover:bg-materialm-darkgray text-materialm-text-secondary hover:text-materialm-text"
                 aria-label="Print calendar"
               >
                 <Printer size={20} />
@@ -137,11 +133,7 @@ function HeaderM3({
               </button>
               <button
                 onClick={onShowActivityLog}
-                className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
-                  isDarkMode
-                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
-                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
-                }`}
+                className="p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 hover:bg-materialm-darkgray text-materialm-text-secondary hover:text-materialm-text"
                 aria-label="View activity history"
               >
                 <Clock size={20} />
@@ -149,11 +141,7 @@ function HeaderM3({
               </button>
               <button
                 onClick={onToggleDarkMode}
-                className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
-                  isDarkMode
-                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
-                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
-                }`}
+                className="p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 hover:bg-materialm-darkgray text-materialm-text-secondary hover:text-materialm-text"
                 aria-label={
                   isDarkMode ? "Switch to light mode" : "Switch to dark mode"
                 }
@@ -165,11 +153,7 @@ function HeaderM3({
               </button>
               <button
                 onClick={onShowHelp}
-                className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
-                  isDarkMode
-                    ? "hover:bg-materialm-dark text-gray-400 hover:text-gray-200"
-                    : "hover:bg-gray-100 text-gray-600 hover:text-gray-700"
-                }`}
+                className="p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 hover:bg-materialm-darkgray text-materialm-text-secondary hover:text-materialm-text"
                 aria-label="Show help"
               >
                 <HelpCircle size={20} />
@@ -197,11 +181,7 @@ function HeaderM3({
             {/* Mobile Menu Button */}
             <button
               onClick={onOpenMobileMenu}
-              className={`sm:hidden p-2 min-h-[44px] rounded-lg transition-colors focus-ring ${
-                isDarkMode
-                  ? "hover:bg-materialm-dark text-gray-200"
-                  : "hover:bg-gray-100 text-gray-600"
-              }`}
+              className="sm:hidden p-2 min-h-[44px] rounded-lg transition-colors focus-ring hover:bg-materialm-darkgray text-materialm-text"
               aria-label="Open menu"
             >
               <Menu size={24} />

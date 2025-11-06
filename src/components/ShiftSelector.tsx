@@ -40,16 +40,10 @@ export function ShiftSelector({
   const shifts: Shift[] = ["A", "B", "C"];
 
   return (
-    <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
-      <span
-        className={`${tokens.typography.body.secondary} font-semibold hidden sm:inline ${colors.structural.text.tertiary}`}
-      >
-        Shift:
-      </span>
-      <div
-        className={`flex ${tokens.borders.radius.lg} p-1 ${colors.structural.bg.card}`}
-      >
-        {shifts.map((shift) => {
+    <div
+      className={`flex ${tokens.borders.radius.lg} p-1 ${colors.structural.bg.card}`}
+    >
+      {shifts.map((shift) => {
           const isActive = currentShift === shift;
           const colorClasses = isActive
             ? SHIFT_COLORS[shift].active
@@ -70,7 +64,6 @@ export function ShiftSelector({
             </button>
           );
         })}
-      </div>
     </div>
   );
 }

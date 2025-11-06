@@ -55,10 +55,9 @@ export function Header({
         }
       `}
     >
-      <div className={`px-4 sm:px-6 ${tokens.spacing.section.sm}`}>
-        <div className="flex items-center w-full">
-          {/* Logo & Title */}
-          <div className="flex items-center gap-4 min-w-0 leading-tight">
+      <div className={`px-4 sm:px-6 ${tokens.spacing.section.sm} flex items-center justify-between w-full gap-4`}>
+        {/* Logo & Title - LEFT SIDE */}
+        <div className="flex items-center gap-4 min-w-0 flex-shrink leading-tight">
             <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
@@ -97,21 +96,26 @@ export function Header({
             </div>
           </div>
 
-          {/* Spacer to push right items to the edge */}
-          <div className="flex-1"></div>
-
-          {/* Right-aligned Navigation Actions */}
-          <div className="flex items-center gap-3" style={{ marginLeft: 'auto' }}>
+          {/* Right-aligned Navigation Actions - RIGHT SIDE */}
+          <div className="flex items-center gap-3 flex-shrink-0">
             {/* Shift Selector + Action Buttons (Desktop) */}
             <div className="hidden sm:flex items-center gap-3">
-              {/* Shift Selector */}
               <div className={`flex items-center gap-2 pr-3 border-r ${
                 isDarkMode ? "border-gray-700" : "border-slate-300"
               }`}>
-                <ShiftSelector
-                  currentShift={currentShift}
-                  onShiftChange={onShiftChange}
-                />
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-sm font-semibold hidden sm:inline ${
+                      isDarkMode ? "text-gray-500" : "text-slate-600"
+                    }`}
+                  >
+                    Shift:
+                  </span>
+                  <ShiftSelector
+                    currentShift={currentShift}
+                    onShiftChange={onShiftChange}
+                  />
+                </div>
               </div>
 
               {/* Action Buttons */}
@@ -182,7 +186,6 @@ export function Header({
               <Menu size={24} />
             </button>
           </div>
-        </div>
 
         {/* Mobile Add Button */}
         {isAdminMode && (

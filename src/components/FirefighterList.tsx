@@ -416,7 +416,7 @@ export function FirefighterList({
                 </tr>
               </thead>
               <tbody className={`divide-y ${
-                isDarkMode ? "divide-gray-700" : "divide-slate-200"
+                isDarkMode ? "divide-gray-700" : "divide-gray-200"
               }`}>
                 {filteredAndAdvancedFiltered.map((firefighter, index) => {
                   const qualifications = [

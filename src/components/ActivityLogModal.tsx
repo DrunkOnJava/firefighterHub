@@ -54,10 +54,10 @@ function ActivityLogModalM3({ isOpen, onClose }: ActivityLogModalProps) {
       {/* Custom Header */}
       <div
         ref={trapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-primary-light dark:bg-materialm-primary-light"
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-blue-600">
+          <div className="p-2 rounded-lg bg-materialm-primary">
             <Clock className="w-6 h-6 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">

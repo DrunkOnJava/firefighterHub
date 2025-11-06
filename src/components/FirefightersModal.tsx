@@ -175,11 +175,11 @@ function FirefightersModalM3({
       {/* Custom Header */}
       <div
         ref={trapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-primary-light dark:bg-materialm-primary-light"
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-600">
+            <div className="p-2 rounded-lg bg-materialm-primary">
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -211,7 +211,7 @@ function FirefightersModalM3({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <thead className="bg-gray-50 dark:bg-materialm-dark border-b border-materialm-border dark:border-materialm-border-dark">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
                     Name
@@ -244,7 +244,7 @@ function FirefightersModalM3({
                           type="text"
                           value={ff.name}
                           onChange={(e) => updateField(ff.id, "name", e.target.value)}
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                         />
                       ) : (
                         <span className="font-medium text-gray-900 dark:text-white">
@@ -264,7 +264,7 @@ function FirefightersModalM3({
                             updateField(ff.id, "fire_station", e.target.value)
                           }
                           placeholder="Station #"
-                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                         />
                       ) : (
                         <span className="text-sm text-gray-700 dark:text-gray-300">

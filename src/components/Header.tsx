@@ -67,7 +67,7 @@ function HeaderM3({
   return (
     <Navbar
       fluid
-      className="border-b backdrop-blur-sm sticky top-0 z-40 shadow-materialm-2 bg-white/95 dark:bg-gray-900/95 dark:border-gray-800"
+      className="border-b backdrop-blur-sm sticky top-0 z-40 shadow-materialm-2 bg-white/95 dark:bg-materialm-darkgray/95 dark:border-materialm-border-dark"
     >
       <div className="w-full px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between gap-4">
@@ -95,7 +95,7 @@ function HeaderM3({
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-3">
               {/* Context Section - Shift */}
-              <div className="flex items-center gap-2 pr-3 border-r border-gray-300 dark:border-gray-700">
+              <div className="flex items-center gap-2 pr-3 border-r border-gray-300 dark:border-materialm-border-dark">
                 <ShiftSelector
                   currentShift={currentShift}
                   onShiftChange={onShiftChange}
@@ -211,7 +211,7 @@ function HeaderM3({
 
         {/* Mobile Add Button */}
         {isAdminMode && (
-          <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t dark:border-gray-800">
+          <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t dark:border-materialm-border-dark">
             <ButtonM3
               color="success"
               size="md"

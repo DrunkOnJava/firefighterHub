@@ -142,7 +142,7 @@ function DayModalM3({
       {/* Custom header with hold count */}
       <div
         ref={modalTrapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-gray-50 dark:bg-materialm-dark"
       >
         <div className="flex items-center justify-between">
           <div className="flex-1">

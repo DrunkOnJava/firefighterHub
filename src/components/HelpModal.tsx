@@ -81,10 +81,10 @@ function HelpModalM3({
       {/* Custom Header */}
       <div
         ref={trapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-50 dark:bg-blue-900/20"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-primary-light dark:bg-materialm-primary-light"
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-blue-600">
+          <div className="p-2 rounded-lg bg-materialm-primary">
             <Calendar className="w-6 h-6 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -240,7 +240,7 @@ function HelpModalM3({
           </CardM3>
 
           {/* Pro Tips */}
-          <CardM3 className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
+          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-blue-200 dark:border-blue-700">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
               Pro Tips
             </h3>
@@ -255,7 +255,7 @@ function HelpModalM3({
           {/* Battalion Chief Authentication */}
           <CardM3
             elevation={1}
-            className={user ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700" : "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700"}
+            className={user ? "bg-materialm-success-light dark:bg-materialm-success-light border-emerald-200 dark:border-emerald-700" : "bg-materialm-primary-light dark:bg-materialm-primary-light border-blue-200 dark:border-blue-700"}
           >
             <div className="flex items-center gap-3 mb-3">
               {user ? (

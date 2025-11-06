@@ -100,11 +100,11 @@ function MobileNavM3({
       {/* Drawer */}
       <nav
         ref={trapRef}
-        className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 z-50 shadow-materialm-5 animate-slide-in-right"
+        className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white dark:bg-materialm-darkgray border-l border-materialm-border dark:border-materialm-border-dark z-50 shadow-materialm-5 animate-slide-in-right"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-5 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
+          <div className="p-5 border-b border-materialm-border dark:border-materialm-border-dark bg-gray-50 dark:bg-materialm-dark">
             <div className="flex items-center justify-between mb-2">
               <h2
                 id="mobile-nav-title"
@@ -183,7 +183,7 @@ function MobileNavM3({
                     onShowActivityLog();
                     onClose();
                   }}
-                  className="w-full flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
+                  className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
                 >
                   <Clock size={22} className="text-blue-600 dark:text-blue-400" />
                   <div className="flex-1">
@@ -201,7 +201,7 @@ function MobileNavM3({
                     onShowHelp();
                     onClose();
                   }}
-                  className="w-full flex items-center gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
+                  className="w-full flex items-center gap-3 p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left focus-ring"
                 >
                   <HelpCircle size={22} className="text-purple-600 dark:text-purple-400" />
                   <div className="flex-1">
@@ -223,7 +223,7 @@ function MobileNavM3({
               </h3>
               <button
                 onClick={onToggleDarkMode}
-                className="w-full flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus-ring"
+                className="w-full flex items-center justify-between p-4 border border-materialm-border dark:border-materialm-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus-ring"
               >
                 <div className="flex items-center gap-3">
                   {isDarkMode ? (
@@ -248,8 +248,8 @@ function MobileNavM3({
 
             {/* Info Section for Non-Admin */}
             {!isAdminMode && (
-              <section className="pt-4 border-t-2 border-gray-200 dark:border-gray-700">
-                <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4">
+              <section className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
+                <div className="bg-materialm-primary-light dark:bg-materialm-primary-light border-2 border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <div className="flex gap-3">
                     <Lightbulb className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
                     <div>

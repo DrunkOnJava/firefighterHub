@@ -157,7 +157,7 @@ function SidebarM3({
         {/* Header */}
         <CardM3.Header>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-600">
+            <div className="p-2 rounded-lg bg-materialm-primary">
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">
@@ -190,7 +190,7 @@ function SidebarM3({
                       key={ff.id}
                       className={`
                         p-3 rounded-lg border-2
-                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-500' : 'bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700'}
+                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-500' : 'bg-gray-50 dark:bg-materialm-dark border-gray-300 dark:border-materialm-border-dark'}
                       `}
                     >
                       <div className="flex items-center gap-3">
@@ -227,7 +227,7 @@ function SidebarM3({
 
             {/* Current Shift Rotation */}
             {currentShiftRotation.length > 0 && (
-              <div className="pt-4 border-t-2 border-gray-200 dark:border-gray-700">
+              <div className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
                 <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
                   Shift {currentShift} Rotation (Next 5)
                 </h3>
@@ -237,7 +237,7 @@ function SidebarM3({
                       key={ff.id}
                       className={`
                         p-3 rounded-lg border
-                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700' : 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700'}
+                        ${index === 0 ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-300 dark:border-amber-700' : 'bg-gray-50 dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark'}
                       `}
                     >
                       <div className="flex items-center gap-3">
@@ -268,7 +268,7 @@ function SidebarM3({
 
             {/* Scheduled Holds */}
             {displayedHolds.length > 0 && (
-              <div className="pt-4 border-t-2 border-gray-200 dark:border-gray-700">
+              <div className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
                 <h3 className="text-xs font-bold uppercase tracking-wide mb-3 text-gray-500 dark:text-gray-400">
                   Scheduled Holds
                 </h3>
@@ -276,7 +276,7 @@ function SidebarM3({
                   {displayedHolds.map((group) => (
                     <div
                       key={group.date}
-                      className="p-3 border rounded-lg bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                      className="p-3 border rounded-lg bg-gray-50 dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <BadgeM3 color="primary" size="xs">
@@ -312,7 +312,7 @@ function SidebarM3({
             {/* Empty State for No Scheduled Holds */}
             {displayedHolds.length === 0 &&
              (allShiftFirefighters.length > 0 || currentShiftRotation.length > 0) && (
-              <div className="pt-4 border-t-2 border-gray-200 dark:border-gray-700">
+              <div className="pt-4 border-t-2 border-materialm-border dark:border-materialm-border-dark">
                 <div className="text-center py-8">
                   <Calendar className="w-12 h-12 mx-auto mb-3 text-gray-400" />
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">

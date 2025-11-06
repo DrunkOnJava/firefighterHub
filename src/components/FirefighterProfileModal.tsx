@@ -795,7 +795,7 @@ export function FirefighterProfileModal({
 
                 {/* No Additional History Message */}
                 {showAllHolds && holdRecords.length <= 3 && (
-                  <div className="mt-3 bg-gray-900/30 border border-gray-700 rounded-lg p-4 text-center">
+                  <div className="mt-3 bg-gray-900/30 border border-materialm-border-dark rounded-lg p-4 text-center">
                     <p className="text-sm text-gray-400">
                       No additional hold history
                     </p>

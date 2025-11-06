@@ -190,10 +190,10 @@ function QuickAddFirefighterModalM3({
       {/* Custom Header */}
       <div
         ref={trapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-emerald-50 dark:bg-emerald-900/20"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-success-light dark:bg-materialm-success-light"
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-lg bg-emerald-600">
+          <div className="p-2 rounded-lg bg-materialm-success">
             <UserPlus className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -248,7 +248,7 @@ function QuickAddFirefighterModalM3({
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center justify-between w-full p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors bg-gray-50 dark:bg-gray-800"
+                className="flex items-center justify-between w-full p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-colors bg-gray-50 dark:bg-materialm-dark"
               >
                 <div className="flex items-center gap-3">
                   {showAdvanced ? (
@@ -288,7 +288,7 @@ function QuickAddFirefighterModalM3({
               </button>
 
               {showAdvanced && (
-                <div className="mt-4 space-y-6 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800">
+                <div className="mt-4 space-y-6 p-4 border-2 border-materialm-border dark:border-materialm-border-dark rounded-lg bg-white dark:bg-materialm-dark">
                   {/* Apparatus Clearances */}
                   <FormGroupM3 title="Apparatus Clearances">
                     <div className="grid grid-cols-2 gap-3">

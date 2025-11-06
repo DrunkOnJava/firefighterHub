@@ -81,7 +81,7 @@ function TransferShiftModalM3({
       {/* Custom Header */}
       <div
         ref={trapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-blue-600 dark:bg-blue-700"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-primary dark:bg-materialm-primary-emphasis"
       >
         <div className="flex items-center gap-3">
           <ArrowRightLeft className="w-7 h-7 text-white" />
@@ -99,7 +99,7 @@ function TransferShiftModalM3({
       <DialogM3.Body>
         <div className="space-y-6">
           {/* Info Card */}
-          <CardM3 className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
+          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-blue-200 dark:border-blue-700">
             <p className="text-sm text-blue-900 dark:text-blue-100">
               Transfer <strong>{firefighter.name}</strong> from{" "}
               <strong>Shift {firefighter.shift}</strong> to a different shift.
@@ -121,8 +121,8 @@ function TransferShiftModalM3({
                     py-4 px-6 rounded-lg font-bold text-lg transition-all border-2 flex items-center justify-center gap-2
                     ${
                       selectedShift === shift
-                        ? "bg-blue-600 dark:bg-blue-700 border-blue-700 dark:border-blue-600 text-white shadow-materialm-2"
-                        : "bg-white dark:bg-slate-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-500 dark:hover:border-blue-400"
+                        ? "bg-materialm-primary dark:bg-materialm-primary-emphasis border-blue-700 dark:border-blue-600 text-white shadow-materialm-2"
+                        : "bg-white dark:bg-materialm-dark border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-blue-500 dark:hover:border-blue-400"
                     }
                   `}
                 >

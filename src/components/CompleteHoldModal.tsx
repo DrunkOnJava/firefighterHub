@@ -124,7 +124,7 @@ function CompleteHoldModalM3({
       {/* Custom Header */}
       <div
         ref={trapRef}
-        className="p-6 border-b border-gray-200 dark:border-gray-700 bg-emerald-600 dark:bg-emerald-700"
+        className="p-6 border-b border-materialm-border dark:border-materialm-border-dark bg-materialm-success dark:bg-materialm-success"
       >
         <div className="flex items-center gap-3">
           <CheckCircle className="w-7 h-7 text-white" />
@@ -142,7 +142,7 @@ function CompleteHoldModalM3({
       <DialogM3.Body>
         <div className="space-y-6">
           {/* Info Card */}
-          <CardM3 className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700">
+          <CardM3 className="bg-materialm-primary-light dark:bg-materialm-primary-light border-blue-200 dark:border-blue-700">
             <p className="text-sm text-blue-900 dark:text-blue-100">
               This will mark the hold as completed and update{" "}
               <strong>{firefighter.name}</strong>'s position in the rotation.
@@ -161,7 +161,7 @@ function CompleteHoldModalM3({
               onChange={(e) => setSelectedDate(e.target.value)}
               min={today}
               max={maxDateStr}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
             />
           </div>
 
@@ -181,7 +181,7 @@ function CompleteHoldModalM3({
             <select
               value={lentToShift || ""}
               onChange={(e) => setLentToShift((e.target.value as Shift | null) || null)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
             >
               <option value="">None (not being lent out)</option>
               <option value="A">A-Shift</option>
@@ -202,7 +202,7 @@ function CompleteHoldModalM3({
             <select
               value={duration}
               onChange={(e) => setDuration(e.target.value as HoldDuration)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
             >
               <option value="12h">12 Hours</option>
               <option value="24h">24 Hours (Default)</option>
@@ -222,7 +222,7 @@ function CompleteHoldModalM3({
               type="time"
               value={startTime}
               onChange={(e) => setStartTime(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-materialm-dark text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               Hold start time (default: 07:00). Member may be called back mid-shift if needed.

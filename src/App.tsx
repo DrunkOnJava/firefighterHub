@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
+import { useDarkMode } from './hooks/useDarkMode';
 import { Firefighter, Shift } from './lib/supabase';
+
+// Header component
+import { Header } from './components/Header';
 
 // Modal components
 import { HelpModal } from './components/HelpModal';
@@ -27,12 +31,14 @@ function App() {
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   // State: Selected firefighters for modals
   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
   const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
 
   const { toasts, showToast } = useToast();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   // Load ALL shifts for Next Up section
   const { firefighters: ffA = [], loading: loadingA } = useFirefighters(showToast, 'A');
@@ -60,9 +66,8 @@ function App() {
     markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
 
-  // Admin and dark mode (will be integrated in later phases)
+  // Admin mode (will be integrated in Phase 6: Authentication)
   const isAdminMode = false; // Phase 6: Will integrate authentication
-  const isDarkMode = true; // Phase 8: Will integrate dark mode toggle
 
   // Combine all firefighters and filter for current shift
   const allFirefighters = [...ffA, ...ffB, ...ffC];
@@ -133,52 +138,17 @@ function App() {
   return (
     <>
       {/* Header */}
-      <header>
-        <div className="brand">
-          <div className="logo" />
-          <div>
-            <div style={{ fontWeight: 800 }}>Hold List Manager</div>
-            <span className="subtitle">Single-view — calendar + 20-roster sidebar (no scroll)</span>
-          </div>
-        </div>
-        <div className="toolbar">
-          <span
-            style={{ cursor: 'pointer' }}
-            onClick={() => setShowActivityLog(true)}
-          >
-            Activity
-          </span>
-          <span>•</span>
-          <span style={{ cursor: 'pointer' }}>Light</span>
-          <span>•</span>
-          <span
-            style={{ cursor: 'pointer' }}
-            onClick={() => setShowHelp(true)}
-          >
-            Help
-          </span>
-          <div className="shift-badges">
-            <span
-              className="badge circle"
-              title="Shift A"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setCurrentShift('A')}
-            />
-            <span
-              className="badge square"
-              title="Shift B"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setCurrentShift('B')}
-            />
-            <span
-              className="badge diamond"
-              title="Shift C"
-              style={{ cursor: 'pointer' }}
-              onClick={() => setCurrentShift('C')}
-            />
-          </div>
-        </div>
-      </header>
+      <Header
+        onShowHelp={() => setShowHelp(true)}
+        onShowActivityLog={() => setShowActivityLog(true)}
+        onQuickAddFirefighter={() => setShowQuickAdd(true)}
+        onOpenMobileMenu={() => setShowMobileMenu(true)}
+        isAdminMode={isAdminMode}
+        currentShift={currentShift}
+        onShiftChange={setCurrentShift}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={toggleDarkMode}
+      />
 
       {/* Main Layout: Calendar + Roster */}
       <div className="layout">

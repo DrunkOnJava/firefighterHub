@@ -32,6 +32,8 @@ import { DialogM3 } from "../m3/DialogM3";
 import { BadgeM3 } from "../m3/BadgeM3";
 import { HoldForm } from "./HoldForm";
 import { HoldList } from "./HoldList";
+import { HoldFormM3 } from "./HoldFormM3";
+import { HoldListM3 } from "./HoldListM3";
 import { DayModalLegacy } from "./DayModalLegacy";
 
 interface DayModalProps {
@@ -169,7 +171,7 @@ function DayModalM3({
       {/* Modal Body */}
       <DialogM3.Body>
         {hasHolds && !showAddAnother && !selectedFirefighter ? (
-          <HoldList
+          <HoldListM3
             holds={selectedDay.scheduledHolds}
             firefighters={firefighters}
             onRemove={onRemoveHold}
@@ -180,7 +182,7 @@ function DayModalM3({
             isDarkMode={isDarkMode}
           />
         ) : (
-          <HoldForm
+          <HoldFormM3
             selectedDay={selectedDay}
             firefighters={firefighters}
             selectedFirefighter={selectedFirefighter}

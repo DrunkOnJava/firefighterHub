@@ -18,10 +18,10 @@ import {
   ScheduledHold,
   CalendarDay,
 } from "../utils/calendarUtils";
-import { CalendarHeader } from './calendar/CalendarHeader';
-import { CalendarGrid } from './calendar/CalendarGrid';
+import { CalendarHeaderM3 } from './calendar/CalendarHeaderM3';
+import { CalendarGridM3 } from './calendar/CalendarGridM3';
 import { DayModal } from './calendar/DayModal';
-import { CalendarLegend } from './calendar/CalendarLegend';
+import { CalendarLegendM3 } from './calendar/CalendarLegendM3';
 import { colors, tokens } from '../styles';
 
 interface CalendarProps {
@@ -118,7 +118,7 @@ export function CalendarM3({
         border-materialm-border-dark
         ${tokens.spacing.card.md}
       `}>
-        <CalendarHeader
+        <CalendarHeaderM3
           currentDate={currentDate}
           onPreviousMonth={goToPreviousMonth}
           onNextMonth={goToNextMonth}
@@ -129,7 +129,7 @@ export function CalendarM3({
 
       {/* Calendar grid section */}
       <div className={`${tokens.spacing.card.md} w-full`}>
-        <CalendarGrid
+        <CalendarGridM3
           calendarDays={calendarDays}
           onDayClick={handleDayClick}
           loading={loading}
@@ -145,7 +145,7 @@ export function CalendarM3({
         border-materialm-border-dark
         ${tokens.spacing.card.md}
       `}>
-        <CalendarLegend isDarkMode={isDarkMode} />
+        <CalendarLegendM3 />
       </div>
 
       {/* Day modal */}

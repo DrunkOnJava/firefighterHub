@@ -1,445 +1,205 @@
-// FIXED: Integrated AuthContext and LoginModal for proper Supabase authentication
-// FIXED: Dark mode now persists to localStorage
-// TECHNICAL DEBT: Large component file (266 lines) - consider breaking into smaller components
-
-import { useEffect, useRef, useState } from "react";
-import { ActivityLogModal } from "./components/ActivityLogModal";
-import { Calendar } from "./components/Calendar";
-import { CompleteHoldModal } from "./components/CompleteHoldModal";
-import { ConfirmDialog } from "./components/ConfirmDialog";
-import { ErrorBoundary } from "./components/ErrorBoundary";
-import { FirefighterList } from "./components/FirefighterList";
-import { Header } from "./components/Header";
-import { HelpModal } from "./components/HelpModal";
-import { KeyboardShortcutsModal } from "./components/KeyboardShortcutsModal";
-import { LoginModal } from "./components/LoginModal";
-import { MobileNav } from "./components/MobileNav";
-import { QuickAddFirefighterModal } from "./components/QuickAddFirefighterModal";
-import { Reports } from "./components/Reports";
-import { Sidebar } from "./components/Sidebar";
-import { ToastContainer } from "./components/Toast";
-import { TransferShiftModal } from "./components/TransferShiftModal";
-import { UpdateNotification } from "./components/UpdateNotification";
-import {
-  A11Y,
-  GRID_COLS,
-  KEYBOARD_SHORTCUTS,
-  LAYOUT,
-  SCROLL_BEHAVIOR,
-  SPINNER,
-} from "./config/constants";
-import { useAuth } from "./contexts/AuthContext";
-import { useAnnounce } from "./hooks/useAnnounce";
-import { useConfirm } from "./hooks/useConfirm";
-import { useDarkMode } from "./hooks/useDarkMode";
-import { useFirefighters } from "./hooks/useFirefighters";
-import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
-import { useScheduledHolds } from "./hooks/useScheduledHolds";
-import { useToast } from "./hooks/useToast";
-import { Firefighter, HoldDuration, Shift } from "./lib/supabase";
-import { getTheme } from "./utils/theme";
-
-type View = "calendar" | "reports";
+import { useState } from 'react';
+import { useFirefighters } from './hooks/useFirefighters';
+import { useScheduledHolds } from './hooks/useScheduledHolds';
+import { useToast } from './hooks/useToast';
+import { Shift } from './lib/supabase';
+import { getMonthDays, attachScheduledHolds } from './utils/calendarUtils';
 
 function App() {
-  // FIXED: Using proper Supabase authentication instead of hardcoded password
-  const {
-    user,
-    isAdmin: isAuthenticatedAdmin,
-    isLoading: authLoading,
-  } = useAuth();
-
-  const [currentView, setCurrentView] = useState<View>("calendar");
-  const [showHelp, setShowHelp] = useState(false);
-  const [showActivityLog, setShowActivityLog] = useState(false);
-  const [showMobileNav, setShowMobileNav] = useState(false);
-  const [showQuickAdd, setShowQuickAdd] = useState(false);
-  const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
-  const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
-  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [
-    selectedFirefighterForCompletion,
-    setSelectedFirefighterForCompletion,
-  ] = useState<Firefighter | null>(null);
-  const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] =
-    useState<Firefighter | null>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  // Default to Shift A
-  const [currentShift, setCurrentShift] = useState<Shift>("A");
-
-  // FIXED: Admin mode now based on Supabase authentication
-  // Battalion chiefs who are authenticated have admin access
-  const isAdminMode = isAuthenticatedAdmin;
-
-  // BEST PRACTICE: Dark mode with localStorage persistence via custom hook
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
-
-  const { toasts, showToast, hideToast } = useToast();
-  const announce = useAnnounce();
-  const { confirm, confirmState, handleConfirm, handleCancel } = useConfirm();
-  const shiftChangeAnnouncedRef = useRef(false);
-
-  // Get theme based on current mode
-  const theme = getTheme(isDarkMode);
-
-  // FIXED: Authentication now handled by Supabase Auth
-  // Battalion chiefs log in with email/password
-  function handleShowLogin() {
-    setShowLoginModal(true);
-  }
+  const [currentShift, setCurrentShift] = useState<Shift>('A');
+  const [currentDate] = useState(new Date());
+  const { toasts, showToast } = useToast();
 
   const {
     firefighters,
-    deactivatedFirefighters,
     loading: firefightersLoading,
-    addFirefighter,
-    completeHold,
-    deleteFirefighter,
-    deactivateFirefighter,
-    reactivateFirefighter,
-    transferShift,
-    resetAll,
-    masterReset,
-    reorderFirefighters,
-  } = useFirefighters(showToast, currentShift, confirm);
+  } = useFirefighters(showToast, currentShift);
 
   const {
     scheduledHolds,
     loading: holdsLoading,
-    scheduleHold,
-    removeScheduledHold,
-    markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
 
-  // BEST PRACTICE: Keyboard shortcuts configuration using constants
-  const { shortcuts } = useKeyboardShortcuts({
-    shortcuts: [
-      {
-        ...KEYBOARD_SHORTCUTS.SEARCH,
-        description: "Focus search bar",
-        action: () => {
-          searchInputRef.current?.focus();
-          searchInputRef.current?.scrollIntoView({
-            behavior: SCROLL_BEHAVIOR.SMOOTH,
-            block: SCROLL_BEHAVIOR.CENTER,
-          });
-        },
-      },
-      {
-        ...KEYBOARD_SHORTCUTS.QUICK_ADD,
-        description: "Quick add firefighter",
-        action: () => {
-          if (isAdminMode) {
-            setShowQuickAdd(true);
-          }
-        },
-        enabled: isAdminMode,
-      },
-      {
-        ...KEYBOARD_SHORTCUTS.EXPORT,
-        description: "Export data",
-        action: () => {
-          // Trigger export menu - will be implemented when migrating FirefighterList
-          console.log("Export shortcut pressed");
-        },
-      },
-      {
-        ...KEYBOARD_SHORTCUTS.HELP,
-        description: "Show help",
-        action: () => setShowHelp(true),
-      },
-      {
-        ...KEYBOARD_SHORTCUTS.SHORTCUTS_MODAL,
-        description: "Show keyboard shortcuts",
-        action: () => setShowKeyboardShortcuts(true),
-      },
-      {
-        ...KEYBOARD_SHORTCUTS.ESCAPE,
-        description: "Close modal",
-        action: () => {
-          setShowHelp(false);
-          setShowActivityLog(false);
-          setShowQuickAdd(false);
-          setShowCompleteHoldModal(false);
-          setShowTransferShiftModal(false);
-          setShowKeyboardShortcuts(false);
-        },
-      },
-    ],
-  });
+  // Get calendar data
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const monthName = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const calendarDays = attachScheduledHolds(
+    getMonthDays(year, month),
+    scheduledHolds,
+    firefighters
+  );
 
-  function handleCompleteHoldClick(id: string) {
-    const firefighter = firefighters.find((ff) => ff.id === id);
-    if (firefighter) {
-      setSelectedFirefighterForCompletion(firefighter);
-      setShowCompleteHoldModal(true);
-    }
-  }
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
-  function handleConfirmCompleteHold(
-    firefighterId: string,
-    holdDate: string,
-    newPosition: number,
-    station?: string,
-    lentToShift?: Shift | null,
-    duration?: HoldDuration,
-    startTime?: string
-  ) {
-    completeHold(
-      firefighterId,
-      holdDate,
-      newPosition,
-      station,
-      lentToShift,
-      duration,
-      startTime
-    );
-    setShowCompleteHoldModal(false);
-    setSelectedFirefighterForCompletion(null);
-  }
+  // Get next up for each shift
+  const shiftA = firefighters.filter(ff => ff.shift === 'A' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  const shiftB = firefighters.filter(ff => ff.shift === 'B' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
+  const shiftC = firefighters.filter(ff => ff.shift === 'C' && ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
 
-  function handleTransferShiftClick(id: string) {
-    const firefighter = firefighters.find((ff) => ff.id === id);
-    if (firefighter) {
-      setSelectedFirefighterForTransfer(firefighter);
-      setShowTransferShiftModal(true);
-    }
-  }
-
-  function handleConfirmTransferShift(firefighterId: string, newShift: Shift) {
-    transferShift(firefighterId, newShift);
-    setShowTransferShiftModal(false);
-    setSelectedFirefighterForTransfer(null);
-  }
-
-  // BEST PRACTICE: Announce shift changes for screen readers
-  useEffect(() => {
-    if (shiftChangeAnnouncedRef.current) {
-      announce(`Switched to Shift ${currentShift}`, "polite");
-    }
-    shiftChangeAnnouncedRef.current = true;
-  }, [currentShift, announce]);
-
-  // Show loading state while auth is initializing
-  if (authLoading || firefightersLoading) {
-    return (
-      <div
-        className={`min-h-screen ${theme.appBackground} flex items-center justify-center`}
-      >
-        <div className="text-center">
-          <div
-            className={`${SPINNER.SIZE} ${SPINNER.BORDER} ${SPINNER.COLOR} ${SPINNER.TRANSPARENT_SIDE} rounded-full ${SPINNER.ANIMATION} mx-auto mb-4`}
-          ></div>
-          <p className="text-white text-xl font-semibold">
-            {authLoading
-              ? "Checking authentication..."
-              : "Loading Hold List Manager..."}
-          </p>
-        </div>
-      </div>
-    );
-  }
+  // Current shift firefighters (first 20)
+  const currentShiftFFs = firefighters
+    .filter(ff => ff.shift === currentShift)
+    .sort((a, b) => a.order_position - b.order_position)
+    .slice(0, 20);
 
   return (
-    <div className={`min-h-screen ${theme.appBackground} ${theme.textPrimary}`}>
-      <a href={`#${A11Y.SKIP_LINK_ID}`} className="skip-link">
-        Skip to main content
-      </a>
+    <>
+      {/* Header */}
+      <header>
+        <div className="brand">
+          <div className="logo" />
+          <div>
+            <div style={{ fontWeight: 800 }}>Hold List Manager</div>
+            <span className="subtitle">Single-view — calendar + 20-roster sidebar (no scroll)</span>
+          </div>
+        </div>
+        <div className="toolbar">
+          <span style={{ cursor: 'pointer' }}>Activity</span>
+          <span>•</span>
+          <span style={{ cursor: 'pointer' }}>Light</span>
+          <span>•</span>
+          <span style={{ cursor: 'pointer' }}>Help</span>
+          <div className="shift-badges">
+            <span className="badge circle" title="Shift A" />
+            <span className="badge square" title="Shift B" />
+            <span className="badge diamond" title="Shift C" />
+          </div>
+        </div>
+      </header>
 
-      <div className={`max-w-[${LAYOUT.MAX_WIDTH}] mx-auto`}>
-        <Header
-          onShowHelp={() => setShowHelp(true)}
-          onShowActivityLog={() => setShowActivityLog(true)}
-          onQuickAddFirefighter={() => setShowQuickAdd(true)}
-          onOpenMobileMenu={() => setShowMobileNav(true)}
-          isAdminMode={isAdminMode}
-          currentShift={currentShift}
-          onShiftChange={setCurrentShift}
-          isDarkMode={isDarkMode}
-          onToggleDarkMode={toggleDarkMode}
-        />
+      {/* Main Layout: Calendar + Roster */}
+      <div className="layout">
+        {/* Calendar Section */}
+        <section className="calendar card">
+          <div className="cal-head">
+            <div className="cal-title">Hold Calendar</div>
+            <div style={{ opacity: .85 }}>{monthName}</div>
+            <div className="cal-shift">Shift {currentShift}</div>
+          </div>
 
-        <main
-          id={A11Y.SKIP_LINK_ID}
-          role="main"
-          className={`${LAYOUT.PADDING.MOBILE} ${LAYOUT.PADDING.DESKTOP}`}
-        >
-          {currentView === "calendar" ? (
-            <>
-              <div
-                className={`grid grid-cols-1 xl:grid-cols-12 ${LAYOUT.GRID_GAP.MOBILE} ${LAYOUT.GRID_GAP.DESKTOP} ${LAYOUT.SPACING.SECTION}`}
-              >
-                <div className={GRID_COLS.CALENDAR}>
-                  <section aria-labelledby="calendar-heading">
-                    <ErrorBoundary componentName="Calendar">
-                      <Calendar
-                        firefighters={firefighters}
-                        scheduledHolds={scheduledHolds}
-                        onScheduleHold={isAdminMode ? scheduleHold : () => {}}
-                        onRemoveHold={
-                          isAdminMode ? removeScheduledHold : () => {}
-                        }
-                        onMarkCompleted={
-                          isAdminMode ? markHoldCompleted : () => {}
-                        }
-                        loading={holdsLoading}
-                        isAdminMode={isAdminMode}
-                        isDarkMode={isDarkMode}
-                        currentShift={currentShift}
-                      />
-                    </ErrorBoundary>
-                  </section>
+          <div className="grid">
+            {/* Weekday Headers */}
+            <div className="dow">
+              <span>Sunday</span>
+              <span>Monday</span>
+              <span>Tuesday</span>
+              <span>Wednesday</span>
+              <span>Thursday</span>
+              <span>Friday</span>
+              <span>Saturday</span>
+            </div>
+
+            {/* Calendar Cells (6 rows x 7 days) */}
+            <div className="cells">
+              {calendarDays.map((day) => {
+                const dayKey = `${day.year}-${String(day.month + 1).padStart(2, '0')}-${String(day.date).padStart(2, '0')}`;
+                const isToday = dayKey === todayKey;
+                const isMuted = !day.isCurrentMonth;
+
+                return (
+                  <div
+                    key={dayKey}
+                    className={`cell ${isMuted ? 'muted' : ''} ${isToday ? 'today' : ''}`}
+                  >
+                    <span className="num">{day.date}</span>
+                    {/* Event pills would go here */}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Legend */}
+          <div className="legend">
+            <span><span className="sw blue" /> Scheduled</span>
+            <span><span className="sw green" /> Completed</span>
+            <span><span className="sw red" /> Today</span>
+          </div>
+        </section>
+
+        {/* Sidebar: Next Up + Roster */}
+        <aside className="sidebar card">
+          {/* Next Up Cards */}
+          <div className="nextup">
+            {shiftA && (
+              <div className="chip">
+                <span className="mini circle" />
+                <b>A: {shiftA.name.split(' ').map(n => n[0]).join('. ')}.</b>
+                <span className="meta">Stn #{shiftA.fire_station || '?'}</span>
+              </div>
+            )}
+            {shiftB && (
+              <div className="chip">
+                <span className="mini square" />
+                <b>B: {shiftB.name.split(' ').map(n => n[0]).join('. ')}.</b>
+                <span className="meta">Stn #{shiftB.fire_station || '?'}</span>
+              </div>
+            )}
+            {shiftC && (
+              <div className="chip">
+                <span className="mini diamond" />
+                <b>C: {shiftC.name.split(' ').map(n => n[0]).join('. ')}.</b>
+                <span className="meta">Stn #{shiftC.fire_station || '?'}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Roster Table - 20 Rows */}
+          <div className="roster">
+            <div className="roster-head">
+              <div>Firefighter Roster ({currentShiftFFs.length})</div>
+              <div style={{ textAlign: 'center' }}>Station</div>
+              <div style={{ textAlign: 'right' }}>Shift</div>
+            </div>
+
+            <div className="rows">
+              {currentShiftFFs.map((ff) => (
+                <div key={ff.id} className="row">
+                  <div className="name">{ff.name}</div>
+                  <div className="station">
+                    <span className="tag">#{ff.fire_station || '?'}</span>
+                  </div>
+                  <div className="shifts">
+                    {ff.shift === 'A' && <span className="mini circle" title="A" />}
+                    {ff.shift === 'B' && <span className="mini square" title="B" />}
+                    {ff.shift === 'C' && <span className="mini diamond" title="C" />}
+                  </div>
                 </div>
+              ))}
 
-                <aside
-                  className={GRID_COLS.SIDEBAR}
-                  role="complementary"
-                  aria-label="Team statistics and information"
-                >
-                  <ErrorBoundary componentName="Sidebar">
-                    <Sidebar
-                      firefighters={firefighters}
-                      scheduledHolds={scheduledHolds}
-                      isDarkMode={isDarkMode}
-                      currentShift={currentShift}
-                      onNavigate={setCurrentView}
-                      isAdminMode={isAdminMode}
-                    />
-                  </ErrorBoundary>
-                </aside>
-              </div>
-
-              <div className={LAYOUT.SPACING.SECTION}>
-                <section aria-labelledby="roster-heading">
-                  <ErrorBoundary componentName="FirefighterList">
-                    <FirefighterList
-                      firefighters={firefighters}
-                      deactivatedFirefighters={deactivatedFirefighters}
-                      onAdd={addFirefighter}
-                      onCompleteHold={handleCompleteHoldClick}
-                      onDelete={deleteFirefighter}
-                      onDeactivate={deactivateFirefighter}
-                      onReactivate={reactivateFirefighter}
-                      onTransferShift={handleTransferShiftClick}
-                      onResetAll={resetAll}
-                      onReorder={reorderFirefighters}
-                      currentShift={currentShift}
-                      isAdminMode={isAdminMode}
-                      isDarkMode={isDarkMode}
-                      searchInputRef={searchInputRef}
-                      confirmAction={confirm}
-                    />
-                  </ErrorBoundary>
-                </section>
-              </div>
-            </>
-          ) : (
-            <ErrorBoundary componentName="Reports">
-              <Reports
-                firefighters={firefighters}
-                holds={scheduledHolds}
-                isDarkMode={isDarkMode}
-                onNavigate={setCurrentView}
-              />
-            </ErrorBoundary>
-          )}
-        </main>
+              {/* Fill empty rows if less than 20 */}
+              {Array.from({ length: Math.max(0, 20 - currentShiftFFs.length) }).map((_, i) => (
+                <div key={`empty-${i}`} className="row" style={{ opacity: 0.3 }}>
+                  <div className="name">—</div>
+                  <div className="station"><span className="tag">—</span></div>
+                  <div className="shifts" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
       </div>
 
-      <HelpModal
-        isOpen={showHelp}
-        onClose={() => setShowHelp(false)}
-        onMasterReset={masterReset}
-        isAdminMode={isAdminMode}
-        onShowLogin={handleShowLogin}
-        user={user}
-      />
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-        onSuccess={() => {
-          setShowLoginModal(false);
-          showToast("Battalion Chief mode enabled", "success");
-        }}
-      />
-      <ActivityLogModal
-        isOpen={showActivityLog}
-        onClose={() => setShowActivityLog(false)}
-      />
-      <KeyboardShortcutsModal
-        isOpen={showKeyboardShortcuts}
-        onClose={() => setShowKeyboardShortcuts(false)}
-        shortcuts={shortcuts}
-      />
-      <CompleteHoldModal
-        isOpen={showCompleteHoldModal}
-        firefighter={selectedFirefighterForCompletion}
-        totalFirefighters={firefighters.filter((ff) => ff.is_available).length}
-        onClose={() => {
-          setShowCompleteHoldModal(false);
-          setSelectedFirefighterForCompletion(null);
-        }}
-        onConfirm={handleConfirmCompleteHold}
-      />
-      <TransferShiftModal
-        isOpen={showTransferShiftModal}
-        firefighter={selectedFirefighterForTransfer}
-        onClose={() => {
-          setShowTransferShiftModal(false);
-          setSelectedFirefighterForTransfer(null);
-        }}
-        onConfirm={handleConfirmTransferShift}
-      />
-      <MobileNav
-        isOpen={showMobileNav}
-        onClose={() => setShowMobileNav(false)}
-        onShowHelp={() => {
-          setShowMobileNav(false);
-          setShowHelp(true);
-        }}
-        onShowActivityLog={() => {
-          setShowMobileNav(false);
-          setShowActivityLog(true);
-        }}
-        onQuickAddFirefighter={() => {
-          setShowMobileNav(false);
-          setShowQuickAdd(true);
-        }}
-        isAdminMode={isAdminMode}
-        currentShift={currentShift}
-        onShiftChange={setCurrentShift}
-        isDarkMode={isDarkMode}
-        onToggleDarkMode={toggleDarkMode}
-      />
-      <QuickAddFirefighterModal
-        isOpen={showQuickAdd}
-        currentShift={currentShift}
-        onClose={() => setShowQuickAdd(false)}
-        onAdd={addFirefighter}
-      />
-
-      <div role="alert" aria-live="polite" aria-atomic="true">
-        <ToastContainer toasts={toasts} onClose={hideToast} />
-      </div>
-
-      {/* Non-blocking confirmation dialog */}
-      <ConfirmDialog
-        isOpen={confirmState.isOpen}
-        onClose={handleCancel}
-        onConfirm={handleConfirm}
-        title={confirmState.title}
-        message={confirmState.message}
-        confirmText={confirmState.confirmText}
-        cancelText={confirmState.cancelText}
-        variant={confirmState.variant}
-        consequences={confirmState.consequences}
-        isDarkMode={isDarkMode}
-      />
-
-      {/* Update notification for new app versions */}
-      <UpdateNotification />
-    </div>
+      {/* Toast notifications */}
+      {toasts.length > 0 && (
+        <div style={{ position: 'fixed', top: 20, right: 20, zIndex: 9999 }}>
+          {toasts.map(toast => (
+            <div key={toast.id} style={{
+              background: 'var(--bg-card)',
+              border: '1px solid var(--line)',
+              borderRadius: '8px',
+              padding: '12px 16px',
+              marginBottom: '8px',
+              color: 'var(--text)'
+            }}>
+              {toast.message}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
   );
 }
 

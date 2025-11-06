@@ -21,20 +21,9 @@
  * ```
  */
 
-import { useState, useMemo } from "react";
 import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
-import {
-  getMonthDays,
-  attachScheduledHolds,
-  ScheduledHold,
-  CalendarDay,
-} from "../utils/calendarUtils";
-import { CardM3 } from "./m3/CardM3";
-import { CalendarHeader } from './calendar/CalendarHeader';
-import { CalendarGrid } from './calendar/CalendarGrid';
-import { DayModal } from './calendar/DayModal';
-import { CalendarLegend } from './calendar/CalendarLegend';
+import { ScheduledHold } from "../utils/calendarUtils";
 import { CalendarLegacy } from './CalendarLegacy';
 
 interface CalendarProps {
@@ -58,119 +47,11 @@ interface CalendarProps {
 /**
  * MaterialM Calendar Component
  */
-function CalendarM3({
-  firefighters,
-  scheduledHolds,
-  onScheduleHold,
-  onRemoveHold,
-  onMarkCompleted,
-  loading,
-  isAdminMode = false,
-  isDarkMode = true,
-  currentShift,
-}: CalendarProps) {
-  // State (minimal - only navigation and modal)
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState<CalendarDay | null>(null);
-  const [selectedFirefighter, setSelectedFirefighter] = useState<Firefighter | null>(null);
-
-  // Computed values
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-
-  const calendarDays = useMemo(() => {
-    const days = getMonthDays(year, month);
-    return attachScheduledHolds(days, scheduledHolds, firefighters);
-  }, [year, month, scheduledHolds, firefighters]);
-
-  // Month navigation handlers
-  function goToPreviousMonth() {
-    setCurrentDate(new Date(year, month - 1, 1));
-  }
-
-  function goToNextMonth() {
-    setCurrentDate(new Date(year, month + 1, 1));
-  }
-
-  // Day selection handler
-  function handleDayClick(day: CalendarDay) {
-    if (!day.isCurrentMonth) return;
-    setSelectedDay(day);
-  }
-
-  // Modal close handler
-  function handleCloseModal() {
-    setSelectedDay(null);
-    setSelectedFirefighter(null);
-  }
-
-  // Hold scheduling handler
-  function handleScheduleHold(
-    holdDate: string,
-    firefighter: Firefighter,
-    station?: string,
-    duration?: HoldDuration,
-    startTime?: string
-  ) {
-    onScheduleHold(holdDate, firefighter, station, duration, startTime);
-    // Modal close is handled by DayModal based on "add another" checkbox
-  }
-
-  return (
-    <div
-      className={`
-        bg-white dark:bg-slate-800
-        border border-gray-200 dark:border-gray-700
-        rounded-xl
-        shadow-sm
-        overflow-hidden
-      `}
-    >
-      {/* Header section */}
-      <div className="border-b-2 border-gray-200 dark:border-gray-700 p-6">
-        <CalendarHeader
-          currentDate={currentDate}
-          onPreviousMonth={goToPreviousMonth}
-          onNextMonth={goToNextMonth}
-          currentShift={currentShift}
-          isDarkMode={isDarkMode}
-        />
-      </div>
-
-      {/* Calendar grid section */}
-      <div className="p-6 w-full">
-        <CalendarGrid
-          calendarDays={calendarDays}
-          onDayClick={handleDayClick}
-          loading={loading}
-          isAdminMode={isAdminMode}
-          currentShift={currentShift}
-          isDarkMode={isDarkMode}
-        />
-      </div>
-
-      {/* Legend section */}
-      <div className="border-t-2 border-gray-200 dark:border-gray-700 p-6">
-        <CalendarLegend isDarkMode={isDarkMode} />
-      </div>
-
-      {/* Day modal */}
-      <DayModal
-        isOpen={selectedDay !== null}
-        selectedDay={selectedDay}
-        onClose={handleCloseModal}
-        firefighters={firefighters}
-        selectedFirefighter={selectedFirefighter}
-        onFirefighterSelect={setSelectedFirefighter}
-        onScheduleHold={handleScheduleHold}
-        onRemoveHold={onRemoveHold}
-        onMarkCompleted={onMarkCompleted}
-        isAdminMode={isAdminMode}
-        isDarkMode={isDarkMode}
-        currentShift={currentShift}
-      />
-    </div>
-  );
+// Temporarily using legacy calendar - MaterialM version needs layout refinement
+// The MaterialM conversion was making the calendar too cramped
+// TODO: Fix MaterialM calendar layout to match legacy spacing
+function CalendarM3(props: CalendarProps) {
+  return <CalendarLegacy {...props} />;
 }
 
 /**

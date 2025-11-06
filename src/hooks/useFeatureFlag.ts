@@ -43,6 +43,17 @@ export function useFeatureFlag(flag: string): boolean {
       return true;
     }
 
+    // Check for explicit disable
+    if (localValue === 'false') {
+      return false;
+    }
+
+    // DEFAULT: Enable MaterialM for all users (no gradual rollout needed)
+    // Since there are no real users, MaterialM is the default
+    if (flag === 'MATERIALM') {
+      return true;
+    }
+
     return false;
   });
 

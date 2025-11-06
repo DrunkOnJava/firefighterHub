@@ -301,6 +301,14 @@ function App() {
           setShowMobileMenu(false);
           setShowQuickAdd(true);
         }}
+        onShowLogin={() => {
+          setShowMobileMenu(false);
+          setShowLogin(true);
+        }}
+        onLogout={() => {
+          setShowMobileMenu(false);
+          handleLogout();
+        }}
         currentShift={currentShift}
         onShiftChange={(shift) => {
           setShowMobileMenu(false);

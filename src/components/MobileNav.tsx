@@ -1,9 +1,9 @@
 import {
   Clock,
   HelpCircle,
-  Lightbulb,
+  LogIn,
+  LogOut,
   Moon,
-  Shield,
   Sun,
   UserPlus,
   X,
@@ -21,6 +21,8 @@ interface MobileNavProps {
   onShowHelp: () => void;
   onShowActivityLog: () => void;
   onQuickAddFirefighter: () => void;
+  onShowLogin: () => void;
+  onLogout: () => void;
   isAdminMode: boolean;
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
@@ -34,6 +36,8 @@ export function MobileNav({
   onShowHelp,
   onShowActivityLog,
   onQuickAddFirefighter,
+  onShowLogin,
+  onLogout,
   isAdminMode,
   currentShift,
   onShiftChange,
@@ -100,16 +104,16 @@ export function MobileNav({
               </h2>
               {isAdminMode && (
                 <div className="flex items-center gap-1.5 mt-1">
-                  <Shield
+                  <LogOut
                     size={12}
-                    className={isDarkMode ? "text-blue-400" : "text-blue-600"}
+                    className={isDarkMode ? "text-orange-400" : "text-orange-600"}
                   />
                   <span
                     className={`text-xs font-bold ${
-                      isDarkMode ? "text-blue-400" : "text-blue-600"
+                      isDarkMode ? "text-orange-400" : "text-orange-600"
                     }`}
                   >
-                    ADMIN MODE
+                    BATTALION CHIEF MODE
                   </span>
                 </div>
               )}
@@ -266,45 +270,127 @@ export function MobileNav({
               >
                 Preferences
               </h3>
-              <button
-                onClick={onToggleDarkMode}
-                className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
-                  isDarkMode
-                    ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
-                    : "bg-white hover:bg-slate-50 border-slate-300"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  {isDarkMode ? (
-                    <Sun size={22} className="text-amber-400" />
-                  ) : (
-                    <Moon size={22} className="text-slate-700" />
-                  )}
-                  <div className="text-left">
-                    <div
-                      className={`font-semibold ${
-                        isDarkMode ? "text-white" : "text-slate-900"
-                      }`}
-                    >
-                      Theme
-                    </div>
-                    <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-gray-400" : "text-slate-600"
-                      }`}
-                    >
-                      {isDarkMode ? "Dark mode" : "Light mode"}
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className={`text-xs font-semibold ${
-                    isDarkMode ? "text-gray-500" : "text-slate-500"
+              <div className="space-y-2">
+                <button
+                  onClick={onToggleDarkMode}
+                  className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
+                    isDarkMode
+                      ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
+                      : "bg-white hover:bg-slate-50 border-slate-300"
                   }`}
                 >
-                  Toggle
-                </div>
-              </button>
+                  <div className="flex items-center gap-3">
+                    {isDarkMode ? (
+                      <Sun size={22} className="text-amber-400" />
+                    ) : (
+                      <Moon size={22} className="text-slate-700" />
+                    )}
+                    <div className="text-left">
+                      <div
+                        className={`font-semibold ${
+                          isDarkMode ? "text-white" : "text-slate-900"
+                        }`}
+                      >
+                        Theme
+                      </div>
+                      <div
+                        className={`text-sm ${
+                          isDarkMode ? "text-gray-400" : "text-slate-600"
+                        }`}
+                      >
+                        {isDarkMode ? "Dark mode" : "Light mode"}
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={`text-xs font-semibold ${
+                      isDarkMode ? "text-gray-500" : "text-slate-500"
+                    }`}
+                  >
+                    Toggle
+                  </div>
+                </button>
+
+                {isAdminMode ? (
+                  <button
+                    onClick={() => {
+                      onLogout();
+                      onClose();
+                    }}
+                    className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
+                      isDarkMode
+                        ? "bg-gray-800 hover:bg-gray-700 border-orange-600"
+                        : "bg-white hover:bg-slate-50 border-orange-500"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <LogOut size={22} className={isDarkMode ? "text-orange-400" : "text-orange-600"} />
+                      <div className="text-left">
+                        <div
+                          className={`font-semibold ${
+                            isDarkMode ? "text-white" : "text-slate-900"
+                          }`}
+                        >
+                          Battalion Chief Mode
+                        </div>
+                        <div
+                          className={`text-sm ${
+                            isDarkMode ? "text-gray-400" : "text-slate-600"
+                          }`}
+                        >
+                          Active - Click to leave
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`text-xs font-semibold ${
+                        isDarkMode ? "text-orange-400" : "text-orange-600"
+                      }`}
+                    >
+                      Leave
+                    </div>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      onShowLogin();
+                      onClose();
+                    }}
+                    className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
+                      isDarkMode
+                        ? "bg-gray-800 hover:bg-gray-700 border-orange-600"
+                        : "bg-white hover:bg-slate-50 border-orange-500"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <LogIn size={22} className={isDarkMode ? "text-orange-400" : "text-orange-600"} />
+                      <div className="text-left">
+                        <div
+                          className={`font-semibold ${
+                            isDarkMode ? "text-white" : "text-slate-900"
+                          }`}
+                        >
+                          Battalion Chief Mode
+                        </div>
+                        <div
+                          className={`text-sm ${
+                            isDarkMode ? "text-gray-400" : "text-slate-600"
+                          }`}
+                        >
+                          Enable admin features
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={`text-xs font-semibold ${
+                        isDarkMode ? "text-orange-400" : "text-orange-600"
+                      }`}
+                    >
+                      Enter
+                    </div>
+                  </button>
+                )}
+              </div>
             </section>
 
             {/* Info Section */}

@@ -1,11 +1,11 @@
 import {
   Clock,
-  FileBarChart,
   HelpCircle,
+  LogIn,
+  LogOut,
   Menu,
   Moon,
   Printer,
-  Shield,
   Sun,
   UserPlus,
 } from "lucide-react";
@@ -23,6 +23,8 @@ interface HeaderProps {
   onQuickAddFirefighter: () => void;
   onNavigateToReports: () => void;
   onOpenMobileMenu: () => void;
+  onShowLogin: () => void;
+  onLogout: () => void;
   isAdminMode: boolean;
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
@@ -36,6 +38,8 @@ export function Header({
   onQuickAddFirefighter,
   onNavigateToReports,
   onOpenMobileMenu,
+  onShowLogin,
+  onLogout,
   isAdminMode,
   currentShift,
   onShiftChange,
@@ -159,6 +163,35 @@ export function Header({
                   {isDarkMode ? "Light" : "Dark"}
                 </span>
               </button>
+              {isAdminMode ? (
+                <button
+                  onClick={onLogout}
+                  className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
+                    isDarkMode
+                      ? "hover:bg-gray-800 text-orange-400 hover:text-orange-300"
+                      : "hover:bg-slate-200 text-orange-600 hover:text-orange-700"
+                  }`}
+                  aria-label="Leave Battalion Chief Mode"
+                  title="Leave Battalion Chief Mode"
+                >
+                  <LogOut size={20} />
+                  <span className="text-xs font-medium leading-tight text-center">Leave BC Mode</span>
+                </button>
+              ) : (
+                <button
+                  onClick={onShowLogin}
+                  className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${
+                    isDarkMode
+                      ? "hover:bg-gray-800 text-orange-400 hover:text-orange-300"
+                      : "hover:bg-slate-200 text-orange-600 hover:text-orange-700"
+                  }`}
+                  aria-label="Enter Battalion Chief Mode"
+                  title="Enter Battalion Chief Mode"
+                >
+                  <LogIn size={20} />
+                  <span className="text-xs font-medium leading-tight text-center">BC Mode</span>
+                </button>
+              )}
               <button
                 onClick={onShowHelp}
                 className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex flex-col items-center justify-center gap-0.5 ${

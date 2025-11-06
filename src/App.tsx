@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
@@ -14,6 +14,7 @@ import { ActivityLogModal } from './components/ActivityLogModal';
 import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
+import { BattalionChiefLogin } from './components/BattalionChiefLogin';
 import { MobileNav } from './components/MobileNav';
 
 // Big Calendar
@@ -39,6 +40,7 @@ function App() {
   const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   // State: Selected firefighters for modals
   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
@@ -46,6 +48,28 @@ function App() {
 
   const { toasts, showToast } = useToast();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+
+  // Battalion Chief authentication state
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Check localStorage for existing auth on mount
+  useEffect(() => {
+    const authStatus = localStorage.getItem('battalionChiefAuth');
+    setIsAdmin(authStatus === 'true');
+  }, []);
+
+  // Handle successful Battalion Chief Mode activation
+  const handleLoginSuccess = () => {
+    setIsAdmin(true);
+    showToast('Battalion Chief Mode enabled', 'success');
+  };
+
+  // Handle leaving Battalion Chief Mode
+  const handleLogout = () => {
+    localStorage.removeItem('battalionChiefAuth');
+    setIsAdmin(false);
+    showToast('Battalion Chief Mode disabled', 'success');
+  };
 
   // Load ALL shifts for Next Up section
   const { firefighters: ffA = [], loading: loadingA } = useFirefighters(showToast, 'A');
@@ -73,8 +97,8 @@ function App() {
     markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
 
-  // Admin mode (TEMP: Enabled for testing - will integrate authentication in Phase 6)
-  const isAdminMode = true; // TEMP: Enable all features for testing
+  // Battalion Chief access - authenticated users with admin role
+  const isAdminMode = isAdmin;
 
   // Combine all firefighters and filter for current shift
   const allFirefighters = [...ffA, ...ffB, ...ffC];
@@ -140,6 +164,8 @@ function App() {
         onQuickAddFirefighter={() => setShowQuickAdd(true)}
         onNavigateToReports={() => {}} // TODO: Implement Reports view
         onOpenMobileMenu={() => setShowMobileMenu(true)}
+        onShowLogin={() => setShowLogin(true)}
+        onLogout={handleLogout}
         isAdminMode={isAdminMode}
         currentShift={currentShift}
         onShiftChange={setCurrentShift}
@@ -213,9 +239,18 @@ function App() {
         isOpen={showHelp}
         onClose={() => setShowHelp(false)}
         onMasterReset={() => {}}
-        isAdminMode={false}
-        onShowLogin={() => {}}
+        isAdminMode={isAdminMode}
+        onShowLogin={() => {
+          setShowHelp(false);
+          setShowLogin(true);
+        }}
         user={null}
+      />
+
+      <BattalionChiefLogin
+        isOpen={showLogin}
+        onClose={() => setShowLogin(false)}
+        onSuccess={handleLoginSuccess}
       />
 
       <ActivityLogModal

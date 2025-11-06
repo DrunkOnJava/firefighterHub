@@ -1,6 +1,7 @@
 import {
   Clock,
   HelpCircle,
+  Lightbulb,
   LogIn,
   LogOut,
   Moon,

@@ -29,11 +29,15 @@ function App() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const monthName = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  const calendarDays = attachScheduledHolds(
-    getMonthDays(year, month),
-    scheduledHolds,
-    firefighters
-  );
+
+  let calendarDays = [];
+  try {
+    const monthDays = getMonthDays(year, month);
+    calendarDays = attachScheduledHolds(monthDays, scheduledHolds, firefighters);
+  } catch (error) {
+    console.error('Calendar error:', error);
+    calendarDays = [];
+  }
 
   const today = new Date();
   const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;

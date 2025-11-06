@@ -36,6 +36,7 @@ export const colors = {
       secondary: "text-gray-400",
       tertiary: "text-gray-500",
       muted: "text-gray-600",
+      surface: "text-materialm-text",
     },
   },
 
@@ -44,6 +45,12 @@ export const colors = {
     hover: {
       bg: "hover:bg-gray-800",
       text: "hover:text-gray-200",
+    },
+    button: {
+      bg: "bg-gray-700 hover:bg-gray-600",
+      text: "text-white",
+      default: "bg-gray-700 hover:bg-gray-600 text-white",
+      disabled: "bg-gray-600 text-gray-400 cursor-not-allowed",
     },
   },
 
@@ -55,11 +62,13 @@ export const colors = {
       danger: "bg-materialm-error hover:opacity-90 text-white",
       success: "bg-materialm-success hover:opacity-90 text-white",
       shadow: "shadow-materialm-2",
+      disabled: "bg-gray-600 text-gray-400 cursor-not-allowed",
     },
 
     input: {
       default: "bg-white dark:bg-materialm-dark border-materialm-border dark:border-materialm-border-dark text-gray-900 dark:text-white",
       error: "bg-white dark:bg-materialm-dark border-materialm-error",
+      placeholder: "placeholder:text-gray-500 dark:placeholder:text-gray-400",
     },
 
     modal: {
@@ -67,6 +76,17 @@ export const colors = {
       border: "border-materialm-border dark:border-materialm-border-dark",
       overlay: "bg-black/70 backdrop-blur-sm",
       shadow: "shadow-materialm-5",
+    },
+
+    card: {
+      default: "bg-white dark:bg-materialm-dark border border-materialm-border-dark",
+      shadow: "shadow-materialm-2",
+    },
+
+    hold: {
+      scheduled: "bg-materialm-primary-light border-l-4 border-materialm-primary",
+      completed: "bg-materialm-success-light border-l-4 border-materialm-success",
+      border: "border-materialm-border-dark",
     },
   },
 
@@ -95,6 +115,7 @@ export const colors = {
       text: "text-materialm-success",
       border: "border-materialm-success",
       light: "bg-materialm-success-light",
+      shadow: "shadow-materialm-2",
     },
 
     error: {
@@ -103,6 +124,8 @@ export const colors = {
       text: "text-materialm-error",
       border: "border-materialm-error",
       light: "bg-materialm-error-light",
+      gradient: "bg-materialm-error",
+      shadow: "shadow-materialm-2",
     },
 
     warning: {
@@ -120,6 +143,8 @@ export const colors = {
       hover: "hover:opacity-90",
       text: "text-materialm-info",
       light: "bg-materialm-info-light",
+      border: "border-materialm-info",
+      shadow: "shadow-materialm-2",
     },
 
     scheduled: {

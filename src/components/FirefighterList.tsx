@@ -23,6 +23,7 @@ import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { ConfirmOptions } from "../hooks/useConfirm";
 import { Firefighter, Shift } from "../lib/supabase";
 import { FirefighterListLegacy } from "./FirefighterListLegacy";
+import { FirefighterListM3 } from "./FirefighterListM3";
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -46,32 +47,17 @@ interface FirefighterListProps {
  * Firefighter List Component with Feature Flag
  *
  * Switches between MaterialM and legacy versions.
- *
- * Note: The MaterialM version is not yet fully implemented due to complex
- * sub-component dependencies (RosterHeader, BulkActions, FilterPanel, etc.).
- * Currently uses legacy version for both flag states.
- *
- * TODO: Implement full MaterialM version with:
- * - CardM3 for firefighter cards
- * - StatusBadgeM3 for availability
- * - IconButtonM3 for actions
- * - Drag-and-drop with MaterialM elevation
+ * MaterialM version includes all M3 sub-components:
+ * - RosterHeaderM3, BulkActionsM3, RosterSearchBarM3
+ * - FilterPanelM3, FirefighterItemM3, ExportMenuM3
+ * - Full drag-and-drop with MaterialM elevation and colors
  */
 export function FirefighterList(props: FirefighterListProps) {
   const useMaterialM = useFeatureFlag('MATERIALM');
 
-  // Suppress unused variable warning - kept for future MaterialM implementation
-  void useMaterialM;
+  if (!useMaterialM) {
+    return <FirefighterListLegacy {...props} />;
+  }
 
-  // TODO: Complete MaterialM implementation
-  // For now, use legacy version for both to avoid breaking drag-and-drop
-  // The FirefighterList has complex sub-component dependencies that need
-  // individual migration (RosterHeader, BulkActions, FilterPanel, etc.)
-  return <FirefighterListLegacy {...props} />;
-
-  // Future implementation:
-  // if (!useMaterialM) {
-  //   return <FirefighterListLegacy {...props} />;
-  // }
-  // return <FirefighterListM3 {...props} />;
+  return <FirefighterListM3 {...props} />;
 }

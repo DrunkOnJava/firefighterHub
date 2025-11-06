@@ -72,6 +72,12 @@ export default {
           // Text
           link: '#2a3547',        // oklch(0.33 0.0355 260.11)
           'link-dark': '#7c8fac', // oklch(0.62 0.0225 243.61)
+          text: '#e8eaed',        // Primary text color (light gray for dark backgrounds)
+          'text-secondary': '#9ca3af', // Secondary text (gray-400 equivalent)
+          'text-disabled': '#6b7280',  // Disabled text (gray-500 equivalent)
+
+          // Surface Colors
+          surface: '#f3f4f6',     // Light surface (gray-100 equivalent for light mode)
         },
       },
       animation: {

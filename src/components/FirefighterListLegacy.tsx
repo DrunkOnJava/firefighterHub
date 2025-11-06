@@ -331,14 +331,14 @@ export function FirefighterListLegacy({
                 <tr
                   className={`border-b-2 ${
                     isDarkMode
-                      ? "border-gray-700 bg-gray-900/50"
-                      : "border-slate-300 bg-slate-50"
+                      ? "border-materialm-border-dark bg-materialm-dark/50"
+                      : "border-materialm-border-dark bg-materialm-surface"
                   }`}
                 >
                   {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-center ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
                       }`}
                     >
                       <button
@@ -348,7 +348,7 @@ export function FirefighterListLegacy({
                             ? deselectAll
                             : selectAll
                         }
-                        className="p-1 hover:bg-gray-700 rounded transition-colors"
+                        className="p-1 hover:bg-materialm-darkgray rounded transition-colors"
                         aria-label={
                           selectedIds.size ===
                           filteredAndAdvancedFiltered.length
@@ -367,7 +367,7 @@ export function FirefighterListLegacy({
                   )}
                   <th
                     className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-materialm-text" : "text-materialm-text"
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -377,7 +377,7 @@ export function FirefighterListLegacy({
                   </th>
                   <th
                     className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-materialm-text" : "text-materialm-text"
                     }`}
                   >
                     Name
@@ -385,7 +385,7 @@ export function FirefighterListLegacy({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
                       }`}
                     >
                       Shift
@@ -394,7 +394,7 @@ export function FirefighterListLegacy({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
                       }`}
                     >
                       Station
@@ -403,7 +403,7 @@ export function FirefighterListLegacy({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
                       }`}
                     >
                       Cert Level
@@ -412,7 +412,7 @@ export function FirefighterListLegacy({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
                       }`}
                     >
                       Qualifications
@@ -420,7 +420,7 @@ export function FirefighterListLegacy({
                   )}
                   <th
                     className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-materialm-text" : "text-materialm-text"
                     }`}
                   >
                     Last Hold
@@ -441,7 +441,7 @@ export function FirefighterListLegacy({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-materialm-text" : "text-materialm-text"
                       }`}
                     >
                       Actions
@@ -449,7 +449,7 @@ export function FirefighterListLegacy({
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className="divide-y divide-materialm-border-dark">
                 {filteredAndAdvancedFiltered.map((firefighter, index) => {
                   const qualifications = [
                     firefighter.is_fto && "FTO",
@@ -469,19 +469,19 @@ export function FirefighterListLegacy({
                       onDragEnd={handleDragEnd}
                       className={`transition-colors ${
                         isDarkMode
-                          ? "hover:bg-gray-800/50"
-                          : "hover:bg-slate-50"
+                          ? "hover:bg-materialm-darkgray/50"
+                          : "hover:bg-materialm-surface"
                       } ${draggedId === firefighter.id ? "opacity-50" : ""} ${
                         dragOverId === firefighter.id
                           ? isDarkMode
-                            ? "bg-blue-900/20 border-l-4 border-blue-500"
-                            : "bg-blue-50 border-l-4 border-blue-500"
+                            ? "bg-materialm-primary/20 border-l-4 border-materialm-primary"
+                            : "bg-materialm-primary/10 border-l-4 border-materialm-primary"
                           : ""
                       } ${
                         isNext
                           ? isDarkMode
-                            ? "bg-blue-950/30 ring-2 ring-inset ring-blue-500/50"
-                            : "bg-blue-50 ring-2 ring-inset ring-blue-400"
+                            ? "bg-materialm-primary/30 ring-2 ring-inset ring-materialm-primary/50"
+                            : "bg-materialm-primary/10 ring-2 ring-inset ring-materialm-primary"
                           : ""
                       } ${isAdminMode ? "cursor-move" : ""}`}
                     >
@@ -491,23 +491,23 @@ export function FirefighterListLegacy({
                             onClick={() => toggleSelection(firefighter.id)}
                             className={`p-1 rounded transition-colors ${
                               isDarkMode
-                                ? "hover:bg-gray-700"
-                                : "hover:bg-slate-200"
+                                ? "hover:bg-materialm-darkgray"
+                                : "hover:bg-materialm-surface"
                             }`}
                             aria-label={`Select ${firefighter.name}`}
                           >
                             {selectedIds.has(firefighter.id) ? (
                               <CheckSquare
                                 className={`w-5 h-5 ${
-                                  isDarkMode ? "text-blue-400" : "text-blue-600"
+                                  isDarkMode ? "text-materialm-primary" : "text-materialm-primary"
                                 }`}
                               />
                             ) : (
                               <Square
                                 className={`w-5 h-5 ${
                                   isDarkMode
-                                    ? "text-gray-500"
-                                    : "text-slate-400"
+                                    ? "text-materialm-text-disabled"
+                                    : "text-materialm-text-secondary"
                                 }`}
                               />
                             )}
@@ -516,12 +516,12 @@ export function FirefighterListLegacy({
                       )}
                       <td
                         className={`px-4 py-4 whitespace-nowrap text-sm ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
+                          isDarkMode ? "text-materialm-text" : "text-materialm-text"
                         }`}
                       >
                         <div className="flex items-center gap-2">
                           {isNext && (
-                            <span className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded">
+                            <span className="px-2 py-1 bg-materialm-primary text-white text-xs font-bold rounded">
                               NEXT
                             </span>
                           )}
@@ -530,12 +530,12 @@ export function FirefighterListLegacy({
                       </td>
                       <td
                         className={`px-4 py-4 whitespace-nowrap ${
-                          isDarkMode ? "text-white" : "text-slate-900"
+                          isDarkMode ? "text-white" : "text-white"
                         }`}
                       >
                         <button
                           onClick={() => handleViewProfile(firefighter)}
-                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
+                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-materialm-dark rounded px-1"
                           aria-label={`View profile for ${firefighter.name}`}
                         >
                           {firefighter.name}
@@ -544,16 +544,16 @@ export function FirefighterListLegacy({
                       {isAdminMode && (
                         <td
                           className={`px-4 py-4 whitespace-nowrap ${
-                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                            isDarkMode ? "text-materialm-text" : "text-materialm-text"
                           }`}
                         >
                           <span
                             className={`inline-flex items-center justify-center px-2 py-1 rounded font-bold text-xs ${
                               firefighter.shift === "A"
-                                ? "bg-green-900/70 text-green-300"
+                                ? "bg-materialm-success/70 text-materialm-success"
                                 : firefighter.shift === "B"
-                                ? "bg-red-900/70 text-red-300"
-                                : "bg-gray-900/70 text-gray-300"
+                                ? "bg-materialm-error/70 text-materialm-error"
+                                : "bg-materialm-dark/70 text-materialm-text"
                             }`}
                           >
                             Shift {firefighter.shift}
@@ -563,7 +563,7 @@ export function FirefighterListLegacy({
                       {isAdminMode && (
                         <td
                           className={`px-4 py-4 whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                            isDarkMode ? "text-materialm-text" : "text-materialm-text"
                           }`}
                         >
                           {firefighter.fire_station ? (
@@ -573,7 +573,7 @@ export function FirefighterListLegacy({
                           ) : (
                             <span
                               className={
-                                isDarkMode ? "text-gray-600" : "text-slate-400"
+                                isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-secondary"
                               }
                             >
                               —
@@ -584,15 +584,15 @@ export function FirefighterListLegacy({
                       {isAdminMode && (
                         <td
                           className={`px-4 py-4 whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                            isDarkMode ? "text-materialm-text" : "text-materialm-text"
                           }`}
                         >
                           {firefighter.certification_level ? (
                             <span
                               className={`px-2 py-1 text-xs font-bold rounded ${
                                 isDarkMode
-                                  ? "bg-amber-900/70 text-amber-100"
-                                  : "bg-amber-100 text-amber-900"
+                                  ? "bg-materialm-warning/70 text-materialm-warning"
+                                  : "bg-materialm-warning/20 text-materialm-warning"
                               }`}
                             >
                               {firefighter.certification_level}
@@ -600,7 +600,7 @@ export function FirefighterListLegacy({
                           ) : (
                             <span
                               className={
-                                isDarkMode ? "text-gray-600" : "text-slate-400"
+                                isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-secondary"
                               }
                             >
                               —
@@ -615,7 +615,7 @@ export function FirefighterListLegacy({
                               {qualifications.map((qual) => (
                                 <span
                                   key={qual}
-                                  className="px-1.5 py-0.5 bg-sky-900/70 text-sky-300 text-xs font-semibold rounded"
+                                  className="px-1.5 py-0.5 bg-materialm-info/70 text-materialm-info text-xs font-semibold rounded"
                                 >
                                   {qual}
                                 </span>
@@ -624,7 +624,7 @@ export function FirefighterListLegacy({
                           ) : (
                             <span
                               className={
-                                isDarkMode ? "text-gray-600" : "text-slate-400"
+                                isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-secondary"
                               }
                             >
                               —
@@ -634,7 +634,7 @@ export function FirefighterListLegacy({
                       )}
                       <td
                         className={`px-4 py-4 whitespace-nowrap text-sm ${
-                          isDarkMode ? "text-gray-400" : "text-slate-600"
+                          isDarkMode ? "text-materialm-text-secondary" : "text-materialm-text-secondary"
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -645,8 +645,8 @@ export function FirefighterListLegacy({
                               <span
                                 className={
                                   isDarkMode
-                                    ? "text-gray-600"
-                                    : "text-slate-400"
+                                    ? "text-materialm-text-disabled"
+                                    : "text-materialm-text-secondary"
                                 }
                               >
                                 Never
@@ -661,8 +661,8 @@ export function FirefighterListLegacy({
                               }}
                               className={`p-1 rounded transition-colors ${
                                 isDarkMode
-                                  ? "hover:bg-gray-700 text-gray-500 hover:text-gray-300"
-                                  : "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                                  ? "hover:bg-materialm-darkgray text-materialm-text-disabled hover:text-materialm-text"
+                                  : "hover:bg-materialm-surface text-materialm-text-secondary hover:text-materialm-text"
                               }`}
                               title="View hold history"
                               aria-label="View hold history"
@@ -697,8 +697,8 @@ export function FirefighterListLegacy({
                               onClick={() => onTransferShift(firefighter.id)}
                               className={`p-1.5 rounded transition-colors focus-ring ${
                                 isDarkMode
-                                  ? "hover:bg-blue-900/50 text-blue-400"
-                                  : "hover:bg-blue-100 text-blue-600"
+                                  ? "hover:bg-materialm-primary/20 text-materialm-primary"
+                                  : "hover:bg-materialm-primary/10 text-materialm-primary"
                               }`}
                               title="Transfer shift"
                             >
@@ -708,8 +708,8 @@ export function FirefighterListLegacy({
                               onClick={() => onDeactivate(firefighter.id)}
                               className={`p-1.5 rounded transition-colors focus-ring ${
                                 isDarkMode
-                                  ? "hover:bg-gray-700 text-gray-400"
-                                  : "hover:bg-gray-200 text-gray-600"
+                                  ? "hover:bg-materialm-darkgray text-materialm-text-secondary"
+                                  : "hover:bg-materialm-surface text-materialm-text-secondary"
                               }`}
                               title="Deactivate"
                             >
@@ -719,8 +719,8 @@ export function FirefighterListLegacy({
                               onClick={() => onDelete(firefighter.id)}
                               className={`p-1.5 rounded transition-colors focus-ring ${
                                 isDarkMode
-                                  ? "hover:bg-red-900/50 text-red-400"
-                                  : "hover:bg-red-100 text-red-600"
+                                  ? "hover:bg-materialm-error/20 text-materialm-error"
+                                  : "hover:bg-materialm-error/10 text-materialm-error"
                               }`}
                               title="Delete permanently"
                             >
@@ -750,10 +750,10 @@ export function FirefighterListLegacy({
             )}
 
             {isAdminMode && deactivatedFirefighters.length > 0 && (
-              <div className={`mt-6 pt-6 border-t border-gray-700 ${tokens.spacing.card.lg}`}>
+              <div className={`mt-6 pt-6 border-t border-materialm-border-dark ${tokens.spacing.card.lg}`}>
                 <h3
                   className={`text-sm font-bold mb-3 ${
-                    isDarkMode ? "text-gray-400" : "text-slate-600"
+                    isDarkMode ? "text-materialm-text-secondary" : "text-materialm-text-secondary"
                   }`}
                 >
                   Deactivated ({deactivatedFirefighters.length})
@@ -764,15 +764,15 @@ export function FirefighterListLegacy({
                       key={firefighter.id}
                       className={`rounded-lg p-3 border ${
                         isDarkMode
-                          ? "bg-gray-800/40 border-gray-700/50 hover:bg-gray-800/60"
-                          : "bg-gray-100 border-gray-300 hover:bg-gray-200"
+                          ? "bg-materialm-darkgray/40 border-materialm-border-dark/50 hover:bg-materialm-darkgray/60"
+                          : "bg-materialm-surface border-materialm-border-dark hover:bg-materialm-surface"
                       } transition-colors`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 flex-1">
                           <div
                             className={`w-2 h-2 rounded-full ${
-                              isDarkMode ? "bg-gray-600" : "bg-gray-400"
+                              isDarkMode ? "bg-materialm-text-disabled" : "bg-materialm-text-secondary"
                             }`}
                           />
                           <div className="flex-1">
@@ -783,8 +783,8 @@ export function FirefighterListLegacy({
                               }}
                               className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
                                 isDarkMode
-                                  ? "text-gray-400 hover:text-gray-300"
-                                  : "text-gray-600 hover:text-gray-800"
+                                  ? "text-materialm-text-secondary hover:text-materialm-text"
+                                  : "text-materialm-text-secondary hover:text-materialm-text"
                               }`}
                             >
                               {firefighter.name}
@@ -792,7 +792,7 @@ export function FirefighterListLegacy({
                             {firefighter.fire_station && (
                               <p
                                 className={`text-xs ${
-                                  isDarkMode ? "text-gray-500" : "text-gray-500"
+                                  isDarkMode ? "text-materialm-text-disabled" : "text-materialm-text-disabled"
                                 }`}
                               >
                                 Station #{firefighter.fire_station}
@@ -808,8 +808,8 @@ export function FirefighterListLegacy({
                             }}
                             className={`p-1.5 rounded transition-colors focus-ring ${
                               isDarkMode
-                                ? "hover:bg-blue-900/50 text-blue-400"
-                                : "hover:bg-blue-100 text-blue-600"
+                                ? "hover:bg-materialm-primary/20 text-materialm-primary"
+                                : "hover:bg-materialm-primary/10 text-materialm-primary"
                             }`}
                             title="View profile and hold history"
                           >
@@ -822,8 +822,8 @@ export function FirefighterListLegacy({
                             }}
                             className={`p-1.5 rounded transition-colors focus-ring ${
                               isDarkMode
-                                ? "hover:bg-emerald-900/50 text-emerald-400"
-                                : "hover:bg-emerald-100 text-emerald-600"
+                                ? "hover:bg-materialm-success/20 text-materialm-success"
+                                : "hover:bg-materialm-success/10 text-materialm-success"
                             }`}
                             title="Reactivate firefighter"
                           >
@@ -832,8 +832,8 @@ export function FirefighterListLegacy({
                           <span
                             className={`text-xs px-2 py-1 rounded ${
                               isDarkMode
-                                ? "bg-gray-700/50 text-gray-500"
-                                : "bg-gray-200 text-gray-600"
+                                ? "bg-materialm-darkgray/50 text-materialm-text-disabled"
+                                : "bg-materialm-surface text-materialm-text-secondary"
                             }`}
                           >
                             Inactive

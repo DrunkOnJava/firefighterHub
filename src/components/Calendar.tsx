@@ -25,6 +25,7 @@ import { useFeatureFlag } from "../hooks/useFeatureFlag";
 import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { CalendarLegacy } from './CalendarLegacy';
+import { CalendarM3 } from './CalendarM3';
 
 interface CalendarProps {
   firefighters: Firefighter[];
@@ -45,19 +46,10 @@ interface CalendarProps {
 }
 
 /**
- * MaterialM Calendar Component
- */
-// Temporarily using legacy calendar - MaterialM version needs layout refinement
-// The MaterialM conversion was making the calendar too cramped
-// TODO: Fix MaterialM calendar layout to match legacy spacing
-function CalendarM3(props: CalendarProps) {
-  return <CalendarLegacy {...props} />;
-}
-
-/**
  * Calendar Component with Feature Flag
  *
  * Switches between MaterialM and legacy versions.
+ * MaterialM version uses OKLCH color palette and updated spacing.
  */
 export function Calendar(props: CalendarProps) {
   const useMaterialM = useFeatureFlag('MATERIALM');

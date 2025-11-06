@@ -1,14 +1,13 @@
 /**
- * Calendar Component (Refactored Orchestrator)
- * 
+ * Calendar Component M3 (MaterialM Design)
+ *
  * Simplified calendar component that orchestrates sub-components:
  * - CalendarHeader: Navigation and title
  * - CalendarGrid: Weekday headers and day cells
  * - DayModal: Modal for viewing/editing holds
  * - CalendarLegend: Color legend
- * 
- * Reduced from 910 lines to ~160 lines by extracting components.
- * Uses design tokens for consistent styling.
+ *
+ * Uses MaterialM OKLCH color palette and design tokens.
  */
 
 import { useState, useMemo } from "react";
@@ -43,7 +42,7 @@ interface CalendarProps {
   currentShift: Shift;
 }
 
-export function CalendarLegacy({
+export function CalendarM3({
   firefighters,
   scheduledHolds,
   onScheduleHold,

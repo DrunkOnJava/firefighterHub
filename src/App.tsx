@@ -14,6 +14,9 @@ import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal'
 // MaterialM Calendar
 import { MaterialMCalendar } from './components/calendar/MaterialMCalendar';
 
+// Interactive Roster
+import { FirefighterList } from './components/FirefighterList';
+
 function App() {
   // State: Shift
   const [currentShift, setCurrentShift] = useState<Shift>('A');
@@ -38,12 +41,14 @@ function App() {
 
   // Get CRUD operations from current shift's hook
   const {
+    deactivatedFirefighters,
     addFirefighter,
     completeHold,
     deleteFirefighter,
     deactivateFirefighter,
     reactivateFirefighter,
     transferShift,
+    resetAll,
     reorderFirefighters,
   } = useFirefighters(showToast, currentShift);
 
@@ -219,39 +224,22 @@ function App() {
             )}
           </div>
 
-          {/* Roster Table - 20 Rows */}
-          <div className="roster">
-            <div className="roster-head">
-              <div>Firefighter Roster ({currentShiftFFs.length})</div>
-              <div style={{ textAlign: 'center' }}>Station</div>
-              <div style={{ textAlign: 'right' }}>Shift</div>
-            </div>
-
-            <div className="rows">
-              {currentShiftFFs.map((ff) => (
-                <div key={ff.id} className="row">
-                  <div className="name">{ff.name}</div>
-                  <div className="station">
-                    <span className="tag">#{ff.fire_station || '?'}</span>
-                  </div>
-                  <div className="shifts">
-                    {ff.shift === 'A' && <span className="mini circle" title="A" />}
-                    {ff.shift === 'B' && <span className="mini square" title="B" />}
-                    {ff.shift === 'C' && <span className="mini diamond" title="C" />}
-                  </div>
-                </div>
-              ))}
-
-              {/* Fill empty rows if less than 20 */}
-              {Array.from({ length: Math.max(0, 20 - currentShiftFFs.length) }).map((_, i) => (
-                <div key={`empty-${i}`} className="row" style={{ opacity: 0.3 }}>
-                  <div className="name">—</div>
-                  <div className="station"><span className="tag">—</span></div>
-                  <div className="shifts" />
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Interactive Firefighter List */}
+          <FirefighterList
+            firefighters={firefighters}
+            deactivatedFirefighters={deactivatedFirefighters}
+            onAdd={addFirefighter}
+            onCompleteHold={handleCompleteHoldClick}
+            onDelete={deleteFirefighter}
+            onDeactivate={deactivateFirefighter}
+            onReactivate={reactivateFirefighter}
+            onTransferShift={handleTransferShiftClick}
+            onResetAll={resetAll}
+            onReorder={reorderFirefighters}
+            currentShift={currentShift}
+            isAdminMode={isAdminMode}
+            isDarkMode={isDarkMode}
+          />
         </aside>
       </div>
 

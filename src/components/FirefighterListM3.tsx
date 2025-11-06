@@ -18,11 +18,11 @@ import { useFilters } from "../hooks/useFilters";
 import { Firefighter, Shift } from "../lib/supabase";
 import { tokens } from "../styles";
 import { formatHoldDate } from "../utils/dateUtils";
-import { AddFirefighterForm } from "./AddFirefighterForm";
+import { AddFirefighterFormM3 } from "./AddFirefighterFormM3";
 import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyState";
 import { FilterPanelM3 } from "./FilterPanelM3";
-import { FirefighterProfileModal } from "./FirefighterProfileModal";
-import { ReactivateModal } from "./ReactivateModal";
+import { FirefighterProfileModalM3 } from "./FirefighterProfileModalM3";
+import { ReactivateModalM3 } from "./ReactivateModalM3";
 import { BulkActionsM3, RosterHeaderM3, RosterSearchBarM3 } from "./roster";
 
 interface FirefighterListM3Props {
@@ -282,7 +282,7 @@ export function FirefighterListM3({
         {/* Add Firefighter Form (Collapsible) */}
         {isAdminMode && showAddForm && (
           <div className={tokens.spacing.margin.lg}>
-            <AddFirefighterForm
+            <AddFirefighterFormM3
               onAdd={(name, station) => {
                 onAdd(name, station);
                 setShowAddForm(false);
@@ -710,7 +710,7 @@ export function FirefighterListM3({
         )}
       </div>
 
-      <ReactivateModal
+      <ReactivateModalM3
         isOpen={showReactivateModal}
         firefighter={selectedFirefighter}
         currentRosterSize={firefighters.length}
@@ -725,7 +725,7 @@ export function FirefighterListM3({
         }}
       />
 
-      <FirefighterProfileModal
+      <FirefighterProfileModalM3
         isOpen={showProfileModal}
         firefighter={selectedFirefighter}
         onClose={() => {

@@ -32,9 +32,9 @@ import { Shift } from "../lib/supabase";
 import { ButtonM3 } from "./m3/ButtonM3";
 import { BadgeM3 } from "./m3/BadgeM3";
 import {
-  ConnectionStatusDot,
-  ConnectionStatusIndicator,
-} from "./ConnectionStatusIndicator";
+  ConnectionStatusIndicatorM3,
+  ConnectionStatusDotM3,
+} from "./ConnectionStatusIndicatorM3";
 import { ShiftSelector } from "./ShiftSelector";
 import { HeaderLegacy } from "./HeaderLegacy";
 
@@ -103,7 +103,7 @@ function HeaderM3({
               </div>
 
               {/* Connection Status Indicator */}
-              <ConnectionStatusIndicator showLabel={false} />
+              <ConnectionStatusIndicatorM3 showLabel={false} />
             </div>
 
             {/* Primary Actions */}
@@ -175,7 +175,7 @@ function HeaderM3({
 
             {/* Mobile Connection Status (Compact) */}
             <div className="lg:hidden">
-              <ConnectionStatusDot />
+              <ConnectionStatusDotM3 />
             </div>
 
             {/* Mobile Menu Button */}

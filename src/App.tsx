@@ -3,7 +3,6 @@ import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { Firefighter, Shift } from './lib/supabase';
-import { getMonthDays, attachScheduledHolds } from './utils/calendarUtils';
 
 // Modal components
 import { HelpModal } from './components/HelpModal';
@@ -12,10 +11,12 @@ import { CompleteHoldModal } from './components/CompleteHoldModal';
 import { TransferShiftModal } from './components/TransferShiftModal';
 import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
 
+// MaterialM Calendar
+import { MaterialMCalendar } from './components/calendar/MaterialMCalendar';
+
 function App() {
-  // State: Shift and date
+  // State: Shift
   const [currentShift, setCurrentShift] = useState<Shift>('A');
-  const [currentDate] = useState(new Date());
 
   // State: Modal visibility
   const [showHelp, setShowHelp] = useState(false);
@@ -49,7 +50,14 @@ function App() {
   const {
     scheduledHolds = [],
     loading: holdsLoading,
+    scheduleHold,
+    removeScheduledHold,
+    markHoldCompleted,
   } = useScheduledHolds(showToast, currentShift);
+
+  // Admin and dark mode (will be integrated in later phases)
+  const isAdminMode = false; // Phase 6: Will integrate authentication
+  const isDarkMode = true; // Phase 8: Will integrate dark mode toggle
 
   // Combine all firefighters and filter for current shift
   const allFirefighters = [...ffA, ...ffB, ...ffC];
@@ -60,23 +68,6 @@ function App() {
   if (firefightersLoading || holdsLoading) {
     return <div style={{ padding: 20, color: 'var(--text)' }}>Loading...</div>;
   }
-
-  // Get calendar data
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const monthName = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-
-  let calendarDays = [];
-  try {
-    const monthDays = getMonthDays(year, month);
-    calendarDays = attachScheduledHolds(monthDays, scheduledHolds, firefighters);
-  } catch (error) {
-    console.error('Calendar error:', error);
-    calendarDays = [];
-  }
-
-  const today = new Date();
-  const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
   // Get next up for each shift from their respective loaded data
   const shiftA = ffA.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
@@ -188,44 +179,17 @@ function App() {
       <div className="layout">
         {/* Calendar Section */}
         <section className="calendar card">
-          <div className="cal-head">
-            <div className="cal-title">Hold Calendar</div>
-            <div style={{ opacity: .85 }}>{monthName}</div>
-            <div className="cal-shift">Shift {currentShift}</div>
-          </div>
-
-          <div className="grid">
-            {/* Weekday Headers */}
-            <div className="dow">
-              <span>Sunday</span>
-              <span>Monday</span>
-              <span>Tuesday</span>
-              <span>Wednesday</span>
-              <span>Thursday</span>
-              <span>Friday</span>
-              <span>Saturday</span>
-            </div>
-
-            {/* Calendar Cells (6 rows x 7 days) */}
-            <div className="cells">
-              {calendarDays.map((day, idx) => (
-                <div
-                  key={idx}
-                  className={`cell ${!day.isCurrentMonth ? 'muted' : ''} ${day.isToday ? 'today' : ''}`}
-                >
-                  <span className="num">{day.dayNumber}</span>
-                  {/* Event pills would go here */}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div className="legend">
-            <span><span className="sw blue" /> Scheduled</span>
-            <span><span className="sw green" /> Completed</span>
-            <span><span className="sw red" /> Today</span>
-          </div>
+          <MaterialMCalendar
+            firefighters={firefighters}
+            scheduledHolds={scheduledHolds}
+            onScheduleHold={scheduleHold}
+            onRemoveHold={removeScheduledHold}
+            onMarkCompleted={markHoldCompleted}
+            loading={holdsLoading}
+            isAdminMode={isAdminMode}
+            isDarkMode={isDarkMode}
+            currentShift={currentShift}
+          />
         </section>
 
         {/* Sidebar: Next Up + Roster */}

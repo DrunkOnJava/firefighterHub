@@ -95,13 +95,13 @@ export function BigCalendar({
   }
 
   return (
-    <div className={`big-calendar-container ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className={`big-calendar-container ${isDarkMode ? 'dark-theme' : 'light-theme'} h-full`}>
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: '700px' }}
+        style={{ height: '100%' }}
         eventPropGetter={eventStyleGetter}
         views={['month', 'week', 'day']}
         defaultView="month"

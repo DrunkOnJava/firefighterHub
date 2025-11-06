@@ -1,5 +1,6 @@
 import {
   Clock,
+  FileBarChart,
   HelpCircle,
   Menu,
   Moon,
@@ -20,6 +21,7 @@ interface HeaderProps {
   onShowHelp: () => void;
   onShowActivityLog: () => void;
   onQuickAddFirefighter: () => void;
+  onNavigateToReports: () => void;
   onOpenMobileMenu: () => void;
   isAdminMode: boolean;
   currentShift: Shift;
@@ -32,6 +34,7 @@ export function Header({
   onShowHelp,
   onShowActivityLog,
   onQuickAddFirefighter,
+  onNavigateToReports,
   onOpenMobileMenu,
   isAdminMode,
   currentShift,
@@ -53,7 +56,7 @@ export function Header({
       `}
     >
       <div className={`px-4 sm:px-6 ${tokens.spacing.section.sm}`}>
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center w-full">
           {/* Logo & Title */}
           <div className="flex items-center gap-4 min-w-0 leading-tight">
             <div className="flex-shrink-0">
@@ -94,48 +97,24 @@ export function Header({
             </div>
           </div>
 
-          {/* Navigation Actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-3">
-              {/* Context Section - Shift */}
-              <div className="flex items-center gap-2 pr-3 border-r border-gray-700">
+          {/* Spacer to push right items to the edge */}
+          <div className="flex-1"></div>
+
+          {/* Right-aligned Navigation Actions */}
+          <div className="flex items-center gap-3" style={{ marginLeft: 'auto' }}>
+            {/* Shift Selector + Action Buttons (Desktop) */}
+            <div className="hidden sm:flex items-center gap-3">
+              {/* Shift Selector */}
+              <div className={`flex items-center gap-2 pr-3 border-r ${
+                isDarkMode ? "border-gray-700" : "border-slate-300"
+              }`}>
                 <ShiftSelector
                   currentShift={currentShift}
                   onShiftChange={onShiftChange}
                 />
               </div>
 
-              {/* Connection Status Indicator */}
-              <ConnectionStatusIndicator showLabel={false} />
-            </div>
-
-            {/* Primary Actions */}
-            <div className="hidden sm:flex items-center gap-2">
-              {isAdminMode && (
-                <button
-                  onClick={onQuickAddFirefighter}
-                  className={`
-                    px-4 py-2
-                    ${tokens.touchTarget.min}
-                    ${tokens.borders.radius.lg}
-                    ${tokens.shadows.lg}
-                    font-semibold
-                    ${tokens.transitions.fast}
-                    flex items-center gap-2
-                    bg-green-600 hover:bg-green-700 text-white
-                    focus-ring
-                  `}
-                  aria-label="Quick add team member"
-                >
-                  <UserPlus size={18} />
-                  <span className="hidden md:inline">Add Member</span>
-                </button>
-              )}
-            </div>
-
-            {/* Secondary Actions */}
-            <div className="hidden sm:flex items-center gap-1">
+              {/* Action Buttons */}
               <button
                 onClick={() => window.print()}
                 className={`p-2 rounded-lg transition-colors focus-ring flex flex-col items-center gap-0.5 ${
@@ -188,25 +167,6 @@ export function Header({
                 <HelpCircle size={20} />
                 <span className="text-xs font-medium">Help</span>
               </button>
-            </div>
-
-            {/* Admin Mode Badge */}
-            {isAdminMode && (
-              <div
-                className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border ${
-                  isDarkMode
-                    ? "bg-blue-900/30 border-blue-700 text-blue-300"
-                    : "bg-blue-100 border-blue-400 text-blue-700"
-                }`}
-              >
-                <Shield size={14} />
-                <span className="text-xs font-bold">ADMIN</span>
-              </div>
-            )}
-
-            {/* Mobile Connection Status (Compact) */}
-            <div className="lg:hidden">
-              <ConnectionStatusDot />
             </div>
 
             {/* Mobile Menu Button */}

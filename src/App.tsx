@@ -21,9 +21,15 @@ import { BigCalendar } from './components/calendar/BigCalendar';
 // Interactive Roster
 import { FirefighterList } from './components/FirefighterList';
 
+// Next Up Bar
+import { NextUpBar } from './components/NextUpBar';
+
 function App() {
   // State: Shift
   const [currentShift, setCurrentShift] = useState<Shift>('A');
+
+  // State: View management
+  const [currentView, setCurrentView] = useState<'calendar' | 'reports'>('calendar');
 
   // State: Modal visibility
   const [showHelp, setShowHelp] = useState(false);
@@ -79,17 +85,6 @@ function App() {
     return <div style={{ padding: 20, color: 'var(--text)' }}>Loading...</div>;
   }
 
-  // Get next up for each shift from their respective loaded data
-  const shiftA = ffA.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-  const shiftB = ffB.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-  const shiftC = ffC.filter(ff => ff.is_available).sort((a, b) => a.order_position - b.order_position)[0];
-
-  // Current shift firefighters (first 20)
-  const currentShiftFFs = firefighters
-    .filter(ff => ff.shift === currentShift)
-    .sort((a, b) => a.order_position - b.order_position)
-    .slice(0, 20);
-
   // Event handlers for modals
   function handleCompleteHoldClick(id: string) {
     const firefighter = firefighters.find((ff) => ff.id === id);
@@ -142,12 +137,19 @@ function App() {
         onShowHelp={() => setShowHelp(true)}
         onShowActivityLog={() => setShowActivityLog(true)}
         onQuickAddFirefighter={() => setShowQuickAdd(true)}
+        onNavigateToReports={() => setCurrentView('reports')}
         onOpenMobileMenu={() => setShowMobileMenu(true)}
         isAdminMode={isAdminMode}
         currentShift={currentShift}
         onShiftChange={setCurrentShift}
         isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
+      />
+
+      {/* Next Up Bar - Shows all shifts */}
+      <NextUpBar
+        firefighters={allFirefighters}
+        isDarkMode={isDarkMode}
       />
 
       {/* Main Layout: Calendar + Roster */}
@@ -166,33 +168,8 @@ function App() {
             currentShift={currentShift}
           />
         </section>
-        {/* Sidebar: Next Up + Roster */}
+        {/* Sidebar: Roster */}
         <aside className="sidebar card">
-          {/* Next Up Cards */}
-          <div className="nextup">
-            {shiftA && (
-              <div className="chip">
-                <span className="mini circle" />
-                <b>A: {shiftA.name.split(' ').map(n => n[0]).join('. ')}.</b>
-                <span className="meta">Stn #{shiftA.fire_station || '?'}</span>
-              </div>
-            )}
-            {shiftB && (
-              <div className="chip">
-                <span className="mini square" />
-                <b>B: {shiftB.name.split(' ').map(n => n[0]).join('. ')}.</b>
-                <span className="meta">Stn #{shiftB.fire_station || '?'}</span>
-              </div>
-            )}
-            {shiftC && (
-              <div className="chip">
-                <span className="mini diamond" />
-                <b>C: {shiftC.name.split(' ').map(n => n[0]).join('. ')}.</b>
-                <span className="meta">Stn #{shiftC.fire_station || '?'}</span>
-              </div>
-            )}
-          </div>
-
           {/* Interactive Firefighter List */}
           <FirefighterList
             firefighters={firefighters}

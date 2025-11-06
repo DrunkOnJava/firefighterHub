@@ -1,5 +1,5 @@
 // REFACTORED: Reduced from 1,123 lines to ~400 lines by extracting sub-components
-// Sub-components: RosterHeader, RosterSearchBar, BulkActions, ExportMenu (in ./roster/)
+// Sub-components: RosterHeader, BulkActions, ExportMenu (in ./roster/)
 
 import {
   ArrowUpDown,
@@ -23,7 +23,7 @@ import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyStat
 import { FilterPanel } from "./FilterPanel";
 import { FirefighterProfileModal } from "./FirefighterProfileModal";
 import { ReactivateModal } from "./ReactivateModal";
-import { BulkActions, RosterHeader, RosterSearchBar } from "./roster";
+import { BulkActions, RosterHeader } from "./roster";
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -72,7 +72,6 @@ export function FirefighterList({
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedFirefighter, setSelectedFirefighter] =
     useState<Firefighter | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -108,22 +107,8 @@ export function FirefighterList({
     return () => document.removeEventListener("click", handleClickOutside);
   }, [showExportMenu]);
 
-  // Filter firefighters based on search query AND filters
-  const searchFiltered = localFirefighters.filter((ff) => {
-    // Apply search filter
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      const matchesName = ff.name.toLowerCase().includes(query);
-      const matchesStation = ff.fire_station?.toString().includes(query);
-
-      if (!matchesName && !matchesStation) return false;
-    }
-
-    return true;
-  });
-
-  // Apply advanced filters
-  const filteredAndAdvancedFiltered = applyFilters(searchFiltered);
+  // Apply filters to local firefighters
+  const filteredAndAdvancedFiltered = applyFilters(localFirefighters);
 
   const nextInRotation = filteredAndAdvancedFiltered[0]; // First firefighter is next in rotation
 
@@ -275,7 +260,7 @@ export function FirefighterList({
         deactivatedCount={deactivatedFirefighters.length}
       />
 
-      <div className={tokens.spacing.card.lg}>
+      <div className="px-6 pb-6">
         {/* Add Firefighter Form (Collapsible) */}
         {isAdminMode && showAddForm && (
           <div className={tokens.spacing.margin.lg}>
@@ -286,18 +271,6 @@ export function FirefighterList({
               }}
             />
           </div>
-        )}
-
-        {/* Search Bar with sub-component */}
-        {firefighters.length > 0 && (
-          <RosterSearchBar
-            ref={searchInputRef}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            resultCount={filteredAndAdvancedFiltered.length}
-            totalCount={firefighters.length}
-            isDarkMode={isDarkMode}
-          />
         )}
 
         {/* Bulk Actions with sub-component */}
@@ -442,7 +415,9 @@ export function FirefighterList({
                   )}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className={`divide-y ${
+                isDarkMode ? "divide-gray-700" : "divide-slate-200"
+              }`}>
                 {filteredAndAdvancedFiltered.map((firefighter, index) => {
                   const qualifications = [
                     firefighter.is_fto && "FTO",
@@ -451,6 +426,14 @@ export function FirefighterList({
                   ].filter((q): q is string => Boolean(q));
 
                   const isNext = nextInRotation?.id === firefighter.id;
+
+                  // Banded rows for better readability
+                  const isEvenRow = index % 2 === 0;
+                  const bandedBg = isEvenRow
+                    ? isDarkMode
+                      ? "bg-gray-900/30"
+                      : "bg-slate-50/50"
+                    : "";
 
                   return (
                     <tr
@@ -464,7 +447,7 @@ export function FirefighterList({
                         isDarkMode
                           ? "hover:bg-gray-800/50"
                           : "hover:bg-slate-50"
-                      } ${draggedId === firefighter.id ? "opacity-50" : ""} ${
+                      } ${bandedBg} ${draggedId === firefighter.id ? "opacity-50" : ""} ${
                         dragOverId === firefighter.id
                           ? isDarkMode
                             ? "bg-blue-900/20 border-l-4 border-blue-500"
@@ -473,13 +456,13 @@ export function FirefighterList({
                       } ${
                         isNext
                           ? isDarkMode
-                            ? "bg-blue-950/30 ring-2 ring-inset ring-blue-500/50"
-                            : "bg-blue-50 ring-2 ring-inset ring-blue-400"
+                            ? "bg-blue-950/40 ring-2 ring-inset ring-blue-500/60"
+                            : "bg-blue-100 ring-2 ring-inset ring-blue-500"
                           : ""
                       } ${isAdminMode ? "cursor-move" : ""}`}
                     >
                       {isAdminMode && (
-                        <td className="px-4 py-4 whitespace-nowrap text-center">
+                        <td className="px-4 py-2 whitespace-nowrap text-center">
                           <button
                             onClick={() => toggleSelection(firefighter.id)}
                             className={`p-1 rounded transition-colors ${
@@ -508,35 +491,40 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-4 whitespace-nowrap text-sm ${
+                        className={`px-4 py-2 whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-300" : "text-slate-700"
                         }`}
                       >
-                        <div className="flex items-center gap-2">
-                          {isNext && (
-                            <span className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded">
-                              NEXT
-                            </span>
-                          )}
-                          <span className="font-bold">{index + 1}</span>
-                        </div>
+                        <span className="font-bold">{index + 1}</span>
                       </td>
                       <td
-                        className={`px-4 py-4 whitespace-nowrap ${
+                        className={`px-4 py-2 whitespace-nowrap ${
                           isDarkMode ? "text-white" : "text-slate-900"
                         }`}
                       >
-                        <button
-                          onClick={() => handleViewProfile(firefighter)}
-                          className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
-                          aria-label={`View profile for ${firefighter.name}`}
-                        >
-                          {firefighter.name}
-                        </button>
+                        <div className="flex items-center gap-2">
+                          {/* Shift Badge */}
+                          <div
+                            className={`w-4 h-4 flex-shrink-0 ${
+                              firefighter.shift === 'A'
+                                ? 'rounded-full bg-gradient-to-br from-cyan-500 to-blue-600'
+                                : firefighter.shift === 'B'
+                                ? 'rounded-sm bg-gradient-to-br from-rose-500 to-red-600'
+                                : 'rotate-45 bg-gradient-to-br from-blue-500 to-indigo-600'
+                            }`}
+                          />
+                          <button
+                            onClick={() => handleViewProfile(firefighter)}
+                            className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
+                            aria-label={`View profile for ${firefighter.name}`}
+                          >
+                            {firefighter.name}
+                          </button>
+                        </div>
                       </td>
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-4 whitespace-nowrap ${
+                          className={`px-4 py-2 whitespace-nowrap ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -555,7 +543,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-4 whitespace-nowrap text-sm ${
+                          className={`px-4 py-2 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -576,7 +564,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-4 whitespace-nowrap text-sm ${
+                          className={`px-4 py-2 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -626,7 +614,7 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-4 whitespace-nowrap text-sm ${
+                        className={`px-4 py-2 whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-400" : "text-slate-600"
                         }`}
                       >
@@ -666,7 +654,7 @@ export function FirefighterList({
                         </div>
                       </td>
                       {/* REMOVED: Hours Worked data cell - see header comment above
-                        <td className="px-4 py-4 whitespace-nowrap text-center">
+                        <td className="px-4 py-2 whitespace-nowrap text-center">
                           <div className="flex flex-col items-center gap-1">
                             <div className="flex items-center gap-2">
                               <Clock className={`${tokens.icons.xs} {isDarkMode ? "text-gray-400" : "text-gray-500"} />
@@ -684,7 +672,7 @@ export function FirefighterList({
                         </td>
                         */}
                       {isAdminMode && (
-                        <td className="px-4 py-4 whitespace-nowrap text-right">
+                        <td className="px-4 py-2 whitespace-nowrap text-right">
                           <div className="flex items-center justify-end gap-1">
                             <button
                               onClick={() => onTransferShift(firefighter.id)}
@@ -730,14 +718,13 @@ export function FirefighterList({
           </div>
         )}
 
-        {/* Empty state for search with no results */}
-        {firefighters.length > 0 && 
-         filteredAndAdvancedFiltered.length === 0 && 
-         (searchQuery.trim() || activeFilterCount > 0) && (
-          <NoSearchResultsEmptyState 
-            searchTerm={searchQuery.trim() || 'applied filters'}
+        {/* Empty state for filters with no results */}
+        {firefighters.length > 0 &&
+         filteredAndAdvancedFiltered.length === 0 &&
+         activeFilterCount > 0 && (
+          <NoSearchResultsEmptyState
+            searchTerm="applied filters"
             onClearSearch={() => {
-              setSearchQuery('');
               clearAllFilters();
             }}
           />

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, visualHeadings } from "../styles";
 import { StationSelector } from "./StationSelector";
 
 interface CompleteHoldModalProps {

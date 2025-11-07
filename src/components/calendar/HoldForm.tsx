@@ -12,7 +12,7 @@
 
 import { useState } from "react";
 import { Firefighter, HoldDuration } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
+import { colors, tokens, visualHeadings } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
 import { getTheme } from "../../utils/theme";
 import { StationSelector } from "../StationSelector";
@@ -75,11 +75,11 @@ export function HoldForm({
     
     return (
       <div>
-        <h4
-          className={`${tokens.typography.heading.h4} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
+        <h3
+          className={`${visualHeadings.subtitleMedium} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
         >
           Select Firefighter:
-        </h4>
+        </h3>
 
         {/* Next in rotation - highlighted */}
         {nextInRotation && (
@@ -200,11 +200,11 @@ export function HoldForm({
   // Hold details form
   return (
     <div>
-      <h4
-        className={`${tokens.typography.heading.h4} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
+      <h3
+        className={`${visualHeadings.subtitleMedium} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
       >
         Scheduling: {selectedFirefighter.name}
-      </h4>
+      </h3>
 
       <div className="space-y-4">
         {/* Station selector */}

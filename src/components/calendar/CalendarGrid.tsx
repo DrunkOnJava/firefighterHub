@@ -6,11 +6,11 @@
  * - 7x6 grid of day cells
  * - Loading state
  *
- * Uses design tokens for consistent spacing and layout.
+ * Uses grid system utilities for consistent spacing and layout.
  */
 
 import { Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
+import { gridUtilities } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
 import { getTheme } from "../../utils/theme";
 import { DayCell } from "./DayCell";
@@ -56,19 +56,13 @@ export function CalendarGrid({
   }
 
   return (
-    <div className="w-full">
-      {/* Weekday headers */}
-      <div
-        className={`grid grid-cols-7 ${tokens.spacing.gap.sm} ${tokens.spacing.margin.md} w-full`}
-      >
+    <div className="w-full flex flex-col min-h-0">
+      {/* Weekday headers - using grid system utilities */}
+      <div className={gridUtilities.calendar.weekdayHeader}>
         {weekDays.map((day) => (
           <div
             key={day}
-            className={`
-              text-center font-semibold
-              ${tokens.typography.body.secondary}
-              ${theme.calendar.headerText}
-            `}
+            className={`text-center font-semibold text-sm ${theme.calendar.headerText}`}
           >
             <span className="hidden sm:inline">{day}</span>
             <span className="sm:hidden">{day.slice(0, 3)}</span>
@@ -76,11 +70,8 @@ export function CalendarGrid({
         ))}
       </div>
 
-      {/* Calendar grid */}
-      <div
-        className={`grid grid-cols-7 ${tokens.spacing.gap.sm} w-full`}
-        style={{ gridAutoRows: "1fr" }}
-      >
+      {/* Calendar grid - using grid system utilities */}
+      <div className={gridUtilities.calendar.dayGrid}>
         {calendarDays.map((day, index) => (
           <DayCell
             key={index}

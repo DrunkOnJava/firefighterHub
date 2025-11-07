@@ -208,6 +208,7 @@ export function Calendar({
                 onScheduleHold={handleScheduleHold}
                 onRemoveHold={onRemoveHold}
                 onMarkCompleted={onMarkCompleted}
+                onSkipFirefighter={onSkipFirefighter}
                 isAdminMode={isAdminMode}
                 isDarkMode={isDarkMode}
                 currentShift={currentShift}
@@ -226,6 +227,7 @@ export function Calendar({
           onScheduleHold={handleScheduleHold}
           onRemoveHold={onRemoveHold}
           onMarkCompleted={onMarkCompleted}
+          onSkipFirefighter={onSkipFirefighter}
           isAdminMode={isAdminMode}
           isDarkMode={isDarkMode}
           currentShift={currentShift}

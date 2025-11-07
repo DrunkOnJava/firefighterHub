@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift, supabase } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, visualHeadings } from "../styles";
 import { ShiftBadge } from "./ShiftSelector";
 import type { Tables } from "../lib/database.types";
 
@@ -272,7 +272,7 @@ export function FirefightersModal({
                 )} mx-auto mb-4`}
               />
               <p
-                className={`${colors.structural.text.tertiary} ${tokens.typography.heading.h2}`}
+                className={`${colors.structural.text.tertiary} ${visualHeadings.titleMedium}`}
               >
                 No firefighters found
               </p>

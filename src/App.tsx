@@ -15,6 +15,9 @@ import { BottomNav } from './components/mobile/BottomNav';
 import { FirefighterList } from './components/FirefighterList';
 import { NextUpBar } from './components/NextUpBar';
 
+// Development tools (only in dev mode)
+import { GridOverlay } from './components/GridOverlay';
+
 // Lazy-loaded components (code splitting for performance)
 const BigCalendar = lazy(() => import('./components/calendar/BigCalendar').then(m => ({ default: m.BigCalendar })));
 const HelpModal = lazy(() => import('./components/HelpModal').then(m => ({ default: m.HelpModal })));
@@ -163,6 +166,14 @@ function App() {
 
   return (
     <>
+      {/* Skip Navigation Link - WCAG 2.4.1 Bypass Blocks */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:shadow-lg focus:ring-2 focus:ring-blue-400"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <Header
         onShowHelp={() => setShowHelp(true)}
@@ -180,7 +191,7 @@ function App() {
       />
 
       {/* Main Layout: Calendar + Roster */}
-      <div className="layout">
+      <main id="main-content" tabIndex={-1} className="layout">
         {/* Calendar Section with Next Up Bar */}
         <section className={`calendar card flex flex-col ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}`}>
           {/* Next Up Bar - Shows all shifts */}
@@ -229,7 +240,7 @@ function App() {
             isDarkMode={isDarkMode}
           />
         </aside>
-      </div>
+      </main>
 
       {/* Toast notifications */}
       {toasts.length > 0 && (
@@ -349,6 +360,9 @@ function App() {
           isDarkMode={isDarkMode}
         />
       )}
+
+      {/* Grid Overlay (Development Only) */}
+      <GridOverlay />
     </>
   );
 }

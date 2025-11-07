@@ -38,6 +38,7 @@ interface DayModalProps {
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
+  onSkipFirefighter?: (firefighterId: string) => void;
   isAdminMode?: boolean;
   isDarkMode?: boolean;
   currentShift: Shift;
@@ -53,6 +54,7 @@ export function DayModal({
   onScheduleHold,
   onRemoveHold,
   onMarkCompleted,
+  onSkipFirefighter,
   isAdminMode = false,
   isDarkMode = true,
 }: DayModalProps) {

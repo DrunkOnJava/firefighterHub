@@ -20,6 +20,12 @@
 
 export { tokens } from './tokens';
 export { colors } from './colorSystem';
+export { visualHeadings } from './visualHeadings';
+export * from './gridSystem';
+export { grid, gridUtilities, alignmentUtilities, spacingUtilities, responsiveUtilities } from './gridUtilities';
+
 export type { Tokens } from './tokens';
 export type { Colors } from './colorSystem';
+export type { VisualHeadingKey } from './visualHeadings';
+export type { GridSystem } from './gridSystem';
 

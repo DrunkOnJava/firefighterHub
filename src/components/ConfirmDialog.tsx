@@ -1,6 +1,6 @@
 import { AlertTriangle, Info, Trash2, X } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { tokens } from "../styles";
+import { tokens, visualHeadings } from "../styles";
 import { getTheme } from "../utils/theme";
 
 type ConfirmVariant = "danger" | "warning" | "info";
@@ -130,7 +130,7 @@ export function ConfirmDialog({
             <div className="flex-1">
               <h2
                 id="confirm-dialog-title"
-                className={`${tokens.typography.heading.h3} mb-2 ${theme.confirmDialog.title}`}
+                className={`${visualHeadings.subtitleLarge} mb-2 ${theme.confirmDialog.title}`}
               >
                 {title}
               </h2>

@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Firefighter, supabase } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, visualHeadings } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
 import {
   // calculateHoldsByStation, // Removed - not used
@@ -199,15 +199,15 @@ export function Reports({
           className={`${tokens.spacing.margin.xl} flex items-center justify-between`}
         >
           <div>
-            <h1
+            <h2
               className={`
-                ${tokens.typography.heading.h1}
+                ${tokens.typography.heading.h2}
                 ${tokens.spacing.margin.sm}
                 ${isDarkMode ? colors.structural.text.primary : "text-gray-900"}
               `}
             >
-              Hold Metrics Dashboard
-            </h1>
+              Fire Department Hold Rotation Analytics
+            </h2>
             <p
               className={
                 isDarkMode ? colors.structural.text.secondary : "text-gray-600"
@@ -438,7 +438,7 @@ export function Reports({
                   <div className="flex items-center justify-between">
                     <span
                       className={`
-                        ${tokens.typography.heading.h4}
+                        ${visualHeadings.subtitleMedium}
                         ${
                           isDarkMode
                             ? colors.structural.text.primary
@@ -450,7 +450,7 @@ export function Reports({
                     </span>
                     <span
                       className={`
-                        ${tokens.typography.heading.h1}
+                        ${visualHeadings.metricLarge}
                         ${
                           isDarkMode
                             ? colors.structural.text.primary

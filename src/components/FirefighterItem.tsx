@@ -59,22 +59,18 @@ export function FirefighterItem({
 
   return (
     <div
-      draggable={isAdminMode}
-      onDragStart={(e) => isAdminMode && onDragStart?.(e, firefighter.id)}
+      draggable={true}
+      onDragStart={(e) => onDragStart?.(e, firefighter.id)}
       onDragOver={(e) => {
-        if (!isAdminMode) return;
         e.preventDefault();
         onDragOver?.(e, firefighter.id);
       }}
       onDrop={(e) => {
-        if (!isAdminMode) return;
         e.preventDefault();
         onDrop?.(e, firefighter.id);
       }}
       onDragEnd={onDragEnd}
-      className={`relative rounded-xl shadow-lg transition-all hover:shadow-xl ${
-        isAdminMode ? "cursor-move" : ""
-      } ${
+      className={`relative rounded-xl shadow-lg transition-all hover:shadow-xl cursor-move ${
         isDragging
           ? theme.firefighterItem.dragging
           : isDragOver

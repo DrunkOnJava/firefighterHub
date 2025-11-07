@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
-import { colors, tokens } from "../styles";
+import { colors, tokens, visualHeadings } from "../styles";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -90,7 +90,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
             </div>
             <h2
               id="login-modal-title"
-              className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+              className={`${visualHeadings.subtitleLarge} ${colors.structural.text.primary}`}
             >
               Battalion Chief Sign In
             </h2>

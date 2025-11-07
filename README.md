@@ -205,6 +205,16 @@ This project was migrated from Bolt.new with the following improvements:
 3. Start the development server with `pnpm dev`
 4. Begin managing your firefighter shifts!
 
+## For AI Developers
+
+This repository is configured for GitHub Copilot and other AI coding assistants:
+
+- **Copilot Instructions**: See [`.github/copilot-instructions.md`](.github/copilot-instructions.md) for comprehensive project context, architecture patterns, and coding conventions
+- **Custom Agents**: See [`.github/agents/`](.github/agents/) for specialized agents (UI/UX implementation specialist)
+- **MCP Configuration**: See [`.github/mcp-config.json`](.github/mcp-config.json) for Model Context Protocol server setup
+
+The Copilot instructions include critical patterns for shift-based data isolation, rotation logic, real-time sync, and more.
+
 ## Support
 
 For issues or questions, see the documentation:

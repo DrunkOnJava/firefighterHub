@@ -1,6 +1,10 @@
 
 # FirefighterHub - AI Coding Agent Instructions
 
+> **Last Updated**: November 7, 2025  
+> **Version**: 1.1.0  
+> **Purpose**: Comprehensive instructions for GitHub Copilot and AI coding agents
+
 ## Project Overview
 
 FirefighterHub is a **shift rotation and availability management system** for fire departments. It tracks firefighters across 3 shifts (A, B, C), manages "hold" rotations (unavailability periods), tracks apparatus certifications, and maintains a complete audit trail via activity logs.

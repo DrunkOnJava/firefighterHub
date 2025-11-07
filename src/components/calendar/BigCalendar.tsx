@@ -6,14 +6,25 @@
  */
 
 import { useMemo } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import { format, parse, startOfWeek, getDay } from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import { Firefighter, Shift, HoldDuration } from '../../lib/supabase';
 import { ScheduledHold } from '../../utils/calendarUtils';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './big-calendar-theme.css';
 
-const localizer = momentLocalizer(moment);
+const locales = {
+  'en-US': enUS,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
 
 interface BigCalendarProps {
   firefighters: Firefighter[];
@@ -133,7 +144,7 @@ export function BigCalendar({
     }
 
     const dateStr = start.toISOString().split('T')[0];
-    if (window.confirm(`Schedule hold for ${availableFF.name} on ${moment(start).format('MMM D, YYYY')}?`)) {
+    if (window.confirm(`Schedule hold for ${availableFF.name} on ${format(start, 'MMM d, yyyy')}?`)) {
       onScheduleHold(dateStr, availableFF);
     }
   };

@@ -5,6 +5,7 @@ import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift } from "../lib/supabase";
 import { colors, tokens, gridUtilities } from "../styles";
 import { Button } from "./ui/Button";
+import { IconButton } from "./ui/IconButton";
 
 interface TransferShiftModalProps {
   isOpen: boolean;
@@ -100,13 +101,14 @@ export function TransferShiftModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.lg} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div className={`${tokens.spacing.card.lg} space-y-6`}>

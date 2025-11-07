@@ -24,6 +24,7 @@ import { FilterPanel } from "./FilterPanel";
 import { FirefighterProfileModal } from "./FirefighterProfileModal";
 import { ReactivateModal } from "./ReactivateModal";
 import { BulkActions, RosterHeader } from "./roster";
+import { IconButton } from "./ui/IconButton";
 
 interface FirefighterListProps {
   firefighters: Firefighter[];
@@ -632,21 +633,17 @@ export function FirefighterList({
                             )}
                           </span>
                           {isAdminMode && (
-                            <button
+                            <IconButton
+                              icon={History}
+                              label={`View hold history for ${firefighter.name}`}
                               onClick={() => {
                                 setSelectedFirefighter(firefighter);
                                 setShowProfileModal(true);
                               }}
-                              className={`p-1 rounded transition-colors ${
-                                isDarkMode
-                                  ? "hover:bg-gray-700 text-gray-500 hover:text-gray-300"
-                                  : "hover:bg-slate-100 text-slate-400 hover:text-slate-600"
-                              }`}
-                              title="View hold history"
-                              aria-label="View hold history"
-                            >
-                              <History className={tokens.icons.xs} />
-                            </button>
+                              variant="default"
+                              size="sm"
+                              isDarkMode={isDarkMode}
+                            />
                           )}
                         </div>
                       </td>
@@ -671,39 +668,30 @@ export function FirefighterList({
                       {isAdminMode && (
                         <td className="px-4 py-2 whitespace-nowrap text-right">
                           <div className="flex items-center justify-end gap-1">
-                            <button
+                            <IconButton
+                              icon={Repeat}
+                              label={`Transfer ${firefighter.name} to different shift`}
                               onClick={() => onTransferShift(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                isDarkMode
-                                  ? "hover:bg-blue-900/50 text-blue-400"
-                                  : "hover:bg-blue-100 text-blue-600"
-                              }`}
-                              title="Transfer shift"
-                            >
-                              <Repeat className={tokens.icons.sm} />
-                            </button>
-                            <button
+                              variant="primary"
+                              size="sm"
+                              isDarkMode={isDarkMode}
+                            />
+                            <IconButton
+                              icon={UserX}
+                              label={`Deactivate ${firefighter.name}`}
                               onClick={() => onDeactivate(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                isDarkMode
-                                  ? "hover:bg-gray-700 text-gray-400"
-                                  : "hover:bg-gray-200 text-gray-600"
-                              }`}
-                              title="Deactivate"
-                            >
-                              <UserX className={tokens.icons.sm} />
-                            </button>
-                            <button
+                              variant="default"
+                              size="sm"
+                              isDarkMode={isDarkMode}
+                            />
+                            <IconButton
+                              icon={Trash2}
+                              label={`Delete ${firefighter.name} permanently`}
                               onClick={() => onDelete(firefighter.id)}
-                              className={`p-1.5 rounded transition-colors focus-ring ${
-                                isDarkMode
-                                  ? "hover:bg-red-900/50 text-red-400"
-                                  : "hover:bg-red-100 text-red-600"
-                              }`}
-                              title="Delete permanently"
-                            >
-                              <Trash2 className={tokens.icons.sm} />
-                            </button>
+                              variant="danger"
+                              size="sm"
+                              isDarkMode={isDarkMode}
+                            />
                           </div>
                         </td>
                       )}
@@ -779,34 +767,28 @@ export function FirefighterList({
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <button
+                      <IconButton
+                        icon={Eye}
+                        label={`View profile and hold history for ${firefighter.name}`}
                         onClick={() => {
                           setSelectedFirefighter(firefighter);
                           setShowProfileModal(true);
                         }}
-                        className={`p-1.5 rounded transition-colors focus-ring ${
-                          isDarkMode
-                            ? "hover:bg-blue-900/50 text-blue-400"
-                            : "hover:bg-blue-100 text-blue-600"
-                        }`}
-                        title="View profile and hold history"
-                      >
-                        <Eye className={tokens.icons.sm} />
-                      </button>
-                      <button
+                        variant="primary"
+                        size="sm"
+                        isDarkMode={isDarkMode}
+                      />
+                      <IconButton
+                        icon={RotateCcw}
+                        label={`Reactivate ${firefighter.name}`}
                         onClick={() => {
                           setSelectedFirefighter(firefighter);
                           setShowReactivateModal(true);
                         }}
-                        className={`p-1.5 rounded transition-colors focus-ring ${
-                          isDarkMode
-                            ? "hover:bg-emerald-900/50 text-emerald-400"
-                            : "hover:bg-emerald-100 text-emerald-600"
-                        }`}
-                        title="Reactivate firefighter"
-                      >
-                        <RotateCcw className={tokens.icons.sm} />
-                      </button>
+                        variant="success"
+                        size="sm"
+                        isDarkMode={isDarkMode}
+                      />
                       <span
                         className={`text-xs px-2 py-1 rounded ${
                           isDarkMode

@@ -16,6 +16,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { colors, tokens } from "../styles";
+import { IconButton } from "./ui/IconButton";
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -82,13 +83,14 @@ export function HelpModal({
               How to Use Hold List Manager
             </h2>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close help dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close help dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div

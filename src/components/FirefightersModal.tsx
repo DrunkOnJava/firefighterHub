@@ -6,6 +6,7 @@ import { Shift, supabase } from "../lib/supabase";
 import { colors, tokens, visualHeadings, gridUtilities } from "../styles";
 import { ShiftBadge } from "./ShiftSelector";
 import type { Tables } from "../lib/database.types";
+import { IconButton } from "./ui/IconButton";
 
 type Firefighter = Tables<"firefighters">;
 
@@ -202,13 +203,14 @@ export function FirefightersModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close firefighters dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} hover:bg-gray-700 ${tokens.borders.radius.lg} ${tokens.transitions.fast} ${colors.structural.text.tertiary} focus-ring flex items-center justify-center`}
-            aria-label="Close firefighters dialog"
-          >
-            <X size={24} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div

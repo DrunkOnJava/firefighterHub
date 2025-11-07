@@ -12,6 +12,7 @@ import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { StationSelector } from "./StationSelector";
 import { Button } from "./ui/Button";
+import { IconButton } from "./ui/IconButton";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
@@ -157,21 +158,14 @@ export function CompleteHoldModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close dialog"
             onClick={onClose}
-            className={`
-              ${tokens.spacing.section.md}
-              ${tokens.touchTarget.min}
-              ${colors.interactive.hover.bg}
-              ${tokens.borders.radius.lg}
-              ${tokens.transitions.fast}
-              focus-ring
-              flex items-center justify-center
-            `}
-            aria-label="Close dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div className={`${tokens.spacing.card.xl} space-y-6`}>

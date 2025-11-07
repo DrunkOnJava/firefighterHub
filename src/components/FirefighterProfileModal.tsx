@@ -20,6 +20,7 @@ import { Firefighter, Shift, supabase } from "../lib/supabase";
 import { colors, tokens, visualHeadings, gridUtilities } from "../styles";
 import { formatHoldDate } from "../utils/dateUtils";
 import { ShiftBadge } from "./ShiftSelector";
+import { IconButton } from "./ui/IconButton";
 
 interface HoldRecord {
   id: string;
@@ -291,20 +292,14 @@ export function FirefighterProfileModal({
                 )}
               </button>
             )}
-            <button
+            <IconButton
+              icon={X}
+              label="Close profile dialog"
               onClick={onClose}
-              className={`
-                p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.lg}
-                ${tokens.transitions.fast}
-                ${colors.structural.text.tertiary}
-                hover:bg-gray-700
-                focus-ring
-                flex items-center justify-center
-              `}
-              aria-label="Close profile dialog"
-            >
-              <X size={24} />
-            </button>
+              variant="default"
+              size="md"
+              isDarkMode={true}
+            />
           </div>
         </div>
 
@@ -826,12 +821,14 @@ export function FirefighterProfileModal({
                 >
                   Hold Details
                 </h3>
-                <button
+                <IconButton
+                  icon={X}
+                  label="Close hold details"
                   onClick={() => setSelectedHoldForDetail(null)}
-                  className={`p-2 hover:bg-gray-700 ${tokens.borders.radius.lg} ${tokens.transitions.fast}`}
-                >
-                  <X size={24} className={colors.structural.text.tertiary} />
-                </button>
+                  variant="default"
+                  size="md"
+                  isDarkMode={true}
+                />
               </div>
             </div>
 

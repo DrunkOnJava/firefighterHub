@@ -86,17 +86,6 @@ describe("useScheduledHolds", () => {
           scheduled_date: "2025-10-27",
         },
       ];
-          notes: null,
-          duration: "24h",
-          start_time: "07:00",
-          created_at: "2025-10-27T00:00:00Z",
-          updated_at: "2025-10-27T00:00:00Z",
-          completed_at: null,
-          lent_to_shift: null,
-          is_completed: false,
-          scheduled_date: "2025-10-27",
-        },
-      ];
 
       setMockScheduledHolds([...shiftAHolds, ...shiftBHolds]);
 

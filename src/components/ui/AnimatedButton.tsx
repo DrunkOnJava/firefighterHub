@@ -56,7 +56,7 @@ export function AnimatedButton({
   ...props
 }: AnimatedButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const { animate, prefersReducedMotion } = useAnimation();
+  const { animate } = useAnimation();
   const isReducedMotion = useReducedMotion();
 
   const isDisabled = disabled || state === 'disabled' || state === 'loading';

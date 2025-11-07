@@ -60,3 +60,23 @@ export const visualHeadings = {
 
 // Type for autocomplete
 export type VisualHeadingKey = keyof typeof visualHeadings;
+
+/**
+ * Helper function for combining visual heading with additional classes
+ * Supports h1-h6 mapping and custom classes
+ */
+export function visualHeading(
+  level: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6',
+  ...additionalClasses: string[]
+): string {
+  const mapping = {
+    h1: visualHeadings.displayMedium,
+    h2: visualHeadings.titleLarge,
+    h3: visualHeadings.titleMedium,
+    h4: visualHeadings.subtitleLarge,
+    h5: visualHeadings.subtitleMedium,
+    h6: visualHeadings.subtitleSmall,
+  };
+  
+  return [mapping[level], ...additionalClasses.filter(Boolean)].join(' ');
+}

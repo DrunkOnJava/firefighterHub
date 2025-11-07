@@ -16,8 +16,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { colors, tokens } from "../styles";
+import { visualHeading } from "../styles/visualHeadings";
 import { IconButton } from "./ui/IconButton";
-import { visualHeading } from "../utils/visualHeadings";
 
 interface HelpModalProps {
   isOpen: boolean;

@@ -545,10 +545,16 @@ header {
   }
 
   /* Single-column layout enforcement */
-  .layout,
-  [class*="grid"] {
+  .layout {
     display: flex !important;
     flex-direction: column !important;
+  }
+
+  /* Calendar needs to grow in flex layout */
+  .calendar {
+    flex: 1 1 auto !important;
+    min-height: 400px !important;
+    max-height: 600px !important;
   }
 
   /* Stack everything vertically */

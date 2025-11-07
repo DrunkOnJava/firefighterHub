@@ -325,6 +325,17 @@
     border-radius: 6px;
   }
 
+  /* Fix collapsed month view on mobile */
+  .big-calendar-container .rbc-month-view {
+    min-height: 400px !important;
+    flex: 1 1 auto !important;
+  }
+
+  .big-calendar-container .rbc-month-row {
+    min-height: 60px !important;
+    flex: 1 1 auto !important;
+  }
+
   /* Reduce day cell size for mobile */
   .big-calendar-container .rbc-day-bg {
     min-height: 60px;

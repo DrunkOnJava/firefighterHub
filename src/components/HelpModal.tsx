@@ -17,6 +17,7 @@ import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { colors, tokens } from "../styles";
 import { IconButton } from "./ui/IconButton";
+import { visualHeading } from "../utils/visualHeadings";
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -78,7 +79,7 @@ export function HelpModal({
             </div>
             <h2
               id="help-modal-title"
-              className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}
+              className={visualHeading('h2', colors.structural.text.primary)}
             >
               How to Use Hold List Manager
             </h2>
@@ -108,7 +109,7 @@ export function HelpModal({
                   size={24}
                 />
                 <h3
-                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                  className={visualHeading('h3', colors.structural.text.primary)}
                 >
                   Calendar Management
                 </h3>
@@ -169,7 +170,7 @@ export function HelpModal({
               >
                 <Users className={colors.semantic.success.text} size={24} />
                 <h3
-                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                  className={visualHeading('h3', colors.structural.text.primary)}
                 >
                   Firefighter Management
                 </h3>
@@ -225,7 +226,7 @@ export function HelpModal({
                   size={24}
                 />
                 <h3
-                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                  className={visualHeading('h3', colors.structural.text.primary)}
                 >
                   Completing Holds
                 </h3>
@@ -278,7 +279,7 @@ export function HelpModal({
               >
                 <TrendingUp className={colors.semantic.info.text} size={24} />
                 <h3
-                  className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                  className={visualHeading('h3', colors.structural.text.primary)}
                 >
                   Sidebar Features
                 </h3>
@@ -327,7 +328,7 @@ export function HelpModal({
               className={`${colors.semantic.scheduled.light} ${colors.semantic.scheduled.border} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
             >
               <h3
-                className={`${tokens.typography.heading.h4} ${colors.structural.text.primary} mb-3`}
+                className={visualHeading('h4', colors.structural.text.primary, 'mb-3')}
               >
                 Pro Tips
               </h3>
@@ -366,11 +367,11 @@ export function HelpModal({
                   <Lock className={colors.semantic.scheduled.text} size={24} />
                 )}
                 <h3
-                  className={`${tokens.typography.heading.h4} ${
+                  className={visualHeading('h4',
                     user
                       ? colors.semantic.success.text
                       : colors.semantic.scheduled.text
-                  }`}
+                  )}
                 >
                   {user ? "Battalion Chief Mode" : "Battalion Chief Login"}
                 </h3>
@@ -440,7 +441,7 @@ export function HelpModal({
                 >
                   <Trash2 className={colors.semantic.error.text} size={24} />
                   <h3
-                    className={`${tokens.typography.heading.h4} ${colors.semantic.error.text}`}
+                    className={visualHeading('h4', colors.semantic.error.text)}
                   >
                     Danger Zone
                   </h3>

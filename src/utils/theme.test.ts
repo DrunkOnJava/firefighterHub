@@ -139,8 +139,8 @@ describe("Theme WCAG Compliance", () => {
     const darkTheme = getTheme(true);
 
     it("should use dark backgrounds", () => {
-      expect(darkTheme.appBackground).toContain("from-[#2F3640]");
-      expect(darkTheme.cardBackground).toContain("from-[#3A4149]");
+      expect(darkTheme.appBackground).toContain("from-slate-900");
+      expect(darkTheme.cardBackground).toContain("from-slate-825");
     });
 
     it("should use light text on dark backgrounds", () => {

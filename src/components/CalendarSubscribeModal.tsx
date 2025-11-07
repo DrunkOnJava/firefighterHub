@@ -13,7 +13,7 @@ import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
 import { colors, tokens, gridUtilities } from "../styles";
 import { IconButton } from "./ui/IconButton";
-import { visualHeading } from "../utils/visualHeadings";
+import { visualHeadings } from "../styles/visualHeadings";
 
 interface CalendarSubscribeModalProps {
   isOpen: boolean;

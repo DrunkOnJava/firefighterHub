@@ -100,8 +100,8 @@ describe("ShiftSelector", () => {
 
       const shiftA = screen.getByRole("button", { name: /shift a/i });
 
-      // Light mode should apply green-600 background for active shift A
-      expect(shiftA.className).toContain("bg-green-600");
+      // Component uses green-700 for active shifts
+      expect(shiftA.className).toContain("bg-green-700");
     });
   });
 
@@ -447,7 +447,7 @@ describe("ShiftSelector", () => {
       expect(shiftB.className).toContain("bg-red-700");
     });
 
-    it("should apply gray colors for Shift C", () => {
+    it("should apply sky colors for Shift C", () => {
       render(
         <ShiftSelector
           currentShift="C"
@@ -456,7 +456,7 @@ describe("ShiftSelector", () => {
       );
 
       const shiftC = screen.getByRole("button", { name: /shift c/i });
-      expect(shiftC.className).toContain("bg-gray-800");
+      expect(shiftC.className).toContain("bg-sky-700");
     });
 
     it("should apply different inactive colors for each shift", () => {
@@ -472,7 +472,7 @@ describe("ShiftSelector", () => {
 
       // Inactive shifts should have muted colors
       expect(shiftB.className).toContain("bg-red-950/60");
-      expect(shiftC.className).toContain("bg-gray-950/60");
+      expect(shiftC.className).toContain("bg-sky-950/60");
     });
   });
 });

@@ -453,3 +453,175 @@ header {
     --sidebar-w: 100%;
   }
 }
+
+/* =========================================
+   Mobile Optimizations (768px and below)
+   ========================================= */
+@media (max-width: 768px) {
+  :root {
+    --header-h: 56px; /* Slightly shorter header on mobile */
+    --gap: 12px; /* Tighter spacing */
+    --radius: 8px; /* Smaller border radius */
+  }
+
+  #root {
+    padding: 12px;
+    padding-bottom: max(12px, var(--safe-area-inset-bottom)); /* Safe area for iPhone */
+  }
+
+  /* Header mobile optimizations */
+  header {
+    padding: 0 12px;
+  }
+
+  .brand h1 {
+    font-size: 18px; /* Smaller title */
+  }
+
+  .subtitle {
+    display: none; /* Hide subtitle on mobile */
+  }
+
+  /* Touch-friendly buttons - minimum 44px */
+  button,
+  .btn,
+  [role="button"],
+  a[class*="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  /* Icon-only buttons - ensure 44px touch target */
+  button:not(:has(span, div)),
+  button > svg:only-child {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+
+  /* Form inputs - 16px minimum to prevent iOS zoom */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Critical for iOS */
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+
+  /* Better spacing for list items */
+  .row,
+  [class*="item"],
+  [class*="card"] {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  /* Modals - larger tap targets */
+  [class*="modal"] button,
+  [class*="dialog"] button {
+    min-height: 48px;
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   Mobile-First Layout (640px and below)
+   ========================================= */
+@media (max-width: 640px) {
+  :root {
+    --header-h: 48px; /* Even shorter on small mobile */
+    --gap: 8px;
+  }
+
+  body {
+    font-size: 15px; /* Slightly larger base font */
+  }
+
+  #root {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  /* Single-column layout enforcement */
+  .layout,
+  [class*="grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Stack everything vertically */
+  .toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Optimize header for tiny screens */
+  .brand h1 {
+    font-size: 16px;
+  }
+
+  .brand .logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Full-width modals on mobile */
+  [class*="modal"],
+  [class*="dialog"],
+  [class*="sheet"] {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    padding-bottom: var(--safe-area-inset-bottom);
+  }
+
+  /* Better touch targets for close buttons */
+  [class*="modal"] button[aria-label*="close"],
+  [class*="modal"] button[aria-label*="Close"],
+  button:has(svg[class*="x-"]) {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+/* =========================================
+   Extra Small Devices (iPhone SE, etc.)
+   ========================================= */
+@media (max-width: 375px) {
+  :root {
+    --header-h: 48px;
+    --gap: 8px;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  #root {
+    padding: 8px;
+  }
+
+  /* Even more compact spacing */
+  button,
+  .btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  /* Ensure text remains readable */
+  h1 { font-size: 20px; }
+  h2 { font-size: 18px; }
+  h3 { font-size: 16px; }
+
+  /* Keep inputs at 16px to prevent zoom */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}

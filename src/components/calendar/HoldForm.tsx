@@ -21,7 +21,7 @@ interface HoldFormProps {
   selectedDay: CalendarDay;
   firefighters: Firefighter[];
   selectedFirefighter: Firefighter | null;
-  onFirefighterSelect: (ff: Firefighter) => void;
+  onFirefighterSelect: (ff: Firefighter | null) => void;
   onSchedule: (
     holdDate: string,
     ff: Firefighter,
@@ -71,6 +71,8 @@ export function HoldForm({
 
   // Firefighter selection view
   if (!selectedFirefighter) {
+    const nextInRotation = availableFirefighters[0];
+    
     return (
       <div>
         <h4
@@ -79,49 +81,110 @@ export function HoldForm({
           Select Firefighter:
         </h4>
 
-        <div
-          className={`space-y-2 max-h-96 overflow-y-auto ${tokens.spacing.margin.lg}`}
-        >
-          {availableFirefighters.length === 0 ? (
-            <p
-              className={`${tokens.typography.body.secondary} ${theme.textSecondary} text-center py-8`}
-            >
-              No available firefighters
+        {/* Next in rotation - highlighted */}
+        {nextInRotation && (
+          <div className={tokens.spacing.margin.md}>
+            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mb-2 font-semibold`}>
+              NEXT IN ROTATION:
             </p>
-          ) : (
-            availableFirefighters.map((ff) => (
+            <button
+              onClick={() => onFirefighterSelect(nextInRotation)}
+              className={`
+                w-full text-left
+                ${tokens.spacing.section.md}
+                ${tokens.borders.radius.lg}
+                border-2
+                ${isDarkMode ? 'border-blue-500 bg-blue-950/40' : 'border-blue-500 bg-blue-50'}
+                hover:opacity-80
+                ${tokens.transitions.fast}
+              `}
+            >
+              <div className={`font-bold ${theme.textPrimary} flex items-center gap-2`}>
+                <span className="text-xl">⭐</span>
+                {nextInRotation.name}
+              </div>
+              <div
+                className={`${tokens.typography.body.small} ${theme.textSecondary}`}
+              >
+                Position: {nextInRotation.order_position + 1}
+                {nextInRotation.fire_station && ` • Station ${nextInRotation.fire_station}`}
+              </div>
+            </button>
+            
+            {/* Skip button */}
+            {availableFirefighters.length > 1 && (
               <button
-                key={ff.id}
-                onClick={() => onFirefighterSelect(ff)}
+                onClick={() => {
+                  // Move next person to end and show the new list
+                  onFirefighterSelect(null);
+                }}
                 className={`
-                  w-full text-left
-                  ${tokens.spacing.section.md}
+                  w-full mt-2
+                  ${tokens.spacing.section.sm}
                   ${tokens.borders.radius.lg}
-                  border-2
-                  ${theme.modal.border}
-                  ${theme.modal.background}
-                  hover:opacity-80
-                  ${tokens.transitions.fast}
+                  ${colors.components.button.secondary}
+                  font-semibold
+                  text-sm
                 `}
               >
-                <div className={`font-medium ${theme.textPrimary}`}>
-                  {ff.name}
-                </div>
-                <div
-                  className={`${tokens.typography.body.small} ${theme.textSecondary}`}
-                >
-                  Position: {ff.order_position + 1}
-                  {ff.fire_station && ` • Station ${ff.fire_station}`}
-                </div>
+                Skip to Next Person
               </button>
-            ))
-          )}
-        </div>
+            )}
+          </div>
+        )}
+
+        {/* Rest of the list */}
+        {availableFirefighters.length > 1 && (
+          <>
+            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mt-6 mb-2 font-semibold`}>
+              OR SELECT SOMEONE ELSE:
+            </p>
+            <div
+              className={`space-y-2 max-h-64 overflow-y-auto ${tokens.spacing.margin.lg}`}
+            >
+              {availableFirefighters.slice(1).map((ff) => (
+                <button
+                  key={ff.id}
+                  onClick={() => onFirefighterSelect(ff)}
+                  className={`
+                    w-full text-left
+                    ${tokens.spacing.section.md}
+                    ${tokens.borders.radius.lg}
+                    border-2
+                    ${theme.modal.border}
+                    ${theme.modal.background}
+                    hover:opacity-80
+                    ${tokens.transitions.fast}
+                  `}
+                >
+                  <div className={`font-medium ${theme.textPrimary}`}>
+                    {ff.name}
+                  </div>
+                  <div
+                    className={`${tokens.typography.body.small} ${theme.textSecondary}`}
+                  >
+                    Position: {ff.order_position + 1}
+                    {ff.fire_station && ` • Station ${ff.fire_station}`}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {availableFirefighters.length === 0 && (
+          <p
+            className={`${tokens.typography.body.secondary} ${theme.textSecondary} text-center py-8`}
+          >
+            No available firefighters
+          </p>
+        )}
 
         <button
           onClick={onCancel}
           className={`
             w-full
+            mt-4
             ${tokens.spacing.section.md}
             ${tokens.borders.radius.lg}
             ${colors.components.button.secondary}

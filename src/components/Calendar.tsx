@@ -3,15 +3,19 @@
  * 
  * Simplified calendar component that orchestrates sub-components:
  * - CalendarHeader: Navigation and title
- * - CalendarGrid: Weekday headers and day cells
+ * - CalendarGrid: Weekday headers and day cells (desktop/tablet)
+ * - MobileWeekView: Single week view for mobile devices
  * - DayModal: Modal for viewing/editing holds
  * - CalendarLegend: Color legend
  * 
- * Reduced from 910 lines to ~160 lines by extracting components.
- * Uses design tokens for consistent styling.
+ * Mobile Optimizations:
+ * - Uses MobileWeekView on mobile (< 768px) with horizontal swipe
+ * - Bottom sheet day modal on mobile
+ * - Larger touch targets for mobile interactions
  */
 
 import { useState, useMemo } from "react";
+import { useDevice } from "../hooks/useDevice";
 import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
 import {
   getMonthDays,
@@ -23,6 +27,8 @@ import { CalendarHeader } from './calendar/CalendarHeader';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { DayModal } from './calendar/DayModal';
 import { CalendarLegend } from './calendar/CalendarLegend';
+import { MobileWeekView } from './mobile/MobileWeekView';
+import { BottomSheet } from './mobile/BottomSheet';
 import { colors, tokens } from '../styles';
 
 interface CalendarProps {
@@ -37,6 +43,7 @@ interface CalendarProps {
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
+  onSkipFirefighter?: (firefighterId: string) => void;
   loading: boolean;
   isAdminMode?: boolean;
   isDarkMode?: boolean;
@@ -49,11 +56,14 @@ export function Calendar({
   onScheduleHold,
   onRemoveHold,
   onMarkCompleted,
+  onSkipFirefighter,
   loading,
   isAdminMode = false,
   isDarkMode = true,
   currentShift,
 }: CalendarProps) {
+  const device = useDevice();
+  
   // State (minimal - only navigation and modal)
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<CalendarDay | null>(null);
@@ -87,6 +97,22 @@ export function Calendar({
   function handleCloseModal() {
     setSelectedDay(null);
     setSelectedFirefighter(null);
+  }
+
+  // Firefighter selection handler with skip support
+  function handleFirefighterSelect(ff: Firefighter | null) {
+    if (ff === null && onSkipFirefighter) {
+      // Skip the next firefighter (move them to bottom)
+      const nextInRotation = firefighters
+        .filter(f => f.is_available)
+        .sort((a, b) => a.order_position - b.order_position)[0];
+      
+      if (nextInRotation) {
+        onSkipFirefighter(nextInRotation.id);
+      }
+    } else if (ff) {
+      setSelectedFirefighter(ff);
+    }
   }
 
   // Hold scheduling handler
@@ -130,14 +156,26 @@ export function Calendar({
 
       {/* Calendar grid section */}
       <div className={`${tokens.spacing.card.md} w-full`}>
-        <CalendarGrid
-          calendarDays={calendarDays}
-          onDayClick={handleDayClick}
-          loading={loading}
-          isAdminMode={isAdminMode}
-          currentShift={currentShift}
-          isDarkMode={isDarkMode}
-        />
+        {device.isMobile ? (
+          <MobileWeekView
+            currentDate={currentDate}
+            onDateChange={setCurrentDate}
+            firefighters={firefighters}
+            scheduledHolds={scheduledHolds}
+            onDayClick={handleDayClick}
+            currentShift={currentShift}
+            isDarkMode={isDarkMode}
+          />
+        ) : (
+          <CalendarGrid
+            calendarDays={calendarDays}
+            onDayClick={handleDayClick}
+            loading={loading}
+            isAdminMode={isAdminMode}
+            currentShift={currentShift}
+            isDarkMode={isDarkMode}
+          />
+        )}
       </div>
 
       {/* Legend section */}
@@ -149,21 +187,50 @@ export function Calendar({
         <CalendarLegend isDarkMode={isDarkMode} />
       </div>
 
-      {/* Day modal */}
-      <DayModal
-        isOpen={selectedDay !== null}
-        selectedDay={selectedDay}
-        onClose={handleCloseModal}
-        firefighters={firefighters}
-        selectedFirefighter={selectedFirefighter}
-        onFirefighterSelect={setSelectedFirefighter}
-        onScheduleHold={handleScheduleHold}
-        onRemoveHold={onRemoveHold}
-        onMarkCompleted={onMarkCompleted}
-        isAdminMode={isAdminMode}
-        isDarkMode={isDarkMode}
-        currentShift={currentShift}
-      />
+      {/* Day modal - Use BottomSheet on mobile, regular modal on desktop */}
+      {device.isMobile ? (
+        <BottomSheet
+          isOpen={selectedDay !== null}
+          onClose={handleCloseModal}
+          title={selectedDay ? selectedDay.date.toLocaleDateString() : ''}
+          isDarkMode={isDarkMode}
+          height="auto"
+        >
+          {selectedDay && (
+            <div className="px-6 py-4">
+              <DayModal
+                isOpen={selectedDay !== null}
+                selectedDay={selectedDay}
+                onClose={handleCloseModal}
+                firefighters={firefighters}
+                selectedFirefighter={selectedFirefighter}
+                onFirefighterSelect={handleFirefighterSelect}
+                onScheduleHold={handleScheduleHold}
+                onRemoveHold={onRemoveHold}
+                onMarkCompleted={onMarkCompleted}
+                isAdminMode={isAdminMode}
+                isDarkMode={isDarkMode}
+                currentShift={currentShift}
+              />
+            </div>
+          )}
+        </BottomSheet>
+      ) : (
+        <DayModal
+          isOpen={selectedDay !== null}
+          selectedDay={selectedDay}
+          onClose={handleCloseModal}
+          firefighters={firefighters}
+          selectedFirefighter={selectedFirefighter}
+          onFirefighterSelect={handleFirefighterSelect}
+          onScheduleHold={handleScheduleHold}
+          onRemoveHold={onRemoveHold}
+          onMarkCompleted={onMarkCompleted}
+          isAdminMode={isAdminMode}
+          isDarkMode={isDarkMode}
+          currentShift={currentShift}
+        />
+      )}
     </div>
   );
 }

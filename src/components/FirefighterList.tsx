@@ -118,20 +118,17 @@ export function FirefighterList({
   ).sort() as string[];
 
   function handleDragStart(e: React.DragEvent, firefighterId: string) {
-    if (!isAdminMode) return;
     setDraggedId(firefighterId);
     e.dataTransfer.effectAllowed = "move";
   }
 
   function handleDragOver(e: React.DragEvent, firefighterId: string) {
-    if (!isAdminMode) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = "move";
     setDragOverId(firefighterId);
   }
 
   function handleDrop(e: React.DragEvent, targetFirefighterId: string) {
-    if (!isAdminMode) return;
     e.preventDefault();
 
     if (draggedId && draggedId !== targetFirefighterId) {
@@ -438,7 +435,7 @@ export function FirefighterList({
                   return (
                     <tr
                       key={firefighter.id}
-                      draggable={isAdminMode}
+                      draggable={true}
                       onDragStart={(e) => handleDragStart(e, firefighter.id)}
                       onDragOver={(e) => handleDragOver(e, firefighter.id)}
                       onDrop={(e) => handleDrop(e, firefighter.id)}
@@ -459,7 +456,7 @@ export function FirefighterList({
                             ? "bg-blue-950/40 ring-2 ring-inset ring-blue-500/60"
                             : "bg-blue-100 ring-2 ring-inset ring-blue-500"
                           : ""
-                      } ${isAdminMode ? "cursor-move" : ""}`}
+                      } cursor-move`}
                     >
                       {isAdminMode && (
                         <td className="px-4 py-2 whitespace-nowrap text-center">

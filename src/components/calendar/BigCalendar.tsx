@@ -38,6 +38,7 @@ interface BigCalendarProps {
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
+  onSkipFirefighter?: (firefighterId: string) => void;
   loading: boolean;
   isAdminMode?: boolean;
   isDarkMode?: boolean;

@@ -28,7 +28,7 @@ interface DayModalProps {
   onClose: () => void;
   firefighters: Firefighter[];
   selectedFirefighter: Firefighter | null;
-  onFirefighterSelect: (ff: Firefighter) => void;
+  onFirefighterSelect: (ff: Firefighter | null) => void;
   onScheduleHold: (
     holdDate: string,
     ff: Firefighter,

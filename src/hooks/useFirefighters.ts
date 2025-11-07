@@ -826,6 +826,52 @@ export function useFirefighters(
     }
   }
 
+  // Move firefighter to bottom of rotation (for voluntary holds or skipping)
+  async function moveToBottomOfRotation(id: string) {
+    const firefighter = firefighters.find((ff) => ff.id === id);
+    if (!firefighter) return;
+
+    const previousFirefighters = [...firefighters];
+
+    try {
+      // Remove firefighter from current position
+      const otherFFs = firefighters.filter((ff) => ff.id !== id && ff.is_available);
+      
+      // Place at bottom
+      const updatedFF = { ...firefighter, order_position: otherFFs.length };
+      
+      // Reorder all
+      const reordered = [
+        ...otherFFs.map((ff, i) => ({ ...ff, order_position: i })),
+        updatedFF,
+      ];
+      
+      setFirefighters(reordered);
+
+      // Batch update database
+      for (const ff of reordered) {
+        const { error } = await supabase
+          .from("firefighters")
+          .update({ order_position: ff.order_position })
+          .eq("id", ff.id);
+
+        if (error) throw error;
+      }
+
+      showToast(`${firefighter.name} moved to end of rotation`, "success");
+      await logActivity(
+        firefighter.name,
+        "voluntary_hold",
+        `Moved to position ${updatedFF.order_position + 1} (voluntary hold/skip)`,
+        id
+      );
+    } catch (error) {
+      console.error("Error moving to bottom:", error);
+      setFirefighters(previousFirefighters);
+      showToast("Could not move firefighter. Please try again.", "error");
+    }
+  }
+
   return {
     firefighters,
     deactivatedFirefighters,
@@ -839,6 +885,7 @@ export function useFirefighters(
     resetAll,
     masterReset,
     reorderFirefighters,
+    moveToBottomOfRotation,
     isOperationLoading,
     loadingStates,
   };

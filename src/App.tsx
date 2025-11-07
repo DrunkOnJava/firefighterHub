@@ -3,11 +3,13 @@ import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { useDarkMode } from './hooks/useDarkMode';
+import { useDevice } from './hooks/useDevice';
 import { Firefighter, Shift } from './lib/supabase';
 
 // Header component (always visible)
 import { Header } from './components/Header';
 import { MobileNav } from './components/MobileNav';
+import { BottomNav } from './components/mobile/BottomNav';
 
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
@@ -22,9 +24,16 @@ const TransferShiftModal = lazy(() => import('./components/TransferShiftModal').
 const QuickAddFirefighterModal = lazy(() => import('./components/QuickAddFirefighterModal').then(m => ({ default: m.QuickAddFirefighterModal })));
 const BattalionChiefLogin = lazy(() => import('./components/BattalionChiefLogin').then(m => ({ default: m.BattalionChiefLogin })));
 
+type MobileTab = 'home' | 'calendar' | 'activity';
+
 function App() {
+  const device = useDevice();
+  
   // State: Shift
   const [currentShift, setCurrentShift] = useState<Shift>('A');
+
+  // State: Mobile tab navigation
+  const [mobileActiveTab, setMobileActiveTab] = useState<MobileTab>('home');
 
   // State: View management (reserved for future Reports feature)
   // const [currentView, setCurrentView] = useState<'calendar' | 'reports'>('calendar');
@@ -83,6 +92,7 @@ function App() {
     transferShift,
     resetAll,
     reorderFirefighters,
+    moveToBottomOfRotation,
   } = useFirefighters(showToast, currentShift);
 
   const {
@@ -172,7 +182,7 @@ function App() {
       {/* Main Layout: Calendar + Roster */}
       <div className="layout">
         {/* Calendar Section with Next Up Bar */}
-        <section className="calendar card flex flex-col">
+        <section className={`calendar card flex flex-col ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}`}>
           {/* Next Up Bar - Shows all shifts */}
           <NextUpBar
             firefighters={allFirefighters}
@@ -192,6 +202,7 @@ function App() {
               onScheduleHold={scheduleHold}
               onRemoveHold={removeScheduledHold}
               onMarkCompleted={markHoldCompleted}
+              onSkipFirefighter={moveToBottomOfRotation}
               loading={holdsLoading}
               isAdminMode={isAdminMode}
               isDarkMode={isDarkMode}
@@ -200,7 +211,7 @@ function App() {
           </Suspense>
         </section>
         {/* Sidebar: Roster */}
-        <aside className="sidebar card">
+        <aside className={`sidebar card ${device.isMobile && mobileActiveTab !== 'home' ? 'hidden' : ''}`} style={{ paddingBottom: device.isMobile ? 'calc(80px + env(safe-area-inset-bottom, 0px))' : undefined }}>
           {/* Interactive Firefighter List */}
           <FirefighterList
             firefighters={firefighters}
@@ -320,10 +331,24 @@ function App() {
           setShowMobileMenu(false);
           setCurrentShift(shift);
         }}
+        isAdminMode={isAdminMode}
         isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
-        isAdminMode={isAdminMode}
       />
+
+      {/* Mobile Bottom Navigation */}
+      {device.isMobile && (
+        <BottomNav
+          activeTab={mobileActiveTab}
+          onTabChange={(tab) => {
+            setMobileActiveTab(tab);
+            if (tab === 'activity') {
+              setShowActivityLog(true);
+            }
+          }}
+          isDarkMode={isDarkMode}
+        />
+      )}
     </>
   );
 }

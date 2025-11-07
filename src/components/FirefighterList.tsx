@@ -435,7 +435,7 @@ export function FirefighterList({
                   return (
                     <tr
                       key={firefighter.id}
-                      draggable={true}
+                      draggable={isAdminMode}
                       onDragStart={(e) => handleDragStart(e, firefighter.id)}
                       onDragOver={(e) => handleDragOver(e, firefighter.id)}
                       onDrop={(e) => handleDrop(e, firefighter.id)}
@@ -456,7 +456,7 @@ export function FirefighterList({
                             ? "bg-blue-950/40 ring-2 ring-inset ring-blue-500/60"
                             : "bg-blue-100 ring-2 ring-inset ring-blue-500"
                           : ""
-                      } cursor-move`}
+                      } ${isAdminMode ? 'cursor-move' : 'cursor-default'}`}
                     >
                       {isAdminMode && (
                         <td className="px-4 py-2 whitespace-nowrap text-center">

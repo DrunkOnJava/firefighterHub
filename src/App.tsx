@@ -4,6 +4,7 @@ import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useDevice } from './hooks/useDevice';
+import { useAnnounce } from './hooks/useAnnounce';
 import { Firefighter, Shift } from './lib/supabase';
 
 // Header component (always visible)
@@ -56,6 +57,7 @@ function App() {
 
   const { toasts, showToast } = useToast();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const announce = useAnnounce();
 
   // Battalion Chief authentication state
   const [isAdmin, setIsAdmin] = useState(false);
@@ -137,6 +139,7 @@ function App() {
     duration?: any,
     startTime?: string
   ) {
+    const firefighter = firefighters.find(ff => ff.id === firefighterId);
     completeHold(
       firefighterId,
       holdDate,
@@ -146,6 +149,17 @@ function App() {
       duration,
       startTime
     );
+    
+    // Announce hold completion for screen readers
+    if (firefighter) {
+      const nextAvailable = firefighters.find(ff => ff.is_available && ff.id !== firefighterId);
+      const availableCount = firefighters.filter(ff => ff.is_available).length;
+      announce(
+        `Hold completed for ${firefighter.name}. ${nextAvailable ? `Next up: ${nextAvailable.name}.` : ''} ${availableCount} firefighters available.`,
+        'polite'
+      );
+    }
+    
     setShowCompleteHoldModal(false);
     setSelectedFirefighterForCompletion(null);
   }
@@ -235,6 +249,7 @@ function App() {
             onTransferShift={handleTransferShiftClick}
             onResetAll={resetAll}
             onReorder={reorderFirefighters}
+            onVolunteerHold={moveToBottomOfRotation}
             currentShift={currentShift}
             isAdminMode={isAdminMode}
             isDarkMode={isDarkMode}

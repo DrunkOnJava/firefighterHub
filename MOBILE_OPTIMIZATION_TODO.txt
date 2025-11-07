@@ -1,0 +1,812 @@
+# FirefighterHub Mobile Optimization - Comprehensive TODO
+
+**Project:** Mobile-First Web App Optimization for FirefighterHub  
+**Target:** Transform existing web app into optimized mobile experience  
+**Goal:** Fast, touch-friendly, accessible mobile web app with PWA capabilities  
+**Timeline:** 10 phases (mobile-first approach)  
+**Last Updated:** November 6, 2025
+
+---
+
+## 📊 Project Overview
+
+**Current State:**
+- ✅ Desktop-optimized React + TypeScript + Vite application
+- ✅ Supabase backend with real-time sync
+- ✅ Dark mode support
+- ✅ Basic responsive design (Tailwind CSS)
+- ⚠️ Not optimized for mobile devices (320px-768px)
+- ⚠️ No PWA capabilities
+- ⚠️ No mobile-specific touch optimizations
+
+**Target State:**
+- 🎯 Mobile-first responsive design (320px base)
+- 🎯 <3 second load time on 3G networks
+- 🎯 44px minimum touch targets (WCAG 2.1 AA)
+- 🎯 PWA with offline support
+- 🎯 Optimized for iOS Safari, Chrome, Firefox mobile
+- 🎯 WCAG 2.1 AA compliant on mobile screens
+
+---
+
+## Phase 1: Mobile Performance Audit & Baseline Setup
+
+### 1.1 Mobile Performance Audit
+- [ ] Run Lighthouse mobile audit on production site
+  - [ ] Performance score baseline
+  - [ ] Accessibility score baseline
+  - [ ] Best Practices score baseline
+  - [ ] SEO score baseline
+- [ ] Test on real devices:
+  - [ ] iPhone 12/13/14 (Safari iOS 15+)
+  - [ ] Samsung Galaxy S21/S22 (Chrome Android)
+  - [ ] Google Pixel 6/7 (Chrome Android)
+- [ ] Document current bundle size (JS/CSS)
+- [ ] Measure Time to Interactive (TTI)
+- [ ] Measure First Contentful Paint (FCP)
+- [ ] Measure Largest Contentful Paint (LCP)
+- [ ] Measure Cumulative Layout Shift (CLS)
+- [ ] Create baseline metrics document in `docs/MOBILE_BASELINE_METRICS.md`
+
+### 1.2 Mobile Device Detection & User Agent Analysis
+- [ ] Research modern device detection strategies
+  - [ ] Evaluate CSS media queries vs JS detection
+  - [ ] Review `navigator.userAgent` reliability
+  - [ ] Research `navigator.userAgentData` (new API)
+- [ ] Implement viewport-based detection (preferred)
+  - [ ] Add `useMediaQuery` hook for breakpoint detection
+  - [ ] Add `useTouchDevice` hook for touch capability detection
+- [ ] Add device capability detection
+  - [ ] Touch support detection
+  - [ ] Network quality detection (Slow-2G, 2G, 3G, 4G)
+  - [ ] Battery status API (if needed)
+- [ ] Create `src/hooks/useDeviceDetection.ts`
+- [ ] Add unit tests for device detection hooks
+
+### 1.3 Mobile Viewport & Orientation Setup
+- [ ] Review and optimize viewport meta tag in `index.html`
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+- [ ] Add orientation change detection
+  - [ ] Create `useOrientation` hook
+  - [ ] Handle portrait/landscape transitions
+  - [ ] Persist orientation preference
+- [ ] Configure Tailwind breakpoints for mobile-first
+  // tailwind.config.js
+  screens: {
+    'xs': '320px',
+    'sm': '375px',
+    'md': '768px',
+    'lg': '1024px',
+    'xl': '1280px',
+  }
+- [ ] Add orientation-specific styles
+- [ ] Test on Safari iOS (notch/safe area handling)
+
+---
+
+## Phase 2: Performance Optimization Foundation
+
+### 2.1 Code Splitting & Dynamic Imports
+- [ ] Audit current bundle size
+  - [ ] Run `pnpm build && pnpm exec vite-bundle-visualizer`
+  - [ ] Identify largest chunks
+- [ ] Implement route-based code splitting
+  - [ ] Split by major views (Calendar, Roster, Settings)
+  - [ ] Use `React.lazy()` for heavy components
+- [ ] Split large modals into separate chunks
+  - [ ] `AddFirefighterModal`
+  - [ ] `ScheduleHoldModal`
+  - [ ] `CompleteHoldModal`
+  - [ ] `TransferShiftModal`
+- [ ] Lazy load non-critical utilities
+  - [ ] Date formatting libraries
+  - [ ] Export/import utilities
+- [ ] Add loading boundaries with `Suspense`
+- [ ] Measure bundle size reduction (target: 30% reduction)
+- [ ] Document code splitting strategy in `docs/CODE_SPLITTING_STRATEGY.md`
+
+### 2.2 Image Optimization & Asset Management
+- [ ] Audit all images/icons currently in use
+- [ ] Convert raster images to WebP format
+  - [ ] PWA icons (192x192, 512x512)
+  - [ ] App logo/branding
+- [ ] Implement responsive images with `srcset`
+- [ ] Add lazy loading for below-the-fold images
+  <img loading="lazy" decoding="async" />
+- [ ] Optimize Lucide icons (tree-shaking verification)
+  - [ ] Review `docs/LUCIDE_REACT_TREE_SHAKING_VERIFICATION.md`
+  - [ ] Ensure only used icons are bundled
+- [ ] Set up image compression in build pipeline
+- [ ] Create asset loading strategy document
+
+### 2.3 Service Worker Caching Strategy
+- [ ] Review existing `public/service-worker.js`
+- [ ] Implement Cache-First strategy for static assets
+  - [ ] HTML shell
+  - [ ] CSS bundles
+  - [ ] JS bundles
+  - [ ] Fonts
+- [ ] Implement Network-First strategy for API calls
+  - [ ] Supabase REST API
+  - [ ] With offline fallback to cached data
+- [ ] Implement Stale-While-Revalidate for images
+- [ ] Add cache versioning and invalidation
+- [ ] Test offline functionality
+  - [ ] Disconnect network in DevTools
+  - [ ] Verify app loads from cache
+  - [ ] Verify graceful degradation
+- [ ] Add cache size limits and cleanup logic
+- [ ] Update PWA manifest with mobile-specific settings
+
+---
+
+## Phase 3: Mobile-First Layout Refactor
+
+### 3.1 Header Component Mobile Optimization
+- [ ] Review current `src/components/Header.tsx`
+- [ ] Refactor for mobile-first approach
+  - [ ] Stack elements vertically on mobile (<768px)
+  - [ ] Reduce header height on scroll (hide on scroll pattern)
+  - [ ] Move shift selector to more accessible position
+- [ ] Implement hamburger menu for secondary actions
+  - [ ] Create `MobileMenu` component
+  - [ ] Slide-out drawer with smooth animation
+  - [ ] Touch-friendly close gestures (swipe or tap outside)
+- [ ] Optimize dark mode toggle for mobile
+  - [ ] Larger touch target (44x44px minimum)
+  - [ ] Better visual feedback
+- [ ] Add sticky positioning with proper z-index management
+- [ ] Test on notched devices (iPhone X+)
+  - [ ] Add safe-area-inset padding
+- [ ] Create tests for mobile header behavior
+
+### 3.2 Calendar Component Mobile Optimization
+- [ ] Review current `src/components/Calendar.tsx`
+- [ ] Redesign for mobile viewport (320px-768px)
+  - [ ] Single week view for mobile (switch from month view)
+  - [ ] Horizontal swipe between weeks
+  - [ ] Larger day cells (minimum 44x44px)
+- [ ] Optimize hold display for small screens
+  - [ ] Stack holds vertically in day cells
+  - [ ] Use icons instead of full text
+  - [ ] Implement "tap to expand" for day details
+- [ ] Add touch gestures
+  - [ ] Swipe left/right for prev/next week
+  - [ ] Pinch to zoom between week/month views
+  - [ ] Pull to refresh for latest data
+- [ ] Optimize modal transitions
+  - [ ] Slide up from bottom (native feel)
+  - [ ] Full-screen on mobile
+- [ ] Add loading skeleton for calendar grid
+- [ ] Test performance with 100+ holds
+- [ ] Create mobile calendar E2E tests
+
+### 3.3 Roster List Mobile Optimization
+- [ ] Review roster display in `App.tsx` and related components
+- [ ] Implement card-based layout for mobile
+  - [ ] Full-width cards with spacing
+  - [ ] Expand/collapse for details
+  - [ ] Swipe actions (complete hold, transfer, delete)
+- [ ] Optimize firefighter information display
+  - [ ] Show essential info only (name, station, status)
+  - [ ] Hide certifications behind "View Details" tap
+  - [ ] Use icons for apparatus types
+- [ ] Add virtual scrolling for large rosters (100+ firefighters)
+  - [ ] Research `react-window` or `react-virtual`
+  - [ ] Implement virtualized list
+  - [ ] Test with 500+ items
+- [ ] Implement search/filter drawer
+  - [ ] Slide up from bottom
+  - [ ] Filter by station, certification, availability
+  - [ ] Real-time search results
+- [ ] Add pull-to-refresh functionality
+- [ ] Optimize sort/filter controls for touch
+- [ ] Create loading states for roster data
+
+### 3.4 NextUpBar Mobile Optimization
+- [ ] Review current `src/components/NextUpBar.tsx`
+- [ ] Redesign for mobile viewports
+  - [ ] Sticky bottom bar (always visible)
+  - [ ] Horizontal scrolling for multiple "next up" firefighters
+  - [ ] Snap scrolling for better UX
+- [ ] Add quick actions to bar
+  - [ ] Tap to complete hold (with confirmation)
+  - [ ] Tap to view details
+- [ ] Optimize for landscape orientation
+- [ ] Add haptic feedback for interactions (iOS Safari)
+- [ ] Ensure proper z-index layering
+- [ ] Test with keyboard/bottom sheet overlays
+
+---
+
+## Phase 4: Touch Optimization & Mobile Interactions
+
+### 4.1 Touch Gesture Implementation
+- [ ] Install touch gesture library
+  - [ ] Evaluate `react-use-gesture` vs custom implementation
+  - [ ] Install chosen library
+- [ ] Implement swipe gestures
+  - [ ] Swipe to delete firefighter (iOS-style)
+  - [ ] Swipe to complete hold
+  - [ ] Swipe to navigate calendar
+- [ ] Implement long-press gestures
+  - [ ] Long-press for context menu
+  - [ ] Long-press to enter selection mode
+- [ ] Add haptic feedback (iOS Safari Taptic Engine)
+  if ('vibrate' in navigator) {
+    navigator.vibrate(10); // 10ms haptic pulse
+  }
+- [ ] Implement pull-to-refresh
+  - [ ] Custom implementation or library
+  - [ ] Add bounce animation
+  - [ ] Show loading indicator
+- [ ] Test gesture conflicts with browser defaults
+- [ ] Add gesture customization settings
+- [ ] Document touch patterns in `docs/TOUCH_INTERACTION_PATTERNS.md`
+
+### 4.2 Modal Optimization for Mobile
+- [ ] Audit all modals in the app
+  - [ ] `AddFirefighterModal`
+  - [ ] `ScheduleHoldModal`
+  - [ ] `CompleteHoldModal`
+  - [ ] `TransferShiftModal`
+  - [ ] `ConfirmationModal`
+- [ ] Refactor modal behavior for mobile
+  - [ ] Full-screen on mobile (<768px)
+  - [ ] Slide-up animation (native feel)
+  - [ ] Dismiss on swipe-down gesture
+  - [ ] Prevent body scroll when open
+- [ ] Optimize modal forms for mobile
+  - [ ] Single-column layouts
+  - [ ] Larger input fields (min 44px height)
+  - [ ] Proper input types (tel, email, date)
+  - [ ] Auto-focus first field on open
+- [ ] Add keyboard awareness
+  - [ ] Scroll form when keyboard appears
+  - [ ] "Done" button in keyboard toolbar (iOS)
+- [ ] Test modal accessibility on mobile
+- [ ] Add loading states within modals
+- [ ] Create mobile modal component wrapper
+
+### 4.3 Form Input Optimization
+- [ ] Review all form inputs in the app
+- [ ] Optimize for mobile keyboards
+  - [ ] Use `type="tel"` for phone numbers
+  - [ ] Use `type="email"` for emails
+  - [ ] Use `inputmode="numeric"` for numbers
+  - [ ] Use `type="date"` for date pickers (native on mobile)
+- [ ] Increase input field height (minimum 44px)
+- [ ] Add proper autocomplete attributes
+  <input autocomplete="given-name" />
+- [ ] Implement custom mobile-friendly selects
+  - [ ] Native `<select>` on iOS
+  - [ ] Custom bottom sheet picker for consistency
+- [ ] Add input validation feedback
+  - [ ] Inline error messages
+  - [ ] Visual indicators (red border, icon)
+- [ ] Test with iOS Safari autofill
+- [ ] Test with Android Chrome autofill
+- [ ] Add form accessibility labels
+
+---
+
+## Phase 5: Mobile Visual Design & Typography
+
+### 5.1 Mobile Navigation Enhancement
+- [ ] Design mobile navigation system
+  - [ ] Option A: Bottom tab bar (iOS-style)
+  - [ ] Option B: Hamburger menu (traditional)
+  - [ ] Option C: Hybrid approach
+  - [ ] **Decision:** [To be determined based on user testing]
+- [ ] Implement chosen navigation pattern
+  - [ ] Create navigation component
+  - [ ] Add route highlighting
+  - [ ] Add smooth transitions
+- [ ] Add navigation icons (Lucide icons)
+- [ ] Ensure 44x44px minimum touch targets
+- [ ] Add active state visual feedback
+- [ ] Test navigation accessibility
+- [ ] Add keyboard shortcuts for power users
+- [ ] Document navigation patterns
+
+### 5.2 Responsive Typography System
+- [ ] Audit current font sizes across the app
+- [ ] Create mobile-first typography scale
+  /* Base mobile (320px) */
+  --text-xs: 0.75rem;   /* 12px */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.125rem;  /* 18px */
+  --text-xl: 1.25rem;   /* 20px */
+  --text-2xl: 1.5rem;   /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+- [ ] Implement fluid typography (clamp)
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+- [ ] Optimize line height for mobile reading
+  - [ ] Body text: 1.5-1.6
+  - [ ] Headings: 1.2-1.3
+- [ ] Ensure minimum 16px body text (prevent zoom on iOS)
+- [ ] Test readability on small screens (320px iPhone SE)
+- [ ] Add responsive heading sizes
+- [ ] Update Tailwind config with mobile typography
+- [ ] Document typography system in `docs/MOBILE_TYPOGRAPHY.md`
+
+### 5.3 Color Contrast for Mobile Screens
+- [ ] Test current color scheme on mobile devices
+  - [ ] Test in direct sunlight (high brightness)
+  - [ ] Test in low light conditions
+- [ ] Run WCAG contrast checks for mobile
+  - [ ] Body text: 4.5:1 minimum
+  - [ ] Large text (18px+): 3:1 minimum
+  - [ ] Interactive elements: 3:1 minimum
+- [ ] Optimize dark mode for OLED screens
+  - [ ] Use true black (#000000) for backgrounds
+  - [ ] Reduce pure white text (use #E0E0E0)
+- [ ] Add high contrast mode toggle (optional)
+- [ ] Test with color blindness simulators
+  - [ ] Protanopia (red-blind)
+  - [ ] Deuteranopia (green-blind)
+  - [ ] Tritanopia (blue-blind)
+- [ ] Update color system documentation
+- [ ] Review `docs/COLOR_BLIND_SAFE_INDICATORS.md`
+
+---
+
+## Phase 6: Mobile Network & Real-Time Optimization
+
+### 6.1 Loading States & Skeleton Screens
+- [ ] Design skeleton screens for major views
+  - [ ] Calendar loading skeleton
+  - [ ] Roster list loading skeleton
+  - [ ] Profile card skeleton
+- [ ] Implement skeleton components
+  - [ ] Create `SkeletonCard` component
+  - [ ] Create `SkeletonGrid` component
+  - [ ] Create `SkeletonList` component
+- [ ] Add progressive loading strategy
+  - [ ] Load critical content first
+  - [ ] Lazy load secondary content
+- [ ] Add loading spinners for inline actions
+- [ ] Implement optimistic UI updates
+  - [ ] Show immediate feedback
+  - [ ] Rollback on error
+- [ ] Test loading states on slow 3G
+- [ ] Add loading state accessibility announcements
+- [ ] Document loading patterns
+
+### 6.2 Error Handling for Mobile Networks
+- [ ] Design mobile-friendly error messages
+  - [ ] Short, actionable messages
+  - [ ] Avoid technical jargon
+  - [ ] Provide retry actions
+- [ ] Implement network error detection
+  - [ ] Detect offline state
+  - [ ] Detect slow network (3G, Slow-3G)
+  - [ ] Show appropriate warnings
+- [ ] Add retry logic with exponential backoff
+  - [ ] Max 3 retry attempts
+  - [ ] Backoff: 1s, 2s, 4s
+- [ ] Implement request queuing for offline mode
+  - [ ] Queue mutations when offline
+  - [ ] Sync when online
+- [ ] Add "You are offline" banner
+  - [ ] Sticky banner at top
+  - [ ] Dismiss when online
+- [ ] Test error scenarios
+  - [ ] Complete loss of network
+  - [ ] Intermittent connectivity
+  - [ ] Slow 3G simulation
+- [ ] Document error handling strategy
+
+### 6.3 Real-Time Sync Optimization for Mobile
+- [ ] Review current Supabase real-time implementation
+  - [ ] Check `useFirefighters.ts` subscription
+  - [ ] Check `useScheduledHolds.ts` subscription
+- [ ] Optimize WebSocket connection for mobile
+  - [ ] Add connection pooling
+  - [ ] Reduce heartbeat frequency on slow networks
+  - [ ] Add reconnection backoff
+- [ ] Implement smart syncing
+  - [ ] Pause sync when app in background
+  - [ ] Resume sync when app returns to foreground
+  - [ ] Batch updates to reduce network calls
+- [ ] Add sync status indicator
+  - [ ] Show "Syncing..." in UI
+  - [ ] Show last sync time
+- [ ] Optimize for battery life
+  - [ ] Reduce sync frequency on low battery
+  - [ ] Use push notifications instead of polling
+- [ ] Test real-time sync on mobile devices
+- [ ] Document real-time optimization strategy
+
+---
+
+## Phase 7: PWA Implementation & Offline Support
+
+### 7.1 PWA Installation Prompt
+- [ ] Review current `public/manifest.json`
+- [ ] Optimize PWA manifest for mobile
+  {
+    "name": "FirefighterHub",
+    "short_name": "FFHub",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#1F2937",
+    "background_color": "#111827",
+    "icons": [...]
+  }
+- [ ] Create PWA installation prompt component
+  - [ ] Detect if app is installable
+  - [ ] Show banner with "Install App" button
+  - [ ] Handle `beforeinstallprompt` event
+- [ ] Add app installation instructions
+  - [ ] iOS Safari: "Add to Home Screen"
+  - [ ] Android Chrome: "Install App"
+- [ ] Test PWA installation on devices
+  - [ ] iPhone (Safari)
+  - [ ] Android (Chrome)
+- [ ] Add PWA icons (192x192, 512x512)
+- [ ] Test standalone mode behavior
+- [ ] Document PWA setup in `PWA_SETUP_GUIDE.md`
+
+### 7.2 Offline Mode & Data Persistence
+- [ ] Implement offline data storage
+  - [ ] Use IndexedDB for structured data
+  - [ ] Evaluate `localforage` or `dexie.js`
+- [ ] Cache critical data for offline access
+  - [ ] Current shift firefighters
+  - [ ] Scheduled holds (next 30 days)
+  - [ ] User preferences
+- [ ] Implement offline queue for mutations
+  - [ ] Store pending changes in IndexedDB
+  - [ ] Sync when connection restored
+  - [ ] Handle conflicts (last-write-wins or merge)
+- [ ] Add offline mode UI indicators
+  - [ ] Banner: "You are offline"
+  - [ ] Disable actions that require network
+  - [ ] Show cached data timestamp
+- [ ] Test offline functionality
+  - [ ] View roster offline
+  - [ ] View calendar offline
+  - [ ] Queue hold completion offline
+  - [ ] Sync when back online
+- [ ] Add data expiration strategy
+  - [ ] Expire cached data after 7 days
+  - [ ] Force refresh on app launch if online
+- [ ] Document offline strategy
+
+### 7.3 Push Notifications Setup
+- [ ] Research push notification requirements
+  - [ ] iOS: Web Push requires iOS 16.4+
+  - [ ] Android: Full Web Push support
+- [ ] Set up push notification service
+  - [ ] Option A: Firebase Cloud Messaging (FCM)
+  - [ ] Option B: OneSignal
+  - [ ] Option C: Native Web Push API
+  - [ ] **Decision:** [To be determined]
+- [ ] Implement notification permission request
+  - [ ] Request at appropriate time (not on first load)
+  - [ ] Explain value to user
+- [ ] Define notification triggers
+  - [ ] New hold assigned to user
+  - [ ] Hold completion reminder
+  - [ ] Shift change notification
+- [ ] Create notification component
+- [ ] Add notification settings page
+  - [ ] Toggle notifications on/off
+  - [ ] Choose notification types
+- [ ] Test notifications on devices
+- [ ] Add notification click handlers
+- [ ] Document push notification setup
+
+---
+
+## Phase 8: Testing & Quality Assurance
+
+### 8.1 Mobile E2E Testing Suite
+- [ ] Set up Playwright for mobile testing
+  - [ ] Configure mobile viewports
+  - [ ] Add iPhone/Android emulation
+- [ ] Write mobile-specific E2E tests
+  - [ ] Test: Navigate app on mobile viewport
+  - [ ] Test: Complete hold on mobile
+  - [ ] Test: Add firefighter on mobile
+  - [ ] Test: Schedule hold on mobile
+  - [ ] Test: Dark mode toggle on mobile
+  - [ ] Test: Offline mode behavior
+  - [ ] Test: PWA installation flow
+- [ ] Add touch gesture tests
+  - [ ] Test: Swipe to delete
+  - [ ] Test: Pull to refresh
+  - [ ] Test: Calendar swipe navigation
+- [ ] Add responsive layout tests
+  - [ ] Test: 320px viewport (iPhone SE)
+  - [ ] Test: 375px viewport (iPhone 12/13)
+  - [ ] Test: 768px viewport (iPad portrait)
+- [ ] Add performance tests
+  - [ ] Test: Page load time <3 seconds
+  - [ ] Test: Time to Interactive <5 seconds
+- [ ] Set up CI/CD for mobile tests
+- [ ] Document test strategy
+
+### 8.2 Real Device Testing Matrix
+- [ ] Create device testing checklist
+  - [ ] iPhone SE (2022) - iOS 16+ - Safari
+  - [ ] iPhone 13 Pro - iOS 17+ - Safari
+  - [ ] iPhone 14 Pro Max - iOS 17+ - Safari
+  - [ ] Samsung Galaxy S21 - Android 12+ - Chrome
+  - [ ] Samsung Galaxy S23 - Android 13+ - Chrome
+  - [ ] Google Pixel 6 - Android 12+ - Chrome
+  - [ ] Google Pixel 7 Pro - Android 13+ - Chrome
+  - [ ] iPad Air (2022) - iPadOS 16+ - Safari
+- [ ] Test on actual devices (not just emulators)
+  - [ ] Borrow devices or use device lab
+  - [ ] Test on multiple network conditions (WiFi, 4G, 3G)
+- [ ] Create device testing template
+  - [ ] Checklist of features to test
+  - [ ] Screenshots of issues
+  - [ ] Performance metrics
+- [ ] Test edge cases
+  - [ ] Small screens (iPhone SE at 320px)
+  - [ ] Large screens (iPhone Pro Max at 428px)
+  - [ ] Landscape orientation
+  - [ ] Split screen mode (iPad)
+- [ ] Document device-specific issues
+- [ ] Create device compatibility matrix
+
+### 8.3 Mobile Performance Monitoring
+- [ ] Set up performance monitoring
+  - [ ] Option A: Google Analytics 4
+  - [ ] Option B: Vercel Analytics
+  - [ ] Option C: Sentry Performance
+  - [ ] **Decision:** [To be determined]
+- [ ] Track Core Web Vitals
+  - [ ] LCP (Largest Contentful Paint)
+  - [ ] FID (First Input Delay)
+  - [ ] CLS (Cumulative Layout Shift)
+  - [ ] TTFB (Time to First Byte)
+- [ ] Set up custom performance metrics
+  - [ ] Time to render roster
+  - [ ] Time to render calendar
+  - [ ] API response times
+- [ ] Create performance dashboard
+- [ ] Set up performance budgets
+  - [ ] JS bundle: <200KB gzipped
+  - [ ] CSS bundle: <50KB gzipped
+  - [ ] LCP: <2.5 seconds
+  - [ ] FID: <100ms
+  - [ ] CLS: <0.1
+- [ ] Add performance regression alerts
+- [ ] Document performance monitoring strategy
+
+---
+
+## Phase 9: Accessibility & Documentation
+
+### 9.1 Mobile Accessibility Audit
+- [ ] Run mobile accessibility audit
+  - [ ] Lighthouse accessibility score
+  - [ ] axe DevTools mobile scan
+  - [ ] Manual screen reader testing
+- [ ] Test with mobile screen readers
+  - [ ] iOS VoiceOver (Safari)
+  - [ ] Android TalkBack (Chrome)
+- [ ] Verify touch target sizes
+  - [ ] All interactive elements ≥44x44px
+  - [ ] Adequate spacing between targets
+- [ ] Test keyboard navigation on mobile
+  - [ ] iOS: Smart Keyboard
+  - [ ] Android: Bluetooth keyboard
+- [ ] Verify color contrast on mobile screens
+  - [ ] Test in sunlight (max brightness)
+  - [ ] Test in dark environments
+- [ ] Test with accessibility features enabled
+  - [ ] Larger text size
+  - [ ] Bold text
+  - [ ] Reduce motion
+  - [ ] Increase contrast
+- [ ] Fix identified accessibility issues
+- [ ] Document mobile accessibility considerations
+
+### 9.2 Mobile-Specific Documentation
+- [ ] Create mobile user guide
+  - [ ] How to install PWA
+  - [ ] How to use touch gestures
+  - [ ] How to use offline mode
+  - [ ] Troubleshooting common issues
+- [ ] Create mobile development guide
+  - [ ] Mobile-first development principles
+  - [ ] Touch target guidelines
+  - [ ] Performance optimization checklist
+  - [ ] Testing procedures
+- [ ] Update README.md with mobile info
+  - [ ] Mobile browser requirements
+  - [ ] PWA installation instructions
+  - [ ] Mobile-specific features
+- [ ] Create mobile deployment checklist
+- [ ] Document known mobile limitations
+- [ ] Create mobile FAQ
+
+### 9.3 Mobile User Onboarding
+- [ ] Design first-time mobile user experience
+  - [ ] Welcome screen
+  - [ ] Feature highlights (swipe through)
+  - [ ] PWA installation prompt
+- [ ] Create onboarding tutorial
+  - [ ] Show touch gestures
+  - [ ] Explain navigation
+  - [ ] Highlight key features
+- [ ] Add contextual help tooltips
+  - [ ] Show on first interaction
+  - [ ] Dismiss on tap outside
+- [ ] Create interactive tour
+  - [ ] Step-by-step guide
+  - [ ] Highlight UI elements
+  - [ ] Allow skip or complete later
+- [ ] Add "What's New" modal for updates
+- [ ] Test onboarding flow with new users
+- [ ] Document onboarding strategy
+
+---
+
+## Phase 10: Advanced Optimization & Polish
+
+### 10.1 Mobile Performance Optimization Round 2
+- [ ] Re-audit mobile performance after all changes
+  - [ ] Run Lighthouse mobile audit
+  - [ ] Compare to baseline metrics
+  - [ ] Identify remaining bottlenecks
+- [ ] Optimize remaining performance issues
+  - [ ] Reduce unused CSS (PurgeCSS)
+  - [ ] Optimize font loading (font-display: swap)
+  - [ ] Minimize third-party scripts
+  - [ ] Implement resource hints (preload, prefetch, preconnect)
+- [ ] Add advanced caching strategies
+  - [ ] HTTP/2 server push
+  - [ ] Aggressive caching headers
+  - [ ] Brotli compression
+- [ ] Optimize animations for mobile
+  - [ ] Use CSS transforms (GPU-accelerated)
+  - [ ] Respect `prefers-reduced-motion`
+  - [ ] Limit to 60fps
+- [ ] Implement adaptive loading
+  - [ ] Detect slow networks (Save-Data header)
+  - [ ] Reduce quality/features on slow connections
+- [ ] Add performance monitoring alerts
+- [ ] Document final performance metrics
+
+### 10.2 Mobile-Specific Features
+- [ ] Add mobile-exclusive features
+  - [ ] Share firefighter info (Web Share API)
+  - [ ] Add to contacts (Contact Picker API)
+  - [ ] Camera integration (capture apparatus photos)
+  - [ ] Geolocation (find nearest fire station)
+- [ ] Implement quick actions
+  - [ ] Bottom sheet quick actions
+  - [ ] Long-press context menus
+  - [ ] Floating action button (FAB)
+- [ ] Add mobile shortcuts
+  - [ ] iOS: App shortcuts in home screen menu
+  - [ ] Android: Launcher shortcuts
+- [ ] Implement biometric authentication
+  - [ ] Face ID / Touch ID (iOS)
+  - [ ] Fingerprint / Face Unlock (Android)
+- [ ] Add mobile-specific settings
+  - [ ] Haptic feedback toggle
+  - [ ] Reduced data mode
+  - [ ] Battery saver mode
+- [ ] Test all features on devices
+- [ ] Document mobile-specific features
+
+### 10.3 Final Quality Assurance
+- [ ] Conduct final cross-device testing
+  - [ ] Test on all devices in matrix
+  - [ ] Test on multiple browsers
+  - [ ] Test on different network speeds
+- [ ] Perform security audit
+  - [ ] Check for sensitive data exposure
+  - [ ] Verify HTTPS everywhere
+  - [ ] Test authentication flows
+- [ ] Run final accessibility audit
+  - [ ] WCAG 2.1 AA compliance
+  - [ ] Screen reader compatibility
+  - [ ] Keyboard navigation
+- [ ] Verify analytics tracking
+  - [ ] Events fire correctly
+  - [ ] User flows tracked
+  - [ ] Performance data captured
+- [ ] Create production deployment plan
+  - [ ] Rollout strategy (phased or full)
+  - [ ] Rollback plan
+  - [ ] Monitoring strategy
+- [ ] Prepare launch communication
+  - [ ] User announcement
+  - [ ] Feature highlights
+  - [ ] Feedback collection plan
+- [ ] Document lessons learned
+
+---
+
+## 📋 Testing Checklist Summary
+
+### Critical User Flows to Test on Mobile:
+- [ ] Complete hold on mobile device
+- [ ] Add new firefighter on mobile
+- [ ] Schedule hold on mobile calendar
+- [ ] Transfer firefighter between shifts
+- [ ] View and filter roster list
+- [ ] Toggle dark mode
+- [ ] Install as PWA
+- [ ] Use app offline
+- [ ] Receive push notification
+- [ ] Share firefighter info
+
+### Performance Targets:
+- [ ] Lighthouse Mobile Score: ≥90
+- [ ] First Contentful Paint: <1.5s
+- [ ] Largest Contentful Paint: <2.5s
+- [ ] Time to Interactive: <3.0s
+- [ ] Cumulative Layout Shift: <0.1
+- [ ] Total Bundle Size: <500KB gzipped
+
+### Accessibility Targets:
+- [ ] Lighthouse Accessibility Score: 100
+- [ ] All touch targets: ≥44x44px
+- [ ] Color contrast: ≥4.5:1 (body text)
+- [ ] VoiceOver/TalkBack: Fully navigable
+- [ ] Keyboard navigation: Complete support
+
+---
+
+## 🔄 Progress Tracking
+
+**Overall Progress:** 0% (0/250+ tasks completed)
+
+### Phase Completion Status:
+- [ ] Phase 1: Mobile Performance Audit & Baseline Setup (0%)
+- [ ] Phase 2: Performance Optimization Foundation (0%)
+- [ ] Phase 3: Mobile-First Layout Refactor (0%)
+- [ ] Phase 4: Touch Optimization & Mobile Interactions (0%)
+- [ ] Phase 5: Mobile Visual Design & Typography (0%)
+- [ ] Phase 6: Mobile Network & Real-Time Optimization (0%)
+- [ ] Phase 7: PWA Implementation & Offline Support (0%)
+- [ ] Phase 8: Testing & Quality Assurance (0%)
+- [ ] Phase 9: Accessibility & Documentation (0%)
+- [ ] Phase 10: Advanced Optimization & Polish (0%)
+
+---
+
+## 📚 Key Documentation References
+
+- [Mobile Baseline Metrics](docs/MOBILE_BASELINE_METRICS.md) - Performance baseline (to be created)
+- [Code Splitting Strategy](docs/CODE_SPLITTING_STRATEGY.md) - Bundle optimization (to be created)
+- [Touch Interaction Patterns](docs/TOUCH_INTERACTION_PATTERNS.md) - Gesture guidelines (to be created)
+- [Mobile Typography](docs/MOBILE_TYPOGRAPHY.md) - Typography system (to be created)
+- [PWA Setup Guide](PWA_SETUP_GUIDE.md) - Progressive Web App implementation
+- [Touch Target Audit](TOUCH_TARGET_AUDIT.md) - Accessibility compliance
+- [Keyboard Shortcuts](KEYBOARD_SHORTCUTS.md) - Keyboard navigation
+
+---
+
+## 🎯 Success Criteria
+
+**The mobile optimization will be considered complete when:**
+
+1. ✅ Lighthouse mobile score ≥90 (all categories)
+2. ✅ App loads in <3 seconds on 3G network
+3. ✅ All touch targets ≥44x44px (WCAG 2.1 AA)
+4. ✅ PWA installable on iOS and Android
+5. ✅ Offline mode functional for core features
+6. ✅ Real device testing complete on 8+ devices
+7. ✅ E2E mobile test suite passing 100%
+8. ✅ Accessibility audit passing (VoiceOver/TalkBack)
+9. ✅ Documentation complete and published
+10. ✅ User onboarding flow implemented and tested
+
+---
+
+**Last Updated:** November 6, 2025  
+**Next Review:** After Phase 1 completion  
+**Project Lead:** [Your Name]  
+**Target Completion:** [Target Date]

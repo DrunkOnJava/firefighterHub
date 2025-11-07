@@ -1,315 +1,496 @@
 # FirefighterHub - Full Functionality Integration Plan
 
 **Date:** November 6, 2025
+**Last Updated:** November 6, 2025, 3:10 PM
 **Goal:** Restore all backend functionality while keeping the new clean MaterialM layout
 
 ---
 
-## Current State
+## Progress Summary
 
-### ✅ What's Working
-- Clean MaterialM OKLCH color layout
-- All 3 "Next Up" chips displaying correctly
-- 20 firefighters visible in roster
-- Calendar grid displays correctly
-- Basic data loading from Supabase
+### ✅ Completed Phases
 
-### ❌ What's Missing (All functionality from commit a319cf3)
-- **No click handlers** - Calendar days don't do anything
-- **No roster interactions** - Can't drag-drop, click, or edit firefighters
-- **No modals** - All the modal dialogs are not being rendered
-- **No admin mode** - No authentication or permissions
-- **No CRUD operations** - Can't add, edit, delete, or reorder firefighters
-- **No hold scheduling** - Can't schedule or complete holds
-- **No keyboard shortcuts** - Accessibility features missing
-- **No dark mode** - Toggle not wired up
+#### Phase 5: NextUpBar Integration (✅ COMPLETE)
+**Status:** Done and committed (commit 42beb54)
+**Time spent:** ~2 hours (including user's manual improvements)
+
+**What was completed:**
+- ✅ Created `NextUpBar.tsx` component from scratch
+- ✅ Integrated into `App.tsx` above main layout
+- ✅ Loads firefighters from ALL shifts (A/B/C) for cross-shift visibility
+- ✅ Displays next available firefighter per shift with color-coded badges
+- ✅ Shows station numbers alongside names
+- ✅ Responsive grid layout (1 col mobile → 3 cols desktop)
+- ✅ Full dark mode and light mode styling
+- ✅ Overflow handling on heading text
+- ⚠️ **Important:** User manually improved badge styling and layout after initial version
+
+**Files modified:**
+- `src/components/NextUpBar.tsx` (new file)
+- `src/App.tsx` (integration)
 
 ---
 
-## What Still Exists in Codebase
+#### Phase 8: Dark Mode Toggle (✅ ALREADY COMPLETE)
+**Status:** Was functional before session started
 
-### ✅ All Components Still Present
+**What already existed:**
+- ✅ `useDarkMode` hook imported and active (App.tsx:47)
+- ✅ `isDarkMode` state passed to all child components
+- ✅ `toggleDarkMode` callback wired to Header component
+- ✅ Dark/light mode classes throughout app
+- ✅ Theme persists to localStorage
+- ✅ All components support both modes
+
+**No changes needed** - this functionality existed from prior work.
+
+---
+
+#### Header Layout Fixes (✅ COMPLETE)
+**Status:** Done and committed (commit 42beb54)
+**Time spent:** ~1 hour (multiple attempts required)
+
+**What was fixed:**
+- ✅ Right-justified header navigation buttons
+- ✅ Used `justify-between` with proper flex properties
+- ✅ Shift selector, Print, Activity, Light/Dark, Help buttons flush to right edge
+- ✅ Logo and title remain on left side
+- ⚠️ **Note:** User manually corrected after multiple failed attempts
+
+**Files modified:**
+- `src/components/Header.tsx` (flexbox layout)
+
+---
+
+#### Light Mode Styling Improvements (⚠️ PARTIAL)
+**Status:** Some fixes applied, **needs browser verification**
+
+**What was fixed:**
+- ✅ FirefighterList tbody divider colors (gray-700 → gray-200 for light mode)
+- ✅ NextUpBar heading overflow handling (truncate + overflow-hidden)
+- ⚠️ **Unverified:** Other components may still have dark mode styling in light mode
+
+**Files modified:**
+- `src/components/FirefighterList.tsx` (table dividers)
+- `src/components/NextUpBar.tsx` (heading overflow)
+
+**Action required:** Full manual testing in actual browser
+
+---
+
+## Current State (Verified)
+
+### ✅ What's Confirmed Working
+- Clean MaterialM OKLCH color layout preserved
+- NextUpBar component displaying all 3 shifts correctly
+- Header buttons properly right-justified
+- Shift selector functional (A/B/C switching works)
+- **Dark mode fully functional** (toggle working, all components styled)
+- FirefighterList displaying 20+ firefighters with proper data
+- BigCalendar displaying scheduled holds as events
+- Basic data loading from Supabase (3 shift hooks active)
+- Real-time subscriptions with exponential backoff retry
+
+### ❌ What's Still Missing
+
+#### Critical Missing Features:
+- **No modals** - Modal components exist but not instantiated in App.tsx
+- **No admin mode** - `isAdminMode` hardcoded to `false` (App.tsx:76)
+- **No calendar click handlers** - BigCalendar displays but days aren't clickable
+- **No roster interactions** - FirefighterList has all features but disabled by isAdminMode=false
+- **No CRUD UI** - All backend functions work but no UI triggers
+- **No hold scheduling UI** - Can't schedule/complete holds from calendar
+- **No keyboard shortcuts** - useKeyboardShortcuts hook not integrated
+
+#### Minor Missing Features:
+- Header Activity button not wired to modal
+- Header Help button not wired to modal
+- Mobile menu button not wired
+- ConfirmDialog not integrated
+- KeyboardShortcutsModal not integrated
+- UpdateNotification not integrated
+
+---
+
+## What Still Exists in Codebase (Inventory)
+
+### ✅ All Components Available
 Located in `src/components/`:
+
+**Modals (all unused):**
 - ActivityLogModal.tsx
-- Calendar.tsx (full interactive version)
 - CompleteHoldModal.tsx
-- ConfirmDialog.tsx
-- FirefighterList.tsx (full featured)
-- Header.tsx (with all controls)
+- FirefighterProfileModal.tsx
 - HelpModal.tsx
 - KeyboardShortcutsModal.tsx
 - LoginModal.tsx
-- MobileNav.tsx
 - QuickAddFirefighterModal.tsx
-- Reports.tsx
-- Sidebar.tsx (with metrics)
+- ReactivateModal.tsx
 - TransferShiftModal.tsx
-- UpdateNotification.tsx
 
-### ✅ All Backend Logic Intact
-`useFirefighters.ts` exports:
-- firefighters, deactivatedFirefighters
-- loading, isOperationLoading, loadingStates
-- **addFirefighter()** - Create new firefighter
-- **completeHold()** - Complete a hold and rotate position
-- **deleteFirefighter()** - Hard delete
-- **deactivateFirefighter()** - Soft delete (is_active = false)
-- **reactivateFirefighter()** - Restore deactivated firefighter
-- **transferShift()** - Move firefighter to different shift
-- **resetAll()** - Reset all positions to 0-indexed order
-- **masterReset()** - Complete database reset (dangerous!)
-- **reorderFirefighters()** - Drag-drop reordering
+**Dialogs:**
+- ConfirmDialog.tsx (not integrated)
 
-`useScheduledHolds.ts` exports:
-- scheduledHolds, loading
-- **scheduleHold()** - Create new scheduled hold
-- **removeScheduledHold()** - Delete scheduled hold
-- **markHoldCompleted()** - Mark hold as completed
+**Navigation:**
+- MobileNav.tsx (not integrated)
 
-### ✅ All Hooks Available
-- useAuth() - Supabase authentication
-- useConfirm() - Confirmation dialogs
-- useDarkMode() - Dark mode toggle
-- useKeyboardShortcuts() - Keyboard navigation
-- useToast() - Toast notifications
-- useAnnounce() - Screen reader announcements
+**Utilities:**
+- UpdateNotification.tsx (not integrated)
+- ConnectionStatusIndicator.tsx (used in Header)
+
+**Calendar:**
+- calendar/BigCalendar.tsx (✅ IN USE)
+- calendar/big-calendar-theme.css (✅ IN USE)
+
+**Roster:**
+- FirefighterList.tsx (✅ IN USE but interactions disabled)
+- roster/RosterHeader.tsx (✅ IN USE via FirefighterList)
+- roster/BulkActions.tsx (✅ IN USE via FirefighterList)
+- roster/ExportMenu.tsx (✅ IN USE via FirefighterList)
+
+**Other:**
+- Reports.tsx (exists but not integrated)
+- FilterPanel.tsx (✅ IN USE via FirefighterList)
+
+### ✅ All Backend Hooks Functional
+
+**useFirefighters.ts** (fully implemented, tested):
+- **Data:** `firefighters`, `deactivatedFirefighters`, `loading`
+- **CRUD:** `addFirefighter()`, `deleteFirefighter()`, `deactivateFirefighter()`, `reactivateFirefighter()`
+- **Operations:** `completeHold()`, `transferShift()`, `reorderFirefighters()`
+- **Admin:** `resetAll()`, `masterReset()`
+- **Real-time:** Active subscription with retry logic
+
+**useScheduledHolds.ts** (fully implemented, tested):
+- **Data:** `scheduledHolds`, `loading`
+- **CRUD:** `scheduleHold()`, `removeScheduledHold()`, `markHoldCompleted()`
+- **Real-time:** Active subscription with retry logic
+
+**Other Hooks:**
+- ✅ `useDarkMode()` - **ACTIVE** (App.tsx:47)
+- ✅ `useToast()` - **ACTIVE** (App.tsx:46)
+- ✅ `useFilters()` - **ACTIVE** (FirefighterList.tsx)
+- ⏳ `useAuth()` - Available but not integrated
+- ⏳ `useConfirm()` - Available but not integrated
+- ⏳ `useKeyboardShortcuts()` - Available but not integrated
+- ⏳ `useAnnounce()` - Available but not integrated
 
 ---
 
-## Integration Phases
+## Remaining Integration Phases
 
-### Phase 1: Modal Infrastructure (30 min)
+### Phase 1: Modal Infrastructure (PENDING)
+**Priority:** HIGH
+**Estimated time:** 30-45 minutes
 **File:** `src/App.tsx`
+**Dependencies:** None
 
-1. Import all modal components
-2. Add state for modal visibility (11 modals)
-3. Add state for selected firefighter
-4. Add event handler functions (onCompleteHold, onTransfer, etc.)
-5. Render all modals at bottom of App
+**Current state:** No modals are instantiated in App.tsx
 
-**Result:** All modals available but not yet triggered
+**Tasks:**
+1. Import modal components:
+   ```tsx
+   import { HelpModal } from './components/HelpModal';
+   import { ActivityLogModal } from './components/ActivityLogModal';
+   import { CompleteHoldModal } from './components/CompleteHoldModal';
+   import { TransferShiftModal } from './components/TransferShiftModal';
+   import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
+   // + others as needed
+   ```
 
----
+2. Add modal state (after existing state declarations):
+   ```tsx
+   const [showHelp, setShowHelp] = useState(false);
+   const [showActivityLog, setShowActivityLog] = useState(false);
+   const [showQuickAdd, setShowQuickAdd] = useState(false);
+   const [showCompleteHoldModal, setShowCompleteHoldModal] = useState(false);
+   const [showTransferShiftModal, setShowTransferShiftModal] = useState(false);
+   const [showMobileMenu, setShowMobileMenu] = useState(false);
+   ```
 
-### Phase 2: Interactive Calendar (1 hour)
-**File:** `src/App.tsx` - Replace static calendar with full Calendar component
+3. Add selection state:
+   ```tsx
+   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
+   const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
+   ```
 
-**Changes:**
-1. Import `Calendar` component (not building our own)
-2. Pass all required props:
-   - firefighters, scheduledHolds
-   - onScheduleHold, onRemoveHold, onMarkCompleted
-   - isAdminMode, isDarkMode, currentShift
-3. Wire up `DayModal` to open when clicking calendar days
-4. Add event pills rendering inside calendar cells
+4. Add event handlers (see App.tsx lines 89-131 from previous commit for reference)
 
-**Result:** Click calendar days → Modal opens → Schedule/view holds
+5. Render modals at bottom of JSX (after main layout)
 
----
-
-### Phase 3: Interactive Roster (1 hour)
-**File:** `src/App.tsx` - Replace static roster with FirefighterList
-
-**Changes:**
-1. Import `FirefighterList` component
-2. Pass all required props:
-   - firefighters, deactivatedFirefighters
-   - All CRUD functions (onAdd, onDelete, onDeactivate, etc.)
-   - onReorder for drag-drop
-   - currentShift, isAdminMode
-3. Wire up roster row clicks to open profile modal
-4. Add drag-drop reordering
-
-**Result:** Click firefighter → Profile modal → Edit/View details
-Drag-drop → Reorder rotation
+**Result:** All modals available and triggered by callbacks
 
 ---
 
-### Phase 4: Header & Controls (30 min)
-**File:** `src/App.tsx` - Replace simple header with Header component
+### Phase 2: Interactive Calendar (PENDING)
+**Priority:** HIGH
+**Estimated time:** 30-60 minutes
+**File:** `src/components/calendar/BigCalendar.tsx`, `src/App.tsx`
+**Dependencies:** Phase 1 (needs modals)
 
-**Changes:**
-1. Import `Header` component
-2. Pass props:
-   - onShowHelp, onShowActivityLog, onQuickAdd
-   - onOpenMobileMenu
-   - isAdminMode, currentShift, onShiftChange
-   - isDarkMode, onToggleDarkMode
-3. Make shift badges clickable (currently static)
-4. Add Activity/Light/Help click handlers
+**Current state:** BigCalendar renders holds as events but no interactions
+
+**Tasks:**
+1. Add `onSelectEvent` prop to Calendar component in BigCalendar.tsx
+2. Add event handler in App.tsx to open appropriate modal
+3. Add `onSelectSlot` prop for clicking empty days (optional for scheduling)
+4. Wire to CompleteHoldModal or viewing modal
+
+**Result:** Click hold event → View/complete modal
+(Optional: Click empty day → Schedule modal)
+
+---
+
+### Phase 3: Interactive Roster (PENDING)
+**Priority:** HIGH
+**Estimated time:** 15-30 minutes
+**File:** `src/App.tsx`
+**Dependencies:** Phase 1 (needs modals), Phase 6 (needs admin mode OR temp enable)
+
+**Current state:** FirefighterList has ALL features but `isAdminMode=false` blocks everything
+
+**Already implemented in FirefighterList:**
+- ✅ Click row → Opens FirefighterProfileModal (built-in)
+- ✅ Drag-drop reordering (built-in with visual feedback)
+- ✅ Bulk selection and actions (built-in)
+- ✅ Export functionality (built-in)
+- ✅ Filter panel (built-in)
+
+**Tasks:**
+1. **Temporary fix:** Change `isAdminMode = false` to `isAdminMode = true` (line 76)
+2. **OR** Implement Phase 6 auth first
+3. All CRUD functions already wired in App.tsx lines 174-188
+4. Test all interactions
+
+**Result:** Full roster functionality enabled
+
+---
+
+### Phase 4: Header Button Wiring (PENDING)
+**Priority:** MEDIUM
+**Estimated time:** 10-15 minutes
+**File:** `src/App.tsx`
+**Dependencies:** Phase 1 (needs modals)
+
+**Already working:**
+- ✅ Shift selector (lines 143-144)
+- ✅ Dark mode toggle (lines 145-146)
+- ✅ Print button (built into Header.tsx)
+
+**Still needed:**
+1. Wire Help button: Line 137 → `onShowHelp={() => setShowHelp(true)}`
+2. Wire Activity button: Line 138 → `onShowActivityLog={() => setShowActivityLog(true)}`
+3. Wire mobile menu: Line 141 → `onOpenMobileMenu={() => setShowMobileMenu(true)}`
+4. Add MobileNav component rendering
 
 **Result:** All header buttons functional
 
 ---
 
-### Phase 5: Sidebar with Metrics (30 min)
-**File:** `src/App.tsx` - Add Sidebar component
+### Phase 6: Authentication & Admin Mode (PENDING)
+**Priority:** MEDIUM (can use hardcoded `true` for testing)
+**Estimated time:** 1 hour (for full auth) OR 1 minute (for testing hardcode)
+**File:** `src/App.tsx`
 
-**Changes:**
-1. Import `Sidebar` component
-2. Calculate metrics (total firefighters, available, on hold)
-3. Pass firefighters, scheduledHolds, currentShift
-4. Add Reports view switching
+**Current blocker:** Line 76: `const isAdminMode = false;`
 
-**Result:** See stats, switch to Reports view
+**Quick fix for testing:**
+```tsx
+const isAdminMode = true; // TEMP: Enable all features for testing
+```
+
+**Full implementation:**
+1. Import AuthContext and useAuth
+2. Wrap app with `<AuthProvider>`
+3. Replace hardcoded value with `const { isAdmin } = useAuth()`
+4. Add LoginModal
+5. Wire login button in HelpModal
+6. Test with Supabase auth
+
+**Result:** Can enable admin features (temp or via auth)
 
 ---
 
-### Phase 6: Authentication & Admin Mode (1 hour)
+### Phase 7: Keyboard Shortcuts (PENDING)
+**Priority:** LOW
+**Estimated time:** 30-45 minutes
 **File:** `src/App.tsx`
 
-**Changes:**
-1. Import `useAuth` hook and `LoginModal`
-2. Add `isAdminMode` based on `useAuth().isAdmin`
-3. Conditionally show/hide edit buttons based on admin mode
-4. Add "Login" button in Help modal for battalion chiefs
-5. Wire up all admin-only operations
-
-**Result:** Battalion chiefs can log in → Full edit access
-Regular users → Read-only view
-
----
-
-### Phase 7: Keyboard Shortcuts (30 min)
-**File:** `src/App.tsx`
-
-**Changes:**
+**Tasks:**
 1. Import `useKeyboardShortcuts` hook
-2. Define shortcuts array:
-   - `/` or `Ctrl+K` → Focus search
-   - `Ctrl+N` → Quick add firefighter (admin only)
-   - `Ctrl+E` → Export data
-   - `?` → Show help
-   - `Ctrl+?` → Show shortcuts modal
-   - `Esc` → Close modals
-3. Add `KeyboardShortcutsModal` component
-4. Pass shortcuts array to modal
+2. Define shortcuts configuration
+3. Add KeyboardShortcutsModal
+4. Wire `?` key handler
 
-**Result:** Full keyboard navigation working
+**Shortcuts:**
+- `/` → Focus search
+- `Ctrl+N` → Quick add
+- `?` → Help
+- `Esc` → Close modals
+
+**Result:** Keyboard navigation
 
 ---
 
-### Phase 8: Dark Mode Toggle (15 min)
+### Phase 9: Auxiliary Features (PENDING)
+**Priority:** LOW
+**Estimated time:** 30-45 minutes
 **File:** `src/App.tsx`
 
-**Changes:**
-1. Import `useDarkMode` hook
-2. Get `{ isDarkMode, toggleDarkMode }`
-3. Pass to Header component
-4. Add dark mode classes to root element
-5. Ensure CSS variables work in both modes
+**Tasks:**
+1. Add UpdateNotification (PWA updates)
+2. Add ConfirmDialog for destructive ops
+3. Add useConfirm hook
+4. Add useAnnounce for accessibility
 
-**Result:** Click Light/Dark → Toggle theme
-
----
-
-### Phase 9: Remaining Features (1 hour)
-**File:** `src/App.tsx`
-
-**Changes:**
-1. Add `UpdateNotification` component (service worker updates)
-2. Add `ConfirmDialog` for destructive operations
-3. Add `useConfirm` hook for confirmations
-4. Add `useAnnounce` for screen reader announcements
-5. Wire up mobile navigation menu
-
-**Result:** All auxiliary features working
+**Result:** Enhanced UX features
 
 ---
 
-## Testing Checklist
+## Critical Lessons Learned (Nov 6, 2025 Session)
 
-### Calendar Interactions
-- [ ] Click day → Modal opens
-- [ ] Schedule hold → Appears in calendar
-- [ ] Complete hold → Moves firefighter to bottom
-- [ ] Delete hold → Removed from calendar
-- [ ] Past dates read-only (unless admin)
+### ⚠️ Verification Failures
 
-### Roster Interactions
-- [ ] Click firefighter → Profile modal opens
-- [ ] Drag-drop → Reorders rotation (admin only)
-- [ ] Add firefighter → Creates new entry (admin only)
-- [ ] Deactivate → Moves to deactivated list (admin only)
-- [ ] Transfer shift → Moves to different shift (admin only)
+**Issue 1: Screenshot-Only Verification**
+- **Problem:** Took screenshots without loading page in actual browser
+- **Impact:** Claimed features were "fixed" when they weren't
+- **Solution:** ALWAYS navigate to localhost in Chrome DevTools
+- **Required:** Click through UI, test interactions, verify visually
 
-### Admin Mode
-- [ ] Login as battalion chief → Admin mode enabled
-- [ ] All edit buttons visible
-- [ ] Can perform CRUD operations
-- [ ] Logout → Back to read-only
+**Issue 2: Dev Server Status Assumptions**
+- **Problem:** Didn't check if `pnpm dev` was actually running
+- **Impact:** Tested against stale/crashed server
+- **Solution:** Always run `BashOutput` to verify server status
+- **Required:** Confirm "ready in Xms" message before testing
 
-### Keyboard Shortcuts
-- [ ] `/` → Focuses search bar
-- [ ] `Ctrl+N` → Opens quick add (admin)
-- [ ] `?` → Shows help modal
-- [ ] `Esc` → Closes modals
-- [ ] All shortcuts listed in modal
-
-### Data Integrity
-- [ ] Hold completion rotates positions correctly
-- [ ] No duplicate positions after operations
-- [ ] Activity log records all actions
-- [ ] Real-time sync works across tabs
+**Issue 3: Manual User Corrections**
+- **Problem:** User had to manually improve styling after "completion"
+- **Impact:** Delivered incomplete work
+- **Solution:** Share live preview link and get user confirmation
+- **Required:** Ask "does this look correct to you?" before claiming done
 
 ---
 
-## File Size Impact
+## Updated Testing Protocol
 
-### Current Bundle
-- JS: 343.04 KB
-- CSS: 76.81 KB
+### MANDATORY Before Claiming "Fixed" or "Complete"
 
-### Expected After Integration
-- JS: ~450-500 KB (+~150 KB for modals and logic)
-- CSS: ~80 KB (minimal change)
+1. ✅ **Verify dev server running:**
+   ```bash
+   pnpm dev  # Run in background
+   # Check output shows "ready in Xms"
+   ```
 
-**Mitigation:**
-- Use code splitting for modals (lazy load)
-- Tree-shake unused components
-- Compress with Vite's built-in minification
+2. ✅ **Navigate to page in browser:**
+   ```
+   Use mcp__chrome-devtools__navigate_page
+   URL: http://localhost:5173/
+   ```
+
+3. ✅ **Take screenshot AND manually test:**
+   - Take screenshot for documentation
+   - Click buttons to verify they work
+   - Toggle between dark/light mode
+   - Check console for errors
+
+4. ✅ **Test both modes:**
+   - Dark mode: Full visual inspection
+   - Light mode: Full visual inspection
+   - Compare both to ensure parity
+
+5. ✅ **Test responsive layouts:**
+   - Mobile: 375px width
+   - Tablet: 768px width
+   - Desktop: 1920px width
+
+6. ✅ **Ask user for confirmation:**
+   - "Does this look correct in your browser?"
+   - Share preview link if possible
+   - Wait for user verification
 
 ---
 
-## Migration Strategy
+## Current State (Accurate as of Nov 6, 3:10 PM)
 
-### Option A: Incremental (Recommended)
-1. Add one feature at a time
-2. Test thoroughly after each phase
-3. Commit after each working phase
-4. Deploy to production after each phase
-5. **Estimated time:** 6-8 hours total
+### ✅ Actually Working (Browser-Verified)
+- NextUpBar displaying all shifts
+- Header buttons right-aligned
+- Shift selector changes active shift
+- Dark mode toggle working
+- BigCalendar rendering holds
+- FirefighterList rendering roster
+- Data loading from Supabase (3 shifts)
+- Real-time sync active
 
-### Option B: Big Bang
-1. Add everything at once
-2. Test end-to-end
-3. Deploy when all features work
-4. **Estimated time:** 4-6 hours (higher risk)
+### ❌ Confirmed Not Working
+- Calendar click handlers (can't interact with days/events)
+- Roster click handlers (can't click firefighters or drag-drop)
+- Any modals (none are rendered)
+- Admin features (isAdminMode = false blocks everything)
+- CRUD operations from UI (backend works, no UI triggers)
 
-**Recommendation:** Use Option A (Incremental) to minimize risk of breaking the working layout.
+### ⚠️ Unknown / Needs Verification
+- Light mode styling completeness
+- NextUpBar layout in mobile viewport
+- Calendar responsiveness
+- Toast notifications rendering
+- Connection status indicator
 
 ---
 
-## Next Steps
+## Remaining Work Breakdown
 
-1. **Review this plan with user** - Confirm approach
-2. **Start Phase 1** - Add modal infrastructure
-3. **Test on localhost** - Verify no regressions
-4. **Commit and deploy** - Push working state
-5. **Continue phases** - One at a time, testing each
+### High Priority (Core Functionality)
+1. **Phase 1:** Modal infrastructure (~30 min)
+2. **Phase 3:** Enable admin mode (1 min) OR implement auth (1 hour)
+3. **Phase 2:** Calendar interactions (~30 min)
+4. **Phase 4:** Finish header wiring (~15 min)
+
+**Estimated:** 1.5 hours (with admin hardcode) or 2.5 hours (with full auth)
+
+### Low Priority (Nice to Have)
+5. **Phase 7:** Keyboard shortcuts (~30 min)
+6. **Phase 9:** Auxiliary features (~30 min)
+7. **Full light mode verification** (~15 min)
+
+**Estimated:** 1 hour 15 minutes
+
+### Total Remaining Work: 2.5 - 3.5 hours
+
+---
+
+## Fast-Track Integration Order
+
+For fastest path to working app:
+
+1. **Phase 3 Quick Fix** (1 min): Change `isAdminMode = false` → `isAdminMode = true`
+2. **Phase 1** (30 min): Add all modals to App.tsx
+3. **Phase 4** (15 min): Wire header buttons to modals
+4. **Phase 2** (30 min): Add calendar click handlers
+5. **Test thoroughly** (30 min): Full browser testing both modes
+6. **Commit & deploy** (10 min)
+
+**Total fast-track time:** ~2 hours to working app
 
 ---
 
 ## Success Criteria
 
-✅ **Layout Unchanged** - New MaterialM design stays intact
-✅ **All Features Working** - Everything from commit a319cf3 restored
-✅ **No Regressions** - Current "Next Up" functionality still works
-✅ **Performance OK** - Bundle size reasonable (<500 KB JS)
-✅ **Tests Pass** - All existing tests still pass
-✅ **Deployed** - Working in production
+- ✅ **Layout Unchanged** - MaterialM design intact
+- ✅ **NextUpBar Working** - All 3 shifts display
+- ✅ **Header Aligned** - Buttons right-justified
+- ✅ **Dark Mode Working** - Toggle functional
+- ⏳ **Calendar Interactive** - Need click handlers
+- ⏳ **Roster Interactive** - Need admin mode enabled
+- ⏳ **Modals Working** - Need Phase 1
+- ⏳ **Light Mode Complete** - Needs verification
+- ⏳ **Tests Pass** - Run after completion
+- ⏳ **Production Deploy** - After full testing
 
 ---
 
-**Status:** Ready to begin Phase 1
-**Next Action:** Await user approval to proceed
+**Current Status:** Phases 5 & 8 complete, ready for Phase 1
+**Recommended Next:** Phase 1 (Modal Infrastructure) → Phase 3 Quick Fix → Phase 4
+**Last Commit:** 42beb54
+**Branch:** main
+**Estimated to Working App:** 2 hours (fast-track) or 3.5 hours (comprehensive)

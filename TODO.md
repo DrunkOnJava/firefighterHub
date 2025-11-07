@@ -1,257 +1,143 @@
-# FirefighterHub - Active TODO List
+# FirefighterHub Mobile Optimization - Comprehensive TODO
 
-**Last Updated**: October 29, 2025, 7:45 PM
-**Status**: ✅ Production Live - User Testing Phase
-
-> **This is the single source of truth for project tasks.**
-> **Update this file as you complete tasks - keep it current!**
-
----
-
-## 📊 Quick Status
-
-| Category | Completed | Remaining | Total |
-|----------|-----------|-----------|-------|
-| Critical Bugs | 5 | 0 | 5 |
-| UI/UX Fixes | 7 | 0 | 7 |
-| Database | 1 | 0 | 1 |
-| Documentation | 1 | 2 | 3 |
-| **TOTAL** | **14** | **2** | **16** |
-
-**Progress**: 87.5% Complete for Current Sprint
+**Last Updated**: November 6, 2025
+**Project**: Mobile-First Web App Optimization
+**Target URL**: https://firefighter-hub.vercel.app/
+**Status**: 🟢 Phase 2 Complete - Moving to Phase 3
 
 ---
 
-## 🔴 IMMEDIATE - Needs Attention
+## 📊 Project Overview
 
-### User Validation (Priority: P0)
-- [ ] **User to test all Oct 29 bug fixes on live site**
-  - **Assignee**: Firefighter user
-  - **Due**: October 30, 2025
-  - **Tests**:
-    - [ ] Can schedule holds without 72-hour errors
-    - [ ] Completing hold moves member to bottom
-    - [ ] Last hold date updates correctly
-    - [ ] Dates show correct day (not off by one)
-    - [ ] No duplicate holds in profiles
-    - [ ] Hours worked column removed
-    - [ ] Reports hidden in view-only mode
-    - [ ] Holds by shift shows all 3 shifts with bars
-    - [ ] Top firefighter metric removed
-    - [ ] Back button works in Reports
-  - **Location**: https://firefighter-f3gqyp3r2-griffins-projects-c51c3288.vercel.app
-  - **Notes**: All critical - must verify before closing out
+### Objectives
+Transform FirefighterHub into a mobile-optimized web application that:
+- Automatically detects mobile browsers and adapts UI accordingly
+- Achieves <3 second load times on mobile networks (3G/4G)
+- Provides touch-friendly interface with 44px+ touch targets (WCAG 2.1 AA)
+- Maintains brand consistency and all essential functionality
+- Supports iOS Safari, Chrome Mobile, and Firefox Mobile
 
-### Project Cleanup (Priority: P1)
-- [ ] **Archive old status documentation files**
-  - **Action**: Move to `docs/archive/`
-  - **Files**: 33+ *_STATUS.md, TESTING_*.md, TEST_*.md, RULES_*.md files
-  - **Keep**: README.md, TODO.md, USER_FEEDBACK_OCT_29.md, DEPLOYMENT_COMPLETE_OCT_29.md, Firefighter-hold-practices.md
-  - **Estimated**: 10 minutes
+### Success Metrics
+- **Performance**: LCP < 2.5s, FID < 100ms, CLS < 0.1
+- **Accessibility**: WCAG 2.1 AA compliance (currently passing)
+- **Usability**: 100% feature parity with desktop version
+- **PWA Score**: 90+ on Lighthouse
+- **Bundle Size**: <150 KB initial JS bundle (currently 119.52 KB ✅)
 
-- [ ] **Archive database dump and restore scripts**
-  - **Action**: Move to `scripts/archive/` or delete
-  - **Files**: database_dump_*.json, restore-*.ts, restore-*.sql, batch-execute.ts, etc.
-  - **Keep**: verify-database.ts (if useful)
-  - **Estimated**: 5 minutes
+### Current Baseline (November 6, 2025)
+- **LCP**: 611ms ✅ (Target: <2.5s)
+- **CLS**: 0.00 ✅ (Target: <0.1)
+- **Bundle Size**: 119.52 KB gzipped ✅ (48.6% reduction from 202.66 KB)
+- **Touch Targets**: 17 components updated to 44px minimum ✅
+- **PWA Setup**: Service worker + manifest configured ✅
 
 ---
 
-## ✅ COMPLETED - October 29, 2025 Deployment
+## 🎯 Phase Progress Summary
 
-### Critical Production Bugs (All Fixed)
-- [x] **Bug 1**: Members can't be scheduled (72-hour validation blocking)
-  - **Fix**: Changed validation from BLOCKING to WARNING-ONLY
-  - **File**: src/utils/validation.ts:232-270
-  - **Commit**: 479ccbb
+| Phase | Status | Progress | Key Deliverables |
+|-------|--------|----------|------------------|
+| Phase 1 | ✅ Complete | 100% | Performance audit, device detection, viewport config |
+| Phase 2 | ✅ Complete | 100% | Code splitting, bundle optimization (48.6% reduction) |
+| Phase 3 | 🔄 In Progress | 40% | Mobile-first layout refactoring |
+| Phase 4 | 📋 Planned | 0% | Touch gestures, mobile interactions |
+| Phase 5 | 📋 Planned | 0% | Navigation, typography, contrast |
+| Phase 6 | 📋 Planned | 0% | Loading states, error handling, sync optimization |
+| Phase 7 | 🟡 Partial | 30% | PWA features (manifest ✅, service worker ✅) |
+| Phase 8 | 📋 Planned | 0% | Mobile E2E testing |
+| Phase 9 | 📋 Planned | 0% | Accessibility audit, documentation |
+| Phase 10 | 📋 Planned | 0% | Performance round 2, final optimizations |
 
-- [x] **Bug 2**: Completing hold doesn't move member to bottom
-  - **Fix**: Removed recalculatePositions() after moveToBottom()
-  - **File**: src/hooks/useScheduledHolds.ts:317-348
-  - **Commit**: 479ccbb
-
-- [x] **Bug 3**: Last hold date not updating
-  - **Fix**: Fixed date format, added error throwing, added logging
-  - **File**: src/hooks/useScheduledHolds.ts:358-384
-  - **Commit**: 479ccbb
-
-- [x] **Bug 4**: Date off-by-one bug
-  - **Fix**: Created formatHoldDate() utility with UTC timezone
-  - **Files**: src/utils/dateUtils.ts (NEW), src/components/FirefighterList.tsx, src/components/FirefighterProfileModal.tsx
-  - **Commit**: 479ccbb
-
-- [x] **Bug 5**: Duplicate holds in member profiles
-  - **Fix**: Removed synthetic hold creation from last_hold_date
-  - **File**: src/utils/calendarUtils.ts:96-122
-  - **Commit**: 479ccbb
-
-### UI/UX Improvements (All Complete)
-- [x] **Removed hours worked display** from rotation view
-  - **File**: src/components/FirefighterList.tsx
-  - **Commit**: 479ccbb
-
-- [x] **Hide reports from view-only mode**
-  - **Files**: src/App.tsx, src/components/Sidebar.tsx
-  - **Commit**: 479ccbb
-
-- [x] **Enhanced holds by shift chart** with visual bars
-  - **File**: src/components/Reports.tsx:245-281
-  - **Commit**: 479ccbb
-
-- [x] **Removed top firefighter metric**
-  - **File**: src/components/Reports.tsx
-  - **Commit**: 479ccbb
-
-- [x] **Added back button to Reports dashboard**
-  - **File**: src/components/Reports.tsx:127-137
-  - **Commit**: 479ccbb
-
-### Database & Infrastructure
-- [x] **Supabase migration applied** (Oct 28-29)
-  - **Migration**: database/migrations/001_add_hold_enhancements.sql
-  - **Schema**: database/schema.sql
-  - **Status**: All tables created, 59 firefighters + 85 holds migrated
-  - **Verified**: October 29, 2025
-
-### Deployment
-- [x] **Deployed to production** (Oct 29)
-  - **Commit**: 479ccbb
-  - **Build Time**: 11 seconds
-  - **Status**: ✅ Live
-  - **URL**: https://firefighter-f3gqyp3r2-griffins-projects-c51c3288.vercel.app
-
-### Documentation
-- [x] **User feedback captured**
-  - **File**: USER_FEEDBACK_OCT_29.md
-  - **Date**: October 29, 2025
+**Overall Progress**: 27% Complete (2.7/10 phases)
 
 ---
 
-## 🟡 BACKLOG - Future Work
+## ✅ Phase 1: Mobile Performance Audit & Foundation [COMPLETE]
 
-### Technical Debt (Non-Blocking)
-- [ ] Fix test file type errors
-  - **Files**: src/hooks/__tests__/useFirefighters.test.ts (needs hours_worked fields)
-  - **Priority**: P2 - Low
-  - **Estimated**: 30 minutes
+**Status**: ✅ 100% Complete (November 6, 2025)  
+**Documentation**: `docs/MOBILE_OPTIMIZATION_PHASE1_COMPLETE.md`
 
-- [ ] Fix CertificationLevel export issue
-  - **Files**: FirefightersModal.tsx, QuickAddFirefighterModal.tsx
-  - **Priority**: P3 - Low
-  - **Estimated**: 15 minutes
+### Completed Tasks
 
-- [ ] Split large components
-  - **Files**: Calendar.tsx (700+ lines), FirefighterList.tsx (400+ lines)
-  - **Priority**: P3 - Low
-  - **Estimated**: 4 hours
+- [x] **Performance Baseline Measurement**
+  - [x] Lighthouse mobile audit (LCP 611ms, CLS 0.00)
+  - [x] Core Web Vitals documentation
+  - [x] Bundle size analysis (202.66 KB gzipped baseline)
+  - [x] Network waterfall analysis (render delay identified: 511ms)
+  - [x] Screenshot baseline at 375px viewport
+  - **Deliverable**: `docs/MOBILE_BASELINE_METRICS.md`
 
-- [ ] Optimize bundle size
-  - **Current**: 505KB
-  - **Target**: <400KB
-  - **Priority**: P3 - Low
-  - **Estimated**: 2 hours
+- [x] **Device Detection Infrastructure**
+  - [x] Breakpoint constants system (`src/constants/breakpoints.ts`)
+  - [x] `useMediaQuery` hook for CSS media query detection
+  - [x] `useDevice` hook for comprehensive device info
+  - [x] Orientation detection (portrait/landscape)
+  - [x] Touch capability detection
+  - [x] Safe area insets for notched devices (iPhone X+)
 
-### Feature Enhancements (User Requested - Future)
-- [ ] Email notifications for 72-hour limit approaching
-  - **Priority**: P2 - Medium
-  - **Estimated**: 4 hours
-  - **Requires**: Email service integration (SendGrid, etc.)
+- [x] **Mobile-First Configuration**
+  - [x] Enhanced viewport meta tag with `viewport-fit=cover`
+  - [x] CSS custom properties for safe area insets
+  - [x] Touch target size constants (44px minimum)
+  - [x] Mobile typography guidelines (16px minimum for inputs)
+  - [x] Breakpoint alignment with Tailwind CSS
 
-- [ ] Shift schedule calendar view
-  - **Priority**: P3 - Low
-  - **Estimated**: 6 hours
-
-- [ ] Mobile app version
-  - **Priority**: P3 - Low
-  - **Estimated**: 40+ hours (separate project)
-
-- [ ] Admin dashboard for hold approval workflow
-  - **Priority**: P3 - Low
-  - **Estimated**: 8 hours
-
-- [ ] Better historical station tracking
-  - **Issue**: Currently shows current station, not station at time of hold
-  - **Priority**: P2 - Medium
-  - **Estimated**: 2 hours
-  - **Requires**: Store station in scheduled_holds (already in schema)
+### Key Deliverables
+- ✅ `docs/MOBILE_BASELINE_METRICS.md` - Performance baseline
+- ✅ `docs/BUNDLE_ANALYSIS.md` - Bundle size breakdown
+- ✅ `src/constants/breakpoints.ts` - Responsive breakpoints
+- ✅ `src/hooks/useMediaQuery.ts` - Media query hook
+- ✅ `src/hooks/useDevice.ts` - Device detection hook
 
 ---
 
-## 📋 Old TODO Lists (From Previous Sessions)
+## ✅ Phase 2: Bundle Optimization & Code Splitting [COMPLETE]
 
-The following comprehensive task lists exist from earlier development sessions. These are archived for reference but may contain outdated or already-completed tasks:
+**Status**: ✅ 100% Complete (November 6, 2025)  
+**Documentation**: `docs/MOBILE_OPTIMIZATION_PHASE2_COMPLETE.md`
 
-- **Reference**: See archived TODO.md in docs/archive/
-- **Scope**: 89 tasks covering bulk operations, advanced features, mobile optimization, etc.
-- **Status**: Many already complete, some superseded by user feedback
-- **Action**: Review and integrate relevant tasks into this active TODO as needed
+### Completed Tasks
 
----
+- [x] **Moment.js Migration**
+  - [x] Replace deprecated moment.js with date-fns
+  - [x] Update BigCalendar localizer to use date-fns
+  - [x] Migrate all date formatting to date-fns functions
+  - [x] Remove moment.js dependency from package.json
+  - [x] Verify all date operations work correctly
+  - **Impact**: 15.29 KB gzipped savings (7.5% reduction)
 
-## 🗂️ Documentation Cleanup
+- [x] **Code Splitting Implementation**
+  - [x] Lazy load BigCalendar component (59.21 KB chunk)
+  - [x] Lazy load HelpModal (2.18 KB chunk)
+  - [x] Lazy load ActivityLogModal (3.96 KB chunk)
+  - [x] Lazy load CompleteHoldModal (2.02 KB chunk)
+  - [x] Lazy load TransferShiftModal (2.32 KB chunk)
+  - [x] Lazy load QuickAddFirefighterModal (2.11 KB chunk)
+  - [x] Lazy load BattalionChiefLogin (1.69 KB chunk)
+  - [x] Add Suspense boundaries with loading states
+  - **Impact**: 83.14 KB gzipped moved to separate chunks (41% reduction)
 
-### To Archive (Move to docs/archive/)
-Status documentation files (33+ files):
-- COMPREHENSIVE_TEST_CHECKLIST.md
-- DEPLOYMENT_STATUS.md (old)
-- FINAL_STATUS.md
-- FIX_STATUS_REPORT.md
-- HOLD_MANAGEMENT_TEST_*.md (5 files)
-- IMPLEMENT_TESTING_SUITE_PROMPT.md
-- IMPLEMENTATION_STATUS.md
-- INCOMPLETE_FEATURES_STATUS.md
-- MIGRATION_STATUS.md
-- NAVIGATION_IMPLEMENTATION_GUIDE.md
-- PROFILE_EDIT_STATUS.md
-- QUICK_START_NEXT_STEPS.md
-- RULES_*.md (3 files)
-- SECURITY_STATUS.md
-- SHIFT_IMPLEMENTATION_SUMMARY.md
-- SYNC_STATUS_REPORT.md
-- TEST_*.md (8 files)
-- TESTING_*.md (10 files)
-- VERIFICATION_TEST_CHECKLIST.md
+- [x] **Build Verification**
+  - [x] Production build passes with no errors
+  - [x] Chunk analysis confirms proper splitting
+  - [x] No regression in functionality
+  - [x] Initial bundle: 202.66 KB → 119.52 KB ✅
 
-### To Keep in Root
-- README.md
-- TODO.md (this file)
-- USER_FEEDBACK_OCT_29.md
-- DEPLOYMENT_COMPLETE_OCT_29.md
-- Firefighter-hold-practices.md
-- LICENSE (if exists)
+### Performance Impact
+- **Total Savings**: 98.43 KB gzipped (48.6% reduction)
+- **Initial Bundle**: 202.66 KB → 119.52 KB ✅
+- **Calendar Chunk**: 59.21 KB (loads on-demand)
+- **Modal Chunks**: 14.28 KB total (load on interaction)
 
----
-
-## 🎯 Success Criteria for Current Sprint
-
-✅ **All critical bugs fixed** (5/5)
-✅ **All UI/UX improvements complete** (7/7)
-✅ **Production build passing**
-✅ **Deployed to production**
-⏳ **User validation** (pending)
+### Key Deliverables
+- ✅ `docs/MOBILE_OPTIMIZATION_PHASE2_COMPLETE.md` - Phase 2 summary
+- ✅ `src/App.tsx` - Code splitting with React.lazy()
+- ✅ Updated package.json (moment.js removed, date-fns added)
 
 ---
 
-## 📝 How to Use This File
+## � Phase 3: Mobile-First Layout Refactor [IN PROGRESS]
 
-1. **Check tasks at start of work session**
-2. **Mark [x] when completing tasks**
-3. **Add new tasks as they arise** (always add to this file)
-4. **Update "Last Updated" timestamp** when making changes
-5. **Use TodoWrite tool** during active development sessions
-6. **This file = permanent record** (TodoWrite = session tracking)
-
----
-
-## 🔗 Quick Reference
-
-**Live App**: https://firefighter-f3gqyp3r2-griffins-projects-c51c3288.vercel.app
-**Supabase**: https://supabase.com/dashboard/project/tjljndzodowpohusrwhs
-**Vercel**: https://vercel.com/griffins-projects-c51c3288/firefighter-hub
-**GitHub**: https://github.com/DrunkOnJava/firefighterHub
-**Latest Commit**: 479ccbb (Oct 29, 2025)
-
----
-
-*Keep this file lean and actionable. Archive completed major initiatives.*
-*For historical context, see docs/archive/*
+**Status**: 🔄 40% Complete  
+**Priority**: 🔴 HIGH - Core mobile experience  
+**Target Completion**: November 8, 2025

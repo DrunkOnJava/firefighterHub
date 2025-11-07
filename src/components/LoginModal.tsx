@@ -92,7 +92,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
               id="login-modal-title"
               className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
             >
-              Admin Sign In
+              Battalion Chief Sign In
             </h2>
           </div>
           <button
@@ -195,7 +195,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
 
           {/* Help Text */}
           <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} text-center mt-4`}>
-            Only authorized administrators can sign in.
+            Only authorized Battalion Chiefs can access admin features.
           </p>
         </form>
       </div>

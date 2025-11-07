@@ -135,6 +135,12 @@ export function useFirefighters(
         isIntentionalDisconnect = false; // Reset after removal
       }
 
+      // Add extra delay on initial connection to let Supabase real-time initialize
+      // This prevents "mismatch between server and client bindings" on first connect
+      if (!wasConnected) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+
       const channel = supabase
         .channel(`firefighters_${currentShift}`)
         .on(

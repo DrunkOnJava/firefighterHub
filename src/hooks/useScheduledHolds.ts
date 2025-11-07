@@ -62,8 +62,14 @@ export function useScheduledHolds(
     let isIntentionalDisconnect = false; // Track if we're intentionally closing
     const MAX_RETRIES = 10; // Maximum retry attempts before giving up
 
-    const setupSubscription = () => {
+    const setupSubscription = async () => {
       if (!isSubscribed) return;
+
+      // Add extra delay on initial connection to let Supabase real-time initialize
+      // This prevents "mismatch between server and client bindings" on first connect
+      if (!wasConnected) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
 
       const channel = supabase
         .channel(`scheduled_holds_${currentShift}`)

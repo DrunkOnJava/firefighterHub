@@ -1,30 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { useDarkMode } from './hooks/useDarkMode';
 import { Firefighter, Shift } from './lib/supabase';
 
-// Header component
+// Header component (always visible)
 import { Header } from './components/Header';
-
-// Modal components
-import { HelpModal } from './components/HelpModal';
-import { ActivityLogModal } from './components/ActivityLogModal';
-import { CompleteHoldModal } from './components/CompleteHoldModal';
-import { TransferShiftModal } from './components/TransferShiftModal';
-import { QuickAddFirefighterModal } from './components/QuickAddFirefighterModal';
-import { BattalionChiefLogin } from './components/BattalionChiefLogin';
 import { MobileNav } from './components/MobileNav';
 
-// Big Calendar
-import { BigCalendar } from './components/calendar/BigCalendar';
-
-// Interactive Roster
+// Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
-
-// Next Up Bar
 import { NextUpBar } from './components/NextUpBar';
+
+// Lazy-loaded components (code splitting for performance)
+const BigCalendar = lazy(() => import('./components/calendar/BigCalendar').then(m => ({ default: m.BigCalendar })));
+const HelpModal = lazy(() => import('./components/HelpModal').then(m => ({ default: m.HelpModal })));
+const ActivityLogModal = lazy(() => import('./components/ActivityLogModal').then(m => ({ default: m.ActivityLogModal })));
+const CompleteHoldModal = lazy(() => import('./components/CompleteHoldModal').then(m => ({ default: m.CompleteHoldModal })));
+const TransferShiftModal = lazy(() => import('./components/TransferShiftModal').then(m => ({ default: m.TransferShiftModal })));
+const QuickAddFirefighterModal = lazy(() => import('./components/QuickAddFirefighterModal').then(m => ({ default: m.QuickAddFirefighterModal })));
+const BattalionChiefLogin = lazy(() => import('./components/BattalionChiefLogin').then(m => ({ default: m.BattalionChiefLogin })));
 
 function App() {
   // State: Shift
@@ -183,17 +179,25 @@ function App() {
             isDarkMode={isDarkMode}
           />
           
-          <BigCalendar
-            firefighters={firefighters}
-            scheduledHolds={scheduledHolds}
-            onScheduleHold={scheduleHold}
-            onRemoveHold={removeScheduledHold}
-            onMarkCompleted={markHoldCompleted}
-            loading={holdsLoading}
-            isAdminMode={isAdminMode}
-            isDarkMode={isDarkMode}
-            currentShift={currentShift}
-          />
+          <Suspense fallback={
+            <div className={`flex items-center justify-center h-96 ${
+              isDarkMode ? 'text-slate-400' : 'text-gray-500'
+            }`}>
+              Loading calendar...
+            </div>
+          }>
+            <BigCalendar
+              firefighters={firefighters}
+              scheduledHolds={scheduledHolds}
+              onScheduleHold={scheduleHold}
+              onRemoveHold={removeScheduledHold}
+              onMarkCompleted={markHoldCompleted}
+              loading={holdsLoading}
+              isAdminMode={isAdminMode}
+              isDarkMode={isDarkMode}
+              currentShift={currentShift}
+            />
+          </Suspense>
         </section>
         {/* Sidebar: Roster */}
         <aside className="sidebar card">
@@ -234,57 +238,59 @@ function App() {
         </div>
       )}
 
-      {/* Modal components */}
-      <HelpModal
-        isOpen={showHelp}
-        onClose={() => setShowHelp(false)}
-        onMasterReset={() => {}}
-        isAdminMode={isAdminMode}
-        onShowLogin={() => {
-          setShowHelp(false);
-          setShowLogin(true);
-        }}
-        user={null}
-      />
+      {/* Modal components - Lazy loaded for performance */}
+      <Suspense fallback={null}>
+        <HelpModal
+          isOpen={showHelp}
+          onClose={() => setShowHelp(false)}
+          onMasterReset={() => {}}
+          isAdminMode={isAdminMode}
+          onShowLogin={() => {
+            setShowHelp(false);
+            setShowLogin(true);
+          }}
+          user={null}
+        />
 
-      <BattalionChiefLogin
-        isOpen={showLogin}
-        onClose={() => setShowLogin(false)}
-        onSuccess={handleLoginSuccess}
-      />
+        <BattalionChiefLogin
+          isOpen={showLogin}
+          onClose={() => setShowLogin(false)}
+          onSuccess={handleLoginSuccess}
+        />
 
-      <ActivityLogModal
-        isOpen={showActivityLog}
-        onClose={() => setShowActivityLog(false)}
-      />
+        <ActivityLogModal
+          isOpen={showActivityLog}
+          onClose={() => setShowActivityLog(false)}
+        />
 
-      <QuickAddFirefighterModal
-        isOpen={showQuickAdd}
-        currentShift={currentShift}
-        onClose={() => setShowQuickAdd(false)}
-        onAdd={addFirefighter}
-      />
+        <QuickAddFirefighterModal
+          isOpen={showQuickAdd}
+          currentShift={currentShift}
+          onClose={() => setShowQuickAdd(false)}
+          onAdd={addFirefighter}
+        />
 
-      <CompleteHoldModal
-        isOpen={showCompleteHoldModal}
-        firefighter={selectedFirefighterForCompletion}
-        totalFirefighters={firefighters.filter((ff) => ff.is_available).length}
-        onClose={() => {
-          setShowCompleteHoldModal(false);
-          setSelectedFirefighterForCompletion(null);
-        }}
-        onConfirm={handleConfirmCompleteHold}
-      />
+        <CompleteHoldModal
+          isOpen={showCompleteHoldModal}
+          firefighter={selectedFirefighterForCompletion}
+          totalFirefighters={firefighters.filter((ff) => ff.is_available).length}
+          onClose={() => {
+            setShowCompleteHoldModal(false);
+            setSelectedFirefighterForCompletion(null);
+          }}
+          onConfirm={handleConfirmCompleteHold}
+        />
 
-      <TransferShiftModal
-        isOpen={showTransferShiftModal}
-        firefighter={selectedFirefighterForTransfer}
-        onClose={() => {
-          setShowTransferShiftModal(false);
-          setSelectedFirefighterForTransfer(null);
-        }}
-        onConfirm={handleConfirmTransferShift}
-      />
+        <TransferShiftModal
+          isOpen={showTransferShiftModal}
+          firefighter={selectedFirefighterForTransfer}
+          onClose={() => {
+            setShowTransferShiftModal(false);
+            setSelectedFirefighterForTransfer(null);
+          }}
+          onConfirm={handleConfirmTransferShift}
+        />
+      </Suspense>
 
       <MobileNav
         isOpen={showMobileMenu}

@@ -2,6 +2,7 @@ import { Lock, X, AlertCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { colors, tokens } from "../styles";
+import { visualHeading } from "../utils/visualHeadings";
 
 interface BattalionChiefLoginProps {
   isOpen: boolean;
@@ -78,7 +79,7 @@ export function BattalionChiefLogin({ isOpen, onClose, onSuccess }: BattalionChi
             </div>
             <h2
               id="battalion-chief-login-title"
-              className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+              className={visualHeading('h3', colors.structural.text.primary)}
             >
               Battalion Chief Mode
             </h2>

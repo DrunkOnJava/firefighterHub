@@ -5,6 +5,7 @@ import {
 } from "../hooks/useKeyboardShortcuts";
 import { colors, tokens } from "../styles";
 import { IconButton } from "./ui/IconButton";
+import { visualHeading } from "../utils/visualHeadings";
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;
@@ -63,7 +64,7 @@ export function KeyboardShortcutsModal({
             </div>
             <h2
               id="shortcuts-modal-title"
-              className={tokens.typography.heading.h3}
+              className={visualHeading('h3')}
             >
               Keyboard Shortcuts
             </h2>

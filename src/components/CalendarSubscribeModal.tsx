@@ -13,6 +13,7 @@ import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
 import { colors, tokens, gridUtilities } from "../styles";
 import { IconButton } from "./ui/IconButton";
+import { visualHeading } from "../utils/visualHeadings";
 
 interface CalendarSubscribeModalProps {
   isOpen: boolean;
@@ -96,7 +97,7 @@ export function CalendarSubscribeModal({
             <div>
               <h2
                 id="calendar-subscribe-title"
-                className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                className={visualHeading('h3', colors.structural.text.primary)}
               >
                 Subscribe to Calendar
               </h2>

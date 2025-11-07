@@ -37,9 +37,9 @@ interface BigCalendarProps {
     duration?: HoldDuration,
     startTime?: string,
     isVoluntary?: boolean
-  ) => void;
+  ) => Promise<void> | void;
   onRemoveHold: (holdId: string) => void;
-  onMarkCompleted: (hold: ScheduledHold) => void;
+  onMarkCompleted: (hold: ScheduledHold) => Promise<void> | void;
   onSkipFirefighter?: (firefighterId: string) => void;
   loading: boolean;
   isAdminMode?: boolean;

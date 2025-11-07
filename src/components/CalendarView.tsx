@@ -15,6 +15,8 @@ import {
   CalendarDay,
 } from "../utils/calendarUtils";
 import { DayModal } from './calendar/DayModal';
+import { IconButton } from './ui/IconButton';
+import { gridUtilities } from '../styles';
 
 interface CalendarViewProps {
   firefighters: Firefighter[];
@@ -132,20 +134,22 @@ export function CalendarView({
 
           {/* Navigation Controls */}
           <div className="flex items-center gap-2">
-            <button
+            <IconButton
+              icon={ChevronLeft}
+              label="Previous month"
               onClick={goToPreviousMonth}
-              className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
-              aria-label="Previous month"
-            >
-              <ChevronLeft className="w-5 h-5 text-gray-300" />
-            </button>
-            <button
+              variant="default"
+              size="md"
+              isDarkMode={true}
+            />
+            <IconButton
+              icon={ChevronRight}
+              label="Next month"
               onClick={goToNextMonth}
-              className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
-              aria-label="Next month"
-            >
-              <ChevronRight className="w-5 h-5 text-gray-300" />
-            </button>
+              variant="default"
+              size="md"
+              isDarkMode={true}
+            />
             <button
               className="ml-2 px-4 py-2 bg-gradient-to-br from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white rounded-md font-medium shadow-lg shadow-red-900/50 transition-all flex items-center gap-2"
               onClick={() => {

@@ -9,6 +9,7 @@ interface ScheduleHoldRequest {
   shift: "A" | "B" | "C";
   duration: "12h" | "24h";
   start_time: string;
+  is_voluntary?: boolean;
 }
 
 Deno.serve(async (req) => {
@@ -127,7 +128,10 @@ Deno.serve(async (req) => {
         fire_station: payload.fire_station,
         status: "scheduled",
         shift: payload.shift,
-        // duration and start_time not in schema yet - omitted for now
+        duration: payload.duration,
+        start_time: payload.start_time,
+        is_voluntary: payload.is_voluntary || false,
+        scheduled_date: payload.hold_date,
       })
       .select()
       .single();

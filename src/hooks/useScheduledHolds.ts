@@ -246,7 +246,8 @@ export function useScheduledHolds(
     firefighter: Firefighter,
     station?: string,
     duration: HoldDuration = "24h",
-    startTime: string = "07:00"
+    startTime: string = "07:00",
+    isVoluntary: boolean = false
   ) {
     // REMOVED: 72-hour rule validation - hours worked tracking removed per user feedback
     // User stated: "There is no way to accurately calculate that without manually
@@ -271,6 +272,7 @@ export function useScheduledHolds(
       updated_at: new Date().toISOString(),
       completed_at: null,
       is_completed: false, // Required by database schema
+      is_voluntary: isVoluntary,
       scheduled_date: holdDate, // Required by database schema - using hold_date as the scheduled date
     };
 
@@ -303,6 +305,7 @@ export function useScheduledHolds(
             shift: currentShift,
             duration: duration,
             start_time: startTime,
+            is_voluntary: isVoluntary,
           }),
         }
       );

@@ -1,7 +1,8 @@
 import { AlertTriangle, Info, Trash2, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { tokens, visualHeadings } from "../styles";
 import { getTheme } from "../utils/theme";
+import { Button } from "./ui/Button";
 
 type ConfirmVariant = "danger" | "warning" | "info";
 
@@ -31,6 +32,7 @@ export function ConfirmDialog({
   isDarkMode = true,
 }: ConfirmDialogProps) {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const theme = getTheme(isDarkMode);
 
   useEffect(() => {
@@ -86,10 +88,20 @@ export function ConfirmDialog({
   const config = variantConfig[variant];
   const Icon = config.icon;
 
-  const handleConfirm = () => {
-    onConfirm();
-    onClose();
+  const handleConfirm = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      await onConfirm();
+      onClose();
+    } catch (error) {
+      console.error('Confirm action failed:', error);
+      setIsSubmitting(false);
+    }
   };
+
+  // Map variant to Button variant
+  const buttonVariant = variant === 'danger' ? 'danger' : variant === 'info' ? 'primary' : 'primary';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -171,19 +183,26 @@ export function ConfirmDialog({
 
           {/* Actions */}
           <div className="flex gap-3 mt-6">
-            <button
+            <Button
               onClick={onClose}
-              className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${theme.confirmDialog.cancelButton}`}
+              variant="secondary"
+              size="lg"
+              fullWidth
+              disabled={isSubmitting}
             >
               {cancelText}
-            </button>
-            <button
+            </Button>
+            <Button
               ref={confirmButtonRef}
               onClick={handleConfirm}
-              className={`flex-1 px-4 py-2 rounded-lg font-medium text-white transition-colors ${config.buttonBg}`}
+              variant={buttonVariant}
+              size="lg"
+              fullWidth
+              state={isSubmitting ? 'loading' : 'idle'}
+              withRipple
             >
               {confirmText}
-            </button>
+            </Button>
           </div>
         </div>
       </div>

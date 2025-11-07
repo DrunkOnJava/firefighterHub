@@ -74,6 +74,7 @@ export default {
        * Spacing Extensions
        * 
        * Based on 8px baseline grid for vertical rhythm.
+       * Added design token support for section separation.
        */
       spacing: {
         // Baseline units
@@ -84,6 +85,9 @@ export default {
         'baseline-5': '40px',
         'baseline-6': '48px',
         'baseline-8': '64px',
+        // Design token additions
+        'section': '32px',      // gap-section token
+        'sectionLarge': '48px', // gap-sectionLarge token
       },
       
       /**
@@ -100,13 +104,22 @@ export default {
        * Min/Max Dimensions
        * 
        * Content-responsive sizing constraints.
+       * Touch target dimensions comply with WCAG 2.5.5.
        */
       minHeight: {
         'calendar-cell-mobile': '48px',
         'calendar-cell-tablet': '60px',
         'calendar-cell-desktop': '80px',
         'roster-row': '32px',
-        'touch-target': '44px',      // WCAG minimum
+        'touch-target': '44px',      // WCAG 2.5.5 minimum
+        'touch': '44px',             // Design token alias
+      },
+      minWidth: {
+        'touch-target': '44px',      // WCAG 2.5.5 minimum
+        'touch': '44px',             // Design token alias
+      },
+      ringWidth: {
+        '3': '3px',                  // Enhanced focus indicator
       },
       
       /**
@@ -151,5 +164,28 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Design token utility classes
+    function({ addUtilities }) {
+      addUtilities({
+        // Touch target enforcement
+        '.touch-target': {
+          minWidth: '44px',
+          minHeight: '44px',
+        },
+        '.touch-target-comfortable': {
+          minWidth: '48px',
+          minHeight: '48px',
+        },
+        // Enhanced focus indicator
+        '.focus-enhanced': {
+          outline: 'none',
+          '&:focus-visible': {
+            ringWidth: '3px',
+            ringColor: '#3b82f6', // blue-500
+          },
+        },
+      });
+    },
+  ],
 };

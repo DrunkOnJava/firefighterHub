@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
@@ -378,6 +379,9 @@ function App() {
 
       {/* Grid Overlay (Development Only) */}
       <GridOverlay />
+      
+      {/* Vercel Analytics */}
+      <Analytics />
     </>
   );
 }

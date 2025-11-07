@@ -120,8 +120,7 @@ export function BigCalendar({
 
   // Handle clicking a hold event
   const handleSelectEvent = (event: CalendarEvent) => {
-    if (!isAdminMode) return;
-
+    // BC Mode: Allow viewing/managing holds
     const hold = event.resource;
     // If hold is scheduled (not completed), allow marking as completed
     if (hold.status === 'scheduled') {
@@ -129,8 +128,8 @@ export function BigCalendar({
         onMarkCompleted(hold);
       }
     } else if (hold.status === 'completed') {
-      // If already completed, offer to remove
-      if (window.confirm(`Remove ${hold.firefighter_name}'s completed hold?`)) {
+      // If already completed, offer to remove (admin only)
+      if (isAdminMode && window.confirm(`Remove ${hold.firefighter_name}'s completed hold?`)) {
         onRemoveHold(hold.id);
       }
     }
@@ -138,8 +137,7 @@ export function BigCalendar({
 
   // Handle clicking an empty day - open modal for scheduling
   const handleSelectSlot = ({ start }: { start: Date }) => {
-    if (!isAdminMode) return;
-
+    // BC Mode: Allow scheduling holds from calendar
     // Get next available firefighter for this shift
     const availableFF = firefighters
       .filter(ff => ff.is_available && ff.shift === currentShift)
@@ -199,7 +197,7 @@ export function BigCalendar({
           defaultView="month"
           onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
-          selectable={isAdminMode}
+          selectable={true}
         />
       </div>
     </>

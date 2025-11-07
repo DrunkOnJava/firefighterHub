@@ -204,7 +204,7 @@ export function QuickAddFirefighterModal({
           onSubmit={handleSubmit}
           className={`${tokens.spacing.card.lg} space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]`}
         >
-          <div className={`grid grid-cols-1 md:grid-cols-2 ${tokens.spacing.gap.md}`}>
+          <div className={gridUtilities.form.responsiveGrid2}>
             <div>
               <label
                 htmlFor="quick-firefighter-name"
@@ -314,7 +314,7 @@ export function QuickAddFirefighterModal({
                 <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
                   Apparatus Clearances
                 </label>
-                <div className={`grid grid-cols-2 md:grid-cols-4 ${tokens.spacing.gap.md}`}>
+                <div className={gridUtilities.form.responsiveGrid4}>
                   {[
                     { state: apparatusAmbulance, setState: setApparatusAmbulance, label: "Ambulance" },
                     { state: apparatusBrushTruck, setState: setApparatusBrushTruck, label: "Brush Truck" },
@@ -342,7 +342,7 @@ export function QuickAddFirefighterModal({
                 <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
                   Certifications & Roles
                 </label>
-                <div className={`grid grid-cols-3 ${tokens.spacing.gap.md}`}>
+                <div className={gridUtilities.form.grid3Col}>
                   <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.warning.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-amber-900/30 border ${colors.semantic.warning.border} transition-colors`}>
                     <input
                       type="checkbox"

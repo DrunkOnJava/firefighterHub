@@ -116,7 +116,7 @@ export function FilterPanel({
             <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
               Certification Level
             </label>
-            <div className={`grid grid-cols-2 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid2Col}>
               {certificationOptions.map(cert => (
                 <label
                   key={cert}
@@ -143,7 +143,7 @@ export function FilterPanel({
             <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
               Fire Stations
             </label>
-            <div className={`grid grid-cols-3 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid3Col}>
               {availableStations.map(station => (
                 <label
                   key={station}
@@ -170,7 +170,7 @@ export function FilterPanel({
             <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
               Apparatus Clearances
             </label>
-            <div className={`grid grid-cols-2 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid2Col}>
               {apparatusOptions.map(({ value, label }) => (
                 <label
                   key={value}
@@ -197,7 +197,7 @@ export function FilterPanel({
             <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
               Special Qualifications
             </label>
-            <div className={`grid grid-cols-1 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid1Col}>
               {qualificationOptions.map(({ value, label }) => (
                 <label
                   key={value}

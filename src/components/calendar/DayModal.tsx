@@ -219,6 +219,7 @@ export function DayModal({
               onFirefighterSelect={onFirefighterSelect}
               onSchedule={handleSchedule}
               onCancel={handleCancel}
+              onSkipFirefighter={onSkipFirefighter}
               selectedStation={selectedStation}
               onStationChange={setSelectedStation}
               showAddAnother={showAddAnother}

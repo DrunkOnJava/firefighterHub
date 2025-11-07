@@ -231,7 +231,7 @@ export function FirefighterProfileModal({
                     })
                   }
                   className={`
-                    ${tokens.typography.heading.h1}
+                    ${visualHeadings.displayLarge}
                     px-3 py-1
                     ${tokens.borders.radius.lg}
                     border-2
@@ -309,7 +309,7 @@ export function FirefighterProfileModal({
         </div>
 
         <div className={`p-6 overflow-y-auto max-h-[calc(90vh-120px)]`}>
-          <div className={`grid grid-cols-2 ${tokens.spacing.gap.md} mb-6`}>
+          <div className={`${gridUtilities.form.responsiveGrid2} mb-6`}>
             <div
               className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.xl} p-4`}
             >
@@ -587,7 +587,7 @@ export function FirefighterProfileModal({
                 Apparatus Clearances
               </h3>
             </div>
-            <div className={`grid grid-cols-2 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid2Col}>
               {isEditMode ? (
                 apparatusTypes.map((apparatus) => {
                   const IconComponent = apparatus.Icon;
@@ -706,7 +706,7 @@ export function FirefighterProfileModal({
             ) : (
               <>
                 <div
-                  className={`grid grid-cols-2 ${tokens.spacing.gap.md} mb-4`}
+                  className={`${gridUtilities.form.responsiveGrid2} mb-4`}
                 >
                   <div
                     className={`${colors.semantic.success.light} border ${colors.semantic.success.border} ${tokens.borders.radius.lg} p-3`}

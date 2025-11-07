@@ -30,6 +30,7 @@ interface HoldFormProps {
     startTime?: string
   ) => void;
   onCancel: () => void;
+  onSkipFirefighter?: (firefighterId: string) => void;
   selectedStation: string;
   onStationChange: (station: string) => void;
   showAddAnother: boolean;
@@ -44,6 +45,7 @@ export function HoldForm({
   onFirefighterSelect,
   onSchedule,
   onCancel,
+  onSkipFirefighter,
   selectedStation,
   onStationChange,
   showAddAnother,
@@ -115,8 +117,9 @@ export function HoldForm({
             {availableFirefighters.length > 1 && (
               <button
                 onClick={() => {
-                  // Move next person to end and show the new list
-                  onFirefighterSelect(null);
+                  if (nextInRotation) {
+                    onSkipFirefighter?.(nextInRotation.id);
+                  }
                 }}
                 className={`
                   w-full mt-2
@@ -208,11 +211,13 @@ export function HoldForm({
 
       <div className="space-y-4">
         {/* Station selector */}
-        <div>
+        <div className="p-3 rounded-lg border-2 border-blue-500/30 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20">
           <label
-            className={`block ${tokens.typography.body.secondary} ${theme.textSecondary} mb-2`}
+            className={`block font-semibold ${theme.textPrimary} mb-2 text-base flex items-center gap-2`}
           >
+            <span className="text-xl">🏢</span>
             Hold Station
+            <span className="text-red-500">*</span>
           </label>
           <StationSelector
             selectedStation={selectedStation}

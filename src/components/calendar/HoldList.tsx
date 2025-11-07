@@ -153,6 +153,16 @@ export function HoldList({
                       {hold.status === "scheduled" ? "SCHEDULED" : "COMPLETED"}
                     </span>
 
+                    {hold.is_voluntary && (
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-1 bg-green-900/70 text-green-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
+                        title="Member volunteered for this hold"
+                      >
+                        <span>🙋</span>
+                        VOLUNTARY
+                      </span>
+                    )}
+
                     {locked && (
                       <span
                         className={`inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}

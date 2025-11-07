@@ -26,7 +26,8 @@ interface CalendarViewProps {
     firefighter: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
@@ -99,9 +100,10 @@ export function CalendarView({
     firefighter: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => {
-    onScheduleHold(holdDate, firefighter, station, duration, startTime);
+    onScheduleHold(holdDate, firefighter, station, duration, startTime, isVoluntary);
   };
 
   const isToday = (day: CalendarDay) => {

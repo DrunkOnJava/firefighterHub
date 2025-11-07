@@ -34,7 +34,8 @@ interface DayModalProps {
     ff: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
@@ -78,9 +79,10 @@ export function DayModal({
     ff: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => {
-    onScheduleHold(holdDate, ff, station, duration, startTime);
+    onScheduleHold(holdDate, ff, station, duration, startTime, isVoluntary);
 
     if (!showAddAnother) {
       onClose();

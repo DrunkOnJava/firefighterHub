@@ -148,8 +148,8 @@ Deno.serve(async (req) => {
     await supabase.from("activity_log").insert({
       firefighter_id: payload.firefighter_id,
       firefighter_name: payload.firefighter_name,
-      action_type: "hold_scheduled",
-      details: `Scheduled hold for ${payload.hold_date}`,
+      action_type: payload.is_voluntary ? "hold_volunteered" : "hold_scheduled",
+      details: `${payload.is_voluntary ? 'Volunteered for' : 'Scheduled'} hold for ${payload.hold_date}${payload.fire_station ? ` at station ${payload.fire_station}` : ''}`,
       shift: payload.shift,
     });
 

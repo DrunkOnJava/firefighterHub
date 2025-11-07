@@ -142,17 +142,14 @@ export function useFirefighters(
       }
 
       const channel = supabase
-        .channel(`firefighters_${currentShift}`)
+        .channel(`firefighters:${currentShift}`, {
+          config: { private: true, broadcast: { self: false, ack: false } }
+        })
         .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "firefighters",
-            filter: `shift=eq.${currentShift}`,
-          },
+          "broadcast",
+          { event: "*" },
           (payload) => {
-            console.log("🔄 Firefighters changed:", payload.eventType);
+            console.log("🔄 Firefighters changed:", payload.payload.type);
             loadFirefighters();
             retryCount = 0; // Reset retry count on successful message
             hasShownErrorToast = false; // Reset error toast flag on success

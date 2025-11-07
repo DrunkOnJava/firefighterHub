@@ -72,17 +72,14 @@ export function useScheduledHolds(
       }
 
       const channel = supabase
-        .channel(`scheduled_holds_${currentShift}`)
+        .channel(`scheduled_holds:${currentShift}`, {
+          config: { private: true, broadcast: { self: false, ack: false } }
+        })
         .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "scheduled_holds",
-            filter: `shift=eq.${currentShift}`,
-          },
+          "broadcast",
+          { event: "*" },
           (payload) => {
-            console.log("🔄 Scheduled holds changed:", payload.eventType);
+            console.log("🔄 Scheduled holds changed:", payload.payload.type);
             loadScheduledHolds();
             retryCount = 0; // Reset retry count on successful message
             hasShownErrorToast = false; // Reset error toast flag on success

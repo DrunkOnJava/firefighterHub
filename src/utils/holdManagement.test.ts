@@ -256,6 +256,7 @@ describe("Hold Management System", () => {
           updated_at: "2025-11-14T00:00:00Z",
           completed_at: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-15",
         },
       ];
@@ -667,6 +668,7 @@ describe("Hold Management System", () => {
         updated_at: new Date().toISOString(),
         completed_at: null,
         is_completed: false,
+        is_voluntary: false,
         scheduled_date: "2025-10-15",
       };
 

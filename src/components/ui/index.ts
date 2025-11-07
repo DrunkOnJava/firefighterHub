@@ -33,3 +33,9 @@ export {
   SkeletonList,
   SkeletonCalendar,
 } from './Skeleton';
+
+// Visual Hierarchy Audit - WCAG 2.5.5 Compliant Components
+export { IconButton } from './IconButton';
+export { Checkbox } from './Checkbox';
+export { Radio } from './Radio';
+export { FloatingActionButton } from './FloatingActionButton';

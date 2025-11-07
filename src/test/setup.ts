@@ -36,6 +36,17 @@ global.ResizeObserver = class ResizeObserver {
   unobserve() {}
 } as any;
 
+// Mock Element.animate (Web Animations API)
+Element.prototype.animate = vi.fn().mockImplementation(() => ({
+  play: vi.fn(),
+  pause: vi.fn(),
+  cancel: vi.fn(),
+  finish: vi.fn(),
+  reverse: vi.fn(),
+  onfinish: null,
+  oncancel: null,
+}));
+
 // Set up test environment variables before any imports
 beforeAll(() => {
   // Mock Supabase environment variables for testing

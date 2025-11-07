@@ -27,7 +27,8 @@ interface HoldFormProps {
     ff: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => void;
   onCancel: () => void;
   onSkipFirefighter?: (firefighterId: string) => void;
@@ -55,6 +56,7 @@ export function HoldForm({
   const theme = getTheme(isDarkMode);
   const [duration, setDuration] = useState<HoldDuration>("24h");
   const [startTime, setStartTime] = useState<string>("08:00");
+  const [isVoluntary, setIsVoluntary] = useState(false);
 
   const availableFirefighters = firefighters.filter((ff) => ff.is_available);
 
@@ -66,7 +68,8 @@ export function HoldForm({
         selectedFirefighter,
         selectedStation,
         duration,
-        startTime
+        startTime,
+        isVoluntary
       );
     }
   };
@@ -266,6 +269,25 @@ export function HoldForm({
             `}
           />
         </div>
+
+        {/* Voluntary hold checkbox */}
+        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-green-500/30 dark:border-green-500/30 bg-green-50/50 dark:bg-green-950/20">
+          <input
+            type="checkbox"
+            checked={isVoluntary}
+            onChange={(e) => setIsVoluntary(e.target.checked)}
+            className="w-5 h-5 rounded border-gray-600 text-green-600 focus:ring-green-500"
+          />
+          <div className="flex-1">
+            <span className={`${tokens.typography.body.secondary} ${theme.textPrimary} font-semibold flex items-center gap-2`}>
+              <span className="text-xl">🙋</span>
+              Mark as Voluntary Hold
+            </span>
+            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mt-0.5`}>
+              Member volunteered for this hold (will move to end of rotation)
+            </p>
+          </div>
+        </label>
 
         {/* Add another checkbox */}
         <label className="flex items-center gap-2 cursor-pointer">

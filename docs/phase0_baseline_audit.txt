@@ -1,0 +1,35 @@
+PHASE 0: BASELINE AUDIT RESULTS
+================================
+Date: $(date)
+Total instances: 23
+
+BREAKDOWN BY FILE:
+- HelpModal.tsx: 7 instances
+- FirefighterProfileModal.tsx: 1 instance
+- FirefightersModal.tsx: 2 instances
+- CalendarHeader.tsx: 2 instances
+- DayModal.tsx: 1 instance
+- FilterPanel.tsx: 1 instance
+- TransferShiftModal.tsx: 1 instance
+- CalendarSubscribeModal.tsx: 1 instance
+- MobileNav.tsx: 1 instance
+- QuickAddFirefighterModal.tsx: 1 instance
+- BottomSheet.tsx: 1 instance
+- KeyboardShortcutsModal.tsx: 1 instance
+- BattalionChiefLogin.tsx: 1 instance
+- EmptyState.tsx: 1 instance
+
+EXECUTION BATCHES:
+Batch 1 (3 files): BattalionChiefLogin, CalendarSubscribeModal, KeyboardShortcutsModal
+Batch 2 (1 file): HelpModal (7 instances)
+Batch 3 (2 files): FirefighterProfileModal, FirefightersModal (finish partial work)
+Batch 4 (4 files): EmptyState, FilterPanel, CalendarHeader, DayModal
+Batch 5 (3 files): TransferShiftModal, MobileNav, QuickAddFirefighterModal
+Batch 6 (1 file): BottomSheet
+
+VERIFICATION COMMAND:
+grep -rn "className.*tokens\.typography\.heading" src/components/ | grep -v "<h[1-6]" | wc -l
+
+BASELINE: 23
+TARGET: 0
+

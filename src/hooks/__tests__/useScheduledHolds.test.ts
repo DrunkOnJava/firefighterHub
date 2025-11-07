@@ -61,6 +61,7 @@ describe("useScheduledHolds", () => {
           lent_to_shift: null,
           is_completed: false,
           is_voluntary: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -82,6 +83,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
@@ -126,6 +128,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
         {
@@ -144,6 +147,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
         {
@@ -162,6 +166,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -199,6 +204,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
         {
@@ -217,6 +223,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -377,6 +384,7 @@ describe("useScheduledHolds", () => {
         completed_at: null,
         lent_to_shift: null,
         is_completed: false,
+          is_voluntary: false,
         scheduled_date: "2025-10-27",
       };
 
@@ -418,6 +426,7 @@ describe("useScheduledHolds", () => {
         completed_at: null,
         lent_to_shift: null,
         is_completed: false,
+          is_voluntary: false,
         scheduled_date: "2025-10-27",
       };
 
@@ -458,6 +467,7 @@ describe("useScheduledHolds", () => {
         completed_at: null,
         lent_to_shift: null,
         is_completed: false,
+          is_voluntary: false,
         scheduled_date: "2025-10-27",
       };
 

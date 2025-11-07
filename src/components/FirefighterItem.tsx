@@ -2,6 +2,7 @@ import {
   ArrowRightLeft,
   CheckCircle,
   GripVertical,
+  HandHeart,
   Star,
   Trash2,
   UserX,
@@ -18,6 +19,7 @@ interface FirefighterItemProps {
   onDelete: (id: string) => void;
   onDeactivate: (id: string) => void;
   onTransferShift: (id: string) => void;
+  onVolunteerHold?: (id: string) => void;
   isNextInRotation?: boolean;
   onDragStart?: (e: React.DragEvent, firefighterId: string) => void;
   onDragOver?: (e: React.DragEvent, firefighterId: string) => void;
@@ -35,6 +37,7 @@ export function FirefighterItem({
   onDelete,
   onDeactivate,
   onTransferShift,
+  onVolunteerHold,
   isNextInRotation = false,
   onDragStart,
   onDragOver,
@@ -313,6 +316,22 @@ export function FirefighterItem({
               </button>
             )}
           </>
+        )}
+
+        {/* Volunteer Hold Button - Available to ALL users */}
+        {firefighter.is_available && onVolunteerHold && (
+          <button
+            onClick={() => onVolunteerHold(firefighter.id)}
+            className={`w-full mt-3 py-3 px-4 rounded-lg font-semibold transition-all border-2 flex items-center justify-center gap-2 focus-ring ${
+              isDarkMode
+                ? 'bg-green-900/30 border-green-500 text-green-400 hover:bg-green-900/50'
+                : 'bg-green-50 border-green-600 text-green-700 hover:bg-green-100'
+            }`}
+            aria-label={`Volunteer to take hold for ${firefighter.name}`}
+          >
+            <HandHeart size={18} />
+            I'll Take This Hold
+          </button>
         )}
       </div>
     </div>

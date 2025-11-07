@@ -255,6 +255,7 @@ describe("calendarUtils", () => {
           lent_to_shift: null,
           completed_at: "2025-10-20T00:00:00Z",
           is_completed: true,
+          is_voluntary: false,
           scheduled_date: "2025-10-20",
         },
       ];

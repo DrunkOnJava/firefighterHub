@@ -287,6 +287,7 @@ describe("Error Handling - Calendar Utils", () => {
           updated_at: "",
           completed_at: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-15",
         },
       ];

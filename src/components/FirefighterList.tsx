@@ -5,6 +5,7 @@ import {
   ArrowUpDown,
   CheckSquare,
   Eye,
+  HandHeart,
   History,
   Repeat,
   RotateCcw,
@@ -37,6 +38,7 @@ interface FirefighterListProps {
   onTransferShift: (id: string) => void;
   onResetAll: () => void;
   onReorder: (firefighters: Firefighter[]) => void;
+  onVolunteerHold?: (id: string) => void;
   currentShift?: Shift;
   isAdminMode?: boolean;
   isDarkMode?: boolean;
@@ -55,6 +57,7 @@ export function FirefighterList({
   onTransferShift,
   onResetAll: _onResetAll, // Unused - kept for backwards compatibility
   onReorder,
+  onVolunteerHold,
   confirmAction,
   currentShift,
   isAdminMode = false,
@@ -389,6 +392,14 @@ export function FirefighterList({
                   >
                     Last Hold
                   </th>
+                  {/* Volunteer Column - visible to all users */}
+                  <th
+                    className={`px-4 py-3 text-center text-xs font-bold uppercase tracking-wider ${
+                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                    }`}
+                  >
+                    Volunteer
+                  </th>
                   {/* REMOVED: Hours Worked column per user feedback
                         User stated: "There is no way to accurately calculate that without
                         manually checking through the scheduling program"
@@ -646,6 +657,24 @@ export function FirefighterList({
                             />
                           )}
                         </div>
+                      </td>
+                      {/* Volunteer Button Cell - visible to all users */}
+                      <td className="px-4 py-2 whitespace-nowrap text-center">
+                        {firefighter.is_available && onVolunteerHold && (
+                          <IconButton
+                            icon={HandHeart}
+                            label={`Volunteer to take hold for ${firefighter.name}`}
+                            onClick={() => onVolunteerHold(firefighter.id)}
+                            variant="success"
+                            size="sm"
+                            isDarkMode={isDarkMode}
+                          />
+                        )}
+                        {!firefighter.is_available && (
+                          <span className={isDarkMode ? "text-gray-600" : "text-slate-400"}>
+                            —
+                          </span>
+                        )}
                       </td>
                       {/* REMOVED: Hours Worked data cell - see header comment above
                         <td className="px-4 py-2 whitespace-nowrap text-center">

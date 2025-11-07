@@ -45,6 +45,7 @@ export const tokens = {
       md: 'gap-3',    // 12px
       lg: 'gap-4',    // 16px
       xl: 'gap-6',    // 24px
+      xxl: 'gap-8',   // 32px - for major section separation
     },
     
     /** Margin utilities */

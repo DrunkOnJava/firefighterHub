@@ -16,6 +16,7 @@ import { BottomNav } from './components/mobile/BottomNav';
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
 import { NextUpBar } from './components/NextUpBar';
+import { FloatingActionButton } from './components/Common/FloatingActionButton';
 
 // Development tools (only in dev mode)
 import { GridOverlay } from './components/GridOverlay';
@@ -379,6 +380,14 @@ function App() {
 
       {/* Grid Overlay (Development Only) */}
       <GridOverlay />
+      
+      {/* Floating Action Button for Quick Add (Priority 3.2: Relocate Quick Add to prominent Z-pattern location) */}
+      {isAdmin && (
+        <FloatingActionButton 
+          onClick={() => setShowQuickAdd(true)}
+          label="Quick Add Firefighter"
+        />
+      )}
       
       {/* Vercel Analytics */}
       <Analytics />

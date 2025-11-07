@@ -200,9 +200,9 @@ export function CalendarView({
                   ${hasScheduled && !isOtherMonth ? 'border-l-4 border-l-red-500' : ''}
                 `}
               >
-                {/* Day Number */}
+                {/* Day Number - Increased from text-sm to text-base for better scannability (VH Audit Priority 3.1) */}
                 <div className={`
-                  text-sm font-semibold mb-2
+                  text-base font-medium mb-2
                   ${isCurrentDay ? 'text-red-400' : ''}
                   ${isOtherMonth ? 'text-gray-600' : 'text-gray-300'}
                 `}>

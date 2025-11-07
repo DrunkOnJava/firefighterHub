@@ -9,6 +9,7 @@ import {
 import { Firefighter, Shift } from "../lib/supabase";
 import { getTheme } from "../utils/theme";
 import { ShiftBadge } from "./ShiftSelector";
+import { gridUtilities } from "../styles";
 
 interface FirefighterItemProps {
   firefighter: Firefighter;
@@ -281,7 +282,7 @@ export function FirefighterItem({
 
         {isAdminMode && (
           <>
-            <div className="grid grid-cols-2 gap-3">
+            <div className={gridUtilities.form.grid2Col}>
               <button
                 onClick={() => onDeactivate(firefighter.id)}
                 className={`py-3 px-4 rounded-lg font-semibold transition-all border flex items-center justify-center gap-2 focus-ring ${theme.firefighterItem.actionButton}`}

@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
-import { colors, tokens, visualHeadings } from "../styles";
+import { colors, tokens, visualHeadings, gridUtilities } from "../styles";
 import { formatHoldDate } from "../utils/dateUtils";
 import { ShiftBadge } from "./ShiftSelector";
 

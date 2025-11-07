@@ -15,7 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Shift } from "../../lib/supabase";
-import { colors, tokens, visualHeadings } from "../../styles";
+import { colors, tokens } from "../../styles";
 import { formatMonthYear } from "../../utils/calendarUtils";
 import { ShiftIndicator } from "../ShiftIndicator";
 

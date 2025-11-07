@@ -1,6 +1,6 @@
 import { X, Filter, Trash2 } from 'lucide-react';
 import { FirefighterFilters } from '../hooks/useFilters';
-import { colors, tokens } from '../styles';
+import { colors, tokens, gridUtilities } from '../styles';
 
 interface FilterPanelProps {
   isOpen: boolean;

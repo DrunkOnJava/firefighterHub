@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Firefighter, supabase } from "../lib/supabase";
-import { colors, tokens, visualHeadings } from "../styles";
+import { colors, tokens, visualHeadings, gridUtilities } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
 import {
   // calculateHoldsByStation, // Removed - not used
@@ -383,7 +383,7 @@ export function Reports({
         </div>
 
         {/* Summary Metric Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div className={`${gridUtilities.form.responsiveGrid2} mb-6`}>
           <MetricCard
             title="Total Holds"
             value={filteredHolds.length}

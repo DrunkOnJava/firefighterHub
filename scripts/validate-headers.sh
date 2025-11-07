@@ -40,19 +40,37 @@ fi
 echo ""
 
 # ================================================
-# Check 2: Headers Used for Styling
+# Check 2: Headers Used for Styling  
 # ================================================
 echo "2. Checking for headers used for styling..."
-STYLING_HEADERS=$(grep -r "className.*typography\.heading\." src/components --include="*.tsx" | grep -v "^[[:space:]]*<h[1-6]" | wc -l | tr -d ' ')
+
+# More accurate detection: check if heading tokens are used on non-heading elements
+STYLING_HEADERS=0
+FOUND_FILES=""
+
+while IFS=: read -r file line content; do
+  # Get larger context (3 lines before to 1 line after)
+  context=$(sed -n "$((line-3)),$((line+1))p" "$file" 2>/dev/null)
+  
+  # If context doesn't contain an actual heading tag, it's non-semantic
+  if ! echo "$context" | grep -q "<h[1-6]"; then
+    STYLING_HEADERS=$((STYLING_HEADERS + 1))
+    if [ "$STYLING_HEADERS" -le 5 ]; then
+      FOUND_FILES="${FOUND_FILES}  $file:$line\n"
+    fi
+  fi
+done < <(grep -rn "tokens\.typography\.heading" src/components --include="*.tsx" 2>/dev/null)
 
 if [ "$STYLING_HEADERS" -eq 0 ]; then
-  echo -e "${GREEN}✅ PASS: No non-semantic heading classes found${NC}"
+  echo -e "${GREEN}✅ PASS: All heading classes are on semantic heading elements${NC}"
 else
-  echo -e "${YELLOW}⚠️  WARNING: Found $STYLING_HEADERS instances of heading classes on non-heading elements${NC}"
+  echo -e "${YELLOW}⚠️  WARNING: Found $STYLING_HEADERS potential instances of heading classes on non-heading elements${NC}"
   echo ""
-  echo "Consider using visualHeadings instead:"
-  grep -rn "className.*typography\.heading\." src/components --include="*.tsx" | grep -v "^[[:space:]]*<h[1-6]" | head -5
-  echo ""
+  if [ -n "$FOUND_FILES" ]; then
+    echo "Consider using visualHeadings instead (showing first 5):"
+    echo -e "$FOUND_FILES"
+  fi
+  echo "Note: Some instances may be false positives if the heading tag is >3 lines above the className"
   WARNINGS=$((WARNINGS + 1))
 fi
 echo ""

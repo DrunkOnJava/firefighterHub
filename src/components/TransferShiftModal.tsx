@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, gridUtilities } from "../styles";
+import { Button } from "./ui/Button";
 
 interface TransferShiftModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export function TransferShiftModal({
   onConfirm,
 }: TransferShiftModalProps) {
   const [selectedShift, setSelectedShift] = useState<Shift>("A");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -43,9 +45,17 @@ export function TransferShiftModal({
 
   if (!isOpen || !firefighter) return null;
 
-  const handleConfirm = () => {
-    onConfirm(firefighter.id, selectedShift);
-    onClose();
+  const handleConfirm = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    try {
+      onConfirm(firefighter.id, selectedShift);
+      onClose();
+    } catch (error) {
+      console.error('Error transferring:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const shifts: Shift[] = ["A", "B", "C"];
@@ -118,7 +128,7 @@ export function TransferShiftModal({
             >
               Select New Shift
             </label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className={gridUtilities.form.grid2Col}>
               {availableShifts.map((shift) => (
                 <button
                   key={shift}
@@ -138,19 +148,26 @@ export function TransferShiftModal({
           </div>
 
           <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
-            <button
+            <Button
               onClick={onClose}
-              className={`flex-1 ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.lg} transition-colors focus-ring`}
+              variant="secondary"
+              size="lg"
+              fullWidth
+              disabled={isSubmitting}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleConfirm}
-              className={`flex-1 ${colors.semantic.primary.gradient} ${colors.semantic.primary.hover} text-white font-bold py-3 ${tokens.borders.radius.lg} transition-colors ${colors.semantic.primary.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm}`}
+              variant="primary"
+              size="lg"
+              fullWidth
+              state={isSubmitting ? 'loading' : 'idle'}
+              withRipple
+              leftIcon={<ArrowRightLeft size={20} />}
             >
-              <ArrowRightLeft size={20} />
               Transfer
-            </button>
+            </Button>
           </div>
         </div>
       </div>

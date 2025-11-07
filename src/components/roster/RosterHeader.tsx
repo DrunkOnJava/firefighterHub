@@ -13,7 +13,7 @@
 
 import { Eye, Filter, UserPlus, Users } from "lucide-react";
 import { Firefighter } from "../../lib/supabase";
-import { colors, tokens, visualHeadings } from "../../styles";
+import { colors, tokens } from "../../styles";
 import { getTheme } from "../../utils/theme";
 import { ExportMenu } from "./ExportMenu";
 

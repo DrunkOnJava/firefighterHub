@@ -49,7 +49,7 @@ export function Confetti({
   ...config
 }: ConfettiProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particles useRef<ConfettiParticle[]>([]);
+  const particlesRef = useRef<ConfettiParticle[]>([]);
   const animationFrameRef = useRef<number>();
   const startTimeRef = useRef<number>();
   const prefersReducedMotion = useReducedMotion();

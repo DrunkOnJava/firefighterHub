@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, gridUtilities } from "../styles";
 
 interface CalendarSubscribeModalProps {
   isOpen: boolean;
@@ -156,7 +156,7 @@ export function CalendarSubscribeModal({
             >
               Select Schedule
             </h3>
-            <div className={`grid grid-cols-4 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid4Col}>
               {(["ALL", "A", "B", "C"] as const).map((shift) => (
                 <button
                   key={shift}

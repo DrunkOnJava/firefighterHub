@@ -160,9 +160,9 @@ export function CalendarView({
         </div>
       </div>
 
-      {/* Calendar Grid */}
+      {/* Calendar Grid - using grid system utilities */}
       <div className="flex-1 p-6 overflow-auto">
-        <div className="grid grid-cols-7 gap-px bg-[#252A32] border border-[#252A32] rounded-lg overflow-hidden shadow-xl">
+        <div className={`${gridUtilities.calendar.container} gap-px bg-[#252A32] border border-[#252A32] rounded-lg overflow-hidden shadow-xl`}>
           {/* Weekday Headers */}
           {WEEKDAYS.map((day) => (
             <div
@@ -240,8 +240,8 @@ export function CalendarView({
         </div>
       </div>
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-4 gap-4 px-6 pb-6">
+      {/* Statistics Cards - using grid system utilities */}
+      <div className={`${gridUtilities.form.grid4Col} px-6 pb-6`}>
         {/* Open Vacancies */}
         <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-red-900/50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">

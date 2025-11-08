@@ -17,6 +17,7 @@
 import { useState, useMemo } from "react";
 import { useDevice } from "../hooks/useDevice";
 import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
+import { colors, tokens } from "../styles";
 import {
   getMonthDays,
   attachScheduledHolds,
@@ -28,7 +29,6 @@ import { CalendarGrid } from './calendar/CalendarGrid';
 import { DayModal } from './calendar/DayModal';
 import { MobileWeekView } from './mobile/MobileWeekView';
 import { BottomSheet } from './mobile/BottomSheet';
-import { tokens } from '../styles';
 
 interface CalendarProps {
   firefighters: Firefighter[];
@@ -86,6 +86,11 @@ export function Calendar({
     setCurrentDate(new Date(year, month + 1, 1));
   }
 
+  function goToToday() {
+    const today = new Date();
+    setCurrentDate(new Date(today.getFullYear(), today.getMonth(), 1));
+  }
+
   // Day selection handler
   function handleDayClick(day: CalendarDay) {
     if (!day.isCurrentMonth) return;
@@ -130,24 +135,23 @@ export function Calendar({
     <div
       className={`
         ${colors.structural.bg.card}
-        ${colors.structural.border.default}
         ${tokens.borders.radius.xl}
         ${tokens.spacing.card.md}
-        border-2
+        border border-slate-700/30
         ${tokens.shadows.sm}
         overflow-hidden
       `}
     >
       {/* Header section */}
       <div className={`
-        border-b
-        ${isDarkMode ? 'border-gray-700/50' : 'border-gray-300/50'}
-        ${tokens.spacing.card.md}
+        border-b border-slate-700/20
+        ${tokens.spacing.section.md}
       `}>
         <CalendarHeader
           currentDate={currentDate}
           onPreviousMonth={goToPreviousMonth}
           onNextMonth={goToNextMonth}
+          onGoToToday={goToToday}
           currentShift={currentShift}
           isDarkMode={isDarkMode}
         />

@@ -48,29 +48,30 @@ export function DayCell({
 
   // Determine styling based on state - WCAG 2.5.5: 44px minimum touch targets
   let cellClasses = `
-    relative w-full p-1.5 text-left
+    relative w-full p-2 text-left
     ${tokens.touchTarget.min} min-w-[44px]
     ${tokens.transitions.fast}
     ${tokens.focus.default}
     flex flex-col
     aspect-square
-    rounded-lg
+    rounded-xl
+    border-2
   `;
 
   if (!day.isCurrentMonth) {
-    cellClasses += ` bg-slate-800/50 text-gray-600 cursor-default opacity-50`;
+    cellClasses += ` bg-slate-800/30 border-slate-700/20 text-gray-600 cursor-default opacity-40`;
   } else {
-    cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer active:bg-slate-600`;
+    cellClasses += ` bg-slate-800/80 border-slate-700/40 text-gray-200 hover:bg-slate-750 hover:border-slate-600/60 hover:shadow-md cursor-pointer active:bg-slate-700`;
   }
 
-  // Today indicator - STRONG highlight with accent fill
+  // Today indicator - STRONG accent fill (HIGHEST PRIORITY)
   if (day.isToday && day.isCurrentMonth) {
-    cellClasses += ` !bg-blue-600/20 ring-2 ring-inset ring-blue-500 shadow-lg shadow-blue-500/20`;
+    cellClasses += ` !bg-gradient-to-br !from-blue-600/30 !to-blue-700/40 !border-blue-500 !shadow-xl !shadow-blue-500/30 ring-2 ring-blue-500/50`;
   }
 
-  // Has holds - add left border
+  // Has holds - add left border accent
   if (hasHolds && day.isCurrentMonth) {
-    cellClasses += ` border-l-4 border-l-orange-500`;
+    cellClasses += ` border-l-4 !border-l-orange-500`;
   }
 
   // Past date and not admin - make read-only
@@ -99,17 +100,17 @@ export function DayCell({
       }
     >
       {/* Day content wrapper */}
-      <div className="flex items-center justify-between mb-1.5">
+      <div className="flex items-center justify-between mb-2">
         {/* Day number */}
-        <div className={`text-sm font-bold ${
-          day.isToday ? 'text-blue-300' : day.isCurrentMonth ? 'text-slate-200' : 'text-gray-600'
+        <div className={`text-base font-extrabold ${
+          day.isToday ? 'text-blue-200' : day.isCurrentMonth ? 'text-slate-100' : 'text-gray-600'
         }`}>
           {day.date.getDate()}
         </div>
 
         {/* Hold count badge */}
         {hasHolds && day.isCurrentMonth && (
-          <div className="bg-orange-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-md">
+          <div className="bg-orange-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-extrabold shadow-lg">
             {day.scheduledHolds.length}
           </div>
         )}

@@ -10,12 +10,11 @@
  */
 
 import {
-  Calendar as CalendarIcon,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { Shift } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
+import { tokens } from "../../styles";
 import { formatMonthYear } from "../../utils/calendarUtils";
 import { ShiftIndicator } from "../ShiftIndicator";
 
@@ -23,6 +22,7 @@ interface CalendarHeaderProps {
   currentDate: Date;
   onPreviousMonth: () => void;
   onNextMonth: () => void;
+  onGoToToday?: () => void;
   currentShift: Shift;
   isDarkMode?: boolean;
 }
@@ -31,48 +31,72 @@ export function CalendarHeader({
   currentDate,
   onPreviousMonth,
   onNextMonth,
+  onGoToToday,
   currentShift,
   isDarkMode = true,
 }: CalendarHeaderProps) {
+  const handleGoToToday = () => {
+    const today = new Date();
+    const isCurrentMonth = currentDate.getMonth() === today.getMonth() && 
+                          currentDate.getFullYear() === today.getFullYear();
+    
+    if (!isCurrentMonth && onGoToToday) {
+      onGoToToday();
+    }
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Single row: Month navigation + Shift indicator */}
       <div className="flex items-center justify-between">
-        {/* Left: Month navigation */}
-        <div className="flex items-center gap-3">
+        {/* Left: Today + Month navigation (compact) */}
+        <div className="flex items-center gap-2">
           <button
             onClick={onPreviousMonth}
             className={`
-              p-2 rounded-lg
-              ${isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200 text-gray-700'}
+              p-1.5 rounded-lg
+              ${isDarkMode ? 'hover:bg-gray-800/70 text-gray-400' : 'hover:bg-gray-200 text-gray-600'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
             aria-label="Previous month"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 h-4" />
           </button>
 
-          <h2
-            className={`text-2xl font-bold ${
-              isDarkMode ? 'text-white' : 'text-gray-900'
-            } min-w-[180px] text-center`}
+          <button
+            onClick={handleGoToToday}
+            className={`
+              px-3 py-1.5 rounded-lg font-semibold text-sm
+              ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}
+              ${tokens.transitions.fast}
+              ${tokens.touchTarget.min}
+            `}
+            aria-label="Go to today"
           >
-            {formatMonthYear(currentDate)}
-          </h2>
+            Today
+          </button>
 
           <button
             onClick={onNextMonth}
             className={`
-              p-2 rounded-lg
-              ${isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200 text-gray-700'}
+              p-1.5 rounded-lg
+              ${isDarkMode ? 'hover:bg-gray-800/70 text-gray-400' : 'hover:bg-gray-200 text-gray-600'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
             aria-label="Next month"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 h-4" />
           </button>
+
+          <h2
+            className={`text-lg font-semibold ${
+              isDarkMode ? 'text-slate-300' : 'text-gray-700'
+            } ml-2`}
+          >
+            {formatMonthYear(currentDate)}
+          </h2>
         </div>
 
         {/* Right: Shift indicator + Legend inline */}

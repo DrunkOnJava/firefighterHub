@@ -70,8 +70,8 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
     };
 
     return (
-      <div className={`${badgeColors[shift]} px-2.5 py-1 rounded flex items-center justify-center flex-shrink-0`}>
-        <span className="text-white text-xs font-bold uppercase tracking-wide whitespace-nowrap">
+      <div className={`${badgeColors[shift]} px-3 py-1.5 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md`}>
+        <span className="text-white text-sm font-extrabold uppercase tracking-wider whitespace-nowrap">
           Shift {shift}
         </span>
       </div>
@@ -89,13 +89,13 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
         onClick={() => onFirefighterClick?.(isSelected ? null : firefighter)}
         disabled={!firefighter}
         className={`
-          flex items-center gap-2 px-3 py-4 rounded-lg relative
+          flex items-center gap-3 px-4 py-5 rounded-xl relative
           ${tokens.transitions.fast}
-          ${firefighter ? 'cursor-pointer hover:scale-102 active:scale-98' : 'cursor-default'}
-          ${isSelected ? 'ring-2 ring-blue-500 ring-offset-2' : ''}
+          ${firefighter ? 'cursor-pointer hover:scale-[1.02] hover:shadow-xl active:scale-98' : 'cursor-default'}
+          ${isSelected ? 'ring-3 ring-blue-500 ring-offset-2 ring-offset-slate-900' : ''}
           ${
             isDarkMode
-              ? `bg-slate-700 border ${isSelected ? 'border-blue-500' : 'border-slate-600'} shadow-lg ${firefighter ? 'hover:bg-slate-600' : ''}`
+              ? `bg-slate-700/90 border ${isSelected ? 'border-blue-500' : 'border-slate-600/50'} shadow-lg ${firefighter ? 'hover:bg-slate-650 hover:border-slate-500' : ''}`
               : `bg-gray-50 border ${isSelected ? 'border-blue-500' : 'border-gray-200'} ${firefighter ? 'hover:bg-gray-100' : ''}`
           }
         `}
@@ -109,10 +109,10 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
         <div className="flex-1 min-w-0 relative z-10 group">
           <div
             className={`
-              text-lg font-bold flex items-center gap-2.5 whitespace-nowrap overflow-hidden
+              text-xl font-extrabold flex items-center gap-3 whitespace-nowrap overflow-hidden
               ${
                 isDarkMode
-                  ? colors.structural.text.primary
+                  ? 'text-white'
                   : 'text-gray-900'
               }
             `}
@@ -194,14 +194,14 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
           : undefined
       }
     >
-      <div className="flex items-center gap-2 mb-2.5">
+      <div className="flex items-center gap-2 mb-3">
         <h2
           className={`
-            text-sm font-bold uppercase tracking-wider overflow-hidden truncate
+            text-lg font-extrabold uppercase tracking-wide overflow-hidden truncate
             ${
               isDarkMode
-                ? colors.structural.text.secondary
-                : 'text-gray-600'
+                ? 'text-slate-200'
+                : 'text-gray-800'
             }
           `}
         >

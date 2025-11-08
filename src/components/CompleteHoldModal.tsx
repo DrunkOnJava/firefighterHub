@@ -11,7 +11,7 @@ import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { StationSelector } from "./StationSelector";
-import { Button } from "./ui/Button";
+import { AnimatedButton } from "./ui/AnimatedButton";
 import { IconButton } from "./ui/IconButton";
 
 interface CompleteHoldModalProps {
@@ -376,7 +376,7 @@ export function CompleteHoldModal({
           </div>
 
           <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
-            <Button
+            <AnimatedButton
               onClick={onClose}
               variant="secondary"
               size="lg"
@@ -384,19 +384,18 @@ export function CompleteHoldModal({
               disabled={isSubmitting}
             >
               Cancel
-            </Button>
-            <Button
+            </AnimatedButton>
+            <AnimatedButton
               onClick={handleConfirm}
               disabled={!selectedDate}
               state={isSubmitting ? 'loading' : 'idle'}
-              variant="success"
+              variant="primary"
               size="lg"
               fullWidth
-              withRipple
-              leftIcon={<CheckCircle size={20} />}
+              icon={<CheckCircle size={20} />}
             >
               Complete Hold
-            </Button>
+            </AnimatedButton>
           </div>
         </div>
       </div>

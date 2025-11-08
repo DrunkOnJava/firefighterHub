@@ -255,6 +255,7 @@ function App() {
             currentShift={currentShift}
             isAdminMode={isAdminMode}
             isDarkMode={isDarkMode}
+            isLoading={firefightersLoading}
           />
         </aside>
       </main>

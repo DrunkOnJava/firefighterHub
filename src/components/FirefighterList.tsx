@@ -340,19 +340,19 @@ export function FirefighterList({
               />
             ) : (
               /* Desktop View: Table (Existing) */
-          <div className="overflow-x-auto -mx-6">
+          <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] -mx-6">
             <table className="w-full min-w-max">
-              <thead>
+              <thead className="sticky top-0 z-10">
                 <tr
                   className={`border-b-2 ${
                     isDarkMode
-                      ? "border-gray-700 bg-gray-900/50"
-                      : "border-slate-300 bg-slate-50"
+                      ? "border-gray-700 bg-gray-900"
+                      : "border-slate-300 bg-white"
                   }`}
                 >
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-center ${
+                      className={`px-4 py-2 text-center ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
@@ -381,7 +381,7 @@ export function FirefighterList({
                     </th>
                   )}
                   <th
-                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                    className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                       isDarkMode ? "text-gray-300" : "text-slate-700"
                     }`}
                   >
@@ -391,7 +391,7 @@ export function FirefighterList({
                     </div>
                   </th>
                   <th
-                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                    className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                       isDarkMode ? "text-gray-300" : "text-slate-700"
                     }`}
                   >
@@ -399,7 +399,7 @@ export function FirefighterList({
                   </th>
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
@@ -408,7 +408,7 @@ export function FirefighterList({
                   )}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
@@ -417,7 +417,7 @@ export function FirefighterList({
                   )}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
@@ -426,7 +426,7 @@ export function FirefighterList({
                   )}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                      className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
@@ -434,7 +434,7 @@ export function FirefighterList({
                     </th>
                   )}
                   <th
-                    className={`px-4 py-3 text-left text-xs font-bold uppercase tracking-wider ${
+                    className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
                       isDarkMode ? "text-gray-300" : "text-slate-700"
                     }`}
                   >
@@ -442,7 +442,7 @@ export function FirefighterList({
                   </th>
                   {/* Volunteer Column - visible to all users */}
                   <th
-                    className={`px-4 py-3 text-center text-xs font-bold uppercase tracking-wider ${
+                    className={`px-4 py-2 text-center text-xs font-bold uppercase tracking-wider ${
                       isDarkMode ? "text-gray-300" : "text-slate-700"
                     }`}
                   >
@@ -452,7 +452,7 @@ export function FirefighterList({
                         User stated: "There is no way to accurately calculate that without
                         manually checking through the scheduling program"
                     <th
-                      className={`px-4 py-3 text-left text-xs font-medium uppercase tracking-wider ${
+                      className={`px-4 py-2 text-left text-xs font-medium uppercase tracking-wider ${
                         isDarkMode
                           ? "text-gray-400"
                           : "text-slate-600"
@@ -463,7 +463,7 @@ export function FirefighterList({
                     */}
                   {isAdminMode && (
                     <th
-                      className={`px-4 py-3 text-right text-xs font-bold uppercase tracking-wider ${
+                      className={`px-4 py-2 text-right text-xs font-bold uppercase tracking-wider ${
                         isDarkMode ? "text-gray-300" : "text-slate-700"
                       }`}
                     >
@@ -519,7 +519,7 @@ export function FirefighterList({
                       } ${isAdminMode ? 'cursor-move' : 'cursor-default'}`}
                     >
                       {isAdminMode && (
-                        <td className="px-4 py-2 whitespace-nowrap text-center">
+                        <td className="px-4 py-1 whitespace-nowrap text-center">
                           <button
                             onClick={() => toggleSelection(firefighter.id)}
                             className={`p-1 rounded transition-colors ${
@@ -548,14 +548,14 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-2 whitespace-nowrap text-sm ${
+                        className={`px-4 py-1 whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-300" : "text-slate-700"
                         }`}
                       >
                         <span className="font-bold">{index + 1}</span>
                       </td>
                       <td
-                        className={`px-4 py-2 whitespace-nowrap ${
+                        className={`px-4 py-1 whitespace-nowrap ${
                           isDarkMode ? "text-white" : "text-slate-900"
                         }`}
                       >
@@ -586,7 +586,7 @@ export function FirefighterList({
                       </td>
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-2 whitespace-nowrap ${
+                          className={`px-4 py-1 whitespace-nowrap ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -605,7 +605,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-2 whitespace-nowrap text-sm ${
+                          className={`px-4 py-1 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -626,7 +626,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-2 whitespace-nowrap text-sm ${
+                          className={`px-4 py-1 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -652,7 +652,7 @@ export function FirefighterList({
                         </td>
                       )}
                       {isAdminMode && (
-                        <td className="px-4 py-4">
+                        <td className="px-4 py-1">
                           {qualifications.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {qualifications.map((qual) => (
@@ -676,7 +676,7 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-2 whitespace-nowrap text-sm ${
+                        className={`px-4 py-1 whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-400" : "text-slate-600"
                         }`}
                       >

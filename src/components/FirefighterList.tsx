@@ -365,6 +365,9 @@ export function FirefighterList({
               /* Desktop View: Table (Existing) */
           <>
             <style>{`
+              .roster-table {
+                table-layout: fixed !important;
+              }
               .roster-table tbody tr {
                 height: 40px !important;
                 max-height: 40px !important;

@@ -104,7 +104,7 @@ export function NextUpBarV2({
         disabled={!firefighter}
         className={`
           group relative flex flex-col
-          min-h-[160px]
+          min-h-[140px]
           ${tokens.borders.radius.xl}
           ${tokens.transitions.fast}
           border-2
@@ -116,7 +116,6 @@ export function NextUpBarV2({
               : `bg-gradient-to-br ${config.gradient} ${firefighter ? config.hoverGradient : ''} ${isSelected ? 'shadow-2xl' : 'shadow-lg'} border-white/20`
           }
           ${firefighter ? 'hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99]' : 'opacity-60'}
-          overflow-hidden
         `}
         aria-live="polite"
         aria-atomic="true"
@@ -127,17 +126,14 @@ export function NextUpBarV2({
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
         
         {/* Header with shift badge */}
-        <div className="relative z-10 px-6 pt-5 pb-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
-              <span className="text-3xl text-white" aria-hidden="true">{config.icon}</span>
+        <div className="relative z-10 px-4 pt-3 pb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
+              <span className="text-2xl text-white" aria-hidden="true">{config.icon}</span>
             </div>
             <div className="text-left">
-              <div className="text-white text-sm font-bold uppercase tracking-widest opacity-90">
+              <div className="text-white text-xs font-bold uppercase tracking-widest opacity-90">
                 Shift {shift}
-              </div>
-              <div className="text-white/80 text-xs font-semibold">
-                {config.label}
               </div>
             </div>
           </div>
@@ -152,63 +148,57 @@ export function NextUpBarV2({
         </div>
 
         {/* Firefighter info */}
-        <div className="relative z-10 px-6 pb-5 flex-1 flex flex-col justify-end">
+        <div className="relative z-10 px-4 pb-3 flex-1 flex flex-col justify-end">
           {firefighter ? (
             <>
               {/* Name */}
-              <div className="text-white text-2xl font-black mb-2 drop-shadow-lg leading-tight">
+              <div className="text-white text-lg font-black mb-2 drop-shadow-lg leading-tight truncate">
                 {firefighter.name}
               </div>
               
-              {/* Stats grid */}
-              <div className="grid grid-cols-2 gap-2 mt-2">
-                <div className="flex items-center gap-2 text-white/90 text-sm">
-                  <MapPin size={14} className="flex-shrink-0" />
+              {/* Stats - single column */}
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 text-white/90 text-xs">
+                  <MapPin size={12} className="flex-shrink-0" />
                   <span className="font-bold truncate">
                     Station {firefighter.fire_station || '—'}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-white/90 text-sm">
-                  <Award size={14} className="flex-shrink-0" />
+                <div className="flex items-center gap-2 text-white/90 text-xs">
+                  <Calendar size={12} className="flex-shrink-0" />
                   <span className="font-bold truncate">
-                    Position #{firefighter.order_position + 1}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-white/90 text-sm col-span-2">
-                  <Calendar size={14} className="flex-shrink-0" />
-                  <span className="font-bold truncate">
-                    Last: {firefighter.last_hold_date 
+                    {firefighter.last_hold_date 
                       ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                       : 'Never'}
                   </span>
                 </div>
               </div>
 
-              {/* Apparatus badges */}
+              {/* Apparatus badges - compact */}
               {(firefighter.apparatus_engine || firefighter.apparatus_truck || firefighter.apparatus_rescue_squad) && (
-                <div className="flex flex-wrap gap-1.5 mt-3">
+                <div className="flex flex-wrap gap-1 mt-2">
                   {firefighter.apparatus_engine && (
-                    <span className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-md border border-white/30">
-                      Engine
+                    <span className="px-1.5 py-0.5 bg-white/20 backdrop-blur-sm text-white text-[10px] font-bold rounded border border-white/30">
+                      E
                     </span>
                   )}
                   {firefighter.apparatus_truck && (
-                    <span className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-md border border-white/30">
-                      Truck
+                    <span className="px-1.5 py-0.5 bg-white/20 backdrop-blur-sm text-white text-[10px] font-bold rounded border border-white/30">
+                      T
                     </span>
                   )}
                   {firefighter.apparatus_rescue_squad && (
-                    <span className="px-2 py-1 bg-white/20 backdrop-blur-sm text-white text-xs font-bold rounded-md border border-white/30">
-                      Rescue
+                    <span className="px-1.5 py-0.5 bg-white/20 backdrop-blur-sm text-white text-[10px] font-bold rounded border border-white/30">
+                      R
                     </span>
                   )}
                 </div>
               )}
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center py-6 text-white/60">
-              <User size={32} className="mb-2 opacity-40" />
-              <span className="text-base font-semibold">No Available Personnel</span>
+            <div className="flex flex-col items-center justify-center py-4 text-white/60">
+              <User size={24} className="mb-1 opacity-40" />
+              <span className="text-sm font-semibold">No Available</span>
             </div>
           )}
         </div>
@@ -233,7 +223,7 @@ export function NextUpBarV2({
     <div
       className={`
         ${tokens.spacing.section.lg} border-b
-        ${device.isMobile ? 'pb-6' : 'py-6'}
+        ${device.isMobile ? 'pb-6' : 'py-4'}
         ${
           isDarkMode
             ? 'bg-slate-950/95 border-slate-800/50 backdrop-blur-sm'
@@ -249,48 +239,61 @@ export function NextUpBarV2({
           : undefined
       }
     >
-      {/* Section header */}
-      <div className={`${device.isMobile ? 'px-4' : 'px-6'} mb-5`}>
-        <h2
-          className={`
-            text-2xl font-black uppercase tracking-wide
-            bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent
-            drop-shadow-sm
-          `}
-        >
-          Next Up for Hold
-        </h2>
-        <p className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-gray-600'} mt-1 font-medium`}>
-          Click a card to filter calendar by firefighter
-        </p>
-      </div>
-
-      {/* Desktop: 3-column grid */}
+      {/* Desktop: Title + Cards in one row */}
       {!device.isMobile && (
-        <div className="px-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-          {renderFirefighterCard('A', nextA)}
-          {renderFirefighterCard('B', nextB)}
-          {renderFirefighterCard('C', nextC)}
-        </div>
-      )}
-
-      {/* Mobile: Horizontal scroll with snap points */}
-      {device.isMobile && (
-        <div
-          ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4"
-          style={{ scrollbarWidth: 'none' }}
-        >
-          <div className="snap-center flex-shrink-0 w-[85vw]">
+        <div className="px-6 flex items-center gap-6">
+          {/* Section header - LEFT SIDE */}
+          <div className="flex-shrink-0">
+            <h2
+              className={`
+                text-xl font-black uppercase tracking-wide
+                bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent
+                drop-shadow-sm whitespace-nowrap
+              `}
+            >
+              Next Up
+            </h2>
+          </div>
+          
+          {/* Cards - RIGHT SIDE */}
+          <div className="flex-1 grid grid-cols-3 gap-4">
             {renderFirefighterCard('A', nextA)}
-          </div>
-          <div className="snap-center flex-shrink-0 w-[85vw]">
             {renderFirefighterCard('B', nextB)}
-          </div>
-          <div className="snap-center flex-shrink-0 w-[85vw]">
             {renderFirefighterCard('C', nextC)}
           </div>
         </div>
+      )}
+
+      {/* Mobile: Vertical layout with title */}
+      {device.isMobile && (
+        <>
+          <div className="px-4 mb-3">
+            <h2
+              className={`
+                text-xl font-black uppercase tracking-wide
+                bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent
+                drop-shadow-sm
+              `}
+            >
+              Next Up
+            </h2>
+          </div>
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4"
+            style={{ scrollbarWidth: 'none' }}
+          >
+            <div className="snap-center flex-shrink-0 w-[85vw]">
+              {renderFirefighterCard('A', nextA)}
+            </div>
+            <div className="snap-center flex-shrink-0 w-[85vw]">
+              {renderFirefighterCard('B', nextB)}
+            </div>
+            <div className="snap-center flex-shrink-0 w-[85vw]">
+              {renderFirefighterCard('C', nextC)}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ConfirmOptions } from "../hooks/useConfirm";
+import { useDevice } from "../hooks/useDevice";
 import { useFilters } from "../hooks/useFilters";
 import { Firefighter, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
@@ -23,8 +24,10 @@ import { AddFirefighterForm } from "./AddFirefighterForm";
 import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyState";
 import { FilterPanel } from "./FilterPanel";
 import { FirefighterProfileModal } from "./FirefighterProfileModal";
+import { FirefighterCard } from "./mobile/FirefighterCard";
 import { ReactivateModal } from "./ReactivateModal";
 import { FirefighterListSkeleton } from "./SkeletonLoader";
+import { FirefighterGrid } from "./tablet/FirefighterGrid";
 import { BulkActions, RosterHeader } from "./roster";
 import { IconButton } from "./ui/IconButton";
 
@@ -70,6 +73,9 @@ export function FirefighterList({
   // Maintain backwards compatibility by ensuring legacy callbacks stay referenced
   void _onCompleteHold;
   void _onResetAll;
+
+  // Device detection for responsive layout
+  const device = useDevice();
 
   const [localFirefighters, setLocalFirefighters] =
     useState<Firefighter[]>(firefighters);
@@ -303,7 +309,37 @@ export function FirefighterList({
                 searchTerm="your filters"
                 onClearSearch={clearAllFilters}
               />
+            ) : device.isMobile ? (
+              /* Mobile View: Card Layout */
+              <div className="flex flex-col gap-3">
+                {filteredAndAdvancedFiltered.map((firefighter) => (
+                  <FirefighterCard
+                    key={firefighter.id}
+                    firefighter={firefighter}
+                    onCompleteHold={onDelete}
+                    onTransferShift={onTransferShift}
+                    onDeactivate={onDeactivate}
+                    onSelect={handleViewProfile}
+                    isAdminMode={isAdminMode}
+                    isDarkMode={isDarkMode}
+                    isNextInRotation={nextInRotation?.id === firefighter.id}
+                  />
+                ))}
+              </div>
+            ) : device.isTablet ? (
+              /* Tablet View: 2-Column Grid */
+              <FirefighterGrid
+                firefighters={filteredAndAdvancedFiltered}
+                onCompleteHold={onDelete}
+                onTransferShift={onTransferShift}
+                onDeactivate={onDeactivate}
+                onSelect={handleViewProfile}
+                isAdminMode={isAdminMode}
+                isDarkMode={isDarkMode}
+                columns={2}
+              />
             ) : (
+              /* Desktop View: Table (Existing) */
           <div className="overflow-x-auto -mx-6">
             <table className="w-full min-w-max">
               <thead>
@@ -742,21 +778,23 @@ export function FirefighterList({
               </tbody>
             </table>
           </div>
-        )}
+            )
+            }
 
-        {/* Empty state for filters with no results */}
-        {firefighters.length > 0 &&
-         filteredAndAdvancedFiltered.length === 0 &&
-         activeFilterCount > 0 && (
-          <NoSearchResultsEmptyState
-            searchTerm="applied filters"
-            onClearSearch={() => {
-              clearAllFilters();
-            }}
-          />
-        )}
+            {/* Empty state for filters with no results */}
+            {firefighters.length > 0 &&
+             filteredAndAdvancedFiltered.length === 0 &&
+             activeFilterCount > 0 && (
+              <NoSearchResultsEmptyState
+                searchTerm="applied filters"
+                onClearSearch={() => {
+                  clearAllFilters();
+                }}
+              />
+            )}
 
-        {isAdminMode && deactivatedFirefighters.length > 0 && (
+            {/* Deactivated Firefighters Section */}
+            {isAdminMode && deactivatedFirefighters.length > 0 && (
           <div className="mt-6 pt-6 border-t border-gray-700">
             <h3
               className={`text-sm font-bold mb-3 ${
@@ -846,44 +884,45 @@ export function FirefighterList({
             </div>
           </div>
         )}
-      </div>
+          </div>{/* Close px-6 pb-6 div */}
 
-      <ReactivateModal
-        isOpen={showReactivateModal}
-        firefighter={selectedFirefighter}
-        currentRosterSize={firefighters.length}
-        onClose={() => {
-          setShowReactivateModal(false);
-          setSelectedFirefighter(null);
-        }}
-        onConfirm={(id, position) => {
-          onReactivate(id, position);
-          setShowReactivateModal(false);
-          setSelectedFirefighter(null);
-        }}
-      />
+          {/* Modals - outside main content div but inside fragment */}
+          <ReactivateModal
+            isOpen={showReactivateModal}
+            firefighter={selectedFirefighter}
+            currentRosterSize={firefighters.length}
+            onClose={() => {
+              setShowReactivateModal(false);
+              setSelectedFirefighter(null);
+            }}
+            onConfirm={(id, position) => {
+              onReactivate(id, position);
+              setShowReactivateModal(false);
+              setSelectedFirefighter(null);
+            }}
+          />
 
-      <FirefighterProfileModal
-        isOpen={showProfileModal}
-        firefighter={selectedFirefighter}
-        onClose={() => {
-          setShowProfileModal(false);
-          setSelectedFirefighter(null);
-        }}
-        isAdminMode={isAdminMode}
-      />
+          <FirefighterProfileModal
+            isOpen={showProfileModal}
+            firefighter={selectedFirefighter}
+            onClose={() => {
+              setShowProfileModal(false);
+              setSelectedFirefighter(null);
+            }}
+            isAdminMode={isAdminMode}
+          />
 
-      <FilterPanel
-        isOpen={isFilterPanelOpen}
-        onClose={() => setIsFilterPanelOpen(false)}
-        filters={filters}
-        onUpdateFilter={updateFilter}
-        onToggleArrayFilter={toggleArrayFilter}
-        onClearAll={clearAllFilters}
-        activeFilterCount={activeFilterCount}
-        availableStations={availableStations}
-      />
-      </>
+          <FilterPanel
+            isOpen={isFilterPanelOpen}
+            onClose={() => setIsFilterPanelOpen(false)}
+            filters={filters}
+            onUpdateFilter={updateFilter}
+            onToggleArrayFilter={toggleArrayFilter}
+            onClearAll={clearAllFilters}
+            activeFilterCount={activeFilterCount}
+            availableStations={availableStations}
+          />
+        </>
       )}
     </div>
   );

@@ -11,7 +11,7 @@ import { Firefighter, Shift } from './lib/supabase';
 // Header component (always visible)
 import { Header } from './components/Header';
 import { MobileNav } from './components/MobileNav';
-import { BottomNav } from './components/mobile/BottomNav';
+import { BottomNav } from './components/mobile';
 
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';

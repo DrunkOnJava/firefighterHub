@@ -133,6 +133,29 @@ export function FirefighterList({
   function handleDragStart(e: React.DragEvent, firefighterId: string) {
     setDraggedId(firefighterId);
     e.dataTransfer.effectAllowed = "move";
+    
+    // Create a custom, compact drag image
+    const dragImage = document.createElement('div');
+    dragImage.style.height = '40px';
+    dragImage.style.lineHeight = '40px';
+    dragImage.style.padding = '0 12px';
+    dragImage.style.background = isDarkMode ? '#1f2937' : '#f1f5f9';
+    dragImage.style.border = '2px solid ' + (isDarkMode ? '#3b82f6' : '#2563eb');
+    dragImage.style.borderRadius = '4px';
+    dragImage.style.position = 'absolute';
+    dragImage.style.top = '-1000px';
+    dragImage.style.fontSize = '14px';
+    dragImage.style.fontWeight = 'bold';
+    dragImage.style.color = isDarkMode ? '#fff' : '#000';
+    
+    const firefighter = localFirefighters.find(ff => ff.id === firefighterId);
+    dragImage.textContent = firefighter?.name || 'Moving...';
+    
+    document.body.appendChild(dragImage);
+    e.dataTransfer.setDragImage(dragImage, 0, 20);
+    
+    // Clean up after drag starts
+    setTimeout(() => document.body.removeChild(dragImage), 0);
   }
 
   function handleDragOver(e: React.DragEvent, firefighterId: string) {
@@ -340,8 +363,25 @@ export function FirefighterList({
               />
             ) : (
               /* Desktop View: Table (Existing) */
+          <>
+            <style>{`
+              .roster-table tbody tr {
+                height: 40px !important;
+                max-height: 40px !important;
+              }
+              .roster-table tbody td {
+                height: 40px !important;
+                max-height: 40px !important;
+                overflow: hidden !important;
+                vertical-align: middle !important;
+              }
+              .roster-table tbody td > div {
+                max-height: 40px !important;
+                overflow: hidden !important;
+              }
+            `}</style>
           <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] -mx-6">
-            <table className="w-full min-w-max">
+            <table className="w-full min-w-max roster-table">
               <thead className="sticky top-0 z-10">
                 <tr
                   className={`border-b-2 ${
@@ -783,6 +823,7 @@ export function FirefighterList({
               </tbody>
             </table>
           </div>
+          </>
             )
             }
 

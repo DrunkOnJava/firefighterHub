@@ -1,9 +1,3 @@
-/**
- * Animation Utilities
- * 
- * Reusable animation functions, timing constants, and easing curves.
- */
-
 import { useReducedMotion } from '../hooks/useReducedMotion';
 
 // ============================================================================

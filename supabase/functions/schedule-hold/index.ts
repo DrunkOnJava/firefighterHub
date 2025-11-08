@@ -9,6 +9,7 @@ interface ScheduleHoldRequest {
   shift: "A" | "B" | "C";
   duration: "12h" | "24h";
   start_time: string;
+  is_voluntary?: boolean;
 }
 
 Deno.serve(async (req) => {
@@ -127,7 +128,10 @@ Deno.serve(async (req) => {
         fire_station: payload.fire_station,
         status: "scheduled",
         shift: payload.shift,
-        // duration and start_time not in schema yet - omitted for now
+        duration: payload.duration,
+        start_time: payload.start_time,
+        is_voluntary: payload.is_voluntary || false,
+        scheduled_date: payload.hold_date,
       })
       .select()
       .single();
@@ -144,8 +148,8 @@ Deno.serve(async (req) => {
     await supabase.from("activity_log").insert({
       firefighter_id: payload.firefighter_id,
       firefighter_name: payload.firefighter_name,
-      action_type: "hold_scheduled",
-      details: `Scheduled hold for ${payload.hold_date}`,
+      action_type: payload.is_voluntary ? "hold_volunteered" : "hold_scheduled",
+      details: `${payload.is_voluntary ? 'Volunteered for' : 'Scheduled'} hold for ${payload.hold_date}${payload.fire_station ? ` at station ${payload.fire_station}` : ''}`,
       shift: payload.shift,
     });
 

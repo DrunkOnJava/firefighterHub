@@ -4,7 +4,7 @@
  * Improves perceived performance and user experience
  */
 
-import { colors, tokens } from '../styles';
+import { colors, tokens, gridUtilities } from '../styles';
 
 interface SkeletonProps {
   className?: string;
@@ -49,14 +49,14 @@ export function CalendarSkeleton() {
       {/* Calendar Grid */}
       <div className={tokens.spacing.card.lg}>
         {/* Weekday headers */}
-        <div className={`grid grid-cols-7 ${tokens.spacing.gap.sm} mb-3`}>
+        <div className={`${gridUtilities.calendar.weekdayHeader} mb-3`}>
           {[...Array(7)].map((_, i) => (
             <Skeleton key={i} className={`h-10 ${tokens.borders.radius.lg}`} />
           ))}
         </div>
 
         {/* Calendar days */}
-        <div className={`grid grid-cols-7 ${tokens.spacing.gap.sm}`}>
+        <div className={gridUtilities.calendar.container}>
           {[...Array(35)].map((_, i) => (
             <Skeleton key={i} className={`h-32 ${tokens.borders.radius.xl}`} />
           ))}

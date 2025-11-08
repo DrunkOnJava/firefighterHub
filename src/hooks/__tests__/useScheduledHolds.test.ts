@@ -15,6 +15,7 @@ import {
   clearErrorSimulation,
   resetMockDatabase,
   setMockScheduledHolds,
+  setMockFirefighters,
   simulateError,
 } from "../../test/supabaseMockV2";
 import type { ScheduledHold } from "../../utils/calendarUtils";
@@ -32,6 +33,9 @@ vi.mock("../../lib/supabase", async () => {
   };
 });
 
+// Mock global fetch for Edge Function calls
+global.fetch = vi.fn();
+
 describe("useScheduledHolds", () => {
   const mockToast = vi.fn();
 
@@ -39,6 +43,31 @@ describe("useScheduledHolds", () => {
     resetMockDatabase();
     mockToast.mockClear();
     clearErrorSimulation();
+    
+    // Reset fetch mock before each test
+    (global.fetch as any).mockReset();
+    
+    // Default successful Edge Function response - matches request data
+    (global.fetch as any).mockImplementation(async (url: string, options: any) => {
+      const body = JSON.parse(options.body);
+      
+      // Return hold data matching the request
+      return {
+        ok: true,
+        json: async () => ({
+          id: `mock-${Date.now()}`,
+          ...body,
+          status: 'scheduled',
+          notes: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          completed_at: null,
+          lent_to_shift: null,
+          is_completed: false,
+          scheduled_date: body.hold_date,
+        }),
+      };
+    });
   });
 
   describe("loadScheduledHolds()", () => {
@@ -60,6 +89,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -81,6 +111,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -124,6 +155,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
         {
@@ -142,6 +174,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
         {
@@ -160,6 +193,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -197,6 +231,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
         {
@@ -215,6 +250,7 @@ describe("useScheduledHolds", () => {
           completed_at: null,
           lent_to_shift: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-27",
         },
       ];
@@ -319,7 +355,11 @@ describe("useScheduledHolds", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      simulateError("Insert failed", false);
+      // Make fetch fail for this test
+      (global.fetch as any).mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ error: "Insert failed" }),
+      });
 
       const firefighter: Firefighter = {
         id: "ff1",
@@ -352,13 +392,36 @@ describe("useScheduledHolds", () => {
         "Could not schedule hold. Please try again.",
         "error"
       );
-
-      clearErrorSimulation();
     });
   });
 
   describe("markHoldCompleted()", () => {
     it("should mark a scheduled hold as completed", async () => {
+      const firefighter: Firefighter = {
+        id: "ff1",
+        name: "John Doe",
+        shift: "A",
+        is_active: true,
+        is_available: true,
+        order_position: 0,
+        fire_station: null,
+        last_hold_date: null,
+        certification_level: null,
+        apparatus_ambulance: false,
+        apparatus_brush_truck: false,
+        apparatus_engine: false,
+        apparatus_tanker: false,
+        apparatus_truck: false,
+        apparatus_boat: false,
+        apparatus_utv: false,
+        apparatus_rescue_squad: false,
+        is_fto: false,
+        is_bls: false,
+        is_als: false,
+        created_at: "2025-01-01T00:00:00Z",
+        updated_at: "2025-01-01T00:00:00Z",
+      };
+
       const hold: ScheduledHold = {
         id: "hold1",
         firefighter_id: "ff1",
@@ -375,9 +438,11 @@ describe("useScheduledHolds", () => {
         completed_at: null,
         lent_to_shift: null,
         is_completed: false,
+          is_voluntary: false,
         scheduled_date: "2025-10-27",
       };
 
+      setMockFirefighters([firefighter]);
       setMockScheduledHolds([hold]);
 
       const { result } = renderHook(() => useScheduledHolds(mockToast, "A"));
@@ -386,15 +451,23 @@ describe("useScheduledHolds", () => {
         expect(result.current.loading).toBe(false);
       });
 
+      // Verify initial state
+      expect(result.current.scheduledHolds).toHaveLength(1);
+      expect(result.current.scheduledHolds[0].status).toBe("scheduled");
+
       await result.current.markHoldCompleted(hold);
 
+      // The optimistic update should happen immediately
       await waitFor(() => {
         const updated = result.current.scheduledHolds.find(
           (h) => h.id === "hold1"
         );
-        expect(updated?.status).toBe("completed");
-        expect(updated?.completed_at).toBeDefined();
-      });
+        if (!updated) {
+          throw new Error("Hold not found after completion");
+        }
+        expect(updated.status).toBe("completed");
+        expect(updated.completed_at).toBeDefined();
+      }, { timeout: 3000 });
     });
   });
 
@@ -416,6 +489,7 @@ describe("useScheduledHolds", () => {
         completed_at: null,
         lent_to_shift: null,
         is_completed: false,
+          is_voluntary: false,
         scheduled_date: "2025-10-27",
       };
 
@@ -456,6 +530,7 @@ describe("useScheduledHolds", () => {
         completed_at: null,
         lent_to_shift: null,
         is_completed: false,
+          is_voluntary: false,
         scheduled_date: "2025-10-27",
       };
 

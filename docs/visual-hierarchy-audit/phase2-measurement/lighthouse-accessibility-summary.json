@@ -1,0 +1,1935 @@
+{
+  "accessibility_score": 0.92,
+  "performance_score": 0.54,
+  "accessibility_audits": [
+    {
+      "id": "unsized-images",
+      "title": "Image elements have explicit `width` and `height`",
+      "score": 1,
+      "description": "Set an explicit width and height on image elements to reduce layout shifts and improve CLS. [Learn how to set image dimensions](https://web.dev/articles/optimize-cls#images_without_dimensions)",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "label": ""
+          },
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "prioritize-lcp-image",
+      "title": "Preload Largest Contentful Paint image",
+      "score": null,
+      "description": "If the LCP element is dynamically added to the page, you should preload the image in order to improve LCP. [Learn more about preloading LCP elements](https://web.dev/articles/optimize-lcp#optimize_when_the_resource_is_discovered).",
+      "details": null
+    },
+    {
+      "id": "aria-allowed-attr",
+      "title": "`[aria-*]` attributes match their roles",
+      "score": 1,
+      "description": "Each ARIA `role` supports a specific subset of `aria-*` attributes. Mismatching these invalidates the `aria-*` attributes. [Learn how to match ARIA attributes to their roles](https://dequeuniversity.com/rules/axe/4.10/aria-allowed-attr).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-allowed-role",
+      "title": "Uses ARIA roles only on compatible elements",
+      "score": 1,
+      "description": "Many HTML elements can only be assigned certain ARIA roles. Using ARIA roles where they are not allowed can interfere with the accessibility of the web page. [Learn more about ARIA roles](https://dequeuniversity.com/rules/axe/4.10/aria-allowed-role).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-command-name",
+      "title": "`button`, `link`, and `menuitem` elements have accessible names",
+      "score": null,
+      "description": "When an element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to make command elements more accessible](https://dequeuniversity.com/rules/axe/4.10/aria-command-name).",
+      "details": null
+    },
+    {
+      "id": "aria-conditional-attr",
+      "title": "ARIA attributes are used as specified for the element's role",
+      "score": 1,
+      "description": "Some ARIA attributes are only allowed on an element under certain conditions. [Learn more about conditional ARIA attributes](https://dequeuniversity.com/rules/axe/4.10/aria-conditional-attr).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-deprecated-role",
+      "title": "Deprecated ARIA roles were not used",
+      "score": 1,
+      "description": "Deprecated ARIA roles may not be processed correctly by assistive technology. [Learn more about deprecated ARIA roles](https://dequeuniversity.com/rules/axe/4.10/aria-deprecated-role).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-dialog-name",
+      "title": "Elements with `role=\"dialog\"` or `role=\"alertdialog\"` have accessible names.",
+      "score": null,
+      "description": "ARIA dialog elements without accessible names may prevent screen readers users from discerning the purpose of these elements. [Learn how to make ARIA dialog elements more accessible](https://dequeuniversity.com/rules/axe/4.10/aria-dialog-name).",
+      "details": null
+    },
+    {
+      "id": "aria-hidden-body",
+      "title": "`[aria-hidden=\"true\"]` is not present on the document `<body>`",
+      "score": 1,
+      "description": "Assistive technologies, like screen readers, work inconsistently when `aria-hidden=\"true\"` is set on the document `<body>`. [Learn how `aria-hidden` affects the document body](https://dequeuniversity.com/rules/axe/4.10/aria-hidden-body).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-hidden-focus",
+      "title": "`[aria-hidden=\"true\"]` elements do not contain focusable descendents",
+      "score": null,
+      "description": "Focusable descendents within an `[aria-hidden=\"true\"]` element prevent those interactive elements from being available to users of assistive technologies like screen readers. [Learn how `aria-hidden` affects focusable elements](https://dequeuniversity.com/rules/axe/4.10/aria-hidden-focus).",
+      "details": null
+    },
+    {
+      "id": "aria-input-field-name",
+      "title": "ARIA input fields have accessible names",
+      "score": null,
+      "description": "When an input field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about input field labels](https://dequeuniversity.com/rules/axe/4.10/aria-input-field-name).",
+      "details": null
+    },
+    {
+      "id": "aria-meter-name",
+      "title": "ARIA `meter` elements have accessible names",
+      "score": null,
+      "description": "When a meter element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `meter` elements](https://dequeuniversity.com/rules/axe/4.10/aria-meter-name).",
+      "details": null
+    },
+    {
+      "id": "aria-progressbar-name",
+      "title": "ARIA `progressbar` elements have accessible names",
+      "score": null,
+      "description": "When a `progressbar` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to label `progressbar` elements](https://dequeuniversity.com/rules/axe/4.10/aria-progressbar-name).",
+      "details": null
+    },
+    {
+      "id": "aria-prohibited-attr",
+      "title": "Elements use only permitted ARIA attributes",
+      "score": 1,
+      "description": "Using ARIA attributes in roles where they are prohibited can mean that important information is not communicated to users of assistive technologies. [Learn more about prohibited ARIA roles](https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-required-attr",
+      "title": "`[role]`s have all required `[aria-*]` attributes",
+      "score": 1,
+      "description": "Some ARIA roles have required attributes that describe the state of the element to screen readers. [Learn more about roles and required attributes](https://dequeuniversity.com/rules/axe/4.10/aria-required-attr).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-required-children",
+      "title": "Elements with an ARIA `[role]` that require children to contain a specific `[role]` have all required children.",
+      "score": 1,
+      "description": "Some ARIA parent roles must contain specific child roles to perform their intended accessibility functions. [Learn more about roles and required children elements](https://dequeuniversity.com/rules/axe/4.10/aria-required-children).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-required-parent",
+      "title": "`[role]`s are contained by their required parent element",
+      "score": 1,
+      "description": "Some ARIA child roles must be contained by specific parent roles to properly perform their intended accessibility functions. [Learn more about ARIA roles and required parent element](https://dequeuniversity.com/rules/axe/4.10/aria-required-parent).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-roles",
+      "title": "`[role]` values are valid",
+      "score": 1,
+      "description": "ARIA roles must have valid values in order to perform their intended accessibility functions. [Learn more about valid ARIA roles](https://dequeuniversity.com/rules/axe/4.10/aria-roles).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-text",
+      "title": "Elements with the `role=text` attribute do not have focusable descendents.",
+      "score": null,
+      "description": "Adding `role=text` around a text node split by markup enables VoiceOver to treat it as one phrase, but the element's focusable descendents will not be announced. [Learn more about the `role=text` attribute](https://dequeuniversity.com/rules/axe/4.10/aria-text).",
+      "details": null
+    },
+    {
+      "id": "aria-toggle-field-name",
+      "title": "ARIA toggle fields have accessible names",
+      "score": null,
+      "description": "When a toggle field doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about toggle fields](https://dequeuniversity.com/rules/axe/4.10/aria-toggle-field-name).",
+      "details": null
+    },
+    {
+      "id": "aria-tooltip-name",
+      "title": "ARIA `tooltip` elements have accessible names",
+      "score": null,
+      "description": "When a tooltip element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn how to name `tooltip` elements](https://dequeuniversity.com/rules/axe/4.10/aria-tooltip-name).",
+      "details": null
+    },
+    {
+      "id": "aria-treeitem-name",
+      "title": "ARIA `treeitem` elements have accessible names",
+      "score": null,
+      "description": "When a `treeitem` element doesn't have an accessible name, screen readers announce it with a generic name, making it unusable for users who rely on screen readers. [Learn more about labeling `treeitem` elements](https://dequeuniversity.com/rules/axe/4.10/aria-treeitem-name).",
+      "details": null
+    },
+    {
+      "id": "aria-valid-attr-value",
+      "title": "`[aria-*]` attributes have valid values",
+      "score": 1,
+      "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid values. [Learn more about valid values for ARIA attributes](https://dequeuniversity.com/rules/axe/4.10/aria-valid-attr-value).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "aria-valid-attr",
+      "title": "`[aria-*]` attributes are valid and not misspelled",
+      "score": 1,
+      "description": "Assistive technologies, like screen readers, can't interpret ARIA attributes with invalid names. [Learn more about valid ARIA attributes](https://dequeuniversity.com/rules/axe/4.10/aria-valid-attr).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "button-name",
+      "title": "Buttons have an accessible name",
+      "score": 1,
+      "description": "When a button doesn't have an accessible name, screen readers announce it as \"button\", making it unusable for users who rely on screen readers. [Learn how to make buttons more accessible](https://dequeuniversity.com/rules/axe/4.10/button-name).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "color-contrast",
+      "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+      "score": 0,
+      "description": "Low-contrast text is difficult or impossible for many users to read. [Learn how to provide sufficient color contrast](https://dequeuniversity.com/rules/axe/4.10/color-contrast).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-0-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,0,DIV,1,DIV,0,DIV,0,DIV,1,DIV,0,DIV,1,SPAN",
+              "selector": "div.flex > div.flex-1 > div.text-base > span.flex-shrink-0",
+              "boundingRect": {
+                "top": 767,
+                "bottom": 785,
+                "left": 248,
+                "right": 307,
+                "width": 59,
+                "height": 18
+              },
+              "snippet": "<span class=\"flex-shrink-0 text-sm font-normal text-gray-400\">",
+              "nodeLabel": "Station #2",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.07 (foreground color: #9ca3af, background color: #334155, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-1-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,0,DIV,1,DIV,0,DIV,0,DIV",
+                    "selector": "div.px-4 > div.flex > div.snap-center > div.flex",
+                    "boundingRect": {
+                      "top": 741,
+                      "bottom": 812,
+                      "left": 14,
+                      "right": 364,
+                      "width": 350,
+                      "height": 71
+                    },
+                    "snippet": "<div class=\"\n          flex items-center gap-2 px-3 py-4 rounded-lg relative\n         …\">",
+                    "nodeLabel": "SHIFT A\nAngel Hernandez\nStation #2"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-2-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,0,DIV,1,DIV,1,DIV,0,DIV,1,DIV,0,DIV,1,SPAN",
+              "selector": "div.flex > div.flex-1 > div.text-base > span.flex-shrink-0",
+              "boundingRect": {
+                "top": 767,
+                "bottom": 785,
+                "left": 573,
+                "right": 632,
+                "width": 60,
+                "height": 18
+              },
+              "snippet": "<span class=\"flex-shrink-0 text-sm font-normal text-gray-400\">",
+              "nodeLabel": "Station #4",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.07 (foreground color: #9ca3af, background color: #334155, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-3-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,0,DIV,1,DIV,1,DIV,0,DIV",
+                    "selector": "div.px-4 > div.flex > div.snap-center > div.flex",
+                    "boundingRect": {
+                      "top": 741,
+                      "bottom": 812,
+                      "left": 375,
+                      "right": 725,
+                      "width": 350,
+                      "height": 71
+                    },
+                    "snippet": "<div class=\"\n          flex items-center gap-2 px-3 py-4 rounded-lg relative\n         …\">",
+                    "nodeLabel": "SHIFT B\nEric Depollo\nStation #4"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-4-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,0,DIV,1,DIV,2,DIV,0,DIV,1,DIV,0,DIV,1,SPAN",
+              "selector": "div.flex > div.flex-1 > div.text-base > span.flex-shrink-0",
+              "boundingRect": {
+                "top": 767,
+                "bottom": 785,
+                "left": 882,
+                "right": 941,
+                "width": 59,
+                "height": 18
+              },
+              "snippet": "<span class=\"flex-shrink-0 text-sm font-normal text-gray-400\">",
+              "nodeLabel": "Station #7",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.07 (foreground color: #9ca3af, background color: #334155, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-5-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,0,DIV,1,DIV,2,DIV,0,DIV",
+                    "selector": "div.px-4 > div.flex > div.snap-center > div.flex",
+                    "boundingRect": {
+                      "top": 741,
+                      "bottom": 812,
+                      "left": 735,
+                      "right": 1086,
+                      "width": 350,
+                      "height": 71
+                    },
+                    "snippet": "<div class=\"\n          flex items-center gap-2 px-3 py-4 rounded-lg relative\n         …\">",
+                    "nodeLabel": "SHIFT C\nFF 2\nStation #7"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-6-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,0,DIV,2,SPAN,0,BUTTON",
+              "selector": "div.rbc-calendar > div.rbc-toolbar > span.rbc-btn-group > button.rbc-active",
+              "boundingRect": {
+                "top": 196,
+                "bottom": 240,
+                "left": 113,
+                "right": 182,
+                "width": 69,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-active\">",
+              "nodeLabel": "Month",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #648be6, font size: 8.5pt (11.375px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-7-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,0,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 58,
+                "right": 81,
+                "width": 23,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Sun",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-8-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,0,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 47,
+                      "right": 92,
+                      "width": 45,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Sun"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-9-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,1,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 102,
+                "right": 128,
+                "width": 25,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Mon",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-10-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 92,
+                      "right": 137,
+                      "width": 46,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Mon"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-11-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,2,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 150,
+                "right": 171,
+                "width": 21,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Tue",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-12-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 137,
+                      "right": 183,
+                      "width": 46,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Tue"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-13-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,3,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 193,
+                "right": 219,
+                "width": 26,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Wed",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-14-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,3,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 183,
+                      "right": 228,
+                      "width": 46,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Wed"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-15-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,4,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 240,
+                "right": 263,
+                "width": 23,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Thu",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-16-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,4,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 228,
+                      "right": 274,
+                      "width": 46,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Thu"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-17-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,5,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 290,
+                "right": 305,
+                "width": 15,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Fri",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-18-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,5,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 274,
+                      "right": 319,
+                      "width": 46,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Fri"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-19-SPAN",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,6,DIV,0,SPAN",
+              "selector": "div.rbc-month-view > div.rbc-row > div.rbc-header > span",
+              "boundingRect": {
+                "top": 284,
+                "bottom": 299,
+                "left": 333,
+                "right": 352,
+                "width": 19,
+                "height": 15
+              },
+              "snippet": "<span role=\"columnheader\" aria-sort=\"none\">",
+              "nodeLabel": "Sat",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.46 (foreground color: #7f8792, background color: #18212e, font size: 9.2pt (12.25px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-20-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,0,DIV,6,DIV",
+                    "selector": "div.rbc-calendar > div.rbc-month-view > div.rbc-row > div.rbc-header",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 313,
+                      "left": 319,
+                      "right": 365,
+                      "width": 46,
+                      "height": 40
+                    },
+                    "snippet": "<div class=\"rbc-header\">",
+                    "nodeLabel": "Sat"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-21-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,1,DIV,0,DIV,0,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 322,
+                "bottom": 366,
+                "left": 55,
+                "right": 99,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "26",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-22-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,0,DIV,0,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 314,
+                      "bottom": 414,
+                      "left": 47,
+                      "right": 147,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-23-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV",
+                    "selector": "section.calendar > div.big-calendar-container > div.rbc-calendar > div.rbc-month-view",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 673,
+                      "left": 47,
+                      "right": 365,
+                      "width": 318,
+                      "height": 400
+                    },
+                    "snippet": "<div class=\"rbc-month-view\" role=\"table\" aria-label=\"Month View\">",
+                    "nodeLabel": "Sun\nMon\nTue\nWed\nThu\nFri\nSat\n26\n27\n28\n29\n30\n31\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n…"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-24-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,1,DIV,0,DIV,1,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 322,
+                "bottom": 366,
+                "left": 100,
+                "right": 144,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "27",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-22-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,0,DIV,0,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 314,
+                      "bottom": 414,
+                      "left": 47,
+                      "right": 147,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-23-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV",
+                    "selector": "section.calendar > div.big-calendar-container > div.rbc-calendar > div.rbc-month-view",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 673,
+                      "left": 47,
+                      "right": 365,
+                      "width": 318,
+                      "height": 400
+                    },
+                    "snippet": "<div class=\"rbc-month-view\" role=\"table\" aria-label=\"Month View\">",
+                    "nodeLabel": "Sun\nMon\nTue\nWed\nThu\nFri\nSat\n26\n27\n28\n29\n30\n31\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n…"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-25-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,1,DIV,0,DIV,2,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 322,
+                "bottom": 366,
+                "left": 146,
+                "right": 190,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "28",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-26-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 314,
+                      "bottom": 414,
+                      "left": 147,
+                      "right": 247,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-23-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV",
+                    "selector": "section.calendar > div.big-calendar-container > div.rbc-calendar > div.rbc-month-view",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 673,
+                      "left": 47,
+                      "right": 365,
+                      "width": 318,
+                      "height": 400
+                    },
+                    "snippet": "<div class=\"rbc-month-view\" role=\"table\" aria-label=\"Month View\">",
+                    "nodeLabel": "Sun\nMon\nTue\nWed\nThu\nFri\nSat\n26\n27\n28\n29\n30\n31\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n…"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-27-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,1,DIV,0,DIV,3,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 322,
+                "bottom": 366,
+                "left": 191,
+                "right": 235,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "29",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-26-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 314,
+                      "bottom": 414,
+                      "left": 147,
+                      "right": 247,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-23-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV",
+                    "selector": "section.calendar > div.big-calendar-container > div.rbc-calendar > div.rbc-month-view",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 673,
+                      "left": 47,
+                      "right": 365,
+                      "width": 318,
+                      "height": 400
+                    },
+                    "snippet": "<div class=\"rbc-month-view\" role=\"table\" aria-label=\"Month View\">",
+                    "nodeLabel": "Sun\nMon\nTue\nWed\nThu\nFri\nSat\n26\n27\n28\n29\n30\n31\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n…"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-28-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,1,DIV,0,DIV,4,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 322,
+                "bottom": 366,
+                "left": 237,
+                "right": 281,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "30",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-29-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 314,
+                      "bottom": 414,
+                      "left": 247,
+                      "right": 347,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-23-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV",
+                    "selector": "section.calendar > div.big-calendar-container > div.rbc-calendar > div.rbc-month-view",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 673,
+                      "left": 47,
+                      "right": 365,
+                      "width": 318,
+                      "height": 400
+                    },
+                    "snippet": "<div class=\"rbc-month-view\" role=\"table\" aria-label=\"Month View\">",
+                    "nodeLabel": "Sun\nMon\nTue\nWed\nThu\nFri\nSat\n26\n27\n28\n29\n30\n31\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n…"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-30-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,1,DIV,0,DIV,5,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 322,
+                "bottom": 366,
+                "left": 282,
+                "right": 326,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "31",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-29-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,1,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 314,
+                      "bottom": 414,
+                      "left": 247,
+                      "right": 347,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-23-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV",
+                    "selector": "section.calendar > div.big-calendar-container > div.rbc-calendar > div.rbc-month-view",
+                    "boundingRect": {
+                      "top": 273,
+                      "bottom": 673,
+                      "left": 47,
+                      "right": 365,
+                      "width": 318,
+                      "height": 400
+                    },
+                    "snippet": "<div class=\"rbc-month-view\" role=\"table\" aria-label=\"Month View\">",
+                    "nodeLabel": "Sun\nMon\nTue\nWed\nThu\nFri\nSat\n26\n27\n28\n29\n30\n31\n01\n02\n03\n04\n05\n06\n07\n08\n09\n10\n11\n…"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-31-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,1,DIV,0,DIV,1,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 622,
+                "bottom": 666,
+                "left": 100,
+                "right": 144,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "01",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.07 (foreground color: #7a8089, background color: #18212e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-32-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,0,DIV,0,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 614,
+                      "bottom": 714,
+                      "left": 47,
+                      "right": 147,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-33-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,1,DIV,0,DIV,2,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 622,
+                "bottom": 666,
+                "left": 146,
+                "right": 190,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "02",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-34-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 614,
+                      "bottom": 714,
+                      "left": 147,
+                      "right": 247,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-35-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,5,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 554,
+                      "bottom": 654,
+                      "left": 147,
+                      "right": 247,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-36-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,1,DIV,0,DIV,3,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 622,
+                "bottom": 666,
+                "left": 191,
+                "right": 235,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "03",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-34-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 614,
+                      "bottom": 714,
+                      "left": 147,
+                      "right": 247,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-35-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,5,DIV,0,DIV,1,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 554,
+                      "bottom": 654,
+                      "left": 147,
+                      "right": 247,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-37-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,1,DIV,0,DIV,4,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 622,
+                "bottom": 666,
+                "left": 237,
+                "right": 281,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "04",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-38-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 614,
+                      "bottom": 714,
+                      "left": 247,
+                      "right": 347,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-39-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,5,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 554,
+                      "bottom": 654,
+                      "left": 247,
+                      "right": 347,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-40-BUTTON",
+              "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,1,DIV,0,DIV,5,DIV,0,BUTTON",
+              "selector": "div.rbc-row-content > div.rbc-row > div.rbc-date-cell > button.rbc-button-link",
+              "boundingRect": {
+                "top": 622,
+                "bottom": 666,
+                "left": 282,
+                "right": 326,
+                "width": 44,
+                "height": 44
+              },
+              "snippet": "<button type=\"button\" class=\"rbc-button-link\">",
+              "nodeLabel": "05",
+              "explanation": "Fix any of the following:\n  Element has insufficient color contrast of 4.24 (foreground color: #797f88, background color: #131c29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            "subItems": {
+              "type": "subitems",
+              "items": [
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-38-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,6,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 614,
+                      "bottom": 714,
+                      "left": 247,
+                      "right": 347,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg rbc-off-range-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                },
+                {
+                  "relatedNode": {
+                    "type": "node",
+                    "lhId": "1-39-DIV",
+                    "path": "1,HTML,1,BODY,0,DIV,1,DIV,0,SECTION,1,DIV,0,DIV,1,DIV,5,DIV,0,DIV,2,DIV",
+                    "selector": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg",
+                    "boundingRect": {
+                      "top": 554,
+                      "bottom": 654,
+                      "left": 247,
+                      "right": 347,
+                      "width": 100,
+                      "height": 100
+                    },
+                    "snippet": "<div class=\"rbc-day-bg\">",
+                    "nodeLabel": "div.rbc-month-view > div.rbc-month-row > div.rbc-row-bg > div.rbc-day-bg"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ]
+        }
+      }
+    },
+    {
+      "id": "duplicate-id-aria",
+      "title": "ARIA IDs are unique",
+      "score": null,
+      "description": "The value of an ARIA ID must be unique to prevent other instances from being overlooked by assistive technologies. [Learn how to fix duplicate ARIA IDs](https://dequeuniversity.com/rules/axe/4.10/duplicate-id-aria).",
+      "details": null
+    },
+    {
+      "id": "empty-heading",
+      "title": "All heading elements contain content.",
+      "score": null,
+      "description": "A heading with no content or inaccessible text prevent screen reader users from accessing information on the page's structure. [Learn more about headings](https://dequeuniversity.com/rules/axe/4.10/empty-heading).",
+      "details": null
+    },
+    {
+      "id": "form-field-multiple-labels",
+      "title": "No form fields have multiple labels",
+      "score": null,
+      "description": "Form fields with multiple labels can be confusingly announced by assistive technologies like screen readers which use either the first, the last, or all of the labels. [Learn how to use form labels](https://dequeuniversity.com/rules/axe/4.10/form-field-multiple-labels).",
+      "details": null
+    },
+    {
+      "id": "heading-order",
+      "title": "Heading elements appear in a sequentially-descending order",
+      "score": 1,
+      "description": "Properly ordered headings that do not skip levels convey the semantic structure of the page, making it easier to navigate and understand when using assistive technologies. [Learn more about heading order](https://dequeuniversity.com/rules/axe/4.10/heading-order).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "identical-links-same-purpose",
+      "title": "Identical links have the same purpose.",
+      "score": null,
+      "description": "Links with the same destination should have the same description, to help users understand the link's purpose and decide whether to follow it. [Learn more about identical links](https://dequeuniversity.com/rules/axe/4.10/identical-links-same-purpose).",
+      "details": null
+    },
+    {
+      "id": "image-alt",
+      "title": "Image elements have `[alt]` attributes",
+      "score": 1,
+      "description": "Informative elements should aim for short, descriptive alternate text. Decorative elements can be ignored with an empty alt attribute. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.10/image-alt).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "image-redundant-alt",
+      "title": "Image elements do not have `[alt]` attributes that are redundant text.",
+      "score": 1,
+      "description": "Informative elements should aim for short, descriptive alternative text. Alternative text that is exactly the same as the text adjacent to the link or image is potentially confusing for screen reader users, because the text will be read twice. [Learn more about the `alt` attribute](https://dequeuniversity.com/rules/axe/4.10/image-redundant-alt).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "input-button-name",
+      "title": "Input buttons have discernible text.",
+      "score": null,
+      "description": "Adding discernable and accessible text to input buttons may help screen reader users understand the purpose of the input button. [Learn more about input buttons](https://dequeuniversity.com/rules/axe/4.10/input-button-name).",
+      "details": null
+    },
+    {
+      "id": "input-image-alt",
+      "title": "`<input type=\"image\">` elements have `[alt]` text",
+      "score": null,
+      "description": "When an image is being used as an `<input>` button, providing alternative text can help screen reader users understand the purpose of the button. [Learn about input image alt text](https://dequeuniversity.com/rules/axe/4.10/input-image-alt).",
+      "details": null
+    },
+    {
+      "id": "label-content-name-mismatch",
+      "title": "Elements with visible text labels have matching accessible names.",
+      "score": 1,
+      "description": "Visible text labels that do not match the accessible name can result in a confusing experience for screen reader users. [Learn more about accessible names](https://dequeuniversity.com/rules/axe/4.10/label-content-name-mismatch).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "label",
+      "title": "Form elements have associated labels",
+      "score": null,
+      "description": "Labels ensure that form controls are announced properly by assistive technologies, like screen readers. [Learn more about form element labels](https://dequeuniversity.com/rules/axe/4.10/label).",
+      "details": null
+    },
+    {
+      "id": "link-name",
+      "title": "Links have a discernible name",
+      "score": null,
+      "description": "Link text (and alternate text for images, when used as links) that is discernible, unique, and focusable improves the navigation experience for screen reader users. [Learn how to make links accessible](https://dequeuniversity.com/rules/axe/4.10/link-name).",
+      "details": null
+    },
+    {
+      "id": "link-in-text-block",
+      "title": "Links are distinguishable without relying on color.",
+      "score": null,
+      "description": "Low-contrast text is difficult or impossible for many users to read. Link text that is discernible improves the experience for users with low vision. [Learn how to make links distinguishable](https://dequeuniversity.com/rules/axe/4.10/link-in-text-block).",
+      "details": null
+    },
+    {
+      "id": "skip-link",
+      "title": "Skip links are focusable.",
+      "score": null,
+      "description": "Including a skip link can help users skip to the main content to save time. [Learn more about skip links](https://dequeuniversity.com/rules/axe/4.10/skip-link).",
+      "details": null
+    },
+    {
+      "id": "tabindex",
+      "title": "No element has a `[tabindex]` value greater than 0",
+      "score": null,
+      "description": "A value greater than 0 implies an explicit navigation ordering. Although technically valid, this often creates frustrating experiences for users who rely on assistive technologies. [Learn more about the `tabindex` attribute](https://dequeuniversity.com/rules/axe/4.10/tabindex).",
+      "details": null
+    },
+    {
+      "id": "table-duplicate-name",
+      "title": "Tables have different content in the summary attribute and `<caption>`.",
+      "score": 1,
+      "description": "The summary attribute should describe the table structure, while `<caption>` should have the onscreen title. Accurate table mark-up helps users of screen readers. [Learn more about summary and caption](https://dequeuniversity.com/rules/axe/4.10/table-duplicate-name).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "table-fake-caption",
+      "title": "Tables use `<caption>` instead of cells with the `[colspan]` attribute to indicate a caption.",
+      "score": 1,
+      "description": "Screen readers have features to make navigating tables easier. Ensuring that tables use the actual caption element instead of cells with the `[colspan]` attribute may improve the experience for screen reader users. [Learn more about captions](https://dequeuniversity.com/rules/axe/4.10/table-fake-caption).",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "subItemsHeading": {
+              "key": "relatedNode",
+              "valueType": "node"
+            },
+            "label": "Failing Elements"
+          }
+        ],
+        "items": []
+      }
+    },
+    {
+      "id": "custom-controls-labels",
+      "title": "Custom controls have associated labels",
+      "score": null,
+      "description": "Custom interactive controls have associated labels, provided by aria-label or aria-labelledby. [Learn more about custom controls and labels](https://developer.chrome.com/docs/lighthouse/accessibility/custom-controls-labels/).",
+      "details": null
+    },
+    {
+      "id": "logical-tab-order",
+      "title": "The page has a logical tab order",
+      "score": null,
+      "description": "Tabbing through the page follows the visual layout. Users cannot focus elements that are offscreen. [Learn more about logical tab ordering](https://developer.chrome.com/docs/lighthouse/accessibility/logical-tab-order/).",
+      "details": null
+    },
+    {
+      "id": "offscreen-images",
+      "title": "Defer offscreen images",
+      "score": 1,
+      "description": "Consider lazy-loading offscreen and hidden images after all critical resources have finished loading to lower time to interactive. [Learn how to defer offscreen images](https://developer.chrome.com/docs/lighthouse/performance/offscreen-images/).",
+      "details": {
+        "type": "opportunity",
+        "headings": [],
+        "items": [],
+        "overallSavingsMs": 0,
+        "overallSavingsBytes": 0,
+        "sortedBy": [
+          "wastedBytes"
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "modern-image-formats",
+      "title": "Serve images in next-gen formats",
+      "score": 0.5,
+      "description": "Image formats like WebP and AVIF often provide better compression than PNG or JPEG, which means faster downloads and less data consumption. [Learn more about modern image formats](https://developer.chrome.com/docs/lighthouse/performance/uses-webp-images/).",
+      "details": {
+        "type": "opportunity",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "label": ""
+          },
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL"
+          },
+          {
+            "key": "totalBytes",
+            "valueType": "bytes",
+            "label": "Resource Size"
+          },
+          {
+            "key": "wastedBytes",
+            "valueType": "bytes",
+            "label": "Est Savings"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-50-IMG",
+              "path": "1,HTML,1,BODY,0,DIV,0,HEADER,0,DIV,0,DIV,0,DIV,0,IMG",
+              "selector": "div.px-4 > div.flex > div.flex-shrink-0 > img.w-[72px]",
+              "boundingRect": {
+                "top": -3,
+                "bottom": 69,
+                "left": 45,
+                "right": 117,
+                "width": 72,
+                "height": 72
+              },
+              "snippet": "<img src=\"/icon-192x192.png\" alt=\"FirefighterHub Logo\" class=\"w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] translate-y-[1px]\">",
+              "nodeLabel": "FirefighterHub Logo"
+            },
+            "url": "http://localhost:5173/icon-192x192.png",
+            "fromProtocol": true,
+            "isCrossOrigin": false,
+            "totalBytes": 21371,
+            "wastedBytes": 17580.95,
+            "wastedWebpBytes": 15979
+          }
+        ],
+        "overallSavingsMs": 0,
+        "overallSavingsBytes": 17580.95,
+        "sortedBy": [
+          "wastedBytes"
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "uses-optimized-images",
+      "title": "Efficiently encode images",
+      "score": 1,
+      "description": "Optimized images load faster and consume less cellular data. [Learn how to efficiently encode images](https://developer.chrome.com/docs/lighthouse/performance/uses-optimized-images/).",
+      "details": {
+        "type": "opportunity",
+        "headings": [],
+        "items": [],
+        "overallSavingsMs": 0,
+        "overallSavingsBytes": 0,
+        "sortedBy": [
+          "wastedBytes"
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "uses-responsive-images",
+      "title": "Properly size images",
+      "score": 0.5,
+      "description": "Serve images that are appropriately-sized to save cellular data and improve load time. [Learn how to size images](https://developer.chrome.com/docs/lighthouse/performance/uses-responsive-images/).",
+      "details": {
+        "type": "opportunity",
+        "headings": [
+          {
+            "key": "node",
+            "valueType": "node",
+            "label": ""
+          },
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL"
+          },
+          {
+            "key": "totalBytes",
+            "valueType": "bytes",
+            "label": "Resource Size"
+          },
+          {
+            "key": "wastedBytes",
+            "valueType": "bytes",
+            "label": "Est Savings"
+          }
+        ],
+        "items": [
+          {
+            "node": {
+              "type": "node",
+              "lhId": "1-50-IMG",
+              "path": "1,HTML,1,BODY,0,DIV,0,HEADER,0,DIV,0,DIV,0,DIV,0,IMG",
+              "selector": "div.px-4 > div.flex > div.flex-shrink-0 > img.w-[72px]",
+              "boundingRect": {
+                "top": -3,
+                "bottom": 69,
+                "left": 45,
+                "right": 117,
+                "width": 72,
+                "height": 72
+              },
+              "snippet": "<img src=\"/icon-192x192.png\" alt=\"FirefighterHub Logo\" class=\"w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] translate-y-[1px]\">",
+              "nodeLabel": "FirefighterHub Logo"
+            },
+            "url": "http://localhost:5173/icon-192x192.png",
+            "totalBytes": 21371,
+            "wastedBytes": 12167,
+            "wastedPercent": 56.93359375
+          }
+        ],
+        "overallSavingsMs": 0,
+        "overallSavingsBytes": 12167,
+        "sortedBy": [
+          "wastedBytes"
+        ],
+        "debugData": {
+          "type": "debugdata",
+          "metricSavings": {
+            "FCP": 0,
+            "LCP": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "image-delivery-insight",
+      "title": "Improve image delivery",
+      "score": 1,
+      "description": "Reducing the download time of images can improve the perceived load time of the page and LCP. [Learn more about optimizing image size](https://developer.chrome.com/docs/lighthouse/performance/uses-optimized-images/)",
+      "details": {
+        "type": "table",
+        "headings": [
+          {
+            "key": "url",
+            "valueType": "url",
+            "label": "URL",
+            "subItemsHeading": {
+              "key": "reason",
+              "valueType": "text"
+            }
+          },
+          {
+            "key": "totalBytes",
+            "valueType": "bytes",
+            "label": "Resource Size"
+          },
+          {
+            "key": "wastedBytes",
+            "valueType": "bytes",
+            "label": "Est Savings",
+            "subItemsHeading": {
+              "key": "wastedBytes",
+              "valueType": "bytes"
+            }
+          }
+        ],
+        "items": [],
+        "debugData": {
+          "type": "debugdata",
+          "wastedBytes": 0
+        }
+      }
+    }
+  ]
+}

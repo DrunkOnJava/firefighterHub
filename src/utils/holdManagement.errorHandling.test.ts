@@ -132,13 +132,12 @@ describe("Error Handling - Calendar Utils", () => {
       expect(result).toEqual([]);
     });
 
-    it("should handle invalid start date", () => {
+    it("should handle invalid start date gracefully", () => {
       const firefighters = [createMockFirefighter({ is_available: true })];
 
-      // Should throw or handle gracefully
-      expect(() => {
-        autoScheduleNextHolds(firefighters, new Date("invalid"), 5);
-      }).toThrow();
+      // Should return empty array instead of throwing
+      const result = autoScheduleNextHolds(firefighters, new Date("invalid"), 5);
+      expect(result).toEqual([]);
     });
   });
 
@@ -287,6 +286,7 @@ describe("Error Handling - Calendar Utils", () => {
           updated_at: "",
           completed_at: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-15",
         },
       ];

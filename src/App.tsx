@@ -1,9 +1,11 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { useFirefighters } from './hooks/useFirefighters';
 import { useScheduledHolds } from './hooks/useScheduledHolds';
 import { useToast } from './hooks/useToast';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useDevice } from './hooks/useDevice';
+import { useAnnounce } from './hooks/useAnnounce';
 import { Firefighter, Shift } from './lib/supabase';
 
 // Header component (always visible)
@@ -14,6 +16,10 @@ import { BottomNav } from './components/mobile/BottomNav';
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
 import { NextUpBar } from './components/NextUpBar';
+import { FloatingActionButton } from './components/Common/FloatingActionButton';
+
+// Development tools (only in dev mode)
+import { GridOverlay } from './components/GridOverlay';
 
 // Lazy-loaded components (code splitting for performance)
 const BigCalendar = lazy(() => import('./components/calendar/BigCalendar').then(m => ({ default: m.BigCalendar })));
@@ -53,6 +59,7 @@ function App() {
 
   const { toasts, showToast } = useToast();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const announce = useAnnounce();
 
   // Battalion Chief authentication state
   const [isAdmin, setIsAdmin] = useState(false);
@@ -134,6 +141,7 @@ function App() {
     duration?: any,
     startTime?: string
   ) {
+    const firefighter = firefighters.find(ff => ff.id === firefighterId);
     completeHold(
       firefighterId,
       holdDate,
@@ -143,6 +151,17 @@ function App() {
       duration,
       startTime
     );
+    
+    // Announce hold completion for screen readers
+    if (firefighter) {
+      const nextAvailable = firefighters.find(ff => ff.is_available && ff.id !== firefighterId);
+      const availableCount = firefighters.filter(ff => ff.is_available).length;
+      announce(
+        `Hold completed for ${firefighter.name}. ${nextAvailable ? `Next up: ${nextAvailable.name}.` : ''} ${availableCount} firefighters available.`,
+        'polite'
+      );
+    }
+    
     setShowCompleteHoldModal(false);
     setSelectedFirefighterForCompletion(null);
   }
@@ -163,6 +182,14 @@ function App() {
 
   return (
     <>
+      {/* Skip Navigation Link - WCAG 2.4.1 Bypass Blocks */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:shadow-lg focus:ring-2 focus:ring-blue-400"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
       <Header
         onShowHelp={() => setShowHelp(true)}
@@ -180,7 +207,7 @@ function App() {
       />
 
       {/* Main Layout: Calendar + Roster */}
-      <div className="layout">
+      <main id="main-content" tabIndex={-1} className="layout">
         {/* Calendar Section with Next Up Bar */}
         <section className={`calendar card flex flex-col ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}`}>
           {/* Next Up Bar - Shows all shifts */}
@@ -224,12 +251,13 @@ function App() {
             onTransferShift={handleTransferShiftClick}
             onResetAll={resetAll}
             onReorder={reorderFirefighters}
+            onVolunteerHold={moveToBottomOfRotation}
             currentShift={currentShift}
             isAdminMode={isAdminMode}
             isDarkMode={isDarkMode}
           />
         </aside>
-      </div>
+      </main>
 
       {/* Toast notifications */}
       {toasts.length > 0 && (
@@ -349,6 +377,20 @@ function App() {
           isDarkMode={isDarkMode}
         />
       )}
+
+      {/* Grid Overlay (Development Only) */}
+      <GridOverlay />
+      
+      {/* Floating Action Button for Quick Add (Priority 3.2: Relocate Quick Add to prominent Z-pattern location) */}
+      {isAdmin && (
+        <FloatingActionButton 
+          onClick={() => setShowQuickAdd(true)}
+          label="Quick Add Firefighter"
+        />
+      )}
+      
+      {/* Vercel Analytics */}
+      <Analytics />
     </>
   );
 }

@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, gridUtilities } from "../styles";
+import { Button } from "./ui/Button";
+import { IconButton } from "./ui/IconButton";
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;
@@ -48,6 +50,7 @@ export function QuickAddFirefighterModal({
   const [apparatusTruck, setApparatusTruck] = useState(false);
   const [apparatusBoat, setApparatusBoat] = useState(false);
   const [apparatusUtv, setApparatusUtv] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [apparatusRescueSquad, setApparatusRescueSquad] = useState(false);
   const [isFTO, setIsFTO] = useState(false);
   const [isBLS, setIsBLS] = useState(false);
@@ -110,9 +113,12 @@ export function QuickAddFirefighterModal({
     return true;
   };
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (validateName(name)) {
+    if (!validateName(name) || isSubmitting) return;
+    
+    setIsSubmitting(true);
+    try {
       onAdd(
         name.trim(),
         station.trim(),
@@ -134,6 +140,10 @@ export function QuickAddFirefighterModal({
         }
       );
       onClose();
+    } catch (error) {
+      console.error('Error adding firefighter:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -191,20 +201,21 @@ export function QuickAddFirefighterModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <form
           onSubmit={handleSubmit}
           className={`${tokens.spacing.card.lg} space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]`}
         >
-          <div className={`grid grid-cols-1 md:grid-cols-2 ${tokens.spacing.gap.md}`}>
+          <div className={gridUtilities.form.responsiveGrid2}>
             <div>
               <label
                 htmlFor="quick-firefighter-name"
@@ -314,7 +325,7 @@ export function QuickAddFirefighterModal({
                 <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
                   Apparatus Clearances
                 </label>
-                <div className={`grid grid-cols-2 md:grid-cols-4 ${tokens.spacing.gap.md}`}>
+                <div className={gridUtilities.form.responsiveGrid4}>
                   {[
                     { state: apparatusAmbulance, setState: setApparatusAmbulance, label: "Ambulance" },
                     { state: apparatusBrushTruck, setState: setApparatusBrushTruck, label: "Brush Truck" },
@@ -342,7 +353,7 @@ export function QuickAddFirefighterModal({
                 <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
                   Certifications & Roles
                 </label>
-                <div className={`grid grid-cols-3 ${tokens.spacing.gap.md}`}>
+                <div className={gridUtilities.form.grid3Col}>
                   <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.warning.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-amber-900/30 border ${colors.semantic.warning.border} transition-colors`}>
                     <input
                       type="checkbox"
@@ -382,21 +393,28 @@ export function QuickAddFirefighterModal({
           )}
 
           <div className={`flex ${tokens.spacing.gap.md} pt-2 border-t ${colors.structural.border.default}`}>
-            <button
+            <Button
               type="button"
               onClick={onClose}
-              className={`flex-1 ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.md} focus-ring`}
+              variant="secondary"
+              size="lg"
+              fullWidth
+              disabled={isSubmitting}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
               disabled={!name.trim()}
-              className={`flex-1 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors ${colors.semantic.success.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm} disabled:opacity-50 disabled:cursor-not-allowed`}
+              state={isSubmitting ? 'loading' : 'idle'}
+              variant="success"
+              size="lg"
+              fullWidth
+              withRipple
+              leftIcon={<UserPlus size={20} />}
             >
-              <UserPlus size={20} />
               Add Member
-            </button>
+            </Button>
           </div>
         </form>
       </div>

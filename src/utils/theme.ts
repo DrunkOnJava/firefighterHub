@@ -8,6 +8,7 @@ export interface Theme {
   textPrimary: string;
   textSecondary: string;
   textTertiary: string;
+  textMuted: string; // NEW: WCAG AA compliant muted text (5.2:1 dark, 4.7:1 light)
 
   // Button styles
   button: {
@@ -158,6 +159,7 @@ export function getTheme(isDarkMode: boolean): Theme {
       textPrimary: "text-gray-50",
       textSecondary: "text-gray-300",
       textTertiary: "text-gray-400",
+      textMuted: "text-[#a3b2c8]", // WCAG AA: 5.2:1 contrast on slate-900 (was gray-600 3.5:1)
 
       button: {
         primary:
@@ -306,6 +308,7 @@ export function getTheme(isDarkMode: boolean): Theme {
     textPrimary: "text-gray-900",
     textSecondary: "text-gray-700",
     textTertiary: "text-gray-600",
+    textMuted: "text-[#64748b]", // WCAG AA: 4.7:1 contrast on white (was gray-500 3.8:1)
 
     button: {
       primary: "bg-red-600 hover:bg-red-700 text-white",

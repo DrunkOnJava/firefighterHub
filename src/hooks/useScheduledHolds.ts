@@ -62,21 +62,24 @@ export function useScheduledHolds(
     let isIntentionalDisconnect = false; // Track if we're intentionally closing
     const MAX_RETRIES = 10; // Maximum retry attempts before giving up
 
-    const setupSubscription = () => {
+    const setupSubscription = async () => {
       if (!isSubscribed) return;
 
+      // Add extra delay on initial connection to let Supabase real-time initialize
+      // This prevents "mismatch between server and client bindings" on first connect
+      if (!wasConnected) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+
       const channel = supabase
-        .channel(`scheduled_holds_${currentShift}`)
+        .channel(`scheduled_holds:${currentShift}`, {
+          config: { private: true, broadcast: { self: false, ack: false } }
+        })
         .on(
-          "postgres_changes",
-          {
-            event: "*",
-            schema: "public",
-            table: "scheduled_holds",
-            filter: `shift=eq.${currentShift}`,
-          },
+          "broadcast",
+          { event: "*" },
           (payload) => {
-            console.log("🔄 Scheduled holds changed:", payload.eventType);
+            console.log("🔄 Scheduled holds changed:", payload.payload.type);
             loadScheduledHolds();
             retryCount = 0; // Reset retry count on successful message
             hasShownErrorToast = false; // Reset error toast flag on success
@@ -246,7 +249,8 @@ export function useScheduledHolds(
     firefighter: Firefighter,
     station?: string,
     duration: HoldDuration = "24h",
-    startTime: string = "07:00"
+    startTime: string = "07:00",
+    isVoluntary: boolean = false
   ) {
     // REMOVED: 72-hour rule validation - hours worked tracking removed per user feedback
     // User stated: "There is no way to accurately calculate that without manually
@@ -271,6 +275,7 @@ export function useScheduledHolds(
       updated_at: new Date().toISOString(),
       completed_at: null,
       is_completed: false, // Required by database schema
+      is_voluntary: isVoluntary,
       scheduled_date: holdDate, // Required by database schema - using hold_date as the scheduled date
     };
 
@@ -303,6 +308,7 @@ export function useScheduledHolds(
             shift: currentShift,
             duration: duration,
             start_time: startTime,
+            is_voluntary: isVoluntary,
           }),
         }
       );

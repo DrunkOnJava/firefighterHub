@@ -5,7 +5,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico?v=3" />
     <!-- Enhanced viewport for mobile optimization and notched devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Hold List Manager - Firefighter Rotation</title>
+    <title>Firefighter Shift Management & Hold Rotation Tracker | FirefighterHub</title>
 
     <!-- Open Graph Meta Tags for Link Previews (iMessage, Slack, etc.) -->
     <meta property="og:type" content="website" />
@@ -32,7 +32,7 @@
     <!-- PWA Meta Tags -->
     <meta
       name="description"
-      content="Modern, fair, transparent hold rotation manager for firefighters. Track holds, preserve fairness, and sync rosters in real-time. Battalion-chief friendly, Supabase-backed."
+      content="Professional firefighter shift management for fire departments. Track hold rotations, manage schedules, and sync rosters in real-time across shifts A, B, and C."
     />
     <meta name="theme-color" content="#ea580c" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -63,6 +63,39 @@
       sizes="16x16"
       href="/icon-72x72.png?v=2"
     />
+    
+    <!-- Schema.org Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "FirefighterHub",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "Workforce Management",
+      "description": "Comprehensive firefighter shift management system for fire departments. Track hold rotations, manage shift schedules, and sync rosters in real-time across A, B, and C shifts.",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Firefighter shift rotation management",
+        "Hold tracking and scheduling",
+        "Real-time roster synchronization",
+        "Activity audit logging",
+        "Apparatus certification tracking",
+        "Battalion chief administrative controls"
+      ],
+      "keywords": "firefighter shift management, hold rotation tracker, fire department roster, shift scheduling, battalion chief software",
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Fire Departments, Battalion Chiefs, Fire Station Managers"
+      },
+      "url": "https://firefighter-hub.vercel.app",
+      "screenshot": "https://firefighter-hub.vercel.app/screenshots/dashboard.png"
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

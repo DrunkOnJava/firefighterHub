@@ -209,7 +209,7 @@ describe("calendarUtils", () => {
       });
     });
 
-    it("creates past holds from firefighter last_hold_date", () => {
+    it("does NOT create synthetic holds from last_hold_date (removed feature)", () => {
       const days = getMonthDays(2025, 9); // October 2025
       const firefighters = [
         createMockFirefighter({
@@ -219,14 +219,13 @@ describe("calendarUtils", () => {
         }),
       ];
 
+      // Should NOT create synthetic holds from last_hold_date
       const result = attachScheduledHolds(days, [], firefighters);
 
       const oct20 = result.find(
         (d) => d.date.getDate() === 20 && d.date.getMonth() === 9
       );
-      expect(oct20?.scheduledHolds).toHaveLength(1);
-      expect(oct20?.scheduledHolds[0].status).toBe("completed");
-      expect(oct20?.scheduledHolds[0].firefighter_name).toBe("John Doe");
+      expect(oct20?.scheduledHolds).toHaveLength(0);
     });
 
     it("does not duplicate holds if already in scheduled_holds", () => {
@@ -255,6 +254,7 @@ describe("calendarUtils", () => {
           lent_to_shift: null,
           completed_at: "2025-10-20T00:00:00Z",
           is_completed: true,
+          is_voluntary: false,
           scheduled_date: "2025-10-20",
         },
       ];

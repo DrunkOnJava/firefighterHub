@@ -14,56 +14,50 @@ import { ShiftBadge } from "../ShiftBadge";
 
 describe("ShiftBadge", () => {
   describe("Rendering", () => {
-    it("should render Shift A with circle icon", () => {
+    it("should render Shift A with circle shape", () => {
       render(<ShiftBadge shift="A" />);
       
       const badge = screen.getByLabelText("Shift A (circle)");
       expect(badge).toBeInTheDocument();
-      expect(badge).toHaveTextContent("●");
       expect(badge).toHaveTextContent("A");
+      expect(badge.className).toContain("rounded-full");
     });
 
-    it("should render Shift B with square icon", () => {
+    it("should render Shift B with square shape", () => {
       render(<ShiftBadge shift="B" />);
       
       const badge = screen.getByLabelText("Shift B (square)");
       expect(badge).toBeInTheDocument();
-      expect(badge).toHaveTextContent("■");
       expect(badge).toHaveTextContent("B");
+      expect(badge.className).toContain("rounded-none");
     });
 
-    it("should render Shift C with triangle icon", () => {
+    it("should render Shift C with diamond shape", () => {
       render(<ShiftBadge shift="C" />);
       
-      const badge = screen.getByLabelText("Shift C (triangle)");
+      const badge = screen.getByLabelText("Shift C (diamond)");
       expect(badge).toBeInTheDocument();
-      expect(badge).toHaveTextContent("▲");
       expect(badge).toHaveTextContent("C");
+      expect(badge.className).toContain("rotate-45");
     });
   });
 
   describe("Color-Blind Accessibility (WCAG 1.4.1)", () => {
-    it("should have distinct icons for each shift", () => {
+    it("should have distinct shapes for each shift", () => {
       const { rerender } = render(<ShiftBadge shift="A" />);
       const shiftA = screen.getByLabelText("Shift A (circle)");
-      expect(shiftA).toHaveTextContent("●");
+      expect(shiftA).toHaveTextContent("A");
+      expect(shiftA.className).toContain("rounded-full");
 
       rerender(<ShiftBadge shift="B" />);
       const shiftB = screen.getByLabelText("Shift B (square)");
-      expect(shiftB).toHaveTextContent("■");
+      expect(shiftB).toHaveTextContent("B");
+      expect(shiftB.className).toContain("rounded-none");
 
       rerender(<ShiftBadge shift="C" />);
-      const shiftC = screen.getByLabelText("Shift C (triangle)");
-      expect(shiftC).toHaveTextContent("▲");
-    });
-
-    it("should mark icons as decorative with aria-hidden", () => {
-      const { container } = render(<ShiftBadge shift="A" />);
-      
-      // Icon should be decorative (aria-hidden)
-      const icon = container.querySelector('[aria-hidden="true"]');
-      expect(icon).toBeInTheDocument();
-      expect(icon).toHaveTextContent("●");
+      const shiftC = screen.getByLabelText("Shift C (diamond)");
+      expect(shiftC).toHaveTextContent("C");
+      expect(shiftC.className).toContain("rotate-45");
     });
 
     it("should have descriptive aria-label including shape", () => {
@@ -72,13 +66,12 @@ describe("ShiftBadge", () => {
       expect(badge).toHaveAttribute("aria-label", "Shift A (circle)");
     });
 
-    it("should not rely on color alone (has icon + text)", () => {
+    it("should use shape differentiation not just color", () => {
       const { container } = render(<ShiftBadge shift="B" />);
       
       const badge = container.querySelector("span");
-      // Should have both icon and text content
-      expect(badge).toHaveTextContent("■");
       expect(badge).toHaveTextContent("B");
+      expect(badge?.className).toContain("rounded-none");
     });
   });
 
@@ -99,7 +92,7 @@ describe("ShiftBadge", () => {
 
     it("should apply sky colors for Shift C", () => {
       render(<ShiftBadge shift="C" />);
-      const badge = screen.getByLabelText("Shift C (triangle)");
+      const badge = screen.getByLabelText("Shift C (diamond)");
       expect(badge.className).toContain("bg-sky-600");
       expect(badge.className).toContain("text-white");
     });
@@ -111,13 +104,12 @@ describe("ShiftBadge", () => {
       // Should have standard badge styles
       expect(badge.className).toContain("inline-flex");
       expect(badge.className).toContain("items-center");
-      expect(badge.className).toContain("gap-1");
-      expect(badge.className).toContain("px-2");
-      expect(badge.className).toContain("py-0.5");
+      expect(badge.className).toContain("justify-center");
+      expect(badge.className).toContain("w-7");
+      expect(badge.className).toContain("h-7");
       expect(badge.className).toContain("text-xs");
       expect(badge.className).toContain("font-bold");
-      expect(badge.className).toContain("rounded");
-      expect(badge.className).toContain("border-2");
+      expect(badge.className).toContain("border");
     });
   });
 
@@ -142,12 +134,6 @@ describe("ShiftBadge", () => {
       expect(badge).toHaveAttribute("aria-label", "Shift A (circle)");
     });
 
-    it("should hide decorative icon from screen readers", () => {
-      const { container } = render(<ShiftBadge shift="B" />);
-      const icon = container.querySelector('[aria-hidden="true"]');
-      expect(icon).toBeInTheDocument();
-    });
-
     it("should provide meaningful label for all shifts", () => {
       const { rerender } = render(<ShiftBadge shift="A" />);
       expect(screen.getByLabelText("Shift A (circle)")).toBeInTheDocument();
@@ -156,22 +142,23 @@ describe("ShiftBadge", () => {
       expect(screen.getByLabelText("Shift B (square)")).toBeInTheDocument();
 
       rerender(<ShiftBadge shift="C" />);
-      expect(screen.getByLabelText("Shift C (triangle)")).toBeInTheDocument();
+      expect(screen.getByLabelText("Shift C (diamond)")).toBeInTheDocument();
     });
   });
 
   describe("Layout", () => {
-    it("should use inline-flex for icon and text alignment", () => {
+    it("should use inline-flex for alignment", () => {
       render(<ShiftBadge shift="A" />);
       const badge = screen.getByLabelText("Shift A (circle)");
       expect(badge.className).toContain("inline-flex");
       expect(badge.className).toContain("items-center");
     });
 
-    it("should have gap between icon and text", () => {
+    it("should be square shaped for proper alignment", () => {
       render(<ShiftBadge shift="B" />);
       const badge = screen.getByLabelText("Shift B (square)");
-      expect(badge.className).toContain("gap-1");
+      expect(badge.className).toContain("w-7");
+      expect(badge.className).toContain("h-7");
     });
   });
 });

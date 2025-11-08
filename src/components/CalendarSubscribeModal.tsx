@@ -11,7 +11,9 @@ import { useEffect, useRef, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, gridUtilities } from "../styles";
+import { IconButton } from "./ui/IconButton";
+import { visualHeadings } from "../styles/visualHeadings";
 
 interface CalendarSubscribeModalProps {
   isOpen: boolean;
@@ -95,7 +97,7 @@ export function CalendarSubscribeModal({
             <div>
               <h2
                 id="calendar-subscribe-title"
-                className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+                className={visualHeading('h3', colors.structural.text.primary)}
               >
                 Subscribe to Calendar
               </h2>
@@ -106,15 +108,14 @@ export function CalendarSubscribeModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close calendar subscription modal"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.md} ${colors.interactive.hover.bg} transition-colors flex items-center justify-center`}
-            aria-label="Close calendar subscription modal"
-          >
-            <X
-              className={`w-5 h-5 ${colors.structural.text.secondary}`}
-            />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         {/* Content */}
@@ -156,7 +157,7 @@ export function CalendarSubscribeModal({
             >
               Select Schedule
             </h3>
-            <div className={`grid grid-cols-4 ${tokens.spacing.gap.sm}`}>
+            <div className={gridUtilities.form.grid4Col}>
               {(["ALL", "A", "B", "C"] as const).map((shift) => (
                 <button
                   key={shift}

@@ -15,6 +15,8 @@ import {
   CalendarDay,
 } from "../utils/calendarUtils";
 import { DayModal } from './calendar/DayModal';
+import { IconButton } from './ui/IconButton';
+import { gridUtilities } from '../styles';
 
 interface CalendarViewProps {
   firefighters: Firefighter[];
@@ -24,7 +26,8 @@ interface CalendarViewProps {
     firefighter: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
@@ -97,9 +100,10 @@ export function CalendarView({
     firefighter: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => {
-    onScheduleHold(holdDate, firefighter, station, duration, startTime);
+    onScheduleHold(holdDate, firefighter, station, duration, startTime, isVoluntary);
   };
 
   const isToday = (day: CalendarDay) => {
@@ -132,20 +136,22 @@ export function CalendarView({
 
           {/* Navigation Controls */}
           <div className="flex items-center gap-2">
-            <button
+            <IconButton
+              icon={ChevronLeft}
+              label="Previous month"
               onClick={goToPreviousMonth}
-              className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
-              aria-label="Previous month"
-            >
-              <ChevronLeft className="w-5 h-5 text-gray-300" />
-            </button>
-            <button
+              variant="default"
+              size="md"
+              isDarkMode={true}
+            />
+            <IconButton
+              icon={ChevronRight}
+              label="Next month"
               onClick={goToNextMonth}
-              className="p-2 hover:bg-[#2F3640] rounded-md transition-colors"
-              aria-label="Next month"
-            >
-              <ChevronRight className="w-5 h-5 text-gray-300" />
-            </button>
+              variant="default"
+              size="md"
+              isDarkMode={true}
+            />
             <button
               className="ml-2 px-4 py-2 bg-gradient-to-br from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white rounded-md font-medium shadow-lg shadow-red-900/50 transition-all flex items-center gap-2"
               onClick={() => {
@@ -160,9 +166,9 @@ export function CalendarView({
         </div>
       </div>
 
-      {/* Calendar Grid */}
+      {/* Calendar Grid - using grid system utilities */}
       <div className="flex-1 p-6 overflow-auto">
-        <div className="grid grid-cols-7 gap-px bg-[#252A32] border border-[#252A32] rounded-lg overflow-hidden shadow-xl">
+        <div className={`${gridUtilities.calendar.container} gap-px bg-[#252A32] border border-[#252A32] rounded-lg overflow-hidden shadow-xl`}>
           {/* Weekday Headers */}
           {WEEKDAYS.map((day) => (
             <div
@@ -194,9 +200,9 @@ export function CalendarView({
                   ${hasScheduled && !isOtherMonth ? 'border-l-4 border-l-red-500' : ''}
                 `}
               >
-                {/* Day Number */}
+                {/* Day Number - Increased from text-sm to text-base for better scannability (VH Audit Priority 3.1) */}
                 <div className={`
-                  text-sm font-semibold mb-2
+                  text-base font-medium mb-2
                   ${isCurrentDay ? 'text-red-400' : ''}
                   ${isOtherMonth ? 'text-gray-600' : 'text-gray-300'}
                 `}>
@@ -240,8 +246,8 @@ export function CalendarView({
         </div>
       </div>
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-4 gap-4 px-6 pb-6">
+      {/* Statistics Cards - using grid system utilities */}
+      <div className={`${gridUtilities.form.grid4Col} px-6 pb-6`}>
         {/* Open Vacancies */}
         <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-red-900/50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">

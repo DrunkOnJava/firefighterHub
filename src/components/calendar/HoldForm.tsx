@@ -12,7 +12,7 @@
 
 import { useState } from "react";
 import { Firefighter, HoldDuration } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
+import { colors, tokens, visualHeadings } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
 import { getTheme } from "../../utils/theme";
 import { StationSelector } from "../StationSelector";
@@ -27,9 +27,11 @@ interface HoldFormProps {
     ff: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => void;
   onCancel: () => void;
+  onSkipFirefighter?: (firefighterId: string) => void;
   selectedStation: string;
   onStationChange: (station: string) => void;
   showAddAnother: boolean;
@@ -44,6 +46,7 @@ export function HoldForm({
   onFirefighterSelect,
   onSchedule,
   onCancel,
+  onSkipFirefighter,
   selectedStation,
   onStationChange,
   showAddAnother,
@@ -53,6 +56,7 @@ export function HoldForm({
   const theme = getTheme(isDarkMode);
   const [duration, setDuration] = useState<HoldDuration>("24h");
   const [startTime, setStartTime] = useState<string>("08:00");
+  const [isVoluntary, setIsVoluntary] = useState(false);
 
   const availableFirefighters = firefighters.filter((ff) => ff.is_available);
 
@@ -64,7 +68,8 @@ export function HoldForm({
         selectedFirefighter,
         selectedStation,
         duration,
-        startTime
+        startTime,
+        isVoluntary
       );
     }
   };
@@ -75,11 +80,11 @@ export function HoldForm({
     
     return (
       <div>
-        <h4
-          className={`${tokens.typography.heading.h4} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
+        <h3
+          className={`${visualHeadings.subtitleMedium} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
         >
           Select Firefighter:
-        </h4>
+        </h3>
 
         {/* Next in rotation - highlighted */}
         {nextInRotation && (
@@ -115,8 +120,9 @@ export function HoldForm({
             {availableFirefighters.length > 1 && (
               <button
                 onClick={() => {
-                  // Move next person to end and show the new list
-                  onFirefighterSelect(null);
+                  if (nextInRotation) {
+                    onSkipFirefighter?.(nextInRotation.id);
+                  }
                 }}
                 className={`
                   w-full mt-2
@@ -200,19 +206,21 @@ export function HoldForm({
   // Hold details form
   return (
     <div>
-      <h4
-        className={`${tokens.typography.heading.h4} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
+      <h3
+        className={`${visualHeadings.subtitleMedium} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
       >
         Scheduling: {selectedFirefighter.name}
-      </h4>
+      </h3>
 
       <div className="space-y-4">
         {/* Station selector */}
-        <div>
+        <div className="p-3 rounded-lg border-2 border-blue-500/30 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20">
           <label
-            className={`block ${tokens.typography.body.secondary} ${theme.textSecondary} mb-2`}
+            className={`block font-semibold ${theme.textPrimary} mb-2 text-base flex items-center gap-2`}
           >
+            <span className="text-xl">🏢</span>
             Hold Station
+            <span className="text-red-500">*</span>
           </label>
           <StationSelector
             selectedStation={selectedStation}
@@ -261,6 +269,25 @@ export function HoldForm({
             `}
           />
         </div>
+
+        {/* Voluntary hold checkbox */}
+        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-green-500/30 dark:border-green-500/30 bg-green-50/50 dark:bg-green-950/20">
+          <input
+            type="checkbox"
+            checked={isVoluntary}
+            onChange={(e) => setIsVoluntary(e.target.checked)}
+            className="w-5 h-5 rounded border-gray-600 text-green-600 focus:ring-green-500"
+          />
+          <div className="flex-1">
+            <span className={`${tokens.typography.body.secondary} ${theme.textPrimary} font-semibold flex items-center gap-2`}>
+              <span className="text-xl">🙋</span>
+              Mark as Voluntary Hold
+            </span>
+            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mt-0.5`}>
+              Member volunteered for this hold (will move to end of rotation)
+            </p>
+          </div>
+        </label>
 
         {/* Add another checkbox */}
         <label className="flex items-center gap-2 cursor-pointer">

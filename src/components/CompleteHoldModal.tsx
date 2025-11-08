@@ -11,6 +11,8 @@ import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { StationSelector } from "./StationSelector";
+import { Button } from "./ui/Button";
+import { IconButton } from "./ui/IconButton";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
@@ -41,6 +43,7 @@ export function CompleteHoldModal({
   const [lentToShift, setLentToShift] = useState<Shift | null>(null); // Which shift is this firefighter being lent to
   const [duration, setDuration] = useState<HoldDuration>("24h"); // Default to 24 hours
   const [startTime, setStartTime] = useState("07:00"); // Default to 07:00
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
 
@@ -69,19 +72,27 @@ export function CompleteHoldModal({
 
   if (!isOpen || !firefighter) return null;
 
-  const handleConfirm = () => {
-    if (!selectedDate) return;
-    const stationToUse = selectedStation || undefined;
-    onConfirm(
-      firefighter.id,
-      selectedDate,
-      newPosition,
-      stationToUse,
-      lentToShift,
-      duration,
-      startTime
-    );
-    onClose();
+  const handleConfirm = async () => {
+    if (!selectedDate || isSubmitting) return;
+    
+    setIsSubmitting(true);
+    try {
+      const stationToUse = selectedStation || undefined;
+      onConfirm(
+        firefighter.id,
+        selectedDate,
+        newPosition,
+        stationToUse,
+        lentToShift,
+        duration,
+        duration === "12h" ? startTime : undefined
+      );
+      onClose();
+    } catch (error) {
+      console.error('Error completing hold:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const today = new Date().toISOString().split("T")[0];
@@ -147,21 +158,14 @@ export function CompleteHoldModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close dialog"
             onClick={onClose}
-            className={`
-              ${tokens.spacing.section.md}
-              ${tokens.touchTarget.min}
-              ${colors.interactive.hover.bg}
-              ${tokens.borders.radius.lg}
-              ${tokens.transitions.fast}
-              focus-ring
-              flex items-center justify-center
-            `}
-            aria-label="Close dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div className={`${tokens.spacing.card.xl} space-y-6`}>
@@ -372,34 +376,27 @@ export function CompleteHoldModal({
           </div>
 
           <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
-            <button
+            <Button
               onClick={onClose}
-              className={`
-                flex-1 ${tokens.typography.weight.bold} py-3
-                ${tokens.borders.radius.lg}
-                ${tokens.transitions.fast}
-                ${colors.components.button.secondary}
-                focus-ring
-              `}
+              variant="secondary"
+              size="lg"
+              fullWidth
+              disabled={isSubmitting}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleConfirm}
               disabled={!selectedDate}
-              className={`
-                flex-1 ${tokens.typography.weight.bold} py-3
-                ${tokens.borders.radius.lg}
-                ${tokens.transitions.fast}
-                ${tokens.shadows.lg}
-                ${colors.components.button.success}
-                disabled:opacity-50 disabled:cursor-not-allowed
-                focus-ring flex items-center justify-center ${tokens.spacing.gap.sm}
-              `}
+              state={isSubmitting ? 'loading' : 'idle'}
+              variant="success"
+              size="lg"
+              fullWidth
+              withRipple
+              leftIcon={<CheckCircle size={20} />}
             >
-              <CheckCircle size={20} />
               Complete Hold
-            </button>
+            </Button>
           </div>
         </div>
       </div>

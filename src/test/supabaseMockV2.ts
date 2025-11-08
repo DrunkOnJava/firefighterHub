@@ -359,9 +359,55 @@ export function createMockSupabaseClient() {
     from: (table: keyof typeof mockDatabase) => new MockQueryBuilder(table),
     channel: vi.fn(() => ({
       on: vi.fn().mockReturnThis(),
-      subscribe: vi.fn(),
+      subscribe: vi.fn((callback) => {
+        // Don't actually call the callback - prevents re-loading during tests
+        return 'SUBSCRIBED';
+      }),
     })),
     removeChannel: vi.fn(),
+    auth: {
+      getSession: vi.fn().mockResolvedValue({
+        data: {
+          session: {
+            user: {
+              id: 'test-user-id',
+              email: 'test@example.com',
+              app_metadata: {},
+              user_metadata: {},
+              aud: 'authenticated',
+              created_at: '2025-01-01T00:00:00Z',
+            },
+            access_token: 'test-access-token',
+            refresh_token: 'test-refresh-token',
+            expires_in: 3600,
+            expires_at: Date.now() + 3600000,
+            token_type: 'bearer',
+          },
+        },
+        error: null,
+      }),
+      getUser: vi.fn().mockResolvedValue({
+        data: {
+          user: {
+            id: 'test-user-id',
+            email: 'test@example.com',
+            app_metadata: {},
+            user_metadata: {},
+            aud: 'authenticated',
+            created_at: '2025-01-01T00:00:00Z',
+          },
+        },
+        error: null,
+      }),
+      onAuthStateChange: vi.fn(() => ({
+        data: { subscription: { unsubscribe: vi.fn() } },
+      })),
+      signInWithPassword: vi.fn().mockResolvedValue({
+        data: { user: null, session: null },
+        error: null,
+      }),
+      signOut: vi.fn().mockResolvedValue({ error: null }),
+    },
   };
 }
 

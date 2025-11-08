@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift, supabase } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { colors, tokens, visualHeadings, gridUtilities } from "../styles";
 import { ShiftBadge } from "./ShiftSelector";
 import type { Tables } from "../lib/database.types";
+import { IconButton } from "./ui/IconButton";
 
 type Firefighter = Tables<"firefighters">;
 
@@ -202,13 +203,14 @@ export function FirefightersModal({
               </p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close firefighters dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} hover:bg-gray-700 ${tokens.borders.radius.lg} ${tokens.transitions.fast} ${colors.structural.text.tertiary} focus-ring flex items-center justify-center`}
-            aria-label="Close firefighters dialog"
-          >
-            <X size={24} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div
@@ -272,7 +274,7 @@ export function FirefightersModal({
                 )} mx-auto mb-4`}
               />
               <p
-                className={`${colors.structural.text.tertiary} ${tokens.typography.heading.h2}`}
+                className={`${colors.structural.text.tertiary} ${visualHeadings.titleMedium}`}
               >
                 No firefighters found
               </p>
@@ -293,7 +295,7 @@ export function FirefightersModal({
                           onChange={(e) =>
                             updateField(firefighter.id, "name", e.target.value)
                           }
-                          className={`${tokens.typography.heading.h2} ${tokens.typography.weight.bold} ${colors.components.input.default} w-full max-w-md`}
+                          className={`${visualHeadings.titleLarge} ${colors.components.input.default} w-full max-w-md`}
                         />
                         <div className={`flex ${tokens.spacing.gap.sm}`}>
                           <button
@@ -314,7 +316,7 @@ export function FirefightersModal({
                       </div>
 
                       <div
-                        className={`grid grid-cols-1 md:grid-cols-3 ${tokens.spacing.gap.md}`}
+                        className={gridUtilities.form.responsiveGrid3}
                       >
                         <div>
                           <label
@@ -396,7 +398,7 @@ export function FirefightersModal({
                           Apparatus Clearances
                         </label>
                         <div
-                          className={`grid grid-cols-2 md:grid-cols-4 ${tokens.spacing.gap.md}`}
+                          className={gridUtilities.form.responsiveGrid4}
                         >
                           {[
                             { key: "apparatus_ambulance", label: "Ambulance" },
@@ -451,7 +453,7 @@ export function FirefightersModal({
                           Certifications & Roles
                         </label>
                         <div
-                          className={`grid grid-cols-3 ${tokens.spacing.gap.md}`}
+                          className={gridUtilities.form.grid3Col}
                         >
                           <label
                             className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer bg-amber-900/20 px-3 py-2 ${tokens.borders.radius.lg} hover:bg-amber-900/30 border border-amber-700/50 ${tokens.transitions.fast}`}
@@ -551,7 +553,7 @@ export function FirefightersModal({
                       </div>
 
                       <div
-                        className={`grid grid-cols-1 md:grid-cols-2 ${tokens.spacing.gap.md} mb-4`}
+                        className={`${gridUtilities.form.responsiveGrid2} mb-4`}
                       >
                         <div>
                           <span

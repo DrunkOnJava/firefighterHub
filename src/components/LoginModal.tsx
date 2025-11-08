@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
-import { colors, tokens } from "../styles";
+import { colors, tokens, visualHeadings } from "../styles";
+import { Button } from "./ui/Button";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -90,7 +91,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
             </div>
             <h2
               id="login-modal-title"
-              className={`${tokens.typography.heading.h3} ${colors.structural.text.primary}`}
+              className={`${visualHeadings.subtitleLarge} ${colors.structural.text.primary}`}
             >
               Battalion Chief Sign In
             </h2>
@@ -163,35 +164,17 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
-            disabled={isLoading || !email || !password}
-            className={`w-full py-3 px-4 ${colors.semantic.warning.gradient} ${colors.semantic.warning.hover} disabled:${colors.interactive.button.disabled} text-white font-medium ${tokens.borders.radius.md} transition-colors focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:cursor-not-allowed`}
+            disabled={!email || !password}
+            state={isLoading ? 'loading' : 'idle'}
+            variant="primary"
+            size="lg"
+            fullWidth
+            withRipple
           >
-            {isLoading ? (
-              <span className={`flex items-center justify-center ${tokens.spacing.gap.sm}`}>
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                Signing in...
-              </span>
-            ) : (
-              "Sign In"
-            )}
-          </button>
+            Sign In
+          </Button>
 
           {/* Help Text */}
           <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} text-center mt-4`}>

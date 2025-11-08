@@ -256,6 +256,7 @@ describe("Hold Management System", () => {
           updated_at: "2025-11-14T00:00:00Z",
           completed_at: null,
           is_completed: false,
+          is_voluntary: false,
           scheduled_date: "2025-10-15",
         },
       ];
@@ -296,7 +297,7 @@ describe("Hold Management System", () => {
       expect(result[0].scheduledHolds).toHaveLength(2);
     });
 
-    it("R2.5: Past holds from last_hold_date are included", () => {
+    it("R2.5: Only scheduled_holds are attached (no synthetic holds from last_hold_date)", () => {
       const days = [
         {
           date: new Date(2025, 10, 20),
@@ -316,17 +317,16 @@ describe("Hold Management System", () => {
         }),
       ];
 
+      // Should NOT create synthetic holds from last_hold_date
       const result = attachScheduledHolds(days, [], firefighters);
 
-      expect(result[0].scheduledHolds).toHaveLength(1);
-      expect(result[0].scheduledHolds[0].status).toBe("completed");
-      expect(result[0].scheduledHolds[0].firefighter_name).toBe("John Doe");
+      expect(result[0].scheduledHolds).toHaveLength(0);
     });
   });
 
   describe("3. Hold History - Data Tracking", () => {
-    it("R3.1: Hold history preserves completed holds in calendar", () => {
-      // Test that last_hold_date creates a completed hold entry in calendar
+    it("R3.1: Hold history preserves completed holds in calendar (via scheduled_holds only)", () => {
+      // Test that completed scheduled_holds appear in calendar
       const days = [
         {
           date: new Date(2025, 9, 20),
@@ -342,19 +342,29 @@ describe("Hold Management System", () => {
         createMockFirefighter({
           id: "ff-1",
           name: "John Doe",
-          last_hold_date: "2025-10-20T00:00:00Z",
         }),
       ];
+      const scheduledHolds = [
+        {
+          id: "hold-1",
+          firefighter_id: "ff-1",
+          firefighter_name: "John Doe",
+          hold_date: "2025-10-20",
+          status: "completed" as const,
+          shift: "A" as const,
+          fire_station: "1",
+          duration: "24h" as const,
+          completed_at: "2025-10-20T00:00:00Z",
+          created_at: "2025-10-19T00:00:00Z",
+        },
+      ];
 
-      const result = attachScheduledHolds(days, [], firefighters);
+      const result = attachScheduledHolds(days, scheduledHolds, firefighters);
 
-      // Should create a completed hold from last_hold_date
+      // Should show completed scheduled hold
       expect(result[0].scheduledHolds).toHaveLength(1);
       expect(result[0].scheduledHolds[0].status).toBe("completed");
       expect(result[0].scheduledHolds[0].firefighter_name).toBe("John Doe");
-      expect(result[0].scheduledHolds[0].completed_at).toBe(
-        "2025-10-20T00:00:00Z"
-      );
     });
 
     it("R3.2: Hold list message formats available firefighters", () => {
@@ -667,6 +677,7 @@ describe("Hold Management System", () => {
         updated_at: new Date().toISOString(),
         completed_at: null,
         is_completed: false,
+        is_voluntary: false,
         scheduled_date: "2025-10-15",
       };
 

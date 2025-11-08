@@ -3,10 +3,18 @@
  *
  * Horizontal bar displaying the next firefighter up for hold from each shift (A/B/C)
  * Shows full names and station numbers without abbreviation
+ * 
+ * Mobile Optimizations:
+ * - Sticky bottom bar on mobile (< 768px)
+ * - Horizontal scrolling with snap points for 3 shifts
+ * - Safe-area-inset support for notched devices
  */
 
+import { useRef } from 'react';
+import { useDevice } from '../hooks/useDevice';
+import { useSwipeGesture } from '../hooks/useTouchGestures';
 import { Firefighter } from '../lib/supabase';
-import { colors, tokens } from '../styles';
+import { colors, tokens, gridUtilities } from '../styles';
 
 interface NextUpBarProps {
   firefighters: Firefighter[];
@@ -14,6 +22,9 @@ interface NextUpBarProps {
 }
 
 export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
+  const device = useDevice();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   // Get next up for each shift (first available firefighter)
   const getNextForShift = (shift: 'A' | 'B' | 'C'): Firefighter | null => {
     const shiftFirefighters = firefighters
@@ -26,6 +37,22 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
   const nextA = getNextForShift('A');
   const nextB = getNextForShift('B');
   const nextC = getNextForShift('C');
+
+  // Enable horizontal swipe scrolling on mobile
+  useSwipeGesture(scrollContainerRef, {
+    minDistance: 30,
+    onSwipe: (direction) => {
+      if (!scrollContainerRef.current) return;
+      const container = scrollContainerRef.current;
+      const scrollAmount = container.offsetWidth * 0.9;
+
+      if (direction === 'left') {
+        container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      } else if (direction === 'right') {
+        container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      }
+    },
+  });
 
   const renderShiftBadge = (shift: 'A' | 'B' | 'C') => {
     const badgeColors = {
@@ -64,6 +91,9 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
               : 'bg-gray-50 border border-gray-200'
           }
         `}
+        aria-live="polite"
+        aria-atomic="true"
+        aria-label={`Next up for Shift ${shift}`}
       >
         {renderShiftBadge(shift)}
 
@@ -104,12 +134,21 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
     <div
       className={`
         px-4 sm:px-6 py-3
+        ${device.isMobile ? 'fixed bottom-0 left-0 right-0 z-30' : ''}
         ${
           isDarkMode
             ? 'bg-slate-950 border-b border-slate-800'
             : 'bg-white border-b border-gray-200'
         }
+        ${tokens.shadows.lg}
       `}
+      style={
+        device.isMobile
+          ? {
+              paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
+            }
+          : undefined
+      }
     >
       <div className="flex items-center gap-2 mb-2.5">
         <h2
@@ -126,11 +165,33 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
-        {renderShiftSection('A', nextA)}
-        {renderShiftSection('B', nextB)}
-        {renderShiftSection('C', nextC)}
-      </div>
+      {/* Desktop: Grid layout - using grid system utilities */}
+      {!device.isMobile && (
+        <div className={gridUtilities.nextUpBar.container}>
+          {renderShiftSection('A', nextA)}
+          {renderShiftSection('B', nextB)}
+          {renderShiftSection('C', nextC)}
+        </div>
+      )}
+
+      {/* Mobile: Horizontal scroll with snap points */}
+      {device.isMobile && (
+        <div
+          ref={scrollContainerRef}
+          className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          <div className="snap-center flex-shrink-0 w-[85vw]">
+            {renderShiftSection('A', nextA)}
+          </div>
+          <div className="snap-center flex-shrink-0 w-[85vw]">
+            {renderShiftSection('B', nextB)}
+          </div>
+          <div className="snap-center flex-shrink-0 w-[85vw]">
+            {renderShiftSection('C', nextC)}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

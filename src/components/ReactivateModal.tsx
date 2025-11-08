@@ -4,6 +4,7 @@ import { Firefighter } from '../lib/supabase';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
 import { colors, tokens } from '../styles';
+import { IconButton } from './ui/IconButton';
 
 interface ReactivateModalProps {
   isOpen: boolean;
@@ -79,13 +80,14 @@ export function ReactivateModal({
               <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}>Choose position in rotation</p>
             </div>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close reactivate dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close reactivate dialog"
-          >
-            <X className={`${tokens.icons.lg} ${colors.structural.text.secondary}`} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div className={`${tokens.spacing.card.lg} space-y-6`}>

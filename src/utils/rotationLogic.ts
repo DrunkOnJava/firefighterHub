@@ -47,6 +47,8 @@ export function moveToBottom(firefighters: Firefighter[], firefighterId: string)
 }
 
 export function formatHoldListMessage(firefighters: Firefighter[], shiftName: string = 'C-shift'): string {
+  if (!firefighters || !Array.isArray(firefighters)) return "Hold list:\n\nNo firefighters currently in rotation.";
+  
   const available = firefighters
     .filter(ff => ff.is_available)
     .sort((a, b) => a.order_position - b.order_position);

@@ -23,7 +23,7 @@ export function StationSelector({
         <span>Fire Station (Optional)</span>
       </label>
 
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
         <button
           type="button"
           onClick={() => onStationChange('')}

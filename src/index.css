@@ -23,7 +23,18 @@
   --materialm-primary: #5d87ff;   /* Blue */
   --materialm-warning: #ffae1f;   /* Amber */
 
-  /* Layout Variables */
+  /* Grid System Variables */
+  --grid-base-unit: 8px;
+  --grid-desktop-gap: 16px;
+  --grid-tablet-gap: 16px;
+  --grid-mobile-gap: 12px;
+  --calendar-gap-desktop: 8px;
+  --calendar-gap-tablet: 6px;
+  --calendar-gap-mobile: 4px;
+  --roster-gap: 8px;
+  --baseline-unit: 8px;
+
+  /* Layout Variables (Legacy - maintained for backwards compatibility) */
   --header-h: 64px;
   --gap: 16px;
   --radius: 12px;
@@ -48,9 +59,23 @@ html, body {
   background: var(--bg-app);
   color: var(--text);
   font: 14px/1.2 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  overflow: hidden; /* Single-screen layout */
+  overflow: hidden; /* Single-screen layout on desktop */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enable scrolling on mobile */
+@media (max-width: 767px) {
+  html, body {
+    overflow: auto;
+    height: auto;
+    min-height: 100%;
+  }
+  
+  #root {
+    height: auto;
+    min-height: 100vh;
+  }
 }
 
 #root {
@@ -141,12 +166,27 @@ header {
 }
 
 /* Main Layout - Calendar Left (1fr), Roster Right (480px) */
+/* Uses CSS Grid with named areas and responsive behavior */
 .layout {
   display: grid;
   grid-template-columns: 1fr var(--sidebar-w);
-  gap: var(--gap);
+  grid-template-areas: "calendar sidebar";
+  gap: var(--grid-desktop-gap);
   height: calc(100vh - var(--header-h) - var(--gap) * 3);
-  min-height: 0;
+  min-height: 0; /* Prevent grid blowout */
+}
+
+/* Allow layout to grow on mobile */
+@media (max-width: 767px) {
+  .layout {
+    height: auto;
+    min-height: calc(100vh - var(--header-h) - var(--gap) * 3);
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "calendar"
+      "sidebar";
+    gap: var(--grid-mobile-gap);
+  }
 }
 
 .card {
@@ -156,11 +196,23 @@ header {
 }
 
 /* Calendar Section */
+/* Uses flex layout for internal structure with proper overflow handling */
 .calendar {
+  grid-area: calendar;
   display: flex;
   flex-direction: column;
   padding: 14px;
-  min-height: 0;
+  min-height: 0; /* Critical for grid children */
+  overflow: hidden; /* Prevent internal overflow on desktop */
+}
+
+/* Allow calendar to scroll on mobile */
+@media (max-width: 767px) {
+  .calendar {
+    min-height: auto;
+    height: auto;
+    overflow: visible; /* Allow natural scrolling */
+  }
 }
 
 .cal-head {
@@ -181,18 +233,29 @@ header {
   font-size: 12px;
 }
 
+/* Calendar grid - 7 columns for weekdays */
 .grid {
   flex: 1;
   display: grid;
   grid-template-rows: 24px 1fr;
-  gap: 10px;
-  min-height: 0;
+  gap: var(--calendar-gap-desktop);
+  min-height: 0; /* Prevent overflow */
+  overflow: hidden; /* Contain cells */
 }
 
+/* Responsive calendar grid */
+@media (max-width: 767px) {
+  .grid {
+    gap: var(--calendar-gap-mobile);
+    overflow: visible;
+  }
+}
+
+/* Day of week header */
 .dow {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: var(--calendar-gap-desktop);
 }
 
 .dow span {
@@ -203,14 +266,38 @@ header {
   font-weight: 600;
 }
 
+/* Responsive day header */
+@media (max-width: 767px) {
+  .dow {
+    gap: var(--calendar-gap-mobile);
+  }
+}
+
+/* Calendar day cells - 7x6 grid */
 .cells {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  gap: 8px;
-  min-height: 0;
+  grid-auto-rows: 1fr; /* Equal height rows */
+  gap: var(--calendar-gap-desktop);
+  min-height: 0; /* Prevent blowout */
+  overflow: hidden; /* Contain content */
 }
 
+/* Responsive cells */
+@media (max-width: 1024px) {
+  .cells {
+    gap: var(--calendar-gap-tablet);
+  }
+}
+
+@media (max-width: 767px) {
+  .cells {
+    gap: var(--calendar-gap-mobile);
+    overflow: visible;
+  }
+}
+
+/* Individual day cell */
 .cell {
   background: #0e1a2b;
   border: 1px solid var(--line);
@@ -219,15 +306,31 @@ header {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  min-width: 0;
-  min-height: 0;
+  min-width: 0; /* Prevent overflow */
+  min-height: 0; /* Allow grid to control height */
+  aspect-ratio: 1 / 1.2; /* Slightly taller than square */
   cursor: pointer;
   transition: all 0.15s;
+  overflow: hidden; /* Contain hold cards */
 }
 
 .cell:hover {
   background: #1a2535;
   border-color: var(--materialm-primary);
+}
+
+/* Responsive cell sizing */
+@media (max-width: 1024px) {
+  .cell {
+    aspect-ratio: 1 / 1.1; /* Slightly more square on tablet */
+  }
+}
+
+@media (max-width: 767px) {
+  .cell {
+    aspect-ratio: 1 / 1; /* Square on mobile */
+    min-height: 48px; /* WCAG touch target minimum */
+  }
 }
 
 .cell .num {
@@ -278,17 +381,34 @@ header {
 
 /* Sidebar with Roster (20 rows) */
 .sidebar {
+  grid-area: sidebar;
   display: flex;
   flex-direction: column;
   padding: 12px;
   gap: 12px;
-  min-height: 0;
+  min-height: 0; /* Critical for grid children */
+  overflow-y: auto; /* Desktop scrolling within sidebar */
 }
 
+/* Allow sidebar to scroll naturally on mobile */
+@media (max-width: 767px) {
+  .sidebar {
+    overflow-y: visible;
+    min-height: auto;
+  }
+}
+
+/* Next Up Bar - 3-column grid */
 .nextup {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: var(--roster-gap);
+}
+
+@media (max-width: 767px) {
+  .nextup {
+    gap: var(--grid-mobile-gap);
+  }
 }
 
 .chip {
@@ -341,10 +461,11 @@ header {
 }
 
 /* Roster Section - 20 Rows Visible */
+/* Uses CSS Grid with fractional units for proportional column widths */
 .roster {
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  min-height: 0; /* Allow grid to control */
   flex: 1;
   background: var(--bg-card-alt);
   border: 1px solid var(--line);
@@ -354,9 +475,9 @@ header {
 
 .roster-head {
   display: grid;
-  grid-template-columns: 1.2fr .5fr .8fr;
+  grid-template-columns: 1.2fr 0.5fr 0.8fr; /* Name : Station : Certs */
   align-items: center;
-  gap: 8px;
+  gap: var(--roster-gap);
   padding: 4px 6px;
   color: var(--muted);
   font-size: 12px;
@@ -370,25 +491,39 @@ header {
   grid-template-rows: repeat(20, 1fr); /* CRITICAL: All 20 rows visible */
   gap: 4px;
   padding-top: 6px;
-  min-height: 0;
+  min-height: 0; /* Prevent blowout */
 }
 
 .row {
   display: grid;
-  grid-template-columns: 1.2fr .5fr .8fr;
+  grid-template-columns: 1.2fr 0.5fr 0.8fr; /* Match header */
   align-items: center;
-  gap: 8px;
+  gap: var(--roster-gap);
   padding: 4px 6px;
   background: var(--bg-card);
   border: 1px solid var(--line);
   border-radius: 8px;
-  min-height: 0;
+  min-height: 32px; /* Minimum height for content */
   transition: all 0.15s;
 }
 
 .row:hover {
   background: #1e2838;
   border-color: var(--materialm-primary);
+}
+
+/* Mobile roster: stack columns */
+@media (max-width: 767px) {
+  .roster-head,
+  .row {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 8px;
+  }
+  
+  .rows {
+    grid-template-rows: auto; /* Auto-height rows on mobile */
+    gap: 8px;
+  }
 }
 
 .name {
@@ -629,5 +764,93 @@ header {
   textarea,
   select {
     font-size: 16px !important;
+  }
+}
+
+/* =========================================
+   Mobile UI Utilities
+   ========================================= */
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari, Opera */
+}
+
+/* Touch-optimized interactions */
+.touch-pan-y {
+  touch-action: pan-y;
+}
+
+.touch-pan-x {
+  touch-action: pan-x;
+}
+
+/* Haptic feedback support */
+@media (hover: none) and (pointer: coarse) {
+  button:active,
+  .btn:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Prevent body scroll when modals open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Safe area inset padding utilities */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Mobile bottom sheet animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .animate-slide-up,
+  .animate-fade-in,
+  .animate-scale-in {
+    animation: none !important;
   }
 }

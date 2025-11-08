@@ -5,6 +5,10 @@ import path from "node:path";
 export default defineConfig({
   // @ts-expect-error - Vite version conflict between dev and Vitest
   plugins: [react()],
+  define: {
+    // Force React to use development mode in tests
+    'process.env.NODE_ENV': JSON.stringify('test'),
+  },
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],

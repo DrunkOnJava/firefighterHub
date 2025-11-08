@@ -171,6 +171,7 @@ export type Database = {
           hold_date: string | null
           id: string
           is_completed: boolean
+          is_voluntary: boolean
           lent_to_shift: string | null
           notes: string | null
           scheduled_date: string
@@ -189,6 +190,7 @@ export type Database = {
           hold_date?: string | null
           id?: string
           is_completed?: boolean
+          is_voluntary?: boolean
           lent_to_shift?: string | null
           notes?: string | null
           scheduled_date: string
@@ -207,6 +209,7 @@ export type Database = {
           hold_date?: string | null
           id?: string
           is_completed?: boolean
+          is_voluntary?: boolean
           lent_to_shift?: string | null
           notes?: string | null
           scheduled_date?: string

@@ -69,6 +69,8 @@ export function attachScheduledHolds(
   _firefighters: Firefighter[] // Unused after removing synthetic holds (kept for API compatibility)
 ): CalendarDay[] {
   void _firefighters;
+  if (!holds || !Array.isArray(holds)) holds = [];
+  
   const holdsByDate = new Map<string, ScheduledHold[]>();
 
   holds.forEach((hold) => {
@@ -121,6 +123,9 @@ export function attachScheduledHolds(
 }
 
 export function formatDateForDB(date: Date): string {
+  if (!date || !(date instanceof Date) || isNaN(date.getTime())) {
+    throw new Error("Invalid date provided to formatDateForDB");
+  }
   // Always use local date components to avoid timezone shifts
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -129,9 +134,19 @@ export function formatDateForDB(date: Date): string {
 }
 
 export function parseDateStringLocal(dateString: string): Date {
+  if (!dateString || typeof dateString !== "string") {
+    throw new Error("Invalid date string provided to parseDateStringLocal");
+  }
   // Parse YYYY-MM-DD as local date, not UTC
   const [year, month, day] = dateString.split("-").map(Number);
-  return new Date(year, month - 1, day);
+  if (!year || !month || !day || month < 1 || month > 12 || day < 1 || day > 31) {
+    throw new Error(`Malformed date string: ${dateString}`);
+  }
+  const date = new Date(year, month - 1, day);
+  if (isNaN(date.getTime())) {
+    throw new Error(`Invalid date values: ${dateString}`);
+  }
+  return date;
 }
 
 export function formatMonthYear(date: Date): string {
@@ -155,6 +170,9 @@ export function autoScheduleNextHolds(
   startDate: Date,
   daysToSchedule: number
 ): Array<{ date: string; firefighter: Firefighter }> {
+  if (!firefighters || !Array.isArray(firefighters)) return [];
+  if (!startDate || !(startDate instanceof Date) || isNaN(startDate.getTime())) return [];
+  
   const available = firefighters
     .filter((ff) => ff.is_available)
     .sort((a, b) => a.order_position - b.order_position);
@@ -182,9 +200,16 @@ export function autoScheduleNextHolds(
 export function getNextAvailableFirefighter(
   firefighters: Firefighter[]
 ): Firefighter | null {
+  if (!firefighters || !Array.isArray(firefighters)) return null;
+  
   const available = firefighters
     .filter((ff) => ff.is_available)
-    .sort((a, b) => a.order_position - b.order_position);
+    .sort((a, b) => {
+      // Handle NaN by treating as Infinity (sorts to end)
+      const aPos = isNaN(a.order_position) ? Infinity : a.order_position;
+      const bPos = isNaN(b.order_position) ? Infinity : b.order_position;
+      return aPos - bPos;
+    });
 
   return available.length > 0 ? available[0] : null;
 }

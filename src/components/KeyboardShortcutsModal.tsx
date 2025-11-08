@@ -4,6 +4,8 @@ import {
   formatShortcut,
 } from "../hooks/useKeyboardShortcuts";
 import { colors, tokens } from "../styles";
+import { IconButton } from "./ui/IconButton";
+import { visualHeading } from "../utils/visualHeadings";
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;
@@ -62,18 +64,19 @@ export function KeyboardShortcutsModal({
             </div>
             <h2
               id="shortcuts-modal-title"
-              className={tokens.typography.heading.h3}
+              className={visualHeading('h3')}
             >
               Keyboard Shortcuts
             </h2>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close shortcuts modal"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.md} ${colors.interactive.hover.bg} ${colors.structural.text.secondary} hover:${colors.structural.text.primary} transition-colors flex items-center justify-center`}
-            aria-label="Close shortcuts modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         {/* Content */}

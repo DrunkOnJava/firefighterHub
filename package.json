@@ -19,12 +19,14 @@
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
+    "validate:headers": "./scripts/validate-headers.sh",
     "types:generate": "echo 'Note: Types are auto-generated via Supabase MCP. Run generate command in your environment.' && exit 0",
     "generate:icons": "bash scripts/generate-pwa-icons.sh",
     "bump-cache": "node scripts/bump-cache-version.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
+    "@vercel/analytics": "^1.5.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.344.0",

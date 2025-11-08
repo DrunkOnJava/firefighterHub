@@ -34,10 +34,12 @@ interface DayModalProps {
     ff: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => void;
   onRemoveHold: (holdId: string) => void;
   onMarkCompleted: (hold: ScheduledHold) => void;
+  onSkipFirefighter?: (firefighterId: string) => void;
   isAdminMode?: boolean;
   isDarkMode?: boolean;
   currentShift: Shift;
@@ -53,6 +55,7 @@ export function DayModal({
   onScheduleHold,
   onRemoveHold,
   onMarkCompleted,
+  onSkipFirefighter,
   isAdminMode = false,
   isDarkMode = true,
 }: DayModalProps) {
@@ -76,9 +79,10 @@ export function DayModal({
     ff: Firefighter,
     station?: string,
     duration?: HoldDuration,
-    startTime?: string
+    startTime?: string,
+    isVoluntary?: boolean
   ) => {
-    onScheduleHold(holdDate, ff, station, duration, startTime);
+    onScheduleHold(holdDate, ff, station, duration, startTime, isVoluntary);
 
     if (!showAddAnother) {
       onClose();
@@ -217,6 +221,7 @@ export function DayModal({
               onFirefighterSelect={onFirefighterSelect}
               onSchedule={handleSchedule}
               onCancel={handleCancel}
+              onSkipFirefighter={onSkipFirefighter}
               selectedStation={selectedStation}
               onStationChange={setSelectedStation}
               showAddAnother={showAddAnother}

@@ -4,6 +4,7 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
 import { colors, tokens } from '../styles';
 import { useEffect } from 'react';
+import { IconButton } from './ui/IconButton';
 
 interface ActivityLogModalProps {
   isOpen: boolean;
@@ -49,13 +50,14 @@ export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
             </div>
             <h2 id="activity-modal-title" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>Activity Log</h2>
           </div>
-          <button
+          <IconButton
+            icon={X}
+            label="Close activity log dialog"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors focus-ring flex items-center justify-center`}
-            aria-label="Close activity log dialog"
-          >
-            <X size={24} className={colors.structural.text.secondary} />
-          </button>
+            variant="default"
+            size="md"
+            isDarkMode={true}
+          />
         </div>
 
         <div className="overflow-y-auto max-h-[calc(90vh-100px)]">

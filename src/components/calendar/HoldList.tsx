@@ -19,7 +19,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { Firefighter } from "../../lib/supabase";
-import { colors, tokens } from "../../styles";
+import { colors, tokens, visualHeadings } from "../../styles";
 import { ScheduledHold } from "../../utils/calendarUtils";
 import { isHoldLocked } from "../../utils/validation";
 import { EmptyState } from "../EmptyState";
@@ -101,7 +101,7 @@ export function HoldList({
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <p
-                    className={`${tokens.typography.heading.h4} ${
+                    className={`${visualHeadings.subtitleMedium} ${
                       isDarkMode
                         ? colors.structural.text.primary
                         : "text-gray-900"
@@ -152,6 +152,16 @@ export function HoldList({
                     >
                       {hold.status === "scheduled" ? "SCHEDULED" : "COMPLETED"}
                     </span>
+
+                    {hold.is_voluntary && (
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-1 bg-green-900/70 text-green-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
+                        title="Member volunteered for this hold"
+                      >
+                        <span>🙋</span>
+                        VOLUNTARY
+                      </span>
+                    )}
 
                     {locked && (
                       <span

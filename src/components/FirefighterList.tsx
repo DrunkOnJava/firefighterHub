@@ -748,7 +748,7 @@ export function FirefighterList({
                                 setShowProfileModal(true);
                               }}
                               variant="default"
-                              size="sm"
+                              size="xs"
                               isDarkMode={isDarkMode}
                             />
                           )}
@@ -762,7 +762,7 @@ export function FirefighterList({
                             label={`Volunteer to take hold for ${firefighter.name}`}
                             onClick={() => onVolunteerHold(firefighter.id)}
                             variant="success"
-                            size="sm"
+                            size="xs"
                             isDarkMode={isDarkMode}
                           />
                         )}
@@ -798,7 +798,7 @@ export function FirefighterList({
                               label={`Transfer ${firefighter.name} to different shift`}
                               onClick={() => onTransferShift(firefighter.id)}
                               variant="primary"
-                              size="sm"
+                              size="xs"
                               isDarkMode={isDarkMode}
                             />
                             <IconButton
@@ -806,7 +806,7 @@ export function FirefighterList({
                               label={`Deactivate ${firefighter.name}`}
                               onClick={() => onDeactivate(firefighter.id)}
                               variant="default"
-                              size="sm"
+                              size="xs"
                               isDarkMode={isDarkMode}
                             />
                             <IconButton
@@ -814,7 +814,7 @@ export function FirefighterList({
                               label={`Delete ${firefighter.name} permanently`}
                               onClick={() => onDelete(firefighter.id)}
                               variant="danger"
-                              size="sm"
+                              size="xs"
                               isDarkMode={isDarkMode}
                             />
                           </div>
@@ -903,7 +903,7 @@ export function FirefighterList({
                           setShowProfileModal(true);
                         }}
                         variant="primary"
-                        size="sm"
+                        size="xs"
                         isDarkMode={isDarkMode}
                       />
                       <IconButton
@@ -914,7 +914,7 @@ export function FirefighterList({
                           setShowReactivateModal(true);
                         }}
                         variant="success"
-                        size="sm"
+                        size="xs"
                         isDarkMode={isDarkMode}
                       />
                       <span

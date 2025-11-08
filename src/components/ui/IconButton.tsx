@@ -29,7 +29,7 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
   icon: LucideIcon;
   label: string; // For aria-label and tooltip
   variant?: 'default' | 'primary' | 'danger' | 'success';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
   isDarkMode?: boolean;
 }
 
@@ -44,6 +44,7 @@ export const IconButton = ({
 }: IconButtonProps) => {
   // Size classes - ensures WCAG 2.5.5 compliance (44×44px minimum)
   const sizeClasses = {
+    xs: 'min-w-[32px] min-h-[32px] p-1',        // 32×32px (compact table rows only)
     sm: 'min-w-[40px] min-h-[40px] p-2',        // 40×40px (acceptable for less critical actions)
     md: 'min-w-[44px] min-h-[44px] p-2.5',      // 44×44px (WCAG compliant)
     lg: 'min-w-[48px] min-h-[48px] p-3',        // 48×48px (extra comfortable)
@@ -51,6 +52,7 @@ export const IconButton = ({
 
   // Icon sizes - visual size (not touch target)
   const iconSizes = {
+    xs: 'w-4 h-4',   // 16px (compact)
     sm: 'w-5 h-5',   // 20px
     md: 'w-6 h-6',   // 24px (standard)
     lg: 'w-7 h-7',   // 28px

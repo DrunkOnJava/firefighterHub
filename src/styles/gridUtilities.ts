@@ -44,8 +44,8 @@ export const gridUtilities = {
     weekdayHeader: [
       'grid',
       'grid-cols-7',
-      'gap-2 md:gap-2 lg:gap-2',
-      'mb-2',
+      'gap-1.5 md:gap-2 lg:gap-2',
+      'mb-1',
       'w-full',
     ].join(' '),
     
@@ -53,9 +53,9 @@ export const gridUtilities = {
       'grid',
       'grid-cols-7',
       'auto-rows-fr',                 // Equal height rows
-      'gap-2 md:gap-2 lg:gap-2',
-      'min-h-0',
-      'flex-1',                       // Fill available space
+      'gap-1.5 md:gap-2 lg:gap-2',
+      'w-full',
+      'h-full',
     ].join(' '),
     
     dayCell: [

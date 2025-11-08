@@ -48,11 +48,12 @@ export function DayCell({
 
   // Determine styling based on state - WCAG 2.5.5: 44px minimum touch targets
   let cellClasses = `
-    relative w-full p-2 text-left
+    relative w-full p-1.5 text-left
     ${tokens.touchTarget.min} min-w-[44px]
     ${tokens.transitions.fast}
     ${tokens.focus.default}
     flex flex-col
+    aspect-square
   `;
 
   if (!day.isCurrentMonth) {

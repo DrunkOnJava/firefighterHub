@@ -72,26 +72,26 @@ export function CalendarGrid({
 
   return (
     <div 
-      className="w-full flex flex-col min-h-0"
+      className="w-full flex flex-col min-h-0 flex-1"
       ref={gridRef}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* Weekday headers - using grid system utilities */}
-      <div className={gridUtilities.calendar.weekdayHeader}>
+      <div className={`${gridUtilities.calendar.weekdayHeader} pb-1`}>
         {weekDays.map((day) => (
           <div
             key={day}
-            className={`text-center font-semibold text-sm ${theme.calendar.headerText}`}
+            className={`text-center font-bold text-xs ${theme.calendar.headerText}`}
           >
             <span className="hidden sm:inline">{day}</span>
-            <span className="sm:hidden">{day.slice(0, 3)}</span>
+            <span className="sm:hidden">{day.slice(0, 1)}</span>
           </div>
         ))}
       </div>
 
-      {/* Calendar grid - using grid system utilities */}
-      <div className={gridUtilities.calendar.dayGrid}>
+      {/* Calendar grid - using grid system utilities with max height */}
+      <div className={`${gridUtilities.calendar.dayGrid} max-h-[calc(100vh-280px)] overflow-auto`}>
         {calendarDays.map((day, index) => (
           <DayCell
             key={index}

@@ -365,9 +365,6 @@ export function FirefighterList({
               /* Desktop View: Table (Existing) */
           <>
             <style>{`
-              .roster-table {
-                table-layout: fixed !important;
-              }
               .roster-table tbody tr {
                 height: 40px !important;
                 max-height: 40px !important;
@@ -375,12 +372,12 @@ export function FirefighterList({
               .roster-table tbody td {
                 height: 40px !important;
                 max-height: 40px !important;
-                overflow: hidden !important;
                 vertical-align: middle !important;
+                white-space: nowrap !important;
               }
               .roster-table tbody td > div {
                 max-height: 40px !important;
-                overflow: hidden !important;
+                white-space: nowrap !important;
               }
             `}</style>
           <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] -mx-6">
@@ -562,7 +559,7 @@ export function FirefighterList({
                       } ${isAdminMode ? 'cursor-move' : 'cursor-default'}`}
                     >
                       {isAdminMode && (
-                        <td className="px-4 py-0 max-h-10 overflow-hidden text-center align-middle">
+                        <td className="px-4 py-0 max-h-10 whitespace-nowrap text-center align-middle">
                           <button
                             onClick={() => toggleSelection(firefighter.id)}
                             className={`p-0 rounded transition-colors ${
@@ -591,18 +588,18 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
+                        className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-300" : "text-slate-700"
                         }`}
                       >
                         <span className="font-bold">{index + 1}</span>
                       </td>
                       <td
-                        className={`px-4 py-0 align-middle max-h-10 overflow-hidden ${
+                        className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap ${
                           isDarkMode ? "text-white" : "text-slate-900"
                         }`}
                       >
-                        <div className="flex items-center gap-1 h-10">
+                        <div className="flex items-center gap-1 h-10 whitespace-nowrap">
                           {/* Shift Badge */}
                           <div
                             className={`w-3 h-3 flex-shrink-0 ${
@@ -615,7 +612,7 @@ export function FirefighterList({
                           />
                           <button
                             onClick={() => handleViewProfile(firefighter)}
-                            className="font-bold text-sm hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-1 focus:ring-orange-500 rounded px-0.5"
+                            className="font-bold text-sm hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-1 focus:ring-orange-500 rounded px-0.5 whitespace-nowrap"
                             aria-label={`View profile for ${firefighter.name}`}
                           >
                             {firefighter.name}
@@ -629,7 +626,7 @@ export function FirefighterList({
                       </td>
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap ${
+                          className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -648,7 +645,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
+                          className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -669,7 +666,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
+                          className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -695,7 +692,7 @@ export function FirefighterList({
                         </td>
                       )}
                       {isAdminMode && (
-                        <td className="px-4 py-0 align-middle max-h-10 overflow-hidden">
+                        <td className="px-4 py-0 align-middle max-h-10 whitespace-nowrap overflow-hidden">
                           {qualifications.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {qualifications.map((qual) => (
@@ -719,7 +716,7 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
+                        className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-400" : "text-slate-600"
                         }`}
                       >

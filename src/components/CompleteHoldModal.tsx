@@ -3,16 +3,13 @@ import {
   Calendar as CalendarIcon,
   CheckCircle,
   Clock,
-  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { StationSelector } from "./StationSelector";
 import { AnimatedButton } from "./ui/AnimatedButton";
-import { IconButton } from "./ui/IconButton";
+import { ResponsiveModal } from "./Common/ResponsiveModal";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
@@ -44,8 +41,6 @@ export function CompleteHoldModal({
   const [duration, setDuration] = useState<HoldDuration>("24h"); // Default to 24 hours
   const [startTime, setStartTime] = useState("07:00"); // Default to 07:00
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const trapRef = useFocusTrap(isOpen);
-  useFocusReturn(isOpen);
 
   useEffect(() => {
     if (isOpen && firefighter) {
@@ -58,17 +53,6 @@ export function CompleteHoldModal({
       setStartTime("07:00"); // Reset to default 07:00
     }
   }, [isOpen, firefighter, totalFirefighters]);
-
-  useEffect(() => {
-    function handleEscape(e: KeyboardEvent) {
-      if (e.key === "Escape" && isOpen) {
-        onClose();
-      }
-    }
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
 
   if (!isOpen || !firefighter) return null;
 

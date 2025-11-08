@@ -204,6 +204,11 @@ export const tokens = {
       slideUp: 'animate-slide-up',
       slideInRight: 'animate-slide-in-right',
     },
+    /** Modal specific animations */
+    modal: {
+      slideUpMobile: 'animate-slide-up-mobile',
+      fadeIn: 'animate-fade-in',
+    },
   },
 
   /**

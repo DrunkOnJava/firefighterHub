@@ -91,7 +91,7 @@ export function BigCalendar({
 
     let backgroundColor = '#5d87ff'; // MaterialM blue
     if (status === 'completed') {
-      backgroundColor = '#0fb198'; // Darker teal for better contrast with white text
+      backgroundColor = '#087f6a'; // Dark teal for WCAG AAA contrast with white text
     } else if (status === 'skipped') {
       backgroundColor = '#fa896b'; // MaterialM coral
     }

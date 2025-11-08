@@ -7,8 +7,6 @@
   --rbc-text-muted: oklch(62.14% 0.019 257.24); /* slate-400 */
   --rbc-today: oklch(61.04% 0.218 252.42); /* blue-500 */
   --rbc-selected: oklch(64.99% 0.143 265.28); /* primary-500 */
-  --rbc-hold-scheduled: oklch(69.64% 0.152 40.89); /* orange-600 */
-  --rbc-hold-completed: oklch(62.07% 0.149 156.48); /* green-600 */
 }
 
 .big-calendar-container.dark-theme .rbc-calendar {
@@ -127,30 +125,13 @@
   font-size: 1.5rem;
 }
 
-/* EVENT PILLS - Operational Color System */
+/* EVENT PILLS - MaterialM Standard Colors */
 .big-calendar-container.dark-theme .rbc-event {
-  padding: 2px 6px;
-  font-size: 0.625rem; /* text-[10px] */
-  font-weight: 700;
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
   border-radius: 4px;
-  border-left: 3px solid transparent;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s;
-}
-
-/* Scheduled holds - Orange (operational urgency) */
-.big-calendar-container.dark-theme .rbc-event.event-scheduled {
-  background: oklch(69.64% 0.152 40.89 / 0.9); /* orange-600/90 */
-  color: white;
-  border-left-color: oklch(79.64% 0.152 40.89); /* orange-400 */
-}
-
-/* Completed holds - Green (done state) */
-.big-calendar-container.dark-theme .rbc-event.event-completed {
-  background: oklch(62.07% 0.149 156.48 / 0.7); /* green-600/70 */
-  color: white;
-  border-left-color: oklch(72.07% 0.149 156.48); /* green-400 */
-  opacity: 0.75;
+  transition: opacity 0.2s;
 }
 
 .big-calendar-container.dark-theme .rbc-event:hover {

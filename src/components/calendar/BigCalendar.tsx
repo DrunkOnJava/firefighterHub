@@ -85,21 +85,23 @@ export function BigCalendar({
     });
   }, [scheduledHolds]);
 
-  // Event style getter for color coding
+  // Event style getter for MaterialM color coding
   const eventStyleGetter = (event: CalendarEvent) => {
     const { status } = event.resource;
 
-    // Use CSS classes for operational color system
-    let className = 'event-scheduled';
+    let backgroundColor = '#5d87ff'; // MaterialM blue
     if (status === 'completed') {
-      className = 'event-completed';
+      backgroundColor = '#13deb9'; // MaterialM teal
     } else if (status === 'skipped') {
-      className = 'event-scheduled'; // Treat skipped as scheduled visually
+      backgroundColor = '#fa896b'; // MaterialM coral
     }
 
     return {
-      className,
       style: {
+        backgroundColor,
+        borderRadius: '4px',
+        opacity: 0.9,
+        color: 'white',
         border: '0px',
         display: 'block',
       }

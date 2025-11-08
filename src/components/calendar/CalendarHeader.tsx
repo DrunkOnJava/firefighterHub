@@ -35,89 +35,62 @@ export function CalendarHeader({
   isDarkMode = true,
 }: CalendarHeaderProps) {
   return (
-    <div className="space-y-3 sm:space-y-4">
-      {/* Header with icon and title */}
-      <div
-        className={`flex items-center justify-between ${tokens.spacing.margin.md}`}
-      >
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div
+    <div className="space-y-4">
+      {/* Single row: Month navigation + Shift indicator */}
+      <div className="flex items-center justify-between">
+        {/* Left: Month navigation */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onPreviousMonth}
             className={`
-              ${colors.semantic.primary.gradient}
-              ${colors.semantic.primary.shadow}
-              ${tokens.spacing.section.md}
-              ${tokens.borders.radius.lg}
+              p-2 rounded-lg
+              ${isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200 text-gray-700'}
+              ${tokens.transitions.fast}
+              ${tokens.touchTarget.min}
             `}
+            aria-label="Previous month"
           >
-            <CalendarIcon className={`${tokens.icons.md} text-white`} />
-          </div>
-          <div>
-            <h2
-              className={`${tokens.typography.heading.h2} ${
-                isDarkMode ? colors.structural.text.primary : "text-gray-900"
-              }`}
-            >
-              Hold Calendar
-            </h2>
-            <p
-              className={`${tokens.typography.body.secondary} ${
-                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
-              } hidden sm:block`}
-            >
-              Click any date to schedule or manage holds
-            </p>
-          </div>
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <h2
+            className={`text-2xl font-bold ${
+              isDarkMode ? 'text-white' : 'text-gray-900'
+            } min-w-[180px] text-center`}
+          >
+            {formatMonthYear(currentDate)}
+          </h2>
+
+          <button
+            onClick={onNextMonth}
+            className={`
+              p-2 rounded-lg
+              ${isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200 text-gray-700'}
+              ${tokens.transitions.fast}
+              ${tokens.touchTarget.min}
+            `}
+            aria-label="Next month"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
-        <div className="flex items-center justify-end">
+
+        {/* Right: Shift indicator + Legend inline */}
+        <div className="flex items-center gap-6">
+          {/* Mini legend */}
+          <div className="hidden md:flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded border-l-4 border-blue-500 bg-slate-700" />
+              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Scheduled</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded ring-2 ring-red-500 bg-slate-800" />
+              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Today</span>
+            </div>
+          </div>
+          
           <ShiftIndicator shift={currentShift} />
         </div>
-      </div>
-
-      {/* Month navigation */}
-      <div className="flex items-center justify-center gap-2 sm:gap-6">
-        <button
-          onClick={onPreviousMonth}
-          className={`
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
-            ${tokens.transitions.fast}
-            ${tokens.touchTarget.min}
-          `}
-          aria-label="Previous month"
-        >
-          <ChevronLeft
-            className={`${tokens.icons.md} ${
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }`}
-          />
-        </button>
-
-        <h3
-          className={`${tokens.typography.heading.h3} ${
-            isDarkMode ? colors.structural.text.primary : "text-gray-900"
-          } min-w-[200px] text-center`}
-        >
-          {formatMonthYear(currentDate)}
-        </h3>
-
-        <button
-          onClick={onNextMonth}
-          className={`
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${isDarkMode ? colors.interactive.hover.bg : "hover:bg-gray-200"}
-            ${tokens.transitions.fast}
-            ${tokens.touchTarget.min}
-          `}
-          aria-label="Next month"
-        >
-          <ChevronRight
-            className={`${tokens.icons.md} ${
-              isDarkMode ? colors.structural.text.primary : "text-gray-900"
-            }`}
-          />
-        </button>
       </div>
     </div>
   );

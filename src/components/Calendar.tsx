@@ -26,10 +26,9 @@ import {
 import { CalendarHeader } from './calendar/CalendarHeader';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { DayModal } from './calendar/DayModal';
-import { CalendarLegend } from './calendar/CalendarLegend';
 import { MobileWeekView } from './mobile/MobileWeekView';
 import { BottomSheet } from './mobile/BottomSheet';
-import { colors, tokens } from '../styles';
+import { tokens } from '../styles';
 
 interface CalendarProps {
   firefighters: Firefighter[];
@@ -178,15 +177,6 @@ export function Calendar({
             isDarkMode={isDarkMode}
           />
         )}
-      </div>
-
-      {/* Legend section */}
-      <div className={`
-        border-t-2
-        ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}
-        ${tokens.spacing.card.md}
-      `}>
-        <CalendarLegend isDarkMode={isDarkMode} />
       </div>
 
       {/* Day modal - Use BottomSheet on mobile, regular modal on desktop */}

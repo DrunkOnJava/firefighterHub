@@ -104,7 +104,8 @@ export function NextUpBarV2({
         disabled={!firefighter}
         className={`
           group relative flex flex-col
-          ${tokens.borders.radius.xl} ${tokens.touchTarget.min}
+          min-h-[160px]
+          ${tokens.borders.radius.xl}
           ${tokens.transitions.fast}
           border-2
           ${firefighter ? 'cursor-pointer' : 'cursor-default'}
@@ -116,7 +117,6 @@ export function NextUpBarV2({
           }
           ${firefighter ? 'hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99]' : 'opacity-60'}
           overflow-hidden
-          min-h-[160px]
         `}
         aria-live="polite"
         aria-atomic="true"

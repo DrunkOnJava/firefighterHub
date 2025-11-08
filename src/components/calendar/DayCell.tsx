@@ -54,22 +54,23 @@ export function DayCell({
     ${tokens.focus.default}
     flex flex-col
     aspect-square
+    rounded-lg
   `;
 
   if (!day.isCurrentMonth) {
-    cellClasses += ` bg-slate-800 text-gray-600 cursor-default opacity-50`;
+    cellClasses += ` bg-slate-800/50 text-gray-600 cursor-default opacity-50`;
   } else {
     cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer active:bg-slate-600`;
   }
 
-  // Today indicator
+  // Today indicator - STRONG highlight with accent fill
   if (day.isToday && day.isCurrentMonth) {
-    cellClasses += ` ring-2 ring-inset ring-red-500`;
+    cellClasses += ` !bg-blue-600/20 ring-2 ring-inset ring-blue-500 shadow-lg shadow-blue-500/20`;
   }
 
   // Has holds - add left border
   if (hasHolds && day.isCurrentMonth) {
-    cellClasses += ` border-l-4 border-l-red-500`;
+    cellClasses += ` border-l-4 border-l-orange-500`;
   }
 
   // Past date and not admin - make read-only
@@ -98,22 +99,24 @@ export function DayCell({
       }
     >
       {/* Day content wrapper */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-1.5">
         {/* Day number */}
-        <div className={`text-base font-bold ${day.isCurrentMonth ? 'text-slate-200' : 'text-gray-600'}`}>
+        <div className={`text-sm font-bold ${
+          day.isToday ? 'text-blue-300' : day.isCurrentMonth ? 'text-slate-200' : 'text-gray-600'
+        }`}>
           {day.date.getDate()}
         </div>
 
         {/* Hold count badge */}
         {hasHolds && day.isCurrentMonth && (
-          <div className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+          <div className="bg-orange-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-md">
             {day.scheduledHolds.length}
           </div>
         )}
       </div>
 
       {/* Holds list */}
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         {/* Show first 2 holds */}
         {scheduledHolds.slice(0, 2).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
@@ -121,15 +124,15 @@ export function DayCell({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-[10px] px-1.5 py-0.5 rounded bg-orange-600/90 text-white font-bold border-l-2 border-orange-400 flex items-center justify-between shadow-sm hover:bg-orange-500 transition-colors"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
             >
               <span className="truncate">{formattedName}</span>
               {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
+                <span className="ml-1 flex-shrink-0 text-orange-200">
+                  #{hold.fire_station}
                 </span>
               )}
             </div>
@@ -142,7 +145,7 @@ export function DayCell({
           return (
             <div
               key={hold.id || index}
-              className="text-xs px-2 py-1 rounded bg-slate-700 text-slate-100 font-semibold border-l-2 border-blue-500 flex items-center justify-between shadow-sm hover:bg-slate-600 transition-colors"
+              className="text-[10px] px-1.5 py-0.5 rounded bg-green-700/80 text-white font-semibold border-l-2 border-green-500 flex items-center justify-between shadow-sm hover:bg-green-600 transition-colors opacity-75"
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}

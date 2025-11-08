@@ -140,8 +140,8 @@ export function Calendar({
     >
       {/* Header section */}
       <div className={`
-        border-b-2
-        ${isDarkMode ? 'border-gray-700' : 'border-gray-300'}
+        border-b
+        ${isDarkMode ? 'border-gray-700/50' : 'border-gray-300/50'}
         ${tokens.spacing.card.md}
       `}>
         <CalendarHeader

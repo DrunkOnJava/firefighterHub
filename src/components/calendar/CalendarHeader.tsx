@@ -78,13 +78,17 @@ export function CalendarHeader({
         {/* Right: Shift indicator + Legend inline */}
         <div className="flex items-center gap-6">
           {/* Mini legend */}
-          <div className="hidden md:flex items-center gap-4 text-xs">
+          <div className="hidden lg:flex items-center gap-4 text-xs">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded border-l-4 border-blue-500 bg-slate-700" />
+              <div className="w-3 h-3 rounded border-l-4 border-orange-500 bg-slate-700" />
               <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Scheduled</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded ring-2 ring-red-500 bg-slate-800" />
+              <div className="w-3 h-3 rounded border-l-4 border-green-500 bg-slate-700 opacity-75" />
+              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Completed</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-3 h-3 rounded bg-blue-600/20 ring-2 ring-blue-500" />
               <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Today</span>
             </div>
           </div>

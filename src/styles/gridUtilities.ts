@@ -44,7 +44,7 @@ export const gridUtilities = {
     weekdayHeader: [
       'grid',
       'grid-cols-7',
-      'gap-1.5 md:gap-2 lg:gap-2',
+      'gap-1 md:gap-1.5 lg:gap-2',   // Match grid gaps
       'mb-1',
       'w-full',
     ].join(' '),
@@ -53,7 +53,7 @@ export const gridUtilities = {
       'grid',
       'grid-cols-7',
       'auto-rows-fr',                 // Equal height rows
-      'gap-1.5 md:gap-2 lg:gap-2',
+      'gap-1 md:gap-1.5 lg:gap-2',   // Tighter gaps
       'w-full',
       'h-full',
     ].join(' '),

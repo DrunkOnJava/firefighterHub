@@ -56,6 +56,9 @@ function App() {
   // State: Selected firefighters for modals
   const [selectedFirefighterForCompletion, setSelectedFirefighterForCompletion] = useState<Firefighter | null>(null);
   const [selectedFirefighterForTransfer, setSelectedFirefighterForTransfer] = useState<Firefighter | null>(null);
+  
+  // State: Selected firefighter for calendar filtering
+  const [selectedFirefighterFilter, setSelectedFirefighterFilter] = useState<string | null>(null);
 
   const { toasts, showToast } = useToast();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -214,6 +217,8 @@ function App() {
           <NextUpBar
             firefighters={allFirefighters}
             isDarkMode={isDarkMode}
+            onFirefighterClick={(ff) => setSelectedFirefighterFilter(ff?.id || null)}
+            selectedFirefighterId={selectedFirefighterFilter}
           />
           
           <Suspense fallback={
@@ -234,6 +239,7 @@ function App() {
               isAdminMode={isAdminMode}
               isDarkMode={isDarkMode}
               currentShift={currentShift}
+              selectedFirefighterId={selectedFirefighterFilter}
             />
           </Suspense>
         </section>

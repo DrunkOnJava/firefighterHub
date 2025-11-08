@@ -19,9 +19,11 @@ import { colors, tokens, gridUtilities } from '../styles';
 interface NextUpBarProps {
   firefighters: Firefighter[];
   isDarkMode?: boolean;
+  onFirefighterClick?: (firefighter: Firefighter | null) => void;
+  selectedFirefighterId?: string | null;
 }
 
-export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
+export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick, selectedFirefighterId }: NextUpBarProps) {
   const device = useDevice();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -80,20 +82,27 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
     shift: 'A' | 'B' | 'C',
     firefighter: Firefighter | null
   ) => {
+    const isSelected = firefighter && firefighter.id === selectedFirefighterId;
+    
     return (
-      <div
+      <button
+        onClick={() => onFirefighterClick?.(isSelected ? null : firefighter)}
+        disabled={!firefighter}
         className={`
           flex items-center gap-2 px-3 py-4 rounded-lg relative
           ${tokens.transitions.fast}
+          ${firefighter ? 'cursor-pointer hover:scale-102 active:scale-98' : 'cursor-default'}
+          ${isSelected ? 'ring-2 ring-blue-500 ring-offset-2' : ''}
           ${
             isDarkMode
-              ? 'bg-slate-700 border border-slate-600 shadow-lg'
-              : 'bg-gray-50 border border-gray-200'
+              ? `bg-slate-700 border ${isSelected ? 'border-blue-500' : 'border-slate-600'} shadow-lg ${firefighter ? 'hover:bg-slate-600' : ''}`
+              : `bg-gray-50 border ${isSelected ? 'border-blue-500' : 'border-gray-200'} ${firefighter ? 'hover:bg-gray-100' : ''}`
           }
         `}
         aria-live="polite"
         aria-atomic="true"
-        aria-label={`Next up for Shift ${shift}`}
+        aria-label={`Next up for Shift ${shift}${isSelected ? ' (selected)' : ''}`}
+        aria-pressed={isSelected}
       >
         {renderShiftBadge(shift)}
 
@@ -126,7 +135,7 @@ export function NextUpBar({ firefighters, isDarkMode = true }: NextUpBarProps) {
             )}
           </div>
         </div>
-      </div>
+      </button>
     );
   };
 

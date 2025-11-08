@@ -45,6 +45,7 @@ interface BigCalendarProps {
   isAdminMode?: boolean;
   isDarkMode?: boolean;
   currentShift: Shift;
+  selectedFirefighterId?: string | null;
 }
 
 interface CalendarEvent {
@@ -66,6 +67,7 @@ export function BigCalendar({
   isAdminMode = false,
   isDarkMode = true,
   currentShift,
+  selectedFirefighterId,
 }: BigCalendarProps) {
   const [showDayScheduleModal, setShowDayScheduleModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -73,7 +75,7 @@ export function BigCalendar({
 
   // Convert scheduled holds to calendar events
   const events: CalendarEvent[] = useMemo(() => {
-    return scheduledHolds.map(hold => {
+    const allEvents = scheduledHolds.map(hold => {
       const date = hold.hold_date ? new Date(hold.hold_date) : new Date();
       return {
         id: hold.id,
@@ -83,11 +85,19 @@ export function BigCalendar({
         resource: hold,
       };
     });
-  }, [scheduledHolds]);
+    
+    // Filter to selected firefighter if one is selected
+    if (selectedFirefighterId) {
+      return allEvents.filter(event => event.resource.firefighter_id === selectedFirefighterId);
+    }
+    
+    return allEvents;
+  }, [scheduledHolds, selectedFirefighterId]);
 
   // Event style getter for MaterialM color coding
   const eventStyleGetter = (event: CalendarEvent) => {
     const { status } = event.resource;
+    const isSelectedFF = selectedFirefighterId && event.resource.firefighter_id === selectedFirefighterId;
 
     let backgroundColor = '#5d87ff'; // MaterialM blue
     if (status === 'completed') {
@@ -100,10 +110,12 @@ export function BigCalendar({
       style: {
         backgroundColor,
         borderRadius: '4px',
-        opacity: 0.9,
+        opacity: isSelectedFF ? 1 : 0.9, // Full opacity for selected
         color: 'white',
-        border: '0px',
+        border: isSelectedFF ? '2px solid #fbbf24' : '0px', // Gold border for selected
         display: 'block',
+        fontWeight: isSelectedFF ? '700' : '500', // Bold for selected
+        boxShadow: isSelectedFF ? '0 0 12px rgba(251, 191, 36, 0.6)' : 'none', // Glow for selected
       }
     };
   };

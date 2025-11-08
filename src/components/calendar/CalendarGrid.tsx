@@ -5,10 +5,13 @@
  * - Weekday headers row
  * - 7x6 grid of day cells
  * - Loading state
+ * - Swipe navigation for month switching (tablet/desktop)
  *
  * Uses grid system utilities for consistent spacing and layout.
  */
 
+import { useRef } from "react";
+import { useSwipeGesture } from "../../hooks/useSwipeGesture";
 import { Shift } from "../../lib/supabase";
 import { gridUtilities } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
@@ -18,6 +21,8 @@ import { DayCell } from "./DayCell";
 interface CalendarGridProps {
   calendarDays: CalendarDay[];
   onDayClick: (day: CalendarDay) => void;
+  onPreviousMonth?: () => void;
+  onNextMonth?: () => void;
   loading: boolean;
   isAdminMode?: boolean;
   currentShift: Shift;
@@ -37,12 +42,22 @@ const weekDays = [
 export function CalendarGrid({
   calendarDays,
   onDayClick,
+  onPreviousMonth,
+  onNextMonth,
   loading,
   isAdminMode = false,
   currentShift,
   isDarkMode = true,
 }: CalendarGridProps) {
   const theme = getTheme(isDarkMode);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  // Add swipe navigation
+  const { handleTouchStart, handleTouchEnd } = useSwipeGesture(
+    onNextMonth,      // Swipe left = next month
+    onPreviousMonth,  // Swipe right = previous month
+    75                // Minimum swipe distance
+  );
 
   if (loading) {
     return (
@@ -56,7 +71,12 @@ export function CalendarGrid({
   }
 
   return (
-    <div className="w-full flex flex-col min-h-0">
+    <div 
+      className="w-full flex flex-col min-h-0"
+      ref={gridRef}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Weekday headers - using grid system utilities */}
       <div className={gridUtilities.calendar.weekdayHeader}>
         {weekDays.map((day) => (

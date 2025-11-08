@@ -170,6 +170,8 @@ export function Calendar({
           <CalendarGrid
             calendarDays={calendarDays}
             onDayClick={handleDayClick}
+            onPreviousMonth={goToPreviousMonth}
+            onNextMonth={goToNextMonth}
             loading={loading}
             isAdminMode={isAdminMode}
             currentShift={currentShift}

@@ -548,14 +548,14 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-0.5 h-10 whitespace-nowrap text-sm ${
+                        className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-300" : "text-slate-700"
                         }`}
                       >
                         <span className="font-bold">{index + 1}</span>
                       </td>
                       <td
-                        className={`px-4 py-0.5 h-10 whitespace-nowrap ${
+                        className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap ${
                           isDarkMode ? "text-white" : "text-slate-900"
                         }`}
                       >
@@ -586,7 +586,7 @@ export function FirefighterList({
                       </td>
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0.5 h-10 whitespace-nowrap ${
+                          className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -605,7 +605,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0.5 h-10 whitespace-nowrap text-sm ${
+                          className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -626,7 +626,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0.5 h-10 whitespace-nowrap text-sm ${
+                          className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -652,7 +652,7 @@ export function FirefighterList({
                         </td>
                       )}
                       {isAdminMode && (
-                        <td className="px-4 py-0.5 h-10">
+                        <td className="px-4 py-0 leading-10 align-middle h-10">
                           {qualifications.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {qualifications.map((qual) => (
@@ -676,7 +676,7 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-0.5 h-10 whitespace-nowrap text-sm ${
+                        className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-400" : "text-slate-600"
                         }`}
                       >

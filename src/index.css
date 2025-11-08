@@ -838,6 +838,22 @@ body.modal-open {
   animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Slide-in from right (mobile menu) */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -850,7 +866,8 @@ body.modal-open {
   
   .animate-slide-up,
   .animate-fade-in,
-  .animate-scale-in {
+  .animate-scale-in,
+  .animate-slide-in-right {
     animation: none !important;
   }
 }

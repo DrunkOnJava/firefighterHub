@@ -110,6 +110,11 @@ self.addEventListener("fetch", (event) => {
   }
 
   // CACHE-FIRST strategy for static assets (images, icons, fonts)
+  // Skip caching for POST/PUT/DELETE requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+  
   event.respondWith(
     caches.match(event.request).then((response) => {
       if (response) {

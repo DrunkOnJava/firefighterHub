@@ -75,7 +75,7 @@ export function BigCalendar({
 
   // Convert scheduled holds to calendar events
   const events: CalendarEvent[] = useMemo(() => {
-    const allEvents = scheduledHolds.map(hold => {
+    return scheduledHolds.map(hold => {
       const date = hold.hold_date ? new Date(hold.hold_date) : new Date();
       return {
         id: hold.id,
@@ -85,19 +85,13 @@ export function BigCalendar({
         resource: hold,
       };
     });
-    
-    // Filter to selected firefighter if one is selected
-    if (selectedFirefighterId) {
-      return allEvents.filter(event => event.resource.firefighter_id === selectedFirefighterId);
-    }
-    
-    return allEvents;
-  }, [scheduledHolds, selectedFirefighterId]);
+  }, [scheduledHolds]);
 
-  // Event style getter for MaterialM color coding
+  // Event style getter - Highlight selected, dim others
   const eventStyleGetter = (event: CalendarEvent) => {
     const { status } = event.resource;
     const isSelectedFF = selectedFirefighterId && event.resource.firefighter_id === selectedFirefighterId;
+    const isOtherFF = selectedFirefighterId && event.resource.firefighter_id !== selectedFirefighterId;
 
     let backgroundColor = '#5d87ff'; // MaterialM blue
     if (status === 'completed') {
@@ -110,12 +104,15 @@ export function BigCalendar({
       style: {
         backgroundColor,
         borderRadius: '4px',
-        opacity: isSelectedFF ? 1 : 0.9, // Full opacity for selected
+        // Highlight selected, dim others, normal when nothing selected
+        opacity: isOtherFF ? 0.25 : isSelectedFF ? 1 : 0.9,
         color: 'white',
         border: isSelectedFF ? '2px solid #fbbf24' : '0px', // Gold border for selected
         display: 'block',
         fontWeight: isSelectedFF ? '700' : '500', // Bold for selected
-        boxShadow: isSelectedFF ? '0 0 12px rgba(251, 191, 36, 0.6)' : 'none', // Glow for selected
+        boxShadow: isSelectedFF ? '0 0 16px rgba(251, 191, 36, 0.8)' : 'none', // Strong glow for selected
+        transform: isSelectedFF ? 'scale(1.05)' : 'scale(1)', // Slight enlargement
+        zIndex: isSelectedFF ? 10 : 1, // Bring to front
       }
     };
   };

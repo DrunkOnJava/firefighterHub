@@ -65,6 +65,19 @@
   position: relative;
 }
 
+/* SELECTED DAY STATE - Filled background with subtle animation */
+.big-calendar-container.dark-theme .rbc-selected {
+  background: oklch(64.99% 0.143 265.28 / 0.15) !important; /* primary-500/15 */
+  border: 1px solid var(--rbc-selected) !important;
+  transition: all 0.2s ease;
+}
+
+.big-calendar-container.dark-theme .rbc-day-bg:hover {
+  background: oklch(28.42% 0.028 257.24 / 0.5);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
 .big-calendar-container.dark-theme .rbc-date-cell {
   color: var(--rbc-text);
   padding: 6px;
@@ -92,37 +105,79 @@
   font-weight: 700;
 }
 
+/* TOOLBAR - Tighter, cleaner controls */
 .big-calendar-container.dark-theme .rbc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px 0;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   border-bottom: 1px solid var(--rbc-border);
+  gap: 16px;
 }
 
+/* Navigation buttons (Back, Today, Next) */
 .big-calendar-container.dark-theme .rbc-toolbar button {
   background: transparent;
   color: var(--rbc-text);
   border: 1px solid var(--rbc-border);
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 8px;
   font-weight: 500;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
+  cursor: pointer;
 }
 
 .big-calendar-container.dark-theme .rbc-toolbar button:hover {
   background: oklch(28.42% 0.028 257.24);
   border-color: var(--rbc-today);
+  transform: translateY(-1px);
 }
 
-.big-calendar-container.dark-theme .rbc-toolbar button.rbc-active {
+.big-calendar-container.dark-theme .rbc-toolbar button:active {
+  transform: translateY(0);
+}
+
+/* VIEW SEGMENTED CONTROLS - Month/Week/Day pill */
+.big-calendar-container.dark-theme .rbc-toolbar .rbc-btn-group:last-child {
+  display: inline-flex;
+  background: oklch(20.42% 0.028 257.24); /* Darker background */
+  border-radius: 10px;
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid var(--rbc-border);
+}
+
+.big-calendar-container.dark-theme .rbc-toolbar .rbc-btn-group:last-child button {
+  border: none;
+  border-radius: 7px;
+  padding: 6px 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  background: transparent;
+  color: var(--rbc-text-muted);
+  transition: all 0.2s ease;
+}
+
+.big-calendar-container.dark-theme .rbc-toolbar .rbc-btn-group:last-child button:hover {
+  color: var(--rbc-text);
+  background: oklch(24.42% 0.028 257.24);
+  transform: none;
+}
+
+.big-calendar-container.dark-theme .rbc-toolbar .rbc-btn-group:last-child button.rbc-active {
   background: var(--rbc-today);
   color: white;
-  border-color: var(--rbc-today);
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .big-calendar-container.dark-theme .rbc-toolbar-label {
   color: var(--rbc-text);
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* Slightly smaller */
+  flex: 1;
+  text-align: center;
 }
 
 /* EVENT PILLS - MaterialM Standard Colors */

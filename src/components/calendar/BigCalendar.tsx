@@ -72,6 +72,37 @@ export function BigCalendar({
   const [showDayScheduleModal, setShowDayScheduleModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [nextFirefighter, setNextFirefighter] = useState<Firefighter | null>(null);
+  const [currentView, setCurrentView] = useState<'month' | 'week' | 'day'>('month');
+
+  // Keyboard navigation for month/week changes
+  useMemo(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Only handle if not typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      
+      const toolbar = document.querySelector('.rbc-toolbar');
+      if (!toolbar) return;
+      
+      // Left arrow = Previous
+      if (e.key === 'ArrowLeft') {
+        const prevBtn = toolbar.querySelector('.rbc-btn-group button:first-child') as HTMLButtonElement;
+        prevBtn?.click();
+      }
+      // Right arrow = Next
+      else if (e.key === 'ArrowRight') {
+        const nextBtn = toolbar.querySelector('.rbc-btn-group button:last-child') as HTMLButtonElement;
+        nextBtn?.click();
+      }
+      // T = Today
+      else if (e.key === 't' || e.key === 'T') {
+        const todayBtn = toolbar.querySelector('.rbc-btn-group button:nth-child(2)') as HTMLButtonElement;
+        todayBtn?.click();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   // Convert scheduled holds to calendar events
   const events: CalendarEvent[] = useMemo(() => {
@@ -215,7 +246,7 @@ export function BigCalendar({
           ${isDarkMode ? 'bg-slate-800/90 border border-slate-700/50' : 'bg-white/90 border border-gray-300/50'}
           backdrop-blur-sm
         `}>
-          <div className="text-xs font-semibold mb-2 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}">
+          <div className={`text-xs font-semibold mb-2 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
             Event Status
           </div>
           <div className="space-y-1.5">
@@ -232,6 +263,21 @@ export function BigCalendar({
               <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>Skipped</span>
             </div>
           </div>
+        </div>
+        
+        {/* Keyboard navigation hint */}
+        <div className={`
+          absolute bottom-3 left-1/2 transform -translate-x-1/2
+          px-3 py-1.5 rounded-full text-xs
+          ${isDarkMode ? 'bg-slate-800/80 text-slate-400 border border-slate-700/50' : 'bg-white/80 text-gray-600 border border-gray-300/50'}
+          backdrop-blur-sm
+        `}>
+          <span className="opacity-75">Use</span>
+          <kbd className={`mx-1.5 px-2 py-0.5 rounded font-mono text-xs ${isDarkMode ? 'bg-slate-700 border border-slate-600' : 'bg-gray-100 border border-gray-300'}`}>←</kbd>
+          <kbd className={`mr-1.5 px-2 py-0.5 rounded font-mono text-xs ${isDarkMode ? 'bg-slate-700 border border-slate-600' : 'bg-gray-100 border border-gray-300'}`}>→</kbd>
+          <span className="opacity-75">or</span>
+          <kbd className={`mx-1.5 px-2 py-0.5 rounded font-mono text-xs ${isDarkMode ? 'bg-slate-700 border border-slate-600' : 'bg-gray-100 border border-gray-300'}`}>T</kbd>
+          <span className="opacity-75">to navigate</span>
         </div>
       </div>
     </>

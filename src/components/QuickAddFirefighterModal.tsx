@@ -4,7 +4,7 @@ import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
 import { colors, tokens, gridUtilities } from "../styles";
-import { Button } from "./ui/Button";
+import { AnimatedButton } from "./ui/AnimatedButton";
 import { IconButton } from "./ui/IconButton";
 
 interface QuickAddFirefighterModalProps {
@@ -393,7 +393,7 @@ export function QuickAddFirefighterModal({
           )}
 
           <div className={`flex ${tokens.spacing.gap.md} pt-2 border-t ${colors.structural.border.default}`}>
-            <Button
+            <AnimatedButton
               type="button"
               onClick={onClose}
               variant="secondary"
@@ -402,19 +402,18 @@ export function QuickAddFirefighterModal({
               disabled={isSubmitting}
             >
               Cancel
-            </Button>
-            <Button
+            </AnimatedButton>
+            <AnimatedButton
               type="submit"
               disabled={!name.trim()}
               state={isSubmitting ? 'loading' : 'idle'}
-              variant="success"
+              variant="primary"
               size="lg"
               fullWidth
-              withRipple
-              leftIcon={<UserPlus size={20} />}
+              icon={<UserPlus size={20} />}
             >
               Add Member
-            </Button>
+            </AnimatedButton>
           </div>
         </form>
       </div>

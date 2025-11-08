@@ -24,6 +24,7 @@ import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyStat
 import { FilterPanel } from "./FilterPanel";
 import { FirefighterProfileModal } from "./FirefighterProfileModal";
 import { ReactivateModal } from "./ReactivateModal";
+import { FirefighterListSkeleton } from "./SkeletonLoader";
 import { BulkActions, RosterHeader } from "./roster";
 import { IconButton } from "./ui/IconButton";
 
@@ -44,6 +45,7 @@ interface FirefighterListProps {
   isDarkMode?: boolean;
   searchInputRef?: React.RefObject<HTMLInputElement>;
   confirmAction?: (options: ConfirmOptions) => Promise<boolean>;
+  isLoading?: boolean;
 }
 
 export function FirefighterList({
@@ -63,6 +65,7 @@ export function FirefighterList({
   isAdminMode = false,
   isDarkMode = true,
   searchInputRef,
+  isLoading = false,
 }: FirefighterListProps) {
   // Maintain backwards compatibility by ensuring legacy callbacks stay referenced
   void _onCompleteHold;
@@ -246,52 +249,61 @@ export function FirefighterList({
         overflow-hidden
       `}
     >
-      {/* Header with sub-component */}
-      <RosterHeader
-        firefighters={firefighters}
-        currentShift={currentShift || "A"}
-        isAdminMode={isAdminMode}
-        isDarkMode={isDarkMode}
-        onAddClick={() => setShowAddForm(!showAddForm)}
-        onViewDeactivatedClick={() => setShowReactivateModal(true)}
-        onFilterToggle={() => setIsFilterPanelOpen(true)}
-        showExportMenu={showExportMenu}
-        onExportToggle={() => setShowExportMenu(!showExportMenu)}
-        activeFilterCount={activeFilterCount}
-        deactivatedCount={deactivatedFirefighters.length}
-      />
-
-      <div className="px-6 pb-6">
-        {/* Add Firefighter Form (Collapsible) */}
-        {isAdminMode && showAddForm && (
-          <div className={tokens.spacing.margin.lg}>
-            <AddFirefighterForm
-              onAdd={(name, station) => {
-                onAdd(name, station);
-                setShowAddForm(false);
-              }}
-            />
-          </div>
-        )}
-
-        {/* Bulk Actions with sub-component */}
-        <BulkActions
-          selectedCount={selectedIds.size}
-          totalCount={filteredAndAdvancedFiltered.length}
-          onSelectAll={selectAll}
-          onDeselectAll={deselectAll}
-          onBulkDelete={handleBulkDelete}
-          onBulkDeactivate={handleBulkDeactivate}
-          isAdminMode={isAdminMode}
-          isDarkMode={isDarkMode}
-        />
-
-        {firefighters.length === 0 ? (
-          <NoFirefightersEmptyState 
-            onAddFirefighter={() => setShowAddForm(true)}
+      {isLoading ? (
+        <FirefighterListSkeleton />
+      ) : (
+        <>
+          {/* Header with sub-component */}
+          <RosterHeader
+            firefighters={firefighters}
+            currentShift={currentShift || "A"}
             isAdminMode={isAdminMode}
+            isDarkMode={isDarkMode}
+            onAddClick={() => setShowAddForm(!showAddForm)}
+            onViewDeactivatedClick={() => setShowReactivateModal(true)}
+            onFilterToggle={() => setIsFilterPanelOpen(true)}
+            showExportMenu={showExportMenu}
+            onExportToggle={() => setShowExportMenu(!showExportMenu)}
+            activeFilterCount={activeFilterCount}
+            deactivatedCount={deactivatedFirefighters.length}
           />
-        ) : (
+
+          <div className="px-6 pb-6">
+            {/* Add Firefighter Form (Collapsible) */}
+            {isAdminMode && showAddForm && (
+              <div className={tokens.spacing.margin.lg}>
+                <AddFirefighterForm
+                  onAdd={(name, station) => {
+                    onAdd(name, station);
+                    setShowAddForm(false);
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Bulk Actions with sub-component */}
+            <BulkActions
+              selectedCount={selectedIds.size}
+              totalCount={filteredAndAdvancedFiltered.length}
+              onSelectAll={selectAll}
+              onDeselectAll={deselectAll}
+              onBulkDelete={handleBulkDelete}
+              onBulkDeactivate={handleBulkDeactivate}
+              isAdminMode={isAdminMode}
+              isDarkMode={isDarkMode}
+            />
+
+            {firefighters.length === 0 ? (
+              <NoFirefightersEmptyState 
+                onAddFirefighter={() => setShowAddForm(true)}
+                isAdminMode={isAdminMode}
+              />
+            ) : filteredAndAdvancedFiltered.length === 0 ? (
+              <NoSearchResultsEmptyState
+                searchTerm="your filters"
+                onClearSearch={clearAllFilters}
+              />
+            ) : (
           <div className="overflow-x-auto -mx-6">
             <table className="w-full min-w-max">
               <thead>
@@ -871,6 +883,8 @@ export function FirefighterList({
         activeFilterCount={activeFilterCount}
         availableStations={availableStations}
       />
+      </>
+      )}
     </div>
   );
 }

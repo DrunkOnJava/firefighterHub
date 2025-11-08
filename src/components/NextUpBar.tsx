@@ -106,10 +106,10 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
       >
         {renderShiftBadge(shift)}
 
-        <div className="flex-1 min-w-0 relative z-10">
+        <div className="flex-1 min-w-0 relative z-10 group">
           <div
             className={`
-              text-base font-medium flex items-center gap-2.5 whitespace-nowrap overflow-hidden
+              text-lg font-bold flex items-center gap-2.5 whitespace-nowrap overflow-hidden
               ${
                 isDarkMode
                   ? colors.structural.text.primary
@@ -119,8 +119,8 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
           >
             {firefighter ? (
               <>
-                <span className="truncate font-semibold">{firefighter.name}</span>
-                <span className={`flex-shrink-0 text-sm font-normal ${
+                <span className="truncate font-bold">{firefighter.name}</span>
+                <span className={`flex-shrink-0 text-sm font-medium ${
                   isDarkMode
                     ? colors.structural.text.secondary
                     : 'text-gray-600'
@@ -134,6 +134,41 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
               </span>
             )}
           </div>
+          
+          {/* Hover tooltip with operational stats */}
+          {firefighter && (
+            <div className={`
+              absolute left-0 top-full mt-2 px-3 py-2 rounded-lg shadow-xl
+              opacity-0 invisible group-hover:opacity-100 group-hover:visible
+              transition-all duration-200 z-50 min-w-[280px]
+              ${isDarkMode ? 'bg-slate-800 border border-slate-700' : 'bg-white border border-gray-300'}
+            `}>
+              <div className="space-y-1 text-xs">
+                <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
+                  <span>Last Hold:</span>
+                  <span className="font-semibold">
+                    {firefighter.last_hold_date 
+                      ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                      : 'Never'}
+                  </span>
+                </div>
+                <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
+                  <span>Rotation Position:</span>
+                  <span className="font-semibold">#{firefighter.order_position + 1}</span>
+                </div>
+                <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
+                  <span>Certifications:</span>
+                  <span className="font-semibold">
+                    {[
+                      firefighter.is_engine_certified && 'Engine',
+                      firefighter.is_truck_certified && 'Truck',
+                      firefighter.is_rescue_certified && 'Rescue'
+                    ].filter(Boolean).join(', ') || 'None'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </button>
     );

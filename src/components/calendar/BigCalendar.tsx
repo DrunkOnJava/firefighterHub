@@ -208,6 +208,31 @@ export function BigCalendar({
           onSelectSlot={handleSelectSlot}
           selectable={true}
         />
+        
+        {/* Mini Legend */}
+        <div className={`
+          absolute top-4 right-4 px-3 py-2 rounded-lg shadow-lg
+          ${isDarkMode ? 'bg-slate-800/90 border border-slate-700/50' : 'bg-white/90 border border-gray-300/50'}
+          backdrop-blur-sm
+        `}>
+          <div className="text-xs font-semibold mb-2 ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}">
+            Event Status
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ background: '#5d87ff' }}></div>
+              <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>Scheduled</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ background: '#087f6a' }}></div>
+              <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>Completed</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded" style={{ background: '#fa896b' }}></div>
+              <span className={`text-xs ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}`}>Skipped</span>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

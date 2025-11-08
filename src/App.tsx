@@ -15,7 +15,7 @@ import { BottomNav } from './components/mobile/BottomNav';
 
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
-import { NextUpBar } from './components/NextUpBar';
+import { NextUpBarV2 } from './components/NextUpBarV2';
 import { FloatingActionButton } from './components/Common/FloatingActionButton';
 
 // Development tools (only in dev mode)
@@ -213,8 +213,8 @@ function App() {
       <main id="main-content" tabIndex={-1} className="layout">
         {/* Calendar Section with Next Up Bar */}
         <section className={`calendar card flex flex-col ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}`}>
-          {/* Next Up Bar - Shows all shifts */}
-          <NextUpBar
+          {/* Next Up Bar V2 - Modern redesign with larger cards */}
+          <NextUpBarV2
             firefighters={allFirefighters}
             isDarkMode={isDarkMode}
             onFirefighterClick={(ff) => setSelectedFirefighterFilter(ff?.id || null)}

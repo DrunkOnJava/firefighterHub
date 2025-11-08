@@ -132,7 +132,7 @@ export function DayCell({
 
       {/* Holds list - show first 3, compact pills */}
       <div className="space-y-1 flex-1">
-        {/* Show first 3 holds */}
+        {/* Show first 3 holds - MODERN PILL DESIGN */}
         {scheduledHolds.slice(0, 3).map((hold, index) => {
           const formattedName = formatName(hold.firefighter_name);
           const isSelected = hold.firefighter_id === selectedFirefighterId;
@@ -141,19 +141,22 @@ export function DayCell({
             <div
               key={hold.id || index}
               className={`
-                text-[10px] px-1.5 py-0.5 rounded 
-                bg-orange-600/90 text-white font-bold 
-                border-l-2 ${isSelected ? 'border-blue-400 ring-1 ring-blue-400' : 'border-orange-400'}
-                flex items-center justify-between shadow-sm 
-                hover:bg-orange-500 transition-colors
+                text-[11px] px-2 py-1 rounded-md
+                bg-gradient-to-r from-orange-500 to-orange-600
+                text-white font-bold 
+                border ${isSelected ? 'border-blue-400 ring-2 ring-blue-400/50' : 'border-orange-400/30'}
+                flex items-center justify-between shadow-md 
+                hover:from-orange-400 hover:to-orange-500 hover:shadow-lg
+                transition-all duration-150
+                backdrop-blur-sm
               `}
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
             >
-              <span className="truncate">{formattedName}</span>
+              <span className="truncate drop-shadow-sm">{formattedName}</span>
               {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0 text-orange-200">
+                <span className="ml-1 flex-shrink-0 text-orange-100 font-extrabold text-xs">
                   #{hold.fire_station}
                 </span>
               )}
@@ -169,20 +172,23 @@ export function DayCell({
             <div
               key={hold.id || index}
               className={`
-                text-[10px] px-1.5 py-0.5 rounded 
-                bg-green-700/80 text-white font-semibold 
-                border-l-2 ${isSelected ? 'border-blue-400 ring-1 ring-blue-400' : 'border-green-500'}
-                flex items-center justify-between shadow-sm 
-                hover:bg-green-600 transition-colors opacity-75
+                text-[11px] px-2 py-1 rounded-md
+                bg-gradient-to-r from-emerald-600 to-green-600
+                text-white font-bold 
+                border ${isSelected ? 'border-blue-400 ring-2 ring-blue-400/50' : 'border-emerald-400/30'}
+                flex items-center justify-between shadow-md 
+                hover:from-emerald-500 hover:to-green-500 hover:shadow-lg
+                transition-all duration-150
+                backdrop-blur-sm opacity-90
               `}
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
             >
-              <span className="truncate">{formattedName}</span>
+              <span className="truncate drop-shadow-sm">{formattedName}</span>
               {hold.fire_station && (
-                <span className="ml-1 flex-shrink-0">
-                  (#{hold.fire_station})
+                <span className="ml-1 flex-shrink-0 text-emerald-100 font-extrabold text-xs">
+                  #{hold.fire_station}
                 </span>
               )}
             </div>

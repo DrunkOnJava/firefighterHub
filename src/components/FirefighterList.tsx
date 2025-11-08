@@ -365,23 +365,50 @@ export function FirefighterList({
               /* Desktop View: Table (Existing) */
           <>
             <style>{`
+              .roster-table {
+                display: table;
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+              }
+              .roster-table thead {
+                position: sticky;
+                top: 0;
+                z-index: 10;
+              }
+              .roster-table tbody {
+                display: table-row-group;
+              }
               .roster-table tbody tr {
-                height: 40px !important;
-                max-height: 40px !important;
+                height: auto !important;
+                max-height: none !important;
+                display: table-row;
               }
               .roster-table tbody td {
-                height: 40px !important;
-                max-height: 40px !important;
+                height: auto !important;
+                max-height: none !important;
+                padding-top: 0.75rem !important;
+                padding-bottom: 0.75rem !important;
                 vertical-align: middle !important;
                 white-space: nowrap !important;
               }
               .roster-table tbody td > div {
-                max-height: 40px !important;
+                max-height: none !important;
                 white-space: nowrap !important;
               }
+              /* Compact view when > 15 rows */
+              .roster-table.compact tbody tr {
+                height: 36px !important;
+              }
+              .roster-table.compact tbody td {
+                height: 36px !important;
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+                font-size: 0.875rem !important;
+              }
             `}</style>
-          <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)] -mx-6">
-            <table className="w-full min-w-max roster-table">
+          <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-320px)] -mx-6">
+            <table className={`roster-table ${filteredAndAdvancedFiltered.length > 15 ? 'compact' : ''} min-w-max`}>
               <thead className="sticky top-0 z-10">
                 <tr
                   className={`border-b-2 ${

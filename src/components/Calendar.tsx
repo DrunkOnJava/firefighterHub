@@ -137,14 +137,14 @@ export function Calendar({
         ${colors.structural.bg.card}
         ${tokens.borders.radius.xl}
         ${tokens.spacing.card.md}
-        border border-slate-700/30
+        border border-slate-700/20
         ${tokens.shadows.sm}
         overflow-hidden
       `}
     >
       {/* Header section */}
       <div className={`
-        border-b border-slate-700/20
+        border-b border-slate-700/10
         ${tokens.spacing.section.md}
       `}>
         <CalendarHeader

@@ -102,7 +102,7 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
         aria-live="polite"
         aria-atomic="true"
         aria-label={`Next up for Shift ${shift}${isSelected ? ' (selected)' : ''}`}
-        aria-pressed={isSelected}
+        aria-pressed={isSelected ? true : false}
       >
         {renderShiftBadge(shift)}
 
@@ -157,12 +157,12 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
                   <span className="font-semibold">#{firefighter.order_position + 1}</span>
                 </div>
                 <div className={`flex justify-between ${isDarkMode ? 'text-slate-300' : 'text-gray-700'}`}>
-                  <span>Certifications:</span>
+                  <span>Apparatus:</span>
                   <span className="font-semibold">
                     {[
-                      firefighter.is_engine_certified && 'Engine',
-                      firefighter.is_truck_certified && 'Truck',
-                      firefighter.is_rescue_certified && 'Rescue'
+                      firefighter.apparatus_engine && 'Engine',
+                      firefighter.apparatus_truck && 'Truck',
+                      firefighter.apparatus_rescue_squad && 'Rescue'
                     ].filter(Boolean).join(', ') || 'None'}
                   </span>
                 </div>
@@ -197,11 +197,11 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
       <div className="flex items-center gap-2 mb-3">
         <h2
           className={`
-            text-lg font-extrabold uppercase tracking-wide overflow-hidden truncate
+            text-xl font-black uppercase tracking-wide overflow-hidden truncate
             ${
               isDarkMode
-                ? 'text-slate-200'
-                : 'text-gray-800'
+                ? 'text-slate-50'
+                : 'text-gray-900'
             }
           `}
         >

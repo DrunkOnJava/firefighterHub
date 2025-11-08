@@ -27,6 +27,7 @@ interface CalendarGridProps {
   isAdminMode?: boolean;
   currentShift: Shift;
   isDarkMode?: boolean;
+  selectedFirefighterId?: string | null;
 }
 
 const weekDays = [
@@ -48,6 +49,7 @@ export function CalendarGrid({
   isAdminMode = false,
   currentShift,
   isDarkMode = true,
+  selectedFirefighterId = null,
 }: CalendarGridProps) {
   const theme = getTheme(isDarkMode);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -100,6 +102,7 @@ export function CalendarGrid({
             isAdminMode={isAdminMode}
             currentShift={currentShift}
             isDarkMode={isDarkMode}
+            selectedFirefighterId={selectedFirefighterId}
           />
         ))}
       </div>

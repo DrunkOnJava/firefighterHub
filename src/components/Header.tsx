@@ -59,14 +59,14 @@ export function Header({
         }
       `}
     >
-      <div className={`px-4 sm:px-6 ${tokens.spacing.section.sm} flex items-center justify-between w-full gap-4`}>
+      <div className={`px-4 sm:px-6 py-2 flex items-center justify-between w-full gap-4`}>
         {/* Logo & Title - LEFT SIDE */}
         <div className="flex items-center gap-4 min-w-0 flex-shrink leading-tight">
             <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-[72px] h-[72px] sm:w-[88px] sm:h-[88px] translate-y-[1px]"
+                className="w-14 h-14 sm:w-16 sm:h-16 translate-y-[1px]"
               />
             </div>
             <div className="min-w-0">

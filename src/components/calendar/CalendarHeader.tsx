@@ -47,28 +47,28 @@ export function CalendarHeader({
 
   return (
     <div className="space-y-2">
-      {/* Single row: Month navigation + Shift indicator */}
+      {/* Compact navigation row */}
       <div className="flex items-center justify-between">
-        {/* Left: Today + Month navigation (compact) */}
-        <div className="flex items-center gap-2">
+        {/* Left: Compact navigation - Arrow | Today | Arrow | Month */}
+        <div className="flex items-center gap-1.5">
           <button
             onClick={onPreviousMonth}
             className={`
               p-1.5 rounded-lg
-              ${isDarkMode ? 'hover:bg-gray-800/70 text-gray-400' : 'hover:bg-gray-200 text-gray-600'}
+              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-gray-700 active:bg-gray-300'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
             aria-label="Previous month"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
           <button
             onClick={handleGoToToday}
             className={`
-              px-3 py-1.5 rounded-lg font-semibold text-sm
-              ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}
+              px-3 py-1.5 rounded-lg font-bold text-sm
+              ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700 text-white active:bg-blue-800' : 'bg-blue-500 hover:bg-blue-600 text-white active:bg-blue-700'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
@@ -81,22 +81,27 @@ export function CalendarHeader({
             onClick={onNextMonth}
             className={`
               p-1.5 rounded-lg
-              ${isDarkMode ? 'hover:bg-gray-800/70 text-gray-400' : 'hover:bg-gray-200 text-gray-600'}
+              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-gray-700 active:bg-gray-300'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
             aria-label="Next month"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </button>
 
           <h2
-            className={`text-lg font-semibold ${
-              isDarkMode ? 'text-slate-300' : 'text-gray-700'
-            } ml-2`}
+            className={`text-xl font-bold ${
+              isDarkMode ? 'text-slate-100' : 'text-gray-900'
+            } ml-3`}
           >
             {formatMonthYear(currentDate)}
           </h2>
+          
+          {/* Hint text */}
+          <span className={`ml-2 text-xs ${isDarkMode ? 'text-slate-500' : 'text-gray-500'} hidden lg:inline`}>
+            Navigate via ← →
+          </span>
         </div>
 
         {/* Right: Shift indicator + Legend inline */}
@@ -105,15 +110,15 @@ export function CalendarHeader({
           <div className="hidden lg:flex items-center gap-4 text-xs">
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded border-l-4 border-orange-500 bg-slate-700" />
-              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Scheduled</span>
+              <span className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>Scheduled</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded border-l-4 border-green-500 bg-slate-700 opacity-75" />
-              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Completed</span>
+              <span className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>Completed</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-blue-600/20 ring-2 ring-blue-500" />
-              <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>Today</span>
+              <div className="w-3 h-3 rounded bg-blue-600/30 ring-2 ring-blue-500" />
+              <span className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>Today</span>
             </div>
           </div>
           

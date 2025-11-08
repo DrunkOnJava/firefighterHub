@@ -577,6 +577,11 @@ export function FirefighterList({
                           >
                             {firefighter.name}
                           </button>
+                          {isNext && (
+                            <span className="px-2 py-0.5 bg-blue-600 text-white text-xs font-bold rounded">
+                              NEXT
+                            </span>
+                          )}
                         </div>
                       </td>
                       {isAdminMode && (

@@ -519,10 +519,10 @@ export function FirefighterList({
                       } ${isAdminMode ? 'cursor-move' : 'cursor-default'}`}
                     >
                       {isAdminMode && (
-                        <td className="px-4 py-1 whitespace-nowrap text-center">
+                        <td className="px-4 py-0 max-h-10 overflow-hidden text-center align-middle">
                           <button
                             onClick={() => toggleSelection(firefighter.id)}
-                            className={`p-1 rounded transition-colors ${
+                            className={`p-0 rounded transition-colors ${
                               isDarkMode
                                 ? "hover:bg-gray-700"
                                 : "hover:bg-slate-200"
@@ -531,13 +531,13 @@ export function FirefighterList({
                           >
                             {selectedIds.has(firefighter.id) ? (
                               <CheckSquare
-                                className={`w-5 h-5 ${
+                                className={`w-4 h-4 ${
                                   isDarkMode ? "text-blue-400" : "text-blue-600"
                                 }`}
                               />
                             ) : (
                               <Square
-                                className={`w-5 h-5 ${
+                                className={`w-4 h-4 ${
                                   isDarkMode
                                     ? "text-gray-500"
                                     : "text-slate-400"
@@ -548,21 +548,21 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
+                        className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-300" : "text-slate-700"
                         }`}
                       >
                         <span className="font-bold">{index + 1}</span>
                       </td>
                       <td
-                        className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap ${
+                        className={`px-4 py-0 align-middle max-h-10 overflow-hidden ${
                           isDarkMode ? "text-white" : "text-slate-900"
                         }`}
                       >
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 h-10">
                           {/* Shift Badge */}
                           <div
-                            className={`w-4 h-4 flex-shrink-0 ${
+                            className={`w-3 h-3 flex-shrink-0 ${
                               firefighter.shift === 'A'
                                 ? 'rounded-full bg-gradient-to-br from-cyan-500 to-blue-600'
                                 : firefighter.shift === 'B'
@@ -572,13 +572,13 @@ export function FirefighterList({
                           />
                           <button
                             onClick={() => handleViewProfile(firefighter)}
-                            className="font-bold text-base hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded px-1"
+                            className="font-bold text-sm hover:text-orange-500 dark:hover:text-orange-400 transition-colors underline decoration-transparent hover:decoration-current focus:outline-none focus:ring-1 focus:ring-orange-500 rounded px-0.5"
                             aria-label={`View profile for ${firefighter.name}`}
                           >
                             {firefighter.name}
                           </button>
                           {isNext && (
-                            <span className="px-2 py-0.5 bg-blue-600 text-white text-xs font-bold rounded">
+                            <span className="px-1.5 py-0 bg-blue-600 text-white text-[10px] font-bold rounded leading-tight">
                               NEXT
                             </span>
                           )}
@@ -586,7 +586,7 @@ export function FirefighterList({
                       </td>
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap ${
+                          className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -605,7 +605,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
+                          className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -626,7 +626,7 @@ export function FirefighterList({
                       )}
                       {isAdminMode && (
                         <td
-                          className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
+                          className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
                             isDarkMode ? "text-gray-300" : "text-slate-700"
                           }`}
                         >
@@ -652,7 +652,7 @@ export function FirefighterList({
                         </td>
                       )}
                       {isAdminMode && (
-                        <td className="px-4 py-0 leading-10 align-middle h-10">
+                        <td className="px-4 py-0 align-middle max-h-10 overflow-hidden">
                           {qualifications.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {qualifications.map((qual) => (
@@ -676,7 +676,7 @@ export function FirefighterList({
                         </td>
                       )}
                       <td
-                        className={`px-4 py-0 leading-10 align-middle h-10 whitespace-nowrap text-sm ${
+                        className={`px-4 py-0 align-middle max-h-10 overflow-hidden whitespace-nowrap text-sm ${
                           isDarkMode ? "text-gray-400" : "text-slate-600"
                         }`}
                       >

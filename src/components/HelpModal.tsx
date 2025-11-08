@@ -57,7 +57,7 @@ export function HelpModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -404,7 +404,7 @@ export function HelpModal({
                       await signOut();
                       onClose();
                     }}
-                    className={`w-full ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.md} flex items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
+                    className={`w-full ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.md} flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
                   >
                     <LogOut size={20} />
                     Sign Out
@@ -423,7 +423,7 @@ export function HelpModal({
                       onShowLogin();
                       onClose();
                     }}
-                    className={`w-full ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors flex items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
+                    className={`w-full ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
                   >
                     <LogIn size={20} />
                     Battalion Chief Login
@@ -458,7 +458,7 @@ export function HelpModal({
                     onMasterReset();
                     onClose();
                   }}
-                  className={`w-full ${colors.components.button.danger} py-3 ${tokens.borders.radius.md} flex items-center justify-center ${tokens.spacing.gap.sm}`}
+                  className={`w-full ${colors.components.button.danger} py-3 ${tokens.borders.radius.md} flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm}`}
                 >
                   <Trash2 size={20} />
                   Master Reset - Delete Everything

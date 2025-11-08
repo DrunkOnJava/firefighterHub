@@ -169,7 +169,7 @@ export function FirefightersModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in`}
+      className={`fixed inset-0 ${colors.components.modal.overlay} backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"

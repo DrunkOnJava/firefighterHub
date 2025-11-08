@@ -171,7 +171,7 @@ export function QuickAddFirefighterModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -183,7 +183,7 @@ export function QuickAddFirefighterModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} max-w-2xl w-full max-h-[90vh] overflow-hidden`}
+        className={`${colors.components.modal.background} ${colors.components.modal.border} sm:${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} w-full h-full sm:h-auto sm:max-w-2xl max-h-screen sm:max-h-[90vh] overflow-y-auto animate-slide-up sm:animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className={`${colors.semantic.success.light} border-b-2 ${colors.semantic.success.border} px-6 py-5 flex items-center justify-between`}>

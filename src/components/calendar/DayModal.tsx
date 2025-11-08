@@ -114,7 +114,7 @@ export function DayModal({
       className={`
         fixed inset-0
         ${tokens.zIndex.modal}
-        flex items-center justify-center
+        flex items-end sm:items-center justify-center
         ${tokens.spacing.card.md}
       `}
       onClick={handleClose}
@@ -192,7 +192,7 @@ export function DayModal({
               ${theme.modal.background}
               hover:opacity-80
               ${tokens.transitions.fast}
-              flex items-center justify-center
+              flex items-end sm:items-center justify-center
             `}
             aria-label="Close date dialog"
           >

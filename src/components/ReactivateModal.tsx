@@ -57,7 +57,7 @@ export function ReactivateModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -147,7 +147,7 @@ export function ReactivateModal({
             </button>
             <button
               onClick={handleConfirm}
-              className={`flex-1 px-6 py-3 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white ${tokens.borders.radius.lg} font-semibold transition-all ${colors.semantic.success.shadow} focus-ring flex items-center justify-center ${tokens.spacing.gap.sm}`}
+              className={`flex-1 px-6 py-3 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white ${tokens.borders.radius.lg} font-semibold transition-all ${colors.semantic.success.shadow} focus-ring flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm}`}
             >
               <UserPlus className={tokens.icons.sm} />
               Reactivate

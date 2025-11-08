@@ -34,7 +34,7 @@ export function KeyboardShortcutsModal({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center ${tokens.spacing.card.md}`}
+      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md}`}
     >
       {/* Backdrop */}
       <div

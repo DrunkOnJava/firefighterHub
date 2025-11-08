@@ -185,7 +185,7 @@ export function FirefighterProfileModal({
   return (
     <div
       className={`
-        fixed inset-0 z-50 flex items-center justify-center
+        fixed inset-0 z-50 flex items-end sm:items-center justify-center
         ${tokens.spacing.card.md}
         bg-black/90 animate-fade-in
       `}
@@ -804,7 +804,7 @@ export function FirefighterProfileModal({
 
       {/* Hold Detail Modal */}
       {selectedHoldForDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4">
           <div
             className={`absolute inset-0 ${colors.components.modal.overlay} backdrop-blur-sm`}
             onClick={() => setSelectedHoldForDetail(null)}

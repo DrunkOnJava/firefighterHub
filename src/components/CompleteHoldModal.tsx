@@ -103,7 +103,8 @@ export function CompleteHoldModal({
   return (
     <div
       className={`
-        fixed inset-0 z-50 flex items-center justify-center
+        fixed inset-0 z-50
+        flex items-end sm:items-center justify-center
         ${tokens.spacing.card.md}
         ${colors.components.modal.overlay}
         animate-fade-in
@@ -120,11 +121,14 @@ export function CompleteHoldModal({
       <div
         ref={trapRef}
         className={`
-          max-w-lg w-full max-h-[90vh] overflow-y-auto
+          w-full h-full sm:h-auto
+          sm:max-w-lg max-h-screen sm:max-h-[90vh]
+          overflow-y-auto
           ${colors.components.modal.background}
           ${colors.components.modal.border}
-          ${tokens.borders.radius['2xl']}
+          sm:${tokens.borders.radius['2xl']}
           ${colors.components.modal.shadow}
+          animate-slide-up sm:animate-scale-in
         `}
         onClick={(e) => e.stopPropagation()}
       >

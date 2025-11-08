@@ -72,7 +72,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center ${colors.components.modal.overlay}`}
+      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center ${colors.components.modal.overlay}`}
       onClick={handleOverlayClick}
       role="dialog"
       aria-modal="true"
@@ -80,7 +80,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
     >
       <div
         ref={trapRef}
-        className={`relative w-full max-w-md mx-4 ${colors.components.modal.background} ${tokens.borders.radius.lg} ${colors.components.modal.shadow} overflow-hidden animate-scale-in`}
+        className={`relative w-full h-full sm:h-auto sm:max-w-md sm:mx-4 max-h-screen sm:max-h-[90vh] ${colors.components.modal.background} sm:${tokens.borders.radius.lg} ${colors.components.modal.shadow} overflow-y-auto animate-slide-up sm:animate-scale-in`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

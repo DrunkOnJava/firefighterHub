@@ -46,17 +46,19 @@ export function DayCell({
     return `${firstInitial}. ${lastName}`;
   };
 
-  // Determine styling based on state
+  // Determine styling based on state - WCAG 2.5.5: 44px minimum touch targets
   let cellClasses = `
-    relative aspect-square w-full p-2 text-left
+    relative w-full p-2 text-left
+    ${tokens.touchTarget.min} min-w-[44px]
     ${tokens.transitions.fast}
+    ${tokens.focus.default}
     flex flex-col
   `;
 
   if (!day.isCurrentMonth) {
     cellClasses += ` bg-slate-800 text-gray-600 cursor-default opacity-50`;
   } else {
-    cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer`;
+    cellClasses += ` bg-slate-800 text-gray-200 hover:bg-slate-700 cursor-pointer active:bg-slate-600`;
   }
 
   // Today indicator

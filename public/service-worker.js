@@ -1,6 +1,6 @@
 // IMPORTANT: Increment this version number whenever you deploy updates
 // This forces all clients to download fresh content
-const CACHE_VERSION = "v7";
+const CACHE_VERSION = "v8";
 const CACHE_NAME = `hold-manager-${CACHE_VERSION}`;
 
 // Static assets that rarely change (icons, manifest)
@@ -63,6 +63,12 @@ self.addEventListener("fetch", (event) => {
 
   // Skip non-http(s) schemes
   if (url.protocol !== "http:" && url.protocol !== "https:") {
+    return;
+  }
+
+  // Skip POST/PUT/DELETE/PATCH requests - cache only supports GET
+  if (event.request.method !== 'GET') {
+    event.respondWith(fetch(event.request));
     return;
   }
 

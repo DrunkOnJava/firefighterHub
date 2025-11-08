@@ -3,7 +3,7 @@ import { test } from '@playwright/test';
 test('capture roster table screenshot', async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   
-  await page.goto('https://firefighter-88lylaidj-griffins-projects-c51c3288.vercel.app');
+  await page.goto('');
   
   await page.waitForSelector('table', { timeout: 10000 });
   await page.waitForTimeout(2000);

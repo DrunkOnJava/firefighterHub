@@ -44,7 +44,7 @@ export const IconButton = ({
 }: IconButtonProps) => {
   // Size classes - ensures WCAG 2.5.5 compliance (44×44px minimum)
   const sizeClasses = {
-    xs: 'min-w-[32px] min-h-[32px] p-1',        // 32×32px (compact table rows only)
+    xs: 'min-w-[28px] min-h-[28px] p-0.5',      // 28×28px (compact table rows only)
     sm: 'min-w-[40px] min-h-[40px] p-2',        // 40×40px (acceptable for less critical actions)
     md: 'min-w-[44px] min-h-[44px] p-2.5',      // 44×44px (WCAG compliant)
     lg: 'min-w-[48px] min-h-[48px] p-3',        // 48×48px (extra comfortable)

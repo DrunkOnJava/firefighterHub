@@ -1,29 +1,33 @@
-/* MaterialM Dark Theme for React Big Calendar */
+/* MaterialM Dark Theme for React Big Calendar - HIGH IMPACT OPERATIONAL STYLING */
 
 .big-calendar-container.dark-theme {
   --rbc-bg: oklch(24.42% 0.028 257.24); /* slate-800 */
-  --rbc-border: oklch(35.32% 0.028 257.24); /* slate-700 */
+  --rbc-border: oklch(35.32% 0.028 257.24 / 0.3); /* slate-700 with transparency */
   --rbc-text: oklch(90.15% 0.008 257.24); /* slate-300 */
   --rbc-text-muted: oklch(62.14% 0.019 257.24); /* slate-400 */
-  --rbc-today: oklch(64.99% 0.143 265.28); /* primary-500 #5d87ff */
+  --rbc-today: oklch(61.04% 0.218 252.42); /* blue-500 */
   --rbc-selected: oklch(64.99% 0.143 265.28); /* primary-500 */
+  --rbc-hold-scheduled: oklch(69.64% 0.152 40.89); /* orange-600 */
+  --rbc-hold-completed: oklch(62.07% 0.149 156.48); /* green-600 */
 }
 
 .big-calendar-container.dark-theme .rbc-calendar {
   background: var(--rbc-bg);
   color: var(--rbc-text);
   border-radius: 12px;
-  padding: 24px;
-  border: 2px solid var(--rbc-border);
+  padding: 16px;
+  border: 1px solid var(--rbc-border);
 }
 
 .big-calendar-container.dark-theme .rbc-header {
   background: var(--rbc-bg);
   color: var(--rbc-text-muted);
   border-bottom: 1px solid var(--rbc-border);
-  padding: 12px 0;
-  font-weight: 500;
-  font-size: 0.875rem;
+  padding: 8px 0;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .big-calendar-container.dark-theme .rbc-month-view {
@@ -40,46 +44,59 @@
   border-left: 1px solid var(--rbc-border);
   aspect-ratio: 1 / 1;
   min-height: 100px;
+  border-radius: 8px;
+  margin: 2px;
+  transition: all 0.2s ease;
 }
 
 .big-calendar-container.dark-theme .rbc-day-bg:hover {
   background: oklch(28.42% 0.028 257.24);
+  border-color: oklch(45.32% 0.028 257.24);
 }
 
 .big-calendar-container.dark-theme .rbc-off-range-bg {
   background: oklch(20.42% 0.028 257.24);
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
+/* STRONG TODAY HIGHLIGHT - Blue accent fill with ring and shadow */
 .big-calendar-container.dark-theme .rbc-today {
-  background: oklch(30.42% 0.028 257.24);
-  border: 2px solid var(--rbc-today);
+  background: oklch(32.04% 0.118 252.42 / 0.2) !important; /* blue-600/20 */
+  border: 2px solid var(--rbc-today) !important;
+  box-shadow: 0 0 20px oklch(61.04% 0.218 252.42 / 0.3);
+  position: relative;
 }
 
 .big-calendar-container.dark-theme .rbc-date-cell {
   color: var(--rbc-text);
-  padding: 8px;
-  font-size: 1rem;
+  padding: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .big-calendar-container.dark-theme .rbc-date-cell .rbc-button-link {
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   color: var(--rbc-text);
+}
+
+/* TODAY date number gets blue accent */
+.big-calendar-container.dark-theme .rbc-today .rbc-button-link {
+  color: oklch(71.04% 0.218 252.42) !important; /* blue-300 */
 }
 
 .big-calendar-container.dark-theme .rbc-off-range {
   color: var(--rbc-text-muted);
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .big-calendar-container.dark-theme .rbc-current {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .big-calendar-container.dark-theme .rbc-toolbar {
-  padding: 16px 0;
-  margin-bottom: 16px;
+  padding: 12px 0;
+  margin-bottom: 12px;
   border-bottom: 1px solid var(--rbc-border);
 }
 
@@ -87,7 +104,7 @@
   background: transparent;
   color: var(--rbc-text);
   border: 1px solid var(--rbc-border);
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 8px;
   font-weight: 500;
   transition: all 0.2s;
@@ -106,14 +123,34 @@
 
 .big-calendar-container.dark-theme .rbc-toolbar-label {
   color: var(--rbc-text);
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
+/* EVENT PILLS - Operational Color System */
 .big-calendar-container.dark-theme .rbc-event {
-  padding: 4px 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 2px 6px;
+  font-size: 0.625rem; /* text-[10px] */
+  font-weight: 700;
+  border-radius: 4px;
+  border-left: 3px solid transparent;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+
+/* Scheduled holds - Orange (operational urgency) */
+.big-calendar-container.dark-theme .rbc-event.event-scheduled {
+  background: oklch(69.64% 0.152 40.89 / 0.9); /* orange-600/90 */
+  color: white;
+  border-left-color: oklch(79.64% 0.152 40.89); /* orange-400 */
+}
+
+/* Completed holds - Green (done state) */
+.big-calendar-container.dark-theme .rbc-event.event-completed {
+  background: oklch(62.07% 0.149 156.48 / 0.7); /* green-600/70 */
+  color: white;
+  border-left-color: oklch(72.07% 0.149 156.48); /* green-400 */
+  opacity: 0.75;
 }
 
 .big-calendar-container.dark-theme .rbc-event:hover {

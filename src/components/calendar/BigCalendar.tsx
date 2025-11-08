@@ -89,19 +89,17 @@ export function BigCalendar({
   const eventStyleGetter = (event: CalendarEvent) => {
     const { status } = event.resource;
 
-    let backgroundColor = '#5d87ff'; // default blue
+    // Use CSS classes for operational color system
+    let className = 'event-scheduled';
     if (status === 'completed') {
-      backgroundColor = '#13deb9'; // teal
+      className = 'event-completed';
     } else if (status === 'skipped') {
-      backgroundColor = '#fa896b'; // coral
+      className = 'event-scheduled'; // Treat skipped as scheduled visually
     }
 
     return {
+      className,
       style: {
-        backgroundColor,
-        borderRadius: '4px',
-        opacity: 0.9,
-        color: 'white',
         border: '0px',
         display: 'block',
       }

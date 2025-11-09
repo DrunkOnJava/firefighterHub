@@ -12,7 +12,6 @@ import {
 import { Shift } from "../lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { tokens } from "../styles";
 import { ShiftSelector } from "./ShiftSelector";
 
 interface HeaderProps {
@@ -26,7 +25,6 @@ interface HeaderProps {
   isAdminMode: boolean;
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
-  isDarkMode?: boolean;
   onToggleDarkMode: () => void;
 }
 
@@ -41,9 +39,10 @@ export function Header({
   isAdminMode,
   currentShift,
   onShiftChange,
-  isDarkMode = true,
   onToggleDarkMode,
 }: HeaderProps) {
+  // Detect dark mode from DOM
+  const isDarkMode = document.documentElement.classList.contains('dark');
   return (
     <header
       className="h-16 sticky top-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50"
@@ -181,13 +180,14 @@ export function Header({
         {/* Mobile Add Button */}
         {isAdminMode && (
           <div className="sm:hidden flex items-center gap-2 mt-3 pt-3 border-t">
-            <button
+            <Button
               onClick={onQuickAddFirefighter}
-              className={`w-full px-4 py-2 ${tokens.touchTarget.min} rounded-lg font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center justify-center gap-2 shadow-lg focus-ring`}
+              className="w-full min-h-[44px] gap-2 bg-green-600 hover:bg-green-700 text-white shadow-lg"
+              size="default"
             >
-              <UserPlus size={16} />
+              <UserPlus className="h-4 w-4" />
               <span className="text-sm">Add Member</span>
-            </button>
+            </Button>
           </div>
         )}
       </div>

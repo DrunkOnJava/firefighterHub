@@ -202,7 +202,6 @@ function App() {
         isAdminMode={isAdminMode}
         currentShift={currentShift}
         onShiftChange={setCurrentShift}
-        isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
       />
 
@@ -227,7 +226,6 @@ function App() {
           }>
             <MainCalendar
               loading={holdsLoading}
-              isDarkMode={isDarkMode}
               scheduledHolds={scheduledHolds}
               firefighters={allFirefighters}
               onFirefighterClick={(id) => setSelectedFirefighterFilter(id)}
@@ -260,7 +258,6 @@ function App() {
             onVolunteerHold={moveToBottomOfRotation}
             currentShift={currentShift}
             isAdminMode={isAdminMode}
-            isDarkMode={isDarkMode}
             isLoading={firefightersLoading}
           />
         </aside>
@@ -367,7 +364,6 @@ function App() {
           setCurrentShift(shift);
         }}
         isAdminMode={isAdminMode}
-        isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
       />
 

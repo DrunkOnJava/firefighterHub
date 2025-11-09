@@ -2,12 +2,12 @@
  * AnimatedToggle Component
  * 
  * Smooth toggle switch with spring physics and haptic-style feedback.
+ * Migrated to shadcn Switch component with semantic colors.
  * 
  * Features:
  * - Smooth slide animation (200ms ease-out)
  * - Spring physics for thumb movement
  * - Background color transition
- * - Haptic-style bounce effect
  * - Keyboard accessible (Space/Enter)
  * - Respects prefers-reduced-motion
  * 
@@ -24,15 +24,39 @@
 
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useEffect, useRef, useState } from 'react';
-import '../../styles/animations.css';
+import { Switch } from './switch';
+import { Label } from './label';
+import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-interface AnimatedToggleProps {
+const toggleVariants = cva(
+  'transition-all duration-200',
+  {
+    variants: {
+      variant: {
+        default: 'data-[state=checked]:bg-primary',
+        success: 'data-[state=checked]:bg-green-600',
+        warning: 'data-[state=checked]:bg-yellow-600',
+        danger: 'data-[state=checked]:bg-destructive',
+      },
+      size: {
+        sm: 'h-4 w-8',
+        md: 'h-5 w-9',
+        lg: 'h-6 w-11',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'md',
+    },
+  }
+);
+
+interface AnimatedToggleProps extends VariantProps<typeof toggleVariants> {
   checked: boolean;
   onChange: (checked: boolean) => void;
   label?: string;
   disabled?: boolean;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'default' | 'success' | 'warning' | 'danger';
   className?: string;
   ariaLabel?: string;
 }
@@ -48,13 +72,12 @@ export function AnimatedToggle({
   ariaLabel,
 }: AnimatedToggleProps) {
   const prefersReducedMotion = useReducedMotion();
-  const toggleRef = useRef<HTMLButtonElement>(null);
+  const switchRef = useRef<HTMLButtonElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Trigger haptic-style bounce on toggle
   useEffect(() => {
-    if (toggleRef.current && !prefersReducedMotion && isAnimating) {
-      const thumb = toggleRef.current.querySelector('.toggle-thumb') as HTMLElement;
+    if (switchRef.current && !prefersReducedMotion && isAnimating) {
+      const thumb = switchRef.current.querySelector('[data-state]') as HTMLElement;
       if (thumb) {
         thumb.animate(
           [
@@ -64,7 +87,7 @@ export function AnimatedToggle({
           ],
           {
             duration: 200,
-            easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Spring easing
+            easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
           }
         );
       }
@@ -72,114 +95,43 @@ export function AnimatedToggle({
     }
   }, [checked, prefersReducedMotion, isAnimating]);
 
-  const handleToggle = () => {
+  const handleToggle = (newChecked: boolean) => {
     if (disabled) return;
     setIsAnimating(true);
-    onChange(!checked);
+    onChange(newChecked);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled) return;
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      setIsAnimating(true);
-      onChange(!checked);
-    }
+  const textSizeConfig = {
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg',
   };
-
-  // Size configurations
-  const sizeConfig = {
-    sm: {
-      track: 'w-9 h-5',
-      thumb: 'w-4 h-4',
-      translate: 'translate-x-4',
-      text: 'text-sm',
-    },
-    md: {
-      track: 'w-11 h-6',
-      thumb: 'w-5 h-5',
-      translate: 'translate-x-5',
-      text: 'text-base',
-    },
-    lg: {
-      track: 'w-14 h-7',
-      thumb: 'w-6 h-6',
-      translate: 'translate-x-7',
-      text: 'text-lg',
-    },
-  };
-
-  const config = sizeConfig[size];
-
-  // Variant colors
-  const variantColors = {
-    default: checked
-      ? 'bg-blue-600 dark:bg-blue-500'
-      : 'bg-gray-300 dark:bg-slate-600',
-    success: checked
-      ? 'bg-green-600 dark:bg-green-500'
-      : 'bg-gray-300 dark:bg-slate-600',
-    warning: checked
-      ? 'bg-yellow-600 dark:bg-yellow-500'
-      : 'bg-gray-300 dark:bg-slate-600',
-    danger: checked
-      ? 'bg-red-600 dark:bg-red-500'
-      : 'bg-gray-300 dark:bg-slate-600',
-  };
-
-  const transitionClasses = prefersReducedMotion
-    ? ''
-    : 'transition-all duration-200 ease-out';
 
   return (
-    <div className={`inline-flex items-center gap-3 ${className}`}>
-      <button
-        ref={toggleRef}
-        type="button"
-        role="switch"
-        aria-checked={checked}
-        aria-label={ariaLabel || label}
+    <div className={cn('inline-flex items-center gap-3', className)}>
+      <Switch
+        ref={switchRef}
+        checked={checked}
+        onCheckedChange={handleToggle}
         disabled={disabled}
-        onClick={handleToggle}
-        onKeyDown={handleKeyDown}
-        className={`
-          relative inline-flex items-center rounded-full
-          ${config.track}
-          ${variantColors[variant]}
-          ${transitionClasses}
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
-          ${!disabled && 'hover:shadow-md'}
-        `}
-      >
-        {/* Thumb */}
-        <span
-          className={`
-            toggle-thumb
-            inline-block
-            ${config.thumb}
-            transform rounded-full
-            bg-white shadow-lg
-            ${checked ? config.translate : 'translate-x-0.5'}
-            ${transitionClasses}
-            ${!prefersReducedMotion && 'will-change-transform'}
-          `}
-          aria-hidden="true"
-        />
-      </button>
+        className={cn(
+          toggleVariants({ variant, size }),
+          disabled && 'cursor-not-allowed'
+        )}
+        aria-label={ariaLabel || label}
+      />
 
-      {/* Label */}
       {label && (
-        <label
-          className={`
-            ${config.text}
-            ${disabled ? 'text-slate-400 cursor-not-allowed' : 'text-slate-700 dark:text-slate-300 cursor-pointer'}
-            select-none
-          `}
-          onClick={!disabled ? handleToggle : undefined}
+        <Label
+          className={cn(
+            textSizeConfig[size || 'md'],
+            disabled ? 'text-muted-foreground cursor-not-allowed' : 'cursor-pointer',
+            'select-none'
+          )}
+          onClick={!disabled ? () => handleToggle(!checked) : undefined}
         >
           {label}
-        </label>
+        </Label>
       )}
     </div>
   );
@@ -212,7 +164,7 @@ export function AnimatedToggleGroup({
   className = '',
 }: AnimatedToggleGroupProps) {
   return (
-    <div className={`space-y-3 ${className}`}>
+    <div className={cn('space-y-3', className)}>
       {options.map((option) => (
         <AnimatedToggle
           key={option.id}

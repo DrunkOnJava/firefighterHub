@@ -3,6 +3,7 @@
  * 
  * Progress indicator with determinate and indeterminate modes.
  * Smooth animation with reduced-motion support.
+ * Migrated to shadcn Progress with semantic colors.
  * 
  * Usage:
  * ```tsx
@@ -16,6 +17,8 @@
 
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { useEffect, useState } from 'react';
+import { Progress } from './progress';
+import { cn } from '@/lib/utils';
 import '../../styles/animations.css';
 
 interface ProgressBarProps {
@@ -27,6 +30,7 @@ interface ProgressBarProps {
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'success' | 'warning' | 'danger';
   className?: string;
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -39,7 +43,6 @@ export function ProgressBar({
   size = 'md',
   variant = 'default',
   className = '',
-  isDarkMode = true,
 }: ProgressBarProps) {
   const prefersReducedMotion = useReducedMotion();
   const [displayValue, setDisplayValue] = useState(0);
@@ -51,7 +54,7 @@ export function ProgressBar({
       return;
     }
 
-    const duration = 300; // ms
+    const duration = 300;
     const steps = 30;
     const stepValue = (value - displayValue) / steps;
     const stepDuration = duration / steps;
@@ -72,71 +75,55 @@ export function ProgressBar({
 
   const percentage = Math.min(Math.max((displayValue / max) * 100, 0), 100);
 
-  // Size configurations
   const sizeConfig = {
     sm: 'h-1',
     md: 'h-2',
     lg: 'h-3',
   };
 
-  // Variant colors
-  const variantColors = {
-    default: 'bg-blue-600',
-    success: 'bg-green-600',
-    warning: 'bg-yellow-600',
-    danger: 'bg-red-600',
+  const variantClasses = {
+    default: '[&>*]:bg-primary',
+    success: '[&>*]:bg-green-600',
+    warning: '[&>*]:bg-yellow-600',
+    danger: '[&>*]:bg-destructive',
   };
 
   return (
-    <div className={`w-full ${className}`}>
-      {/* Label and Percentage */}
+    <div className={cn('w-full', className)}>
       {(label || showPercentage) && (
         <div className="flex items-center justify-between mb-2">
           {label && (
-            <span
-              className={`text-sm font-medium ${
-                isDarkMode ? 'text-slate-300' : 'text-slate-700'
-              }`}
-            >
+            <span className="text-sm font-medium text-foreground">
               {label}
             </span>
           )}
           {showPercentage && !indeterminate && (
-            <span
-              className={`text-sm font-medium ${
-                isDarkMode ? 'text-slate-400' : 'text-gray-600'
-              }`}
-            >
+            <span className="text-sm font-medium text-muted-foreground">
               {Math.round(percentage)}%
             </span>
           )}
         </div>
       )}
 
-      {/* Progress Track */}
-      <div
-        className={`
-          w-full
-          ${sizeConfig[size]}
-          ${isDarkMode ? 'bg-slate-700' : 'bg-gray-200'}
-          rounded-full
-          overflow-hidden
-        `}
-        role="progressbar"
-        aria-valuenow={indeterminate ? undefined : value}
-        aria-valuemin={0}
-        aria-valuemax={max}
-        aria-label={label}
-      >
-        {indeterminate ? (
-          // Indeterminate mode - sliding bar
+      {indeterminate ? (
+        <div
+          className={cn(
+            'w-full rounded-full overflow-hidden bg-primary/20',
+            sizeConfig[size]
+          )}
+          role="progressbar"
+          aria-label={label}
+        >
           <div className="progress-indeterminate h-full relative">
             <div
-              className={`
-                absolute inset-y-0 left-0 w-1/3
-                ${variantColors[variant]}
-                ${!prefersReducedMotion ? 'animate-progress-indeterminate' : ''}
-              `}
+              className={cn(
+                'absolute inset-y-0 left-0 w-1/3',
+                variant === 'success' && 'bg-green-600',
+                variant === 'warning' && 'bg-yellow-600',
+                variant === 'danger' && 'bg-destructive',
+                variant === 'default' && 'bg-primary',
+                !prefersReducedMotion && 'animate-progress-indeterminate'
+              )}
               style={
                 !prefersReducedMotion
                   ? { animation: 'progress-indeterminate 1.5s ease-in-out infinite' }
@@ -144,26 +131,27 @@ export function ProgressBar({
               }
             />
           </div>
-        ) : (
-          // Determinate mode - progress fill
-          <div
-            className={`
-              h-full
-              ${variantColors[variant]}
-              ${!prefersReducedMotion ? 'transition-all duration-300 ease-out' : ''}
-              rounded-full
-            `}
-            style={{ width: `${percentage}%` }}
-          />
-        )}
-      </div>
+        </div>
+      ) : (
+        <Progress
+          value={percentage}
+          className={cn(
+            sizeConfig[size],
+            variantClasses[variant]
+          )}
+          aria-valuenow={value}
+          aria-valuemin={0}
+          aria-valuemax={max}
+          aria-label={label}
+        />
+      )}
     </div>
   );
 }
 
 /**
  * CircularProgress Component
- * Circular progress indicator
+ * Circular progress indicator using semantic colors
  */
 interface CircularProgressProps {
   value?: number;
@@ -174,6 +162,7 @@ interface CircularProgressProps {
   showPercentage?: boolean;
   variant?: 'default' | 'success' | 'warning' | 'danger';
   className?: string;
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -186,7 +175,6 @@ export function CircularProgress({
   showPercentage = true,
   variant = 'default',
   className = '',
-  isDarkMode = true,
 }: CircularProgressProps) {
   const prefersReducedMotion = useReducedMotion();
   const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
@@ -196,32 +184,30 @@ export function CircularProgress({
   const offset = circumference - (percentage / 100) * circumference;
 
   const variantColors = {
-    default: '#3b82f6', // blue-600
-    success: '#10b981', // green-600
-    warning: '#f59e0b', // yellow-600
-    danger: '#ef4444', // red-600
+    default: 'hsl(var(--primary))',
+    success: '#10b981',
+    warning: '#f59e0b',
+    danger: 'hsl(var(--destructive))',
   };
 
   const strokeColor = variantColors[variant];
 
   return (
-    <div className={`relative inline-flex items-center justify-center ${className}`}>
+    <div className={cn('relative inline-flex items-center justify-center', className)}>
       <svg
         width={size}
         height={size}
         className={!prefersReducedMotion && indeterminate ? 'animate-spin' : ''}
       >
-        {/* Background circle */}
         <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={isDarkMode ? '#374151' : '#e5e7eb'}
+          stroke="hsl(var(--muted))"
           strokeWidth={strokeWidth}
         />
 
-        {/* Progress circle */}
         {!indeterminate && (
           <circle
             cx={size / 2}
@@ -238,7 +224,6 @@ export function CircularProgress({
           />
         )}
 
-        {/* Indeterminate circle */}
         {indeterminate && (
           <circle
             cx={size / 2}
@@ -253,15 +238,8 @@ export function CircularProgress({
         )}
       </svg>
 
-      {/* Percentage text */}
       {showPercentage && !indeterminate && (
-        <div
-          className={`
-            absolute inset-0 flex items-center justify-center
-            text-lg font-bold
-            ${isDarkMode ? 'text-white' : 'text-slate-900'}
-          `}
-        >
+        <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-foreground">
           {Math.round(percentage)}%
         </div>
       )}

@@ -3,21 +3,22 @@
  * 
  * Lightweight inline loading indicator with pulse animation.
  * Perfect for text-based loading states.
+ * Migrated to use semantic colors instead of hardcoded values.
  * 
  * Usage:
  * ```tsx
  * <PulseLoader />
- * <PulseLoader size="sm" color="blue" />
+ * <PulseLoader size="sm" color="success" />
  * <PulseLoader size="lg" dots={5} />
  * ```
  */
 
 import { useReducedMotion } from '../../hooks/useReducedMotion';
-import '../../styles/animations.css';
+import { cn } from '@/lib/utils';
 
 interface PulseLoaderProps {
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  color?: 'blue' | 'green' | 'yellow' | 'red' | 'gray' | 'white';
+  color?: 'primary' | 'success' | 'warning' | 'destructive' | 'muted' | 'white';
   dots?: number;
   speed?: 'slow' | 'normal' | 'fast';
   className?: string;
@@ -26,7 +27,7 @@ interface PulseLoaderProps {
 
 export function PulseLoader({
   size = 'md',
-  color = 'blue',
+  color = 'primary',
   dots = 3,
   speed = 'normal',
   className = '',
@@ -34,7 +35,6 @@ export function PulseLoader({
 }: PulseLoaderProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  // Size configurations
   const sizeConfig = {
     xs: 'w-1 h-1',
     sm: 'w-1.5 h-1.5',
@@ -49,17 +49,15 @@ export function PulseLoader({
     lg: 'gap-2',
   };
 
-  // Color configurations
   const colorConfig = {
-    blue: 'bg-blue-500',
-    green: 'bg-green-500',
-    yellow: 'bg-yellow-500',
-    red: 'bg-red-500',
-    gray: 'bg-slate-500',
+    primary: 'bg-primary',
+    success: 'bg-green-500',
+    warning: 'bg-yellow-500',
+    destructive: 'bg-destructive',
+    muted: 'bg-muted-foreground',
     white: 'bg-white',
   };
 
-  // Speed configurations (animation duration)
   const speedConfig = {
     slow: '1.4s',
     normal: '1s',
@@ -70,24 +68,24 @@ export function PulseLoader({
 
   return (
     <div
-      className={`
-        flex items-center
-        ${gapConfig[size]}
-        ${inline ? 'inline-flex' : ''}
-        ${className}
-      `}
+      className={cn(
+        'flex items-center',
+        gapConfig[size],
+        inline && 'inline-flex',
+        className
+      )}
       role="status"
       aria-label="Loading"
     >
       {Array.from({ length: dots }).map((_, index) => (
         <div
           key={index}
-          className={`
-            ${sizeConfig[size]}
-            ${colorConfig[color]}
-            rounded-full
-            ${!prefersReducedMotion ? 'animate-pulse' : 'opacity-60'}
-          `}
+          className={cn(
+            sizeConfig[size],
+            colorConfig[color],
+            'rounded-full',
+            !prefersReducedMotion ? 'animate-pulse' : 'opacity-60'
+          )}
           style={
             !prefersReducedMotion
               ? {
@@ -105,7 +103,7 @@ export function PulseLoader({
 
 /**
  * BarLoader Component
- * Horizontal bar loading indicator
+ * Horizontal bar loading indicator using semantic colors
  */
 interface BarLoaderProps {
   width?: number | string;
@@ -113,6 +111,7 @@ interface BarLoaderProps {
   color?: string;
   speed?: 'slow' | 'normal' | 'fast';
   className?: string;
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -122,11 +121,10 @@ export function BarLoader({
   color,
   speed = 'normal',
   className = '',
-  isDarkMode = true,
 }: BarLoaderProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  const defaultColor = color || (isDarkMode ? '#3b82f6' : '#2563eb');
+  const defaultColor = color || 'hsl(var(--primary))';
 
   const speedConfig = {
     slow: '2s',
@@ -136,11 +134,10 @@ export function BarLoader({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-full ${className}`}
+      className={cn('relative overflow-hidden rounded-full bg-primary/20', className)}
       style={{
         width,
         height,
-        backgroundColor: isDarkMode ? '#374151' : '#e5e7eb',
       }}
       role="status"
       aria-label="Loading"
@@ -172,7 +169,7 @@ export function BarLoader({
 
 /**
  * ClockLoader Component
- * Spinning clock hand loader
+ * Spinning clock hand loader using semantic colors
  */
 interface ClockLoaderProps {
   size?: number;
@@ -183,11 +180,12 @@ interface ClockLoaderProps {
 
 export function ClockLoader({
   size = 40,
-  color = '#3b82f6',
+  color,
   speed = 'normal',
   className = '',
 }: ClockLoaderProps) {
   const prefersReducedMotion = useReducedMotion();
+  const defaultColor = color || 'hsl(var(--primary))';
 
   const speedConfig = {
     slow: '2s',
@@ -197,36 +195,36 @@ export function ClockLoader({
 
   return (
     <div
-      className={`relative ${className}`}
+      className={cn('relative', className)}
       style={{ width: size, height: size }}
       role="status"
       aria-label="Loading"
     >
-      {/* Clock circle */}
       <div
         className="absolute inset-0 rounded-full border-2"
-        style={{ borderColor: `${color}40` }}
+        style={{ borderColor: `${defaultColor}40` }}
       />
 
-      {/* Clock hand */}
       <div
-        className={`absolute top-1/2 left-1/2 origin-left ${!prefersReducedMotion ? 'animate-spin' : ''}`}
+        className={cn(
+          'absolute top-1/2 left-1/2 origin-left',
+          !prefersReducedMotion && 'animate-spin'
+        )}
         style={{
           width: size / 2 - 4,
           height: 2,
-          backgroundColor: color,
+          backgroundColor: defaultColor,
           transformOrigin: '0% 50%',
           animation: !prefersReducedMotion ? `spin ${speedConfig[speed]} linear infinite` : 'none',
         }}
       />
 
-      {/* Center dot */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
           width: 6,
           height: 6,
-          backgroundColor: color,
+          backgroundColor: defaultColor,
         }}
       />
 

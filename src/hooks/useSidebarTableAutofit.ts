@@ -113,7 +113,7 @@ export function useTableAutofit(options: UseTableAutofitOptions = {}) {
  * 
  *   return (
  *     <div ref={containerRef} className="table-container">
- *       <table>{/* ... */}</table>
+ *       <table>...</table>
  *     </div>
  *   );
  * }

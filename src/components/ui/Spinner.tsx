@@ -3,6 +3,7 @@
  * 
  * Loading spinner with multiple variants and sizes.
  * Respects prefers-reduced-motion (shows static indicator).
+ * Migrated to use Loader2 icon and semantic colors.
  * 
  * Usage:
  * ```tsx
@@ -12,7 +13,8 @@
  */
 
 import { useReducedMotion } from '../../hooks/useReducedMotion';
-import '../../styles/animations.css';
+import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface SpinnerProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -21,6 +23,7 @@ interface SpinnerProps {
   label?: string;
   className?: string;
   fullScreen?: boolean;
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -31,48 +34,41 @@ export function Spinner({
   label,
   className = '',
   fullScreen = false,
-  isDarkMode = true,
 }: SpinnerProps) {
   const prefersReducedMotion = useReducedMotion();
 
-  // Size configurations
   const sizeConfig = {
-    xs: 'w-4 h-4 border-2',
-    sm: 'w-6 h-6 border-2',
-    md: 'w-8 h-8 border-3',
-    lg: 'w-12 h-12 border-3',
-    xl: 'w-16 h-16 border-4',
+    xs: 'w-4 h-4',
+    sm: 'w-6 h-6',
+    md: 'w-8 h-8',
+    lg: 'w-12 h-12',
+    xl: 'w-16 h-16',
   };
 
-  // Default colors
-  const defaultColors = {
-    primary: isDarkMode ? 'border-blue-500' : 'border-blue-600',
-    secondary: isDarkMode ? 'border-gray-400' : 'border-gray-500',
-    border: isDarkMode ? 'border-white' : 'border-gray-900',
-    dots: isDarkMode ? 'bg-blue-500' : 'bg-blue-600',
-    pulse: isDarkMode ? 'bg-blue-500' : 'bg-blue-600',
+  const variantClasses = {
+    primary: 'text-primary',
+    secondary: 'text-muted-foreground',
+    border: 'text-foreground',
+    dots: 'bg-primary',
+    pulse: 'bg-primary',
   };
 
-  const spinnerColor = color || defaultColors[variant];
+  const spinnerColor = color || variantClasses[variant];
 
-  // Border spinner (default)
   if (variant === 'border' || variant === 'primary' || variant === 'secondary') {
     const spinner = (
-      <div
-        className={`
-          ${sizeConfig[size]}
-          rounded-full
-          border-transparent
-          ${spinnerColor}
-          border-t-transparent
-          ${!prefersReducedMotion ? 'animate-spin' : 'opacity-60'}
-          ${className}
-        `}
+      <Loader2
+        className={cn(
+          sizeConfig[size],
+          spinnerColor,
+          !prefersReducedMotion ? 'animate-spin' : 'opacity-60',
+          className
+        )}
         role="status"
         aria-label={label || 'Loading'}
       >
         <span className="sr-only">{label || 'Loading...'}</span>
-      </div>
+      </Loader2>
     );
 
     if (fullScreen) {
@@ -91,7 +87,6 @@ export function Spinner({
     return spinner;
   }
 
-  // Dots spinner
   if (variant === 'dots') {
     const dotSizes = {
       xs: 'w-1.5 h-1.5',
@@ -103,23 +98,19 @@ export function Spinner({
 
     return (
       <div
-        className={`flex items-center gap-1.5 ${className}`}
+        className={cn('flex items-center gap-1.5', className)}
         role="status"
         aria-label={label || 'Loading'}
       >
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className={`
-              ${dotSizes[size]}
-              rounded-full
-              ${spinnerColor}
-              ${
-                !prefersReducedMotion
-                  ? 'animate-pulse'
-                  : 'opacity-60'
-              }
-            `}
+            className={cn(
+              dotSizes[size],
+              'rounded-full',
+              spinnerColor,
+              !prefersReducedMotion ? 'animate-pulse' : 'opacity-60'
+            )}
             style={
               !prefersReducedMotion
                 ? { animationDelay: `${i * 150}ms` }
@@ -132,17 +123,16 @@ export function Spinner({
     );
   }
 
-  // Pulse spinner
   if (variant === 'pulse') {
     return (
       <div
-        className={`
-          ${sizeConfig[size]}
-          rounded-full
-          ${spinnerColor}
-          ${!prefersReducedMotion ? 'animate-pulse' : 'opacity-60'}
-          ${className}
-        `}
+        className={cn(
+          sizeConfig[size],
+          'rounded-full',
+          spinnerColor,
+          !prefersReducedMotion ? 'animate-pulse' : 'opacity-60',
+          className
+        )}
         role="status"
         aria-label={label || 'Loading'}
       >
@@ -162,6 +152,7 @@ interface SpinnerOverlayProps {
   isOpen: boolean;
   label?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -169,21 +160,13 @@ export function SpinnerOverlay({
   isOpen,
   label = 'Loading...',
   size = 'lg',
-  isDarkMode = true,
 }: SpinnerOverlayProps) {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
-      <div
-        className={`
-          ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-white text-slate-900'}
-          rounded-xl p-8
-          flex flex-col items-center gap-4
-          shadow-2xl
-        `}
-      >
-        <Spinner size={size} variant="primary" isDarkMode={isDarkMode} />
+      <div className="bg-card text-card-foreground rounded-xl p-8 flex flex-col items-center gap-4 shadow-2xl">
+        <Spinner size={size} variant="primary" />
         {label && (
           <p className="text-sm font-medium">{label}</p>
         )}

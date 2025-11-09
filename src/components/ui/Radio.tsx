@@ -3,6 +3,7 @@
  * 
  * WCAG 2.5.5 compliant radio button with 44×44px minimum touch target.
  * Wraps native radio in larger label for better mobile usability.
+ * Migrated to shadcn RadioGroup with semantic colors.
  * 
  * Features:
  * - Touch-friendly 44×44px minimum clickable area
@@ -25,6 +26,10 @@
  * ```
  */
 
+import { RadioGroupItem } from './radio-group';
+import { Label } from './label';
+import { cn } from '@/lib/utils';
+
 interface RadioProps {
   name: string;
   value: string;
@@ -33,6 +38,7 @@ interface RadioProps {
   onChange: (value: string) => void;
   disabled?: boolean;
   description?: string;
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -44,71 +50,41 @@ export const Radio = ({
   onChange,
   disabled = false,
   description,
-  isDarkMode = true,
 }: RadioProps) => {
-  // Container classes - creates 44×44px touch target
-  const containerClasses = `
-    flex items-start gap-3
-    min-h-[44px] py-2 px-2
-    rounded-md
-    cursor-pointer group
-    transition-colors
-    ${isDarkMode
-      ? 'hover:bg-slate-800/50'
-      : 'hover:bg-slate-50'
-    }
-    ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-  `;
-
-  // Label text classes
-  const labelTextClasses = `
-    text-sm
-    transition-colors
-    ${isDarkMode
-      ? 'text-slate-300 group-hover:text-white'
-      : 'text-slate-700 group-hover:text-slate-900'
-    }
-  `;
-
-  // Description text classes
-  const descriptionClasses = `
-    mt-1 text-xs
-    ${isDarkMode
-      ? 'text-slate-500'
-      : 'text-gray-600'
-    }
-  `;
-
-  // Radio input classes
-  const radioClasses = `
-    mt-0.5 w-4 h-4
-    focus:ring-blue-500 focus:ring-2
-    cursor-pointer
-    disabled:cursor-not-allowed
-    ${isDarkMode
-      ? 'text-blue-600 bg-slate-800 border-slate-600'
-      : 'text-blue-600 bg-white border-slate-300'
-    }
-  `;
-
   return (
-    <label className={containerClasses}>
-      <input
-        type="radio"
-        name={name}
+    <label
+      className={cn(
+        'flex items-start gap-3',
+        'min-h-[44px] py-2 px-2',
+        'rounded-md cursor-pointer group transition-colors',
+        'hover:bg-accent',
+        disabled && 'opacity-50 cursor-not-allowed'
+      )}
+    >
+      <RadioGroupItem
+        id={`${name}-${value}`}
         value={value}
         checked={checked}
-        onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        className={radioClasses}
-        aria-describedby={description ? `${name}-${value}-desc` : undefined}
+        onClick={() => !disabled && onChange(value)}
+        className="mt-0.5"
       />
       <div className="flex-1">
-        <span className={labelTextClasses}>
+        <Label
+          htmlFor={`${name}-${value}`}
+          className={cn(
+            'text-sm transition-colors cursor-pointer',
+            'group-hover:text-foreground',
+            disabled && 'cursor-not-allowed'
+          )}
+        >
           {label}
-        </span>
+        </Label>
         {description && (
-          <p id={`${name}-${value}-desc`} className={descriptionClasses}>
+          <p
+            id={`${name}-${value}-desc`}
+            className="mt-1 text-xs text-muted-foreground"
+          >
             {description}
           </p>
         )}

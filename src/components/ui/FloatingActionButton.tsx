@@ -3,6 +3,7 @@
  * 
  * Mobile-inspired floating action button for primary actions.
  * Always visible, positioned in corner for easy thumb access.
+ * Migrated to use shadcn Button with semantic colors.
  * 
  * Features:
  * - Fixed positioning (bottom-right by default)
@@ -25,13 +26,36 @@
  */
 
 import { LucideIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-interface FABProps {
+const fabVariants = cva(
+  'fixed z-40 w-14 h-14 lg:w-16 lg:h-16 rounded-full shadow-2xl hover:scale-110 focus-visible:ring-4 transition-all duration-200 group',
+  {
+    variants: {
+      position: {
+        'bottom-right': 'bottom-24 right-6 lg:bottom-8 lg:right-8',
+        'bottom-left': 'bottom-24 left-6 lg:bottom-8 lg:left-8',
+      },
+      variant: {
+        primary: 'bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 text-primary-foreground shadow-primary/30',
+        secondary: 'bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/90 hover:to-secondary/80 text-secondary-foreground shadow-secondary/30',
+        success: 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white shadow-green-500/30',
+        danger: 'bg-gradient-to-r from-destructive to-destructive/90 hover:from-destructive/90 hover:to-destructive/80 text-destructive-foreground shadow-destructive/30',
+      },
+    },
+    defaultVariants: {
+      position: 'bottom-right',
+      variant: 'primary',
+    },
+  }
+);
+
+interface FABProps extends VariantProps<typeof fabVariants> {
   icon: LucideIcon;
   label: string;
   onClick: () => void;
-  position?: 'bottom-right' | 'bottom-left';
-  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  /** @deprecated No longer needed - uses Tailwind dark: variants */
   isDarkMode?: boolean;
 }
 
@@ -41,65 +65,21 @@ export const FloatingActionButton = ({
   onClick,
   position = 'bottom-right',
   variant = 'primary',
-  isDarkMode = true,
 }: FABProps) => {
-  // Position classes - responsive positioning
-  const positionClasses = {
-    'bottom-right': 'bottom-24 right-6 lg:bottom-8 lg:right-8',
-    'bottom-left': 'bottom-24 left-6 lg:bottom-8 lg:left-8',
-  };
-
-  // Variant classes - different action types
-  const variantClasses = {
-    primary: 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white shadow-blue-500/30',
-    secondary: 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-500 hover:to-gray-600 text-white shadow-gray-500/30',
-    success: 'bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-emerald-500/30',
-    danger: 'bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white shadow-red-500/30',
-  };
-
-  // Tooltip classes - desktop only
-  const tooltipClasses = `
-    hidden lg:block
-    absolute right-full mr-3 top-1/2 -translate-y-1/2
-    px-3 py-1.5
-    rounded-md shadow-lg
-    text-sm font-medium
-    whitespace-nowrap
-    pointer-events-none
-    opacity-0 group-hover:opacity-100 group-focus:opacity-100
-    transition-opacity duration-200
-    ${isDarkMode
-      ? 'bg-slate-800 text-white'
-      : 'bg-slate-900 text-white'
-    }
-  `;
-
   return (
     <button
       onClick={onClick}
-      className={`
-        fixed ${positionClasses[position]}
-        z-40
-        w-14 h-14 lg:w-16 lg:h-16
-        ${variantClasses[variant]}
-        rounded-full shadow-2xl
-        hover:scale-110
-        focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500
-        transition-all duration-200
-        group
-      `}
+      className={cn(fabVariants({ position, variant }))}
       aria-label={label}
       title={label}
       type="button"
     >
-      {/* Icon - scales on hover */}
       <Icon 
         className="w-8 h-8 mx-auto group-hover:scale-110 transition-transform" 
         aria-hidden="true"
       />
       
-      {/* Tooltip - desktop only, shown on hover/focus */}
-      <span className={tooltipClasses}>
+      <span className="hidden lg:block absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-md shadow-lg text-sm font-medium whitespace-nowrap pointer-events-none opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-200 bg-popover text-popover-foreground">
         {label}
       </span>
     </button>

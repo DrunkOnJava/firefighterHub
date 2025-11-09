@@ -29,7 +29,6 @@ interface FirefighterItemProps {
   isDragging?: boolean;
   isDragOver?: boolean;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
 }
 
 export function FirefighterItem({
@@ -47,7 +46,6 @@ export function FirefighterItem({
   isDragging = false,
   isDragOver = false,
   isAdminMode = false,
-  isDarkMode = true,
 }: FirefighterItemProps) {
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "No holds yet";

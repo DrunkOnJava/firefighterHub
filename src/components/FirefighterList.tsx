@@ -277,7 +277,6 @@ export function FirefighterList({
             firefighters={firefighters}
             currentShift={currentShift || "A"}
             isAdminMode={isAdminMode}
-            isDarkMode={isDarkMode}
             onAddClick={() => setShowAddForm(!showAddForm)}
             onViewDeactivatedClick={() => setShowReactivateModal(true)}
             onFilterToggle={() => setIsFilterPanelOpen(true)}

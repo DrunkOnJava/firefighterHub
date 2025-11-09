@@ -19,15 +19,13 @@ interface RosterSearchBarProps {
   onSearchChange: (query: string) => void;
   resultCount: number;
   totalCount: number;
-  /** @deprecated Kept for backward compatibility, no longer used */
-  isDarkMode?: boolean;
 }
 
 export const RosterSearchBar = forwardRef<
   HTMLInputElement,
   RosterSearchBarProps
 >(function RosterSearchBar(
-  { searchQuery, onSearchChange, resultCount, totalCount, isDarkMode: _isDarkMode }, // eslint-disable-line @typescript-eslint/no-unused-vars -- Kept for backward compatibility
+  { searchQuery, onSearchChange, resultCount, totalCount },
   ref
 ) {
   return (

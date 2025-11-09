@@ -26,7 +26,6 @@ interface MobileNavProps {
   isAdminMode: boolean;
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
-  isDarkMode: boolean;
   onToggleDarkMode: () => void;
 }
 
@@ -41,11 +40,13 @@ export function MobileNav({
   isAdminMode,
   currentShift,
   onShiftChange,
-  isDarkMode,
   onToggleDarkMode,
 }: MobileNavProps) {
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
+  
+  // Read dark mode from DOM instead of prop
+  const isDarkMode = document.documentElement.classList.contains('dark');
 
   useEffect(() => {
     if (!isOpen) return;

@@ -39,8 +39,8 @@ export function ConfirmDialog({
   const variantConfig = {
     danger: {
       icon: Trash2,
-      iconBg: "bg-red-100 dark:bg-red-900/30",
-      iconColor: "text-red-600 dark:text-red-400",
+      iconBg: "bg-destructive/10 dark:bg-destructive/20",
+      iconColor: "text-destructive dark:text-destructive",
     },
     warning: {
       icon: AlertTriangle,
@@ -49,8 +49,8 @@ export function ConfirmDialog({
     },
     info: {
       icon: Info,
-      iconBg: "bg-blue-100 dark:bg-blue-900/30",
-      iconColor: "text-blue-600 dark:text-blue-400",
+      iconBg: "bg-primary/10 dark:bg-primary/20",
+      iconColor: "text-primary dark:text-primary",
     },
   };
 
@@ -100,7 +100,7 @@ export function ConfirmDialog({
             onClick={onConfirm}
             className={
               variant === "danger"
-                ? "bg-red-600 hover:bg-red-700 text-white"
+                ? "bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                 : variant === "warning"
                   ? "bg-amber-600 hover:bg-amber-700 text-white"
                   : undefined

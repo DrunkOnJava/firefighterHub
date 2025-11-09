@@ -15,7 +15,6 @@ import './MainCalendar.css';
 
 interface MainCalendarProps {
   loading: boolean;
-  isDarkMode?: boolean;
   scheduledHolds?: ScheduledHold[];
   firefighters?: Firefighter[];
   onFirefighterClick?: (firefighterId: string | null) => void;
@@ -24,12 +23,13 @@ interface MainCalendarProps {
 
 export function MainCalendar({
   loading,
-  isDarkMode = true,
   scheduledHolds = [],
   firefighters = [],
   onFirefighterClick,
   selectedFirefighterId,
 }: MainCalendarProps) {
+  // Read dark mode from DOM
+  const isDarkMode = document.documentElement.classList.contains('dark');
   // Get next up firefighters per shift (memoized to prevent infinite loops)
   const { nextUpA, nextUpB, nextUpC } = useMemo(() => {
     const getNextUpByShift = (shift: 'A' | 'B' | 'C') => {

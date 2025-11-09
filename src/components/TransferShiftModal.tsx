@@ -78,22 +78,22 @@ export function TransferShiftModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className="sticky top-0 bg-blue-900/20 backdrop-blur-sm border-b-2 border-blue-700/50 p-6 flex items-center justify-between z-10"
+          className="sticky top-0 bg-primary/10 backdrop-blur-sm border-b-2 border-primary/50 p-6 flex items-center justify-between z-10"
         >
           <div className="flex items-center gap-4">
             <ArrowRightLeft
-              className="text-blue-400"
+              className="text-primary"
               size={28}
             />
             <div>
               <h2
                 id="transfer-shift-title"
-                className="text-xl font-semibold text-white"
+                className="text-xl font-semibold text-foreground"
               >
                 Transfer Shift
               </h2>
               <p
-                className="text-sm text-blue-200 mt-1"
+                className="text-sm text-muted-foreground mt-1"
               >
                 {firefighter.name}
               </p>
@@ -135,7 +135,7 @@ export function TransferShiftModal({
                   onClick={() => setSelectedShift(shift)}
                   className={`py-4 px-6 rounded-lg font-bold text-lg transition-all border-2 ${
                     selectedShift === shift
-                      ? "bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/30"
+                      ? "bg-primary border-primary text-primary-foreground shadow-lg"
                       : "bg-muted border-border text-muted-foreground hover:border-accent-foreground"
                   }`}
                 >

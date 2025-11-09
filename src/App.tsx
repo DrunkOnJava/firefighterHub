@@ -60,6 +60,9 @@ function App() {
   const { toasts, showToast } = useToast();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const announce = useAnnounce();
+  
+  // Suppress unused variable - isDarkMode is managed by hook but not directly used in component
+  void isDarkMode;
 
   // Battalion Chief authentication state
   const [isAdmin, setIsAdmin] = useState(false);
@@ -117,7 +120,7 @@ function App() {
 
   // Handle loading state
   if (firefightersLoading || holdsLoading) {
-    return <div style={{ padding: 20, color: 'var(--text)' }}>Loading...</div>;
+    return <div className="p-5 text-foreground">Loading...</div>;
   }
 
   // Event handlers for modals
@@ -182,7 +185,7 @@ function App() {
       {/* Skip Navigation Link - WCAG 2.4.1 Bypass Blocks */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-md focus:shadow-lg focus:ring-2 focus:ring-blue-400"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg focus:ring-2 focus:ring-ring"
       >
         Skip to main content
       </a>
@@ -289,16 +292,9 @@ function App() {
 
       {/* Toast notifications */}
       {toasts.length > 0 && (
-        <div style={{ position: 'fixed', top: 20, right: 20, zIndex: 9999 }}>
+        <div className="fixed top-5 right-5 z-[9999]">
           {toasts.map(toast => (
-            <div key={toast.id} style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--line)',
-              borderRadius: '8px',
-              padding: '12px 16px',
-              marginBottom: '8px',
-              color: 'var(--text)'
-            }}>
+            <div key={toast.id} className="bg-card border border-border rounded-lg px-4 py-3 mb-2 text-foreground">
               {toast.message}
             </div>
           ))}
@@ -388,7 +384,6 @@ function App() {
           setCurrentShift(shift);
         }}
         isAdminMode={isAdminMode}
-        isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
       />
 

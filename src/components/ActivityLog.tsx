@@ -87,13 +87,13 @@ export function ActivityLog() {
       case 'added':
         return 'bg-green-500/10 text-green-500 border-green-500/30';
       case 'removed':
-        return 'bg-red-500/10 text-red-500 border-red-500/30';
+        return 'bg-destructive/10 text-destructive border-destructive/30';
       case 'completed_hold':
-        return 'bg-blue-500/10 text-blue-500 border-blue-500/30';
+        return 'bg-primary/10 text-primary border-primary/30';
       case 'on_duty':
         return 'bg-green-500/10 text-green-500 border-green-500/30';
       case 'off_duty':
-        return 'bg-red-500/10 text-red-500 border-red-500/30';
+        return 'bg-destructive/10 text-destructive border-destructive/30';
       default:
         return 'bg-secondary text-muted-foreground border-border';
     }

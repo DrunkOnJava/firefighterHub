@@ -19,8 +19,6 @@ interface RosterHeaderProps {
   firefighters: Firefighter[];
   currentShift: string;
   isAdminMode?: boolean;
-  /** @deprecated Kept for backward compatibility, no longer used */
-  isDarkMode?: boolean;
   onAddClick: () => void;
   onViewDeactivatedClick: () => void;
   onFilterToggle: () => void;
@@ -34,7 +32,6 @@ export function RosterHeader({
   firefighters,
   currentShift,
   isAdminMode = false,
-  isDarkMode: _isDarkMode = true, // eslint-disable-line @typescript-eslint/no-unused-vars -- Kept for backward compatibility
   onAddClick,
   onViewDeactivatedClick,
   onFilterToggle,
@@ -59,10 +56,10 @@ export function RosterHeader({
               p-3
               rounded-xl
               shadow-lg
-              bg-gradient-to-br from-blue-600 to-blue-700
+              bg-gradient-to-br from-primary to-primary/90
             "
           >
-            <Users className="text-white" size={28} />
+            <Users className="text-primary-foreground" size={28} />
           </div>
           <div>
             <h2

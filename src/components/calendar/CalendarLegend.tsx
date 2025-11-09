@@ -5,14 +5,7 @@
  * Shows what the different colors mean (scheduled, completed, today).
  */
 
-interface CalendarLegendProps {
-  isDarkMode?: boolean;
-}
-
-export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
-  // Suppress unused variable - kept for API compatibility
-  void isDarkMode;
-  
+export function CalendarLegend() {
   const legendItems = [
     {
       label: 'Scheduled',
@@ -26,7 +19,7 @@ export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
     },
     {
       label: 'Today',
-      borderClass: 'ring-2 ring-blue-500',
+      borderClass: 'ring-2 ring-primary',
       description: 'Current date'
     }
   ];
@@ -60,4 +53,3 @@ export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
     </div>
   );
 }
-

@@ -294,40 +294,59 @@ function App() {
           </div>
         </Card>
         
-        {/* Roster Sidebar - fixed width, no shrink */}
-        <Card
-          id="sidebar"
+        {/* Roster Sidebar - 2-card layout: header + table */}
+        <div
           className={`
             w-full
             lg:w-[380px]
             xl:w-[420px]
             flex flex-col
-            overflow-hidden
+            gap-4
             flex-shrink-0
             min-h-0
-            shadow-lg
-            border-2
             ${device.isMobile && mobileActiveTab !== 'home' ? 'hidden' : ''}
           `}
         >
-          {/* Interactive Firefighter List */}
-          <FirefighterList
-            firefighters={firefighters}
-            deactivatedFirefighters={deactivatedFirefighters}
-            onAdd={addFirefighter}
-            onCompleteHold={handleCompleteHoldClick}
-            onDelete={deleteFirefighter}
-            onDeactivate={deactivateFirefighter}
-            onReactivate={reactivateFirefighter}
-            onTransferShift={handleTransferShiftClick}
-            onResetAll={resetAll}
-            onReorder={reorderFirefighters}
-            onVolunteerHold={moveToBottomOfRotation}
-            currentShift={currentShift}
-            isAdminMode={isAdminMode}
-            isLoading={firefightersLoading}
-          />
-        </Card>
+          {/* Top Card: Roster Header */}
+          <Card className="flex-shrink-0 shadow-lg border-2">
+            <div className="p-6 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 rounded-t-xl">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl shadow-lg bg-gradient-to-br from-primary to-primary/90">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-foreground">Firefighter Roster</h2>
+                  <p className="text-sm text-muted-foreground">Add and organize your team rotation</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Bottom Card: Firefighter Table (auto-fit) */}
+          <Card className="flex-1 min-h-0 shadow-lg border-2 overflow-hidden">
+            <FirefighterList
+              firefighters={firefighters}
+              deactivatedFirefighters={deactivatedFirefighters}
+              onAdd={addFirefighter}
+              onCompleteHold={handleCompleteHoldClick}
+              onDelete={deleteFirefighter}
+              onDeactivate={deactivateFirefighter}
+              onReactivate={reactivateFirefighter}
+              onTransferShift={handleTransferShiftClick}
+              onResetAll={resetAll}
+              onReorder={reorderFirefighters}
+              onVolunteerHold={moveToBottomOfRotation}
+              currentShift={currentShift}
+              isAdminMode={isAdminMode}
+              isLoading={firefightersLoading}
+            />
+          </Card>
+        </div>
       </main>
 
       {/* Toast notifications */}

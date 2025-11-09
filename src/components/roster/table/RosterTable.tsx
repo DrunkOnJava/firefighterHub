@@ -54,10 +54,10 @@ export function RosterTable({
   const allSelected = selectedIds.size === firefighters.length && firefighters.length > 0;
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
+    <div className="h-full overflow-hidden flex flex-col">
+      <Table className="table-fixed w-full h-full">
+        <TableHeader className="flex-shrink-0">
+          <TableRow style={{ height: 'var(--row-height, 32px)' }}>
             {/* Selection Column */}
             {isAdminMode && (
               <TableHead className="w-12 text-center">
@@ -78,36 +78,21 @@ export function RosterTable({
             )}
 
             {/* Order Column */}
-            <TableHead className="w-20">
-              <div className="flex items-center gap-2">
+            <TableHead className="w-16 p-1">
+              <div className="flex items-center gap-1 text-xs">
                 <ArrowUpDown className="h-3 w-3" />
                 Order
               </div>
             </TableHead>
 
             {/* Name Column */}
-            <TableHead>Name</TableHead>
-
-            {/* Shift Column (Admin only) */}
-            {isAdminMode && <TableHead>Shift</TableHead>}
-
-            {/* Station Column (Admin only) */}
-            {isAdminMode && <TableHead>Station</TableHead>}
-
-            {/* Cert Level Column (Admin only) */}
-            {isAdminMode && <TableHead>Cert Level</TableHead>}
-
-            {/* Qualifications Column (Admin only) */}
-            {isAdminMode && <TableHead>Qualifications</TableHead>}
+            <TableHead className="p-1">Name</TableHead>
 
             {/* Last Hold Column */}
-            <TableHead>Last Hold</TableHead>
+            <TableHead className="p-1">Last Hold</TableHead>
 
             {/* Volunteer Column */}
-            <TableHead className="text-center">Volunteer</TableHead>
-
-            {/* Actions Column (Admin only) */}
-            {isAdminMode && <TableHead className="text-right">Actions</TableHead>}
+            <TableHead className="text-center p-1 w-24">Volunteer</TableHead>
           </TableRow>
         </TableHeader>
 

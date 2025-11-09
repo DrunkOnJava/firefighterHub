@@ -3,7 +3,7 @@ import { Firefighter, Shift } from "@/lib/supabase";
 import { ConfirmOptions } from "@/hooks/useConfirm";
 import { useDevice } from "@/hooks/useDevice";
 import { useFilters } from "@/hooks/useFilters";
-import { Card, CardContent } from "@/components/ui/card";
+// Card wrapper removed - handled by parent component
 import { AddFirefighterForm } from "./AddFirefighterForm";
 import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyState";
 import { FilterPanel } from "./FilterPanel";
@@ -12,7 +12,7 @@ import { FirefighterCard } from "./mobile/FirefighterCard";
 import { ReactivateModal } from "./ReactivateModal";
 import { FirefighterListSkeleton } from "./SkeletonLoader";
 import { FirefighterGrid } from "./tablet/FirefighterGrid";
-import { BulkActions, RosterHeader } from "./roster";
+import { BulkActions } from "./roster";
 import { RosterTable } from "./roster/table";
 import { DeactivatedFirefightersList } from "./roster/DeactivatedFirefightersList";
 
@@ -236,28 +236,13 @@ export function FirefighterList({
   }
 
   return (
-    <Card className="h-full flex flex-col overflow-hidden">
+    <div className="h-full flex flex-col overflow-hidden">
       {isLoading ? (
         <FirefighterListSkeleton />
       ) : (
         <>
-          {/* Header */}
-          <div className="flex-shrink-0 border-b border-border/60 bg-gradient-to-r from-background to-muted/20">
-            <RosterHeader
-              firefighters={firefighters}
-              currentShift={currentShift || "A"}
-              isAdminMode={isAdminMode}
-              onAddClick={() => setShowAddForm(!showAddForm)}
-              onViewDeactivatedClick={() => setShowReactivateModal(true)}
-              onFilterToggle={() => setIsFilterPanelOpen(true)}
-              showExportMenu={showExportMenu}
-              onExportToggle={() => setShowExportMenu(!showExportMenu)}
-              activeFilterCount={activeFilterCount}
-              deactivatedCount={deactivatedFirefighters.length}
-            />
-          </div>
-
-          <CardContent className="p-0 flex-1 overflow-hidden min-h-0">
+          {/* Content - table auto-fits to container */}
+          <div className="p-0 flex-1 overflow-hidden min-h-0">
             {/* Add Firefighter Form */}
             {isAdminMode && showAddForm && (
               <div className="px-6 my-6">
@@ -283,8 +268,8 @@ export function FirefighterList({
               />
             </div>
 
-            {/* Main Content */}
-            <div className="overflow-y-auto flex-1">
+            {/* Main Content - auto-fit table to container height */}
+            <div className="flex-1 min-h-0 overflow-hidden">
               {!firefighters || firefighters.length === 0 ? (
                 <div className="px-6">
                   <NoFirefightersEmptyState
@@ -329,27 +314,41 @@ export function FirefighterList({
                   />
                 </div>
               ) : (
-                /* Desktop View: Table */
-                <RosterTable
-                  firefighters={filteredAndAdvancedFiltered}
-                  isAdminMode={isAdminMode}
-                  selectedIds={selectedIds}
-                  nextInRotation={nextInRotation}
-                  draggedId={draggedId}
-                  dragOverId={dragOverId}
-                  onToggleSelection={toggleSelection}
-                  onSelectAll={selectAll}
-                  onDeselectAll={deselectAll}
-                  onViewProfile={handleViewProfile}
-                  onVolunteerHold={onVolunteerHold}
-                  onCompleteHold={onDelete}
-                  onTransferShift={onTransferShift}
-                  onDeactivate={onDeactivate}
-                  onDragStart={handleDragStart}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  onDragEnd={handleDragEnd}
-                />
+                /* Desktop View: Table with aggressive auto-fit (no scrolling) */
+                <div
+                  className="h-full overflow-hidden"
+                  style={{
+                    // Dynamic row height based on available space
+                    // Container height / (rows + header) with min/max bounds
+                    '--row-height': `max(24px, calc((100% - 40px) / ${filteredAndAdvancedFiltered.length}))`,
+                    fontSize: filteredAndAdvancedFiltered.length > 15
+                      ? '0.7rem'
+                      : filteredAndAdvancedFiltered.length > 10
+                        ? '0.75rem'
+                        : '0.875rem'
+                  } as React.CSSProperties}
+                >
+                  <RosterTable
+                    firefighters={filteredAndAdvancedFiltered}
+                    isAdminMode={isAdminMode}
+                    selectedIds={selectedIds}
+                    nextInRotation={nextInRotation}
+                    draggedId={draggedId}
+                    dragOverId={dragOverId}
+                    onToggleSelection={toggleSelection}
+                    onSelectAll={selectAll}
+                    onDeselectAll={deselectAll}
+                    onViewProfile={handleViewProfile}
+                    onVolunteerHold={onVolunteerHold}
+                    onCompleteHold={onDelete}
+                    onTransferShift={onTransferShift}
+                    onDeactivate={onDeactivate}
+                    onDragStart={handleDragStart}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    onDragEnd={handleDragEnd}
+                  />
+                </div>
               )}
 
               {/* Deactivated Firefighters Section */}
@@ -366,7 +365,7 @@ export function FirefighterList({
                 </div>
               )}
             </div>
-          </CardContent>
+          </div>
 
           {/* Modals */}
           <ReactivateModal
@@ -406,6 +405,6 @@ export function FirefighterList({
           />
         </>
       )}
-    </Card>
+    </div>
   );
 }

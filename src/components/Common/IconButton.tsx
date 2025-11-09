@@ -57,8 +57,8 @@ export const IconButton = ({
   // Variant configurations
   const variantClasses = {
     default: `
-      text-gray-400 hover:text-white hover:bg-slate-700/50
-      dark:text-gray-400 dark:hover:text-white dark:hover:bg-slate-700/50
+      text-slate-400 hover:text-white hover:bg-slate-700/50
+      dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-700/50
     `,
     primary: `
       text-blue-600 hover:text-blue-500 hover:bg-blue-50

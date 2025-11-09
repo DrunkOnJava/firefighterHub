@@ -1,23 +1,32 @@
 {
-    "mcpServers": {
-        "github": {
-            "command": "pnpm",
-            "args": [
-                "dlx",
-                "-y",
-                "@modelcontextprotocol/server-github"
-            ],
-            "env": {
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
-            }
-        },
-        "playwright": {
-            "command": "pnpm",
-            "args": [
-                "dlx",
-                "-y",
-                "@modelcontextprotocol/server-microsoft-playwright"
-            ]
-        }
+  "mcpServers": {
+    "github": {
+      "command": "pnpm",
+      "args": [
+        "dlx",
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${env:GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+    "playwright": {
+      "command": "pnpm",
+      "args": [
+        "dlx",
+        "-y",
+        "@modelcontextprotocol/server-microsoft-playwright"
+      ]
     }
+  },
+  "servers": {
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
+    }
+  }
 }

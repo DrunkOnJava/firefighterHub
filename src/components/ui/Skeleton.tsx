@@ -38,7 +38,7 @@ export function Skeleton({
 
   const baseClasses = prefersReducedMotion
     ? isDarkMode
-      ? 'bg-gray-700'
+      ? 'bg-slate-700'
       : 'bg-gray-200'
     : isDarkMode
     ? 'skeleton-dark'
@@ -97,7 +97,7 @@ export function SkeletonCard({ isDarkMode = true }: { isDarkMode?: boolean }) {
   return (
     <div
       className={`
-        ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+        ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}
         border-2 rounded-xl p-5 space-y-4
       `}
       aria-hidden="true"
@@ -145,9 +145,9 @@ export function SkeletonTable({
   return (
     <div
       className={`
-        ${isDarkMode ? 'bg-gray-800' : 'bg-white'}
+        ${isDarkMode ? 'bg-slate-800' : 'bg-white'}
         rounded-xl border-2
-        ${isDarkMode ? 'border-gray-700' : 'border-gray-200'}
+        ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}
         overflow-hidden
       `}
       aria-hidden="true"
@@ -155,7 +155,7 @@ export function SkeletonTable({
       {/* Header */}
       <div
         className={`
-          ${isDarkMode ? 'bg-gray-900/50 border-gray-700' : 'bg-gray-50 border-gray-300'}
+          ${isDarkMode ? 'bg-slate-900/50 border-slate-700' : 'bg-slate-50 border-slate-300'}
           border-b-2 px-4 py-3
           grid gap-4
         `}
@@ -206,7 +206,7 @@ export function SkeletonList({
         <div
           key={i}
           className={`
-            ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+            ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}
             border-2 rounded-lg p-4 flex items-start gap-3
           `}
         >
@@ -230,7 +230,7 @@ export function SkeletonCalendar({ isDarkMode = true }: { isDarkMode?: boolean }
   return (
     <div
       className={`
-        ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+        ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}
         border-2 rounded-xl p-6 space-y-4
       `}
       aria-hidden="true"

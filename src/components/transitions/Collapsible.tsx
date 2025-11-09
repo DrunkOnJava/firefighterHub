@@ -126,7 +126,7 @@ export function Collapsible({
   return (
     <div
       className={`
-        ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+        ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}
         border-2 rounded-lg overflow-hidden
         ${className}
       `}
@@ -141,7 +141,7 @@ export function Collapsible({
         className={`
           w-full px-4 py-3
           flex items-center justify-between gap-3
-          ${isDarkMode ? 'text-white hover:bg-gray-700' : 'text-gray-900 hover:bg-gray-50'}
+          ${isDarkMode ? 'text-white hover:bg-slate-700' : 'text-slate-900 hover:bg-slate-50'}
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
           ${!prefersReducedMotion ? 'transition-colors duration-150' : ''}
           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset

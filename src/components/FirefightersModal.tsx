@@ -224,7 +224,7 @@ export function FirefightersModal({
               } ${tokens.transitions.fast} ${
                 filterShift === "ALL"
                   ? colors.semantic.primary.solid + " text-white"
-                  : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-gray-600`
+                  : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-slate-600`
               }`}
             >
               All Shifts
@@ -238,7 +238,7 @@ export function FirefightersModal({
                 } ${tokens.transitions.fast} ${
                   filterShift === shift
                     ? colors.semantic.primary.solid + " text-white"
-                    : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-gray-600`
+                    : `${colors.structural.bg.card} ${colors.structural.text.secondary} hover:bg-slate-600`
                 }`}
               >
                 Shift {shift}
@@ -284,7 +284,7 @@ export function FirefightersModal({
               {filteredAndSortedFirefighters.map((firefighter) => (
                 <div
                   key={firefighter.id}
-                  className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.xl} hover:bg-gray-900/70 ${tokens.transitions.fast}`}
+                  className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.xl} hover:bg-slate-900/70 ${tokens.transitions.fast}`}
                 >
                   {firefighter.isEditing ? (
                     <div className="space-y-4">
@@ -434,7 +434,7 @@ export function FirefightersModal({
                                     e.target.checked
                                   )
                                 }
-                                className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-2 focus:ring-blue-500"
+                                className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-blue-600 focus:ring-2 focus:ring-blue-500"
                               />
                               <span
                                 className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
@@ -468,7 +468,7 @@ export function FirefightersModal({
                                   e.target.checked
                                 )
                               }
-                              className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
+                              className="w-4 h-4 rounded border-amber-600 bg-slate-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
                             />
                             <span
                               className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-amber-300`}
@@ -489,7 +489,7 @@ export function FirefightersModal({
                                   e.target.checked
                                 )
                               }
-                              className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
+                              className="w-4 h-4 rounded border-emerald-600 bg-slate-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
                             />
                             <span
                               className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-emerald-300`}
@@ -510,7 +510,7 @@ export function FirefightersModal({
                                   e.target.checked
                                 )
                               }
-                              className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
+                              className="w-4 h-4 rounded border-cyan-600 bg-slate-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
                             />
                             <span
                               className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} text-cyan-300`}

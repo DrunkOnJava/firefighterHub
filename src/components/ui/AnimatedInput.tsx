@@ -123,7 +123,7 @@ export function AnimatedInput({
 
   const baseClasses = `
     w-full px-4 py-3 rounded-lg
-    ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}
+    ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-white text-slate-900'}
     border-2
     ${
       error
@@ -131,8 +131,8 @@ export function AnimatedInput({
         : success
         ? 'border-green-500 focus:border-green-500 focus:ring-green-500'
         : isDarkMode
-        ? 'border-gray-700 focus:border-blue-500 focus:ring-blue-500'
-        : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+        ? 'border-slate-700 focus:border-blue-500 focus:ring-blue-500'
+        : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500'
     }
     focus:outline-none focus:ring-2 focus:ring-offset-0
     ${!isReducedMotion ? 'transition-all duration-200' : ''}
@@ -143,7 +143,7 @@ export function AnimatedInput({
 
   const labelClasses = `
     absolute left-4 pointer-events-none
-    ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}
+    ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}
     ${!isReducedMotion ? 'transition-all duration-200' : ''}
     ${
       isLabelFloating
@@ -219,7 +219,7 @@ export function AnimatedInput({
               {error}
             </p>
           ) : helperText ? (
-            <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
+            <p className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>
               {helperText}
             </p>
           ) : null}
@@ -229,7 +229,7 @@ export function AnimatedInput({
         {showCharCount && maxLength && (
           <p
             className={`
-              ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}
+              ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}
               ${charCount > maxLength * 0.9 ? 'text-yellow-500' : ''}
               ${charCount >= maxLength ? 'text-red-500 font-semibold' : ''}
               ${!isReducedMotion ? 'transition-colors duration-200' : ''}

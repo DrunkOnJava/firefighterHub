@@ -276,7 +276,7 @@ export function HoldForm({
             type="checkbox"
             checked={isVoluntary}
             onChange={(e) => setIsVoluntary(e.target.checked)}
-            className="w-5 h-5 rounded border-gray-600 text-green-600 focus:ring-green-500"
+            className="w-5 h-5 rounded border-slate-600 text-green-600 focus:ring-green-500"
           />
           <div className="flex-1">
             <span className={`${tokens.typography.body.secondary} ${theme.textPrimary} font-semibold flex items-center gap-2`}>
@@ -295,7 +295,7 @@ export function HoldForm({
             type="checkbox"
             checked={showAddAnother}
             onChange={(e) => onAddAnotherChange(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-600"
+            className="w-4 h-4 rounded border-slate-600"
           />
           <span
             className={`${tokens.typography.body.secondary} ${theme.textSecondary}`}

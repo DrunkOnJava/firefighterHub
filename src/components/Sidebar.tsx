@@ -237,8 +237,8 @@ export function Sidebar({
                           border-2 shadow-sm
                           ${
                             index === 0
-                              ? "bg-amber-500 text-gray-900 border-black shadow-black/50"
-                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-gray-700`
+                              ? "bg-amber-500 text-slate-900 border-black shadow-black/50"
+                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-slate-700`
                           }
                         `}
                       >
@@ -342,8 +342,8 @@ export function Sidebar({
                           border-2 shadow-sm
                           ${
                             index === 0
-                              ? "bg-amber-500 text-gray-900 border-black shadow-black/50"
-                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-gray-700`
+                              ? "bg-amber-500 text-slate-900 border-black shadow-black/50"
+                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-slate-700`
                           }
                         `}
                       >

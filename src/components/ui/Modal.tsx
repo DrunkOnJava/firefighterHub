@@ -151,13 +151,13 @@ export function Modal({
           className={`
             flex items-center justify-between
             px-4 sm:px-6 py-4
-            border-b ${isDarkMode ? 'border-slate-700' : 'border-gray-200'}
+            border-b ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}
             flex-shrink-0
           `}
         >
           <h2
             id="modal-title"
-            className={`text-lg sm:text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+            className={`text-lg sm:text-xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
           >
             {title}
           </h2>
@@ -192,7 +192,7 @@ export function Modal({
           <div
             className={`
               px-4 sm:px-6 py-4
-              border-t ${isDarkMode ? 'border-slate-700' : 'border-gray-200'}
+              border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}
               flex-shrink-0
             `}
           >

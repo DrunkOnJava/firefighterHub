@@ -262,13 +262,13 @@ export function SlideSheet({
 
       <PageTransition variant="sheetUp" isVisible={isOpen} unmountOnExit>
         <div
-          className={`fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 rounded-t-2xl shadow-2xl ${className}`}
+          className={`fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-800 rounded-t-2xl shadow-2xl ${className}`}
           style={{ maxHeight }}
           role="dialog"
           aria-modal="true"
         >
           <div className="flex justify-center py-2">
-            <div className="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full" />
+            <div className="w-12 h-1.5 bg-gray-300 dark:bg-slate-600 rounded-full" />
           </div>
           <div className="overflow-y-auto max-h-[calc(90vh-2rem)]">
             {children}

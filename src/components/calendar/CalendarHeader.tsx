@@ -55,7 +55,7 @@ export function CalendarHeader({
             onClick={onPreviousMonth}
             className={`
               p-1.5 rounded-lg
-              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-gray-700 active:bg-gray-300'}
+              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-slate-700 active:bg-gray-300'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
@@ -81,7 +81,7 @@ export function CalendarHeader({
             onClick={onNextMonth}
             className={`
               p-1.5 rounded-lg
-              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-gray-700 active:bg-gray-300'}
+              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-slate-700 active:bg-gray-300'}
               ${tokens.transitions.fast}
               ${tokens.touchTarget.min}
             `}
@@ -92,14 +92,14 @@ export function CalendarHeader({
 
           <h2
             className={`text-xl font-bold ${
-              isDarkMode ? 'text-slate-100' : 'text-gray-900'
+              isDarkMode ? 'text-slate-100' : 'text-slate-900'
             } ml-3`}
           >
             {formatMonthYear(currentDate)}
           </h2>
           
           {/* Hint text */}
-          <span className={`ml-2 text-xs ${isDarkMode ? 'text-slate-500' : 'text-gray-500'} hidden lg:inline`}>
+          <span className={`ml-2 text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-500'} hidden lg:inline`}>
             Navigate via ← →
           </span>
         </div>

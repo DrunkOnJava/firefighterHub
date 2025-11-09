@@ -17,7 +17,7 @@
  * - No optimistic updates = simpler state management
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Shift } from "../lib/supabase";
 import { ConfirmOptions } from "./useConfirm";
 import { ToastType } from "./useToast";
@@ -44,7 +44,7 @@ export function useFirefighters(
   const { logActivity } = useActivityLogger(currentShift);
 
   // 3. Memoize callbacks for real-time hook (prevent subscription churn)
-  const memoizedShowToast = useCallback(showToast, []);
+  const memoizedShowToast = useCallback(showToast, [showToast]);
   const memoizedLoadFirefighters = useCallback(loadFirefighters, [
     loadFirefighters,
   ]);
@@ -67,10 +67,19 @@ export function useFirefighters(
     onSuccess: memoizedLoadFirefighters,
   });
 
-  // Log error if data fetch failed
-  if (error) {
-    showToast(error, "error");
-  }
+  // Log error if data fetch failed (safe inside effect to avoid render loops)
+  const previousErrorRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!error) {
+      previousErrorRef.current = null;
+      return;
+    }
+
+    if (previousErrorRef.current !== error) {
+      showToast(error, "error");
+      previousErrorRef.current = error;
+    }
+  }, [error, showToast]);
 
   // Return combined API (maintains backward compatibility)
   return {

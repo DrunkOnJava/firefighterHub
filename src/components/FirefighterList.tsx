@@ -413,14 +413,14 @@ export function FirefighterList({
                 <tr
                   className={`border-b-2 ${
                     isDarkMode
-                      ? "border-gray-700 bg-gray-900"
+                      ? "border-slate-700 bg-slate-900"
                       : "border-slate-300 bg-white"
                   }`}
                 >
                   {isAdminMode && (
                     <th
                       className={`px-4 py-2 text-center ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
                       }`}
                     >
                       <button
@@ -430,7 +430,7 @@ export function FirefighterList({
                             ? deselectAll
                             : selectAll
                         }
-                        className="p-1 hover:bg-gray-700 rounded transition-colors"
+                        className="p-1 hover:bg-slate-700 rounded transition-colors"
                         aria-label={
                           selectedIds.size ===
                           filteredAndAdvancedFiltered.length
@@ -449,7 +449,7 @@ export function FirefighterList({
                   )}
                   <th
                     className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-slate-300" : "text-slate-700"
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -459,7 +459,7 @@ export function FirefighterList({
                   </th>
                   <th
                     className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-slate-300" : "text-slate-700"
                     }`}
                   >
                     Name
@@ -467,7 +467,7 @@ export function FirefighterList({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
                       }`}
                     >
                       Shift
@@ -476,7 +476,7 @@ export function FirefighterList({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
                       }`}
                     >
                       Station
@@ -485,7 +485,7 @@ export function FirefighterList({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
                       }`}
                     >
                       Cert Level
@@ -494,7 +494,7 @@ export function FirefighterList({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
                       }`}
                     >
                       Qualifications
@@ -502,7 +502,7 @@ export function FirefighterList({
                   )}
                   <th
                     className={`px-4 py-2 text-left text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-slate-300" : "text-slate-700"
                     }`}
                   >
                     Last Hold
@@ -510,7 +510,7 @@ export function FirefighterList({
                   {/* Volunteer Column - visible to all users */}
                   <th
                     className={`px-4 py-2 text-center text-xs font-bold uppercase tracking-wider ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-slate-300" : "text-slate-700"
                     }`}
                   >
                     Volunteer
@@ -521,7 +521,7 @@ export function FirefighterList({
                     <th
                       className={`px-4 py-2 text-left text-xs font-medium uppercase tracking-wider ${
                         isDarkMode
-                          ? "text-gray-400"
+                          ? "text-slate-400"
                           : "text-slate-600"
                       }`}
                     >
@@ -531,7 +531,7 @@ export function FirefighterList({
                   {isAdminMode && (
                     <th
                       className={`px-4 py-2 text-right text-xs font-bold uppercase tracking-wider ${
-                        isDarkMode ? "text-gray-300" : "text-slate-700"
+                        isDarkMode ? "text-slate-300" : "text-slate-700"
                       }`}
                     >
                       Actions
@@ -555,7 +555,7 @@ export function FirefighterList({
                   const isEvenRow = index % 2 === 0;
                   const bandedBg = isEvenRow
                     ? isDarkMode
-                      ? "bg-gray-900/30"
+                      ? "bg-slate-900/30"
                       : "bg-slate-50/50"
                     : "";
 
@@ -569,7 +569,7 @@ export function FirefighterList({
                       onDragEnd={handleDragEnd}
                       className={`h-10 transition-colors ${
                         isDarkMode
-                          ? "hover:bg-gray-800/50"
+                          ? "hover:bg-slate-800/50"
                           : "hover:bg-slate-50"
                       } ${bandedBg} ${draggedId === firefighter.id ? "opacity-50" : ""} ${
                         dragOverId === firefighter.id
@@ -591,7 +591,7 @@ export function FirefighterList({
                             onClick={() => toggleSelection(firefighter.id)}
                             className={`p-0 rounded transition-colors ${
                               isDarkMode
-                                ? "hover:bg-gray-700"
+                                ? "hover:bg-slate-700"
                                 : "hover:bg-slate-200"
                             }`}
                             aria-label={`Select ${firefighter.name}`}
@@ -606,7 +606,7 @@ export function FirefighterList({
                               <Square
                                 className={`w-4 h-4 ${
                                   isDarkMode
-                                    ? "text-gray-500"
+                                    ? "text-slate-500"
                                     : "text-slate-400"
                                 }`}
                               />
@@ -616,7 +616,7 @@ export function FirefighterList({
                       )}
                       <td
                         className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
-                          isDarkMode ? "text-gray-300" : "text-slate-700"
+                          isDarkMode ? "text-slate-300" : "text-slate-700"
                         }`}
                       >
                         <span className="font-bold">{index + 1}</span>
@@ -654,7 +654,7 @@ export function FirefighterList({
                       {isAdminMode && (
                         <td
                           className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap ${
-                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                            isDarkMode ? "text-slate-300" : "text-slate-700"
                           }`}
                         >
                           <span
@@ -663,7 +663,7 @@ export function FirefighterList({
                                 ? "bg-green-900/70 text-green-300"
                                 : firefighter.shift === "B"
                                 ? "bg-red-900/70 text-red-300"
-                                : "bg-gray-900/70 text-gray-300"
+                                : "bg-slate-900/70 text-slate-300"
                             }`}
                           >
                             Shift {firefighter.shift}
@@ -673,7 +673,7 @@ export function FirefighterList({
                       {isAdminMode && (
                         <td
                           className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                            isDarkMode ? "text-slate-300" : "text-slate-700"
                           }`}
                         >
                           {firefighter.fire_station ? (
@@ -694,7 +694,7 @@ export function FirefighterList({
                       {isAdminMode && (
                         <td
                           className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
-                            isDarkMode ? "text-gray-300" : "text-slate-700"
+                            isDarkMode ? "text-slate-300" : "text-slate-700"
                           }`}
                         >
                           {firefighter.certification_level ? (
@@ -744,7 +744,7 @@ export function FirefighterList({
                       )}
                       <td
                         className={`px-4 py-0 align-middle max-h-10 whitespace-nowrap whitespace-nowrap text-sm ${
-                          isDarkMode ? "text-gray-400" : "text-slate-600"
+                          isDarkMode ? "text-slate-400" : "text-slate-600"
                         }`}
                       >
                         <div className="flex items-center gap-2">
@@ -800,8 +800,8 @@ export function FirefighterList({
                         <td className="px-4 py-2 whitespace-nowrap text-center">
                           <div className="flex flex-col items-center gap-1">
                             <div className="flex items-center gap-2">
-                              <Clock className={`${tokens.icons.xs} {isDarkMode ? "text-gray-400" : "text-gray-500"} />
-                              <span className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
+                              <Clock className={`${tokens.icons.xs} {isDarkMode ? "text-slate-400" : "text-slate-500"} />
+                              <span className={`text-sm ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                                 {firefighter.hours_worked_this_period || 0}h / 72h
                               </span>
                             </div>
@@ -868,10 +868,10 @@ export function FirefighterList({
 
             {/* Deactivated Firefighters Section */}
             {isAdminMode && deactivatedFirefighters.length > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-700">
+          <div className="mt-6 pt-6 border-t border-slate-700">
             <h3
               className={`text-sm font-bold mb-3 ${
-                isDarkMode ? "text-gray-400" : "text-slate-600"
+                isDarkMode ? "text-slate-400" : "text-slate-600"
               }`}
             >
               Deactivated ({deactivatedFirefighters.length})
@@ -882,15 +882,15 @@ export function FirefighterList({
                   key={firefighter.id}
                   className={`rounded-lg p-3 border ${
                     isDarkMode
-                      ? "bg-gray-800/40 border-gray-700/50 hover:bg-gray-800/60"
-                      : "bg-gray-100 border-gray-300 hover:bg-gray-200"
+                      ? "bg-slate-800/40 border-slate-700/50 hover:bg-slate-800/60"
+                      : "bg-slate-100 border-slate-300 hover:bg-gray-200"
                   } transition-colors`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-1">
                       <div
                         className={`w-2 h-2 rounded-full ${
-                          isDarkMode ? "bg-gray-600" : "bg-gray-400"
+                          isDarkMode ? "bg-slate-600" : "bg-gray-400"
                         }`}
                       />
                       <div className="flex-1">
@@ -901,7 +901,7 @@ export function FirefighterList({
                           }}
                           className={`font-semibold text-sm text-left hover:underline focus:outline-none focus:underline ${
                             isDarkMode
-                              ? "text-gray-400 hover:text-gray-300"
+                              ? "text-slate-400 hover:text-slate-300"
                               : "text-gray-600 hover:text-gray-800"
                           }`}
                         >
@@ -910,7 +910,7 @@ export function FirefighterList({
                         {firefighter.fire_station && (
                           <p
                             className={`text-xs ${
-                              isDarkMode ? "text-gray-500" : "text-gray-500"
+                              isDarkMode ? "text-slate-500" : "text-slate-500"
                             }`}
                           >
                             Station #{firefighter.fire_station}
@@ -944,7 +944,7 @@ export function FirefighterList({
                       <span
                         className={`text-xs px-2 py-1 rounded ${
                           isDarkMode
-                            ? "bg-gray-700/50 text-gray-500"
+                            ? "bg-slate-700/50 text-slate-500"
                             : "bg-gray-200 text-gray-600"
                         }`}
                       >

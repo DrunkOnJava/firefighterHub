@@ -49,7 +49,7 @@ export const Checkbox = ({
     transition-colors
     ${isDarkMode
       ? 'hover:bg-slate-800/50'
-      : 'hover:bg-gray-50'
+      : 'hover:bg-slate-50'
     }
     ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
   `;
@@ -59,29 +59,25 @@ export const Checkbox = ({
     text-sm
     transition-colors
     ${isDarkMode
-      ? 'text-gray-300 group-hover:text-white'
-      : 'text-gray-700 group-hover:text-gray-900'
+      ? 'text-slate-300 group-hover:text-white'
+      : 'text-slate-700 group-hover:text-slate-900'
     }
   `;
 
   // Description text classes
   const descriptionClasses = `
-    mt-1 text-xs
-    ${isDarkMode
-      ? 'text-gray-500'
-      : 'text-gray-600'
-    }
+    mt-1 text-xs text-muted-foreground
   `;
 
   // Checkbox input classes
   const checkboxClasses = `
     mt-0.5 w-4 h-4
-    rounded border-gray-300
+    rounded border-slate-300
     focus:ring-blue-500 focus:ring-2
     cursor-pointer
     disabled:cursor-not-allowed
     ${isDarkMode
-      ? 'text-blue-600 bg-gray-800 border-gray-600'
+      ? 'text-blue-600 bg-slate-800 border-slate-600'
       : 'text-blue-600 bg-white'
     }
   `;

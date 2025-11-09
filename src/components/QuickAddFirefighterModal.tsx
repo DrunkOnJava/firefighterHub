@@ -341,7 +341,7 @@ export function QuickAddFirefighterModal({
                         type="checkbox"
                         checked={state}
                         onChange={(e) => setState(e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-800 text-green-600 focus:ring-2 focus:ring-green-500"
+                        className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-green-600 focus:ring-2 focus:ring-green-500"
                       />
                       <span className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}>{label}</span>
                     </label>
@@ -359,7 +359,7 @@ export function QuickAddFirefighterModal({
                       type="checkbox"
                       checked={isFTO}
                       onChange={(e) => setIsFTO(e.target.checked)}
-                      className="w-4 h-4 rounded border-amber-600 bg-gray-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
+                      className="w-4 h-4 rounded border-amber-600 bg-slate-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
                     />
                     <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.warning.text}`}>
                       FTO
@@ -370,7 +370,7 @@ export function QuickAddFirefighterModal({
                       type="checkbox"
                       checked={isBLS}
                       onChange={(e) => setIsBLS(e.target.checked)}
-                      className="w-4 h-4 rounded border-emerald-600 bg-gray-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
+                      className="w-4 h-4 rounded border-emerald-600 bg-slate-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
                     />
                     <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.success.text}`}>
                       BLS
@@ -381,7 +381,7 @@ export function QuickAddFirefighterModal({
                       type="checkbox"
                       checked={isALS}
                       onChange={(e) => setIsALS(e.target.checked)}
-                      className="w-4 h-4 rounded border-cyan-600 bg-gray-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
+                      className="w-4 h-4 rounded border-cyan-600 bg-slate-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
                     />
                     <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.info.text}`}>
                       ALS

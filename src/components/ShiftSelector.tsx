@@ -1,36 +1,16 @@
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface ShiftSelectorProps {
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
 }
 
-const SHIFT_COLORS = {
-  A: {
-    active: "bg-green-700 text-white shadow-lg",
-    inactive: "bg-green-950/60 text-green-300 hover:bg-green-600",
-  },
-  B: {
-    active: "bg-red-700 text-white shadow-lg",
-    inactive: "bg-red-950/60 text-red-300 hover:bg-red-600",
-  },
-  C: {
-    active: "bg-sky-700 text-white shadow-lg",
-    inactive: "bg-sky-950/60 text-sky-300 hover:bg-sky-600",
-  },
-};
-
 const SHIFT_BADGE_COLORS = {
-  A: "bg-green-600 border border-white text-white shadow-sm shadow-green-900/50",
-  B: "bg-red-600 border border-white text-white shadow-sm shadow-red-900/50",
-  C: "bg-sky-600 border border-white text-white shadow-sm shadow-sky-900/50",
-};
-
-const SHIFT_SHAPES = {
-  A: { shape: "rounded-full", label: "Shift A (circle)" },
-  B: { shape: "rounded-none", label: "Shift B (square)" },
-  C: { shape: "rounded-sm rotate-45", label: "Shift C (diamond)", needsRotateText: true },
+  A: "bg-emerald-600 text-white",
+  B: "bg-blue-600 text-white",
+  C: "bg-red-600 text-white",
 };
 
 export function ShiftSelector({
@@ -39,29 +19,40 @@ export function ShiftSelector({
 }: ShiftSelectorProps) {
   const shifts: Shift[] = ["A", "B", "C"];
 
+  const getShiftClasses = (shift: Shift, isActive: boolean) => {
+    const baseClasses = "font-bold transition-all duration-150";
+    
+    if (isActive) {
+      if (shift === "A") return `${baseClasses} bg-emerald-600 text-white hover:bg-emerald-700`;
+      if (shift === "B") return `${baseClasses} bg-blue-600 text-white hover:bg-blue-700`;
+      if (shift === "C") return `${baseClasses} bg-red-600 text-white hover:bg-red-700`;
+    }
+    
+    return `${baseClasses} bg-secondary text-secondary-foreground hover:bg-secondary/80`;
+  };
+
   return (
     <div
-      className={`flex ${tokens.borders.radius.lg} p-1 ${colors.structural.bg.card}`}
+      className="inline-flex gap-1 p-1 rounded-lg bg-muted"
+      role="group"
+      aria-label="Shift selector"
     >
       {shifts.map((shift) => {
           const isActive = currentShift === shift;
-          const colorClasses = isActive
-            ? SHIFT_COLORS[shift].active
-            : SHIFT_COLORS[shift].inactive;
 
           return (
-            <button
+            <Button
               key={shift}
+              variant={isActive ? "default" : "ghost"}
+              size="sm"
               onClick={() => onShiftChange(shift)}
-              className={`
-                px-4 py-2 ${tokens.borders.radius.md} transition-all font-bold ${tokens.typography.body.secondary} focus-ring
-                ${colorClasses}
-              `}
+              className={getShiftClasses(shift, isActive)}
               aria-label={`Switch to Shift ${shift}`}
               aria-pressed={isActive}
+              title={`Shift ${shift}${isActive ? ' (Active)' : ''}`}
             >
               {shift}
-            </button>
+            </Button>
           );
         })}
     </div>
@@ -69,18 +60,9 @@ export function ShiftSelector({
 }
 
 export function ShiftBadge({ shift }: { shift: Shift }) {
-  const shapeData = SHIFT_SHAPES[shift];
-
   return (
-    <span
-      className={`
-      inline-flex items-center justify-center w-8 h-8 ${tokens.typography.body.small} font-bold
-      ${shapeData.shape}
-      ${SHIFT_BADGE_COLORS[shift]}
-    `}
-      aria-label={shapeData.label}
-    >
-      <span className={shift === 'C' ? '-rotate-45' : ''}>Shift {shift}</span>
-    </span>
+    <Badge className={`${SHIFT_BADGE_COLORS[shift]} font-bold`}>
+      {shift}
+    </Badge>
   );
 }

@@ -70,7 +70,7 @@ export const FloatingActionButton = ({
     transition-opacity duration-200
     ${isDarkMode
       ? 'bg-slate-800 text-white'
-      : 'bg-gray-900 text-white'
+      : 'bg-slate-900 text-white'
     }
   `;
 

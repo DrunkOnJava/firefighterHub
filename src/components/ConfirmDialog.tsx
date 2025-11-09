@@ -124,7 +124,7 @@ export function ConfirmDialog({
           onClick={onClose}
           className={`absolute top-4 right-4 p-1 ${tokens.touchTarget.min} rounded-lg transition-colors flex items-center justify-center ${
             isDarkMode
-              ? "hover:bg-gray-700 text-gray-400 hover:text-white"
+              ? "hover:bg-slate-700 text-slate-400 hover:text-white"
               : "hover:bg-slate-100 text-slate-400 hover:text-slate-900"
           }`}
           aria-label="Close dialog"
@@ -159,7 +159,7 @@ export function ConfirmDialog({
           {consequences.length > 0 && (
             <div
               className={`mt-4 p-4 rounded-lg ${
-                isDarkMode ? "bg-gray-900/50" : "bg-slate-50"
+                isDarkMode ? "bg-slate-900/50" : "bg-slate-50"
               }`}
             >
               <p

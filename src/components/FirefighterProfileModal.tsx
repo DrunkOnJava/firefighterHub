@@ -479,7 +479,7 @@ export function FirefighterProfileModal({
             {isEditMode ? (
               <div className="space-y-2">
                 <label
-                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-slate-800/50 ${tokens.transitions.fast}`}
                 >
                   <input
                     type="checkbox"
@@ -490,7 +490,7 @@ export function FirefighterProfileModal({
                         is_fto: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-amber-500 focus:ring-2 focus:ring-amber-500"
+                    className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-amber-500 focus:ring-2 focus:ring-amber-500"
                   />
                   <span
                     className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
@@ -499,7 +499,7 @@ export function FirefighterProfileModal({
                   </span>
                 </label>
                 <label
-                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-slate-800/50 ${tokens.transitions.fast}`}
                 >
                   <input
                     type="checkbox"
@@ -510,7 +510,7 @@ export function FirefighterProfileModal({
                         is_bls: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-emerald-500 focus:ring-2 focus:ring-emerald-500"
+                    className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-emerald-500 focus:ring-2 focus:ring-emerald-500"
                   />
                   <span
                     className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
@@ -519,7 +519,7 @@ export function FirefighterProfileModal({
                   </span>
                 </label>
                 <label
-                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                  className={`flex items-center ${tokens.spacing.gap.md} ${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 cursor-pointer hover:bg-slate-800/50 ${tokens.transitions.fast}`}
                 >
                   <input
                     type="checkbox"
@@ -530,7 +530,7 @@ export function FirefighterProfileModal({
                         is_als: e.target.checked,
                       })
                     }
-                    className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-cyan-500 focus:ring-2 focus:ring-cyan-500"
+                    className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-cyan-500 focus:ring-2 focus:ring-cyan-500"
                   />
                   <span
                     className={`${tokens.typography.body.secondary} ${tokens.typography.weight.semibold} ${colors.structural.text.secondary}`}
@@ -589,7 +589,7 @@ export function FirefighterProfileModal({
                   return (
                     <label
                       key={apparatus.key}
-                      className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 flex items-center ${tokens.spacing.gap.sm} cursor-pointer hover:bg-gray-800/50 ${tokens.transitions.fast}`}
+                      className={`${colors.structural.bg.card} ${colors.structural.border.default} ${tokens.borders.radius.lg} px-3 py-2 flex items-center ${tokens.spacing.gap.sm} cursor-pointer hover:bg-slate-800/50 ${tokens.transitions.fast}`}
                     >
                       <input
                         type="checkbox"
@@ -600,7 +600,7 @@ export function FirefighterProfileModal({
                             [apparatus.key]: e.target.checked,
                           })
                         }
-                        className="w-4 h-4 rounded border-gray-600 bg-gray-700 text-orange-500 focus:ring-2 focus:ring-orange-500"
+                        className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-orange-500 focus:ring-2 focus:ring-orange-500"
                       />
                       <IconComponent
                         className={`w-4 h-4 ${colors.structural.text.tertiary}`}
@@ -790,8 +790,8 @@ export function FirefighterProfileModal({
 
                 {/* No Additional History Message */}
                 {showAllHolds && holdRecords.length <= 3 && (
-                  <div className="mt-3 bg-gray-900/30 border border-gray-700 rounded-lg p-4 text-center">
-                    <p className="text-sm text-gray-400">
+                  <div className="mt-3 bg-slate-900/30 border border-slate-700 rounded-lg p-4 text-center">
+                    <p className="text-sm text-slate-400">
                       No additional hold history
                     </p>
                   </div>

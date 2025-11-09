@@ -177,7 +177,7 @@ export function SpinnerOverlay({
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
       <div
         className={`
-          ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}
+          ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-white text-slate-900'}
           rounded-xl p-8
           flex flex-col items-center gap-4
           shadow-2xl

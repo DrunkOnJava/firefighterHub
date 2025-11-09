@@ -95,7 +95,7 @@ export function ProgressBar({
           {label && (
             <span
               className={`text-sm font-medium ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                isDarkMode ? 'text-slate-300' : 'text-slate-700'
               }`}
             >
               {label}
@@ -104,7 +104,7 @@ export function ProgressBar({
           {showPercentage && !indeterminate && (
             <span
               className={`text-sm font-medium ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                isDarkMode ? 'text-slate-400' : 'text-gray-600'
               }`}
             >
               {Math.round(percentage)}%
@@ -118,7 +118,7 @@ export function ProgressBar({
         className={`
           w-full
           ${sizeConfig[size]}
-          ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}
+          ${isDarkMode ? 'bg-slate-700' : 'bg-gray-200'}
           rounded-full
           overflow-hidden
         `}
@@ -259,7 +259,7 @@ export function CircularProgress({
           className={`
             absolute inset-0 flex items-center justify-center
             text-lg font-bold
-            ${isDarkMode ? 'text-white' : 'text-gray-900'}
+            ${isDarkMode ? 'text-white' : 'text-slate-900'}
           `}
         >
           {Math.round(percentage)}%

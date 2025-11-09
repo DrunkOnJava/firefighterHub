@@ -1,0 +1,6 @@
+test-results/
+screenshots/current/
+screenshots/diff/
+node_modules/
+.DS_Store
+*.log

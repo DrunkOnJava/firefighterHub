@@ -55,7 +55,7 @@ export function PulseLoader({
     green: 'bg-green-500',
     yellow: 'bg-yellow-500',
     red: 'bg-red-500',
-    gray: 'bg-gray-500',
+    gray: 'bg-slate-500',
     white: 'bg-white',
   };
 

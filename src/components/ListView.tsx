@@ -173,14 +173,14 @@ export function ListView({
                   {formatDate(entry.date)}
                 </h3>
                 {relativeDate && (
-                  <p className="text-sm text-gray-400 mt-0.5">{relativeDate}</p>
+                  <p className="text-sm text-slate-400 mt-0.5">{relativeDate}</p>
                 )}
               </div>
             </div>
 
             <div className="flex flex-col gap-2 ml-8">
               <div className="flex items-center gap-2">
-                <User size={18} className="text-gray-400" />
+                <User size={18} className="text-slate-400" />
                 <span className="text-lg font-semibold text-white">
                   {entry.firefighterName}
                 </span>
@@ -223,7 +223,7 @@ export function ListView({
           {entry.hold && isAdminMode && (
             <div className="flex flex-col gap-2 md:ml-4">
               {showDeleteConfirm === entry.id ? (
-                <div className="bg-gray-900/80 border border-red-600 rounded-lg p-3 space-y-2">
+                <div className="bg-slate-900/80 border border-red-600 rounded-lg p-3 space-y-2">
                   <p className="text-sm text-red-300 font-semibold mb-2">
                     Cancel this hold?
                   </p>
@@ -236,7 +236,7 @@ export function ListView({
                     </button>
                     <button
                       onClick={() => setShowDeleteConfirm(null)}
-                      className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg whitespace-nowrap text-sm"
+                      className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors shadow-lg whitespace-nowrap text-sm"
                     >
                       No, Keep
                     </button>
@@ -274,18 +274,18 @@ export function ListView({
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl shadow-2xl p-8">
+      <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-slate-700 rounded-2xl shadow-2xl p-8">
         <div className="text-center py-20">
           <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400 text-lg">Loading holds...</p>
+          <p className="text-slate-400 text-lg">Loading holds...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
-      <div className="bg-gradient-to-r from-orange-900/30 via-gray-900 to-gray-800 border-b-2 border-gray-700 p-6">
+    <div className="bg-gradient-to-br from-gray-800 to-gray-850 border-2 border-slate-700 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-orange-900/30 via-gray-900 to-gray-800 border-b-2 border-slate-700 p-6">
         <div className="flex items-center gap-4">
           <div className="bg-gradient-to-br from-orange-500 to-orange-600 p-3 rounded-xl shadow-lg">
             <CalendarIcon className="text-white" size={28} />
@@ -294,7 +294,7 @@ export function ListView({
             <h2 id="list-heading" className={`${tokens.typography.heading.h2} text-white`}>
               Hold List View
             </h2>
-            <p className="text-base text-gray-400">
+            <p className="text-base text-slate-400">
               All scheduled and completed holds
             </p>
           </div>
@@ -319,10 +319,10 @@ export function ListView({
         {upcomingHolds.length === 0 && (
           <div className="text-center py-12">
             <Clock className="text-gray-600 mx-auto mb-4" size={48} />
-            <p className="text-gray-400 text-lg font-semibold">
+            <p className="text-slate-400 text-lg font-semibold">
               No upcoming holds scheduled
             </p>
-            <p className="text-gray-500 text-sm mt-2">
+            <p className="text-slate-500 text-sm mt-2">
               Switch to calendar view to schedule holds
             </p>
           </div>

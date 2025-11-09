@@ -55,7 +55,7 @@ export const Radio = ({
     transition-colors
     ${isDarkMode
       ? 'hover:bg-slate-800/50'
-      : 'hover:bg-gray-50'
+      : 'hover:bg-slate-50'
     }
     ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
   `;
@@ -65,8 +65,8 @@ export const Radio = ({
     text-sm
     transition-colors
     ${isDarkMode
-      ? 'text-gray-300 group-hover:text-white'
-      : 'text-gray-700 group-hover:text-gray-900'
+      ? 'text-slate-300 group-hover:text-white'
+      : 'text-slate-700 group-hover:text-slate-900'
     }
   `;
 
@@ -74,7 +74,7 @@ export const Radio = ({
   const descriptionClasses = `
     mt-1 text-xs
     ${isDarkMode
-      ? 'text-gray-500'
+      ? 'text-slate-500'
       : 'text-gray-600'
     }
   `;
@@ -86,8 +86,8 @@ export const Radio = ({
     cursor-pointer
     disabled:cursor-not-allowed
     ${isDarkMode
-      ? 'text-blue-600 bg-gray-800 border-gray-600'
-      : 'text-blue-600 bg-white border-gray-300'
+      ? 'text-blue-600 bg-slate-800 border-slate-600'
+      : 'text-blue-600 bg-white border-slate-300'
     }
   `;
 

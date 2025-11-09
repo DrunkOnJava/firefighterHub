@@ -152,7 +152,7 @@ export function NextUpBarV2({
           {firefighter ? (
             <>
               {/* Name */}
-              <div className="text-white text-lg font-black mb-2 drop-shadow-lg leading-tight truncate">
+              <div className="text-white text-lg font-black mb-2 drop-shadow-lg leading-tight whitespace-nowrap">
                 {firefighter.name}
               </div>
               
@@ -160,13 +160,13 @@ export function NextUpBarV2({
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2 text-white/90 text-xs">
                   <MapPin size={12} className="flex-shrink-0" />
-                  <span className="font-bold truncate">
+                  <span className="font-bold whitespace-nowrap">
                     Station {firefighter.fire_station || '—'}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-white/90 text-xs">
                   <Calendar size={12} className="flex-shrink-0" />
-                  <span className="font-bold truncate">
+                  <span className="font-bold whitespace-nowrap">
                     {firefighter.last_hold_date 
                       ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                       : 'Never'}
@@ -227,7 +227,7 @@ export function NextUpBarV2({
         ${
           isDarkMode
             ? 'bg-slate-950/95 border-slate-800/50 backdrop-blur-sm'
-            : 'bg-white/95 border-gray-200 backdrop-blur-sm'
+            : 'bg-white/95 border-slate-200 backdrop-blur-sm'
         }
         ${!device.isMobile && tokens.shadows.lg}
       `}

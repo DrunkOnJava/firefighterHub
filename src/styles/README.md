@@ -295,7 +295,7 @@ tokens.typography.body.small      // text-xs (12px)
 ### Before (Inconsistent)
 
 ```tsx
-<div className="bg-gray-800 p-6 rounded-xl border border-gray-700">
+<div className="bg-slate-800 p-6 rounded-xl border border-slate-700">
   <h2 className="text-2xl font-bold mb-4">Title</h2>
   <button className="bg-gradient-to-br from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 px-6 py-3 rounded-lg">
     Action
@@ -418,7 +418,7 @@ tokens.typography.body.small      // text-xs (12px)
 
 ```tsx
 // BAD: Mixing tokens with hardcoded values
-<div className={`${tokens.spacing.card.md} bg-gray-800 p-6`}>
+<div className={`${tokens.spacing.card.md} bg-slate-800 p-6`}>
   // Conflict: tokens.spacing.card.md (p-4) overridden by p-6
 </div>
 ```
@@ -476,15 +476,15 @@ You don't have to update everything at once:
 All colors meet WCAG 2.1 AA contrast requirements:
 
 ### Dark Mode Contrast
-- `text-gray-100` on `bg-gray-800`: 10.4:1 (AAA)
-- `text-gray-400` on `bg-gray-800`: 5.2:1 (AA)
+- `text-gray-100` on `bg-slate-800`: 10.4:1 (AAA)
+- `text-slate-400` on `bg-slate-800`: 5.2:1 (AA)
 - Button text on gradients: 4.8:1+ (AA)
 
 ### Light Mode Contrast (WCAG Compliant)
-- `text-gray-900` on `bg-white`: 18.5:1 (AAA) - Primary text
-- `text-gray-700` on `bg-white`: 10.7:1 (AAA) - Secondary text
+- `text-slate-900` on `bg-white`: 18.5:1 (AAA) - Primary text
+- `text-slate-700` on `bg-white`: 10.7:1 (AAA) - Secondary text
 - `text-gray-600` on `bg-white`: 7.7:1 (AAA) - Tertiary text
-- `text-gray-400` on `bg-white`: 4.6:1 (AA) - Placeholder text
+- `text-slate-400` on `bg-white`: 4.6:1 (AA) - Placeholder text
 - `text-blue-600` on `bg-white`: 4.9:1 (AA) - Links/icons
 - `text-red-700` on `bg-red-100`: 7.0:1 (AAA) - Error badges
 - `text-emerald-700` on `bg-emerald-100`: 5.8:1 (AA) - Success badges

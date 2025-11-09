@@ -115,16 +115,16 @@ export function AnimatedToggle({
   const variantColors = {
     default: checked
       ? 'bg-blue-600 dark:bg-blue-500'
-      : 'bg-gray-300 dark:bg-gray-600',
+      : 'bg-gray-300 dark:bg-slate-600',
     success: checked
       ? 'bg-green-600 dark:bg-green-500'
-      : 'bg-gray-300 dark:bg-gray-600',
+      : 'bg-gray-300 dark:bg-slate-600',
     warning: checked
       ? 'bg-yellow-600 dark:bg-yellow-500'
-      : 'bg-gray-300 dark:bg-gray-600',
+      : 'bg-gray-300 dark:bg-slate-600',
     danger: checked
       ? 'bg-red-600 dark:bg-red-500'
-      : 'bg-gray-300 dark:bg-gray-600',
+      : 'bg-gray-300 dark:bg-slate-600',
   };
 
   const transitionClasses = prefersReducedMotion
@@ -173,7 +173,7 @@ export function AnimatedToggle({
         <label
           className={`
             ${config.text}
-            ${disabled ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 dark:text-gray-300 cursor-pointer'}
+            ${disabled ? 'text-slate-400 cursor-not-allowed' : 'text-slate-700 dark:text-slate-300 cursor-pointer'}
             select-none
           `}
           onClick={!disabled ? handleToggle : undefined}

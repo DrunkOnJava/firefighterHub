@@ -154,7 +154,7 @@ export function DayCell({
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
             >
-              <span className="truncate drop-shadow-sm">{formattedName}</span>
+              <span className="whitespace-nowrap drop-shadow-sm">{formattedName}</span>
               {hold.fire_station && (
                 <span className="ml-1 flex-shrink-0 text-orange-100 font-extrabold text-xs">
                   #{hold.fire_station}
@@ -185,7 +185,7 @@ export function DayCell({
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
             >
-              <span className="truncate drop-shadow-sm">{formattedName}</span>
+              <span className="whitespace-nowrap drop-shadow-sm">{formattedName}</span>
               {hold.fire_station && (
                 <span className="ml-1 flex-shrink-0 text-emerald-100 font-extrabold text-xs">
                   #{hold.fire_station}

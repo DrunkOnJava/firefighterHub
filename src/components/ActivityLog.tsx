@@ -164,7 +164,7 @@ export function ActivityLog() {
               {activities.map((activity) => (
                 <div
                   key={activity.id}
-                  className={`bg-gray-900/50 border ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.md} hover:bg-gray-900/70 transition-colors`}
+                  className={`bg-slate-900/50 border ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.md} hover:bg-slate-900/70 transition-colors`}
                 >
                   <div className={`flex items-start justify-between ${tokens.spacing.gap.md}`}>
                     <div className="flex-1 min-w-0">
@@ -198,7 +198,7 @@ export function ActivityLog() {
             {completedHolds.map((hold) => (
               <div
                 key={hold.id}
-                className={`bg-gray-900/50 border ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.md} hover:bg-gray-900/70 transition-colors`}
+                className={`bg-slate-900/50 border ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.md} hover:bg-slate-900/70 transition-colors`}
               >
                 <div className={`flex items-start justify-between ${tokens.spacing.gap.md}`}>
                   <div className="flex-1 min-w-0">

@@ -95,7 +95,7 @@ export function useFirefightersData(
     return () => {
       abortRef.current?.abort();
     };
-  }, [loadFirefighters]);
+  }, [currentShift]); // Use currentShift directly to avoid infinite loop
 
   return {
     firefighters,

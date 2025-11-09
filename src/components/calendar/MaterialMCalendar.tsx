@@ -88,22 +88,22 @@ export function MaterialMCalendar({
           "p-6 rounded-xl border-2 w-full",
           isDarkMode
             ? "bg-slate-800 border-slate-700"
-            : "bg-white border-gray-200"
+            : "bg-white border-slate-200"
         )}
         classNames={{
           months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
           month: "space-y-4 w-full",
           caption: cn(
             "flex justify-center pt-2 pb-4 relative items-center",
-            isDarkMode ? "text-white" : "text-gray-900"
+            isDarkMode ? "text-white" : "text-slate-900"
           ),
           caption_label: "text-lg font-semibold",
           nav: "space-x-1 flex items-center",
           nav_button: cn(
             "h-10 w-10 bg-transparent p-0 opacity-50 hover:opacity-100",
             "inline-flex items-center justify-center rounded-md",
-            "border border-gray-300 dark:border-slate-600",
-            isDarkMode ? "hover:bg-slate-700" : "hover:bg-gray-100"
+            "border border-slate-300 dark:border-slate-600",
+            isDarkMode ? "hover:bg-slate-700" : "hover:bg-slate-100"
           ),
           nav_button_previous: "absolute left-1",
           nav_button_next: "absolute right-1",
@@ -111,7 +111,7 @@ export function MaterialMCalendar({
           head_row: "flex",
           head_cell: cn(
             "rounded-md w-20 font-medium text-sm text-center",
-            isDarkMode ? "text-slate-400" : "text-gray-500"
+            isDarkMode ? "text-slate-400" : "text-slate-500"
           ),
           row: "flex w-full mt-2",
           cell: cn(
@@ -123,7 +123,7 @@ export function MaterialMCalendar({
             "inline-flex items-center justify-center rounded-lg",
             "hover:bg-primary-500/10 transition-colors",
             "focus:outline-none focus:ring-2 focus:ring-primary-500",
-            isDarkMode ? "text-slate-300" : "text-gray-900"
+            isDarkMode ? "text-slate-300" : "text-slate-900"
           ),
           day_selected: cn(
             "bg-primary-500 text-white",
@@ -132,13 +132,13 @@ export function MaterialMCalendar({
           ),
           day_today: cn(
             "bg-accent-500/20 font-semibold",
-            isDarkMode ? "text-white" : "text-gray-900"
+            isDarkMode ? "text-white" : "text-slate-900"
           ),
           day_outside: cn(
             "opacity-50",
-            isDarkMode ? "text-slate-500" : "text-gray-400"
+            isDarkMode ? "text-slate-500" : "text-slate-400"
           ),
-          day_disabled: "text-gray-400 opacity-50 cursor-not-allowed",
+          day_disabled: "text-slate-400 opacity-50 cursor-not-allowed",
           day_hidden: "invisible",
         }}
         components={{
@@ -153,11 +153,11 @@ export function MaterialMCalendar({
           "p-6 rounded-xl border-2",
           isDarkMode
             ? "bg-slate-800 border-slate-700"
-            : "bg-white border-gray-200"
+            : "bg-white border-slate-200"
         )}>
           <h3 className={cn(
             "text-xl font-semibold mb-4",
-            isDarkMode ? "text-white" : "text-gray-900"
+            isDarkMode ? "text-white" : "text-slate-900"
           )}>
             {selectedDate.toLocaleDateString('en-US', {
               month: 'long',
@@ -169,14 +169,14 @@ export function MaterialMCalendar({
           {loading ? (
             <p className={cn(
               "text-base",
-              isDarkMode ? "text-slate-400" : "text-gray-500"
+              isDarkMode ? "text-slate-400" : "text-slate-500"
             )}>
               Loading holds...
             </p>
           ) : getHoldsForDate(selectedDate).length === 0 ? (
             <p className={cn(
               "text-base",
-              isDarkMode ? "text-slate-400" : "text-gray-500"
+              isDarkMode ? "text-slate-400" : "text-slate-500"
             )}>
               No holds scheduled for this day
             </p>
@@ -189,21 +189,21 @@ export function MaterialMCalendar({
                     "p-3 rounded-md border",
                     isDarkMode
                       ? "bg-slate-700 border-slate-600"
-                      : "bg-gray-50 border-gray-200"
+                      : "bg-slate-50 border-slate-200"
                   )}
                 >
                   <div className="flex justify-between items-start">
                     <div>
                       <p className={cn(
                         "font-medium",
-                        isDarkMode ? "text-white" : "text-gray-900"
+                        isDarkMode ? "text-white" : "text-slate-900"
                       )}>
                         {hold.firefighter_name}
                       </p>
                       {hold.fire_station && (
                         <p className={cn(
                           "text-sm",
-                          isDarkMode ? "text-slate-400" : "text-gray-500"
+                          isDarkMode ? "text-slate-400" : "text-slate-500"
                         )}>
                           Station #{hold.fire_station}
                         </p>
@@ -215,7 +215,7 @@ export function MaterialMCalendar({
                         ? "bg-green-500/20 text-green-400"
                         : hold.status === 'scheduled'
                         ? "bg-blue-500/20 text-blue-400"
-                        : "bg-gray-500/20 text-gray-400"
+                        : "bg-slate-500/20 text-slate-400"
                     )}>
                       {hold.status}
                     </span>

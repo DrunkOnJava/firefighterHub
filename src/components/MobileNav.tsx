@@ -81,7 +81,7 @@ export function MobileNav({
         ref={trapRef}
         className={`fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] border-l-2 z-50 shadow-2xl animate-slide-in-right ${
           isDarkMode
-            ? "bg-gradient-to-b from-gray-800 to-gray-900 border-gray-700"
+            ? "bg-gradient-to-b from-gray-800 to-gray-900 border-slate-700"
             : "bg-gradient-to-b from-slate-50 to-white border-slate-300"
         }`}
       >
@@ -90,7 +90,7 @@ export function MobileNav({
           <div
             className={`border-b-2 p-5 flex items-center justify-between ${
               isDarkMode
-                ? "bg-gradient-to-r from-gray-900 to-gray-800 border-gray-700"
+                ? "bg-gradient-to-r from-gray-900 to-gray-800 border-slate-700"
                 : "bg-gradient-to-r from-slate-100 to-slate-50 border-slate-300"
             }`}
           >
@@ -123,7 +123,7 @@ export function MobileNav({
               onClick={onClose}
               className={`p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring flex items-center justify-center ${
                 isDarkMode
-                  ? "hover:bg-gray-700 text-gray-400"
+                  ? "hover:bg-slate-700 text-slate-400"
                   : "hover:bg-slate-200 text-slate-600"
               }`}
               aria-label="Close menu"
@@ -137,7 +137,7 @@ export function MobileNav({
             <section>
               <h3
                 className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
+                  isDarkMode ? "text-slate-400" : "text-slate-600"
                 }`}
               >
                 Current Context
@@ -146,7 +146,7 @@ export function MobileNav({
                 <div>
                   <label
                     className={`text-xs font-semibold mb-2 block ${
-                      isDarkMode ? "text-gray-400" : "text-slate-600"
+                      isDarkMode ? "text-slate-400" : "text-slate-600"
                     }`}
                   >
                     Active Shift
@@ -164,7 +164,7 @@ export function MobileNav({
               <section>
                 <h3
                   className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                    isDarkMode ? "text-gray-400" : "text-slate-600"
+                    isDarkMode ? "text-slate-400" : "text-slate-600"
                   }`}
                 >
                   Quick Actions
@@ -186,7 +186,7 @@ export function MobileNav({
             <section>
               <h3
                 className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
+                  isDarkMode ? "text-slate-400" : "text-slate-600"
                 }`}
               >
                 Tools
@@ -199,7 +199,7 @@ export function MobileNav({
                   }}
                   className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring ${
                     isDarkMode
-                      ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
+                      ? "bg-slate-800 hover:bg-slate-700 border-slate-700"
                       : "bg-white hover:bg-slate-50 border-slate-300"
                   }`}
                 >
@@ -217,7 +217,7 @@ export function MobileNav({
                     </div>
                     <div
                       className={`text-sm ${
-                        isDarkMode ? "text-gray-400" : "text-slate-600"
+                        isDarkMode ? "text-slate-400" : "text-slate-600"
                       }`}
                     >
                       View recent actions
@@ -232,7 +232,7 @@ export function MobileNav({
                   }}
                   className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring ${
                     isDarkMode
-                      ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
+                      ? "bg-slate-800 hover:bg-slate-700 border-slate-700"
                       : "bg-white hover:bg-slate-50 border-slate-300"
                   }`}
                 >
@@ -252,7 +252,7 @@ export function MobileNav({
                     </div>
                     <div
                       className={`text-sm ${
-                        isDarkMode ? "text-gray-400" : "text-slate-600"
+                        isDarkMode ? "text-slate-400" : "text-slate-600"
                       }`}
                     >
                       Learn about features
@@ -266,7 +266,7 @@ export function MobileNav({
             <section>
               <h3
                 className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-gray-400" : "text-slate-600"
+                  isDarkMode ? "text-slate-400" : "text-slate-600"
                 }`}
               >
                 Preferences
@@ -276,7 +276,7 @@ export function MobileNav({
                   onClick={onToggleDarkMode}
                   className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
                     isDarkMode
-                      ? "bg-gray-800 hover:bg-gray-700 border-gray-700"
+                      ? "bg-slate-800 hover:bg-slate-700 border-slate-700"
                       : "bg-white hover:bg-slate-50 border-slate-300"
                   }`}
                 >
@@ -296,7 +296,7 @@ export function MobileNav({
                       </div>
                       <div
                         className={`text-sm ${
-                          isDarkMode ? "text-gray-400" : "text-slate-600"
+                          isDarkMode ? "text-slate-400" : "text-slate-600"
                         }`}
                       >
                         {isDarkMode ? "Dark mode" : "Light mode"}
@@ -305,7 +305,7 @@ export function MobileNav({
                   </div>
                   <div
                     className={`text-xs font-semibold ${
-                      isDarkMode ? "text-gray-500" : "text-slate-500"
+                      isDarkMode ? "text-slate-500" : "text-slate-500"
                     }`}
                   >
                     Toggle
@@ -320,7 +320,7 @@ export function MobileNav({
                     }}
                     className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
                       isDarkMode
-                        ? "bg-gray-800 hover:bg-gray-700 border-orange-600"
+                        ? "bg-slate-800 hover:bg-slate-700 border-orange-600"
                         : "bg-white hover:bg-slate-50 border-orange-500"
                     }`}
                   >
@@ -336,7 +336,7 @@ export function MobileNav({
                         </div>
                         <div
                           className={`text-sm ${
-                            isDarkMode ? "text-gray-400" : "text-slate-600"
+                            isDarkMode ? "text-slate-400" : "text-slate-600"
                           }`}
                         >
                           Active - Click to leave
@@ -359,7 +359,7 @@ export function MobileNav({
                     }}
                     className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
                       isDarkMode
-                        ? "bg-gray-800 hover:bg-gray-700 border-orange-600"
+                        ? "bg-slate-800 hover:bg-slate-700 border-orange-600"
                         : "bg-white hover:bg-slate-50 border-orange-500"
                     }`}
                   >
@@ -375,7 +375,7 @@ export function MobileNav({
                         </div>
                         <div
                           className={`text-sm ${
-                            isDarkMode ? "text-gray-400" : "text-slate-600"
+                            isDarkMode ? "text-slate-400" : "text-slate-600"
                           }`}
                         >
                           Enable admin features
@@ -418,7 +418,7 @@ export function MobileNav({
                   </h3>
                   <p
                     className={`text-sm ${
-                      isDarkMode ? "text-gray-300" : "text-slate-700"
+                      isDarkMode ? "text-slate-300" : "text-slate-700"
                     }`}
                   >
                     Enable Admin mode to add firefighters and schedule holds.

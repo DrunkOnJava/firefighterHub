@@ -128,7 +128,7 @@ export function CalendarView({
             </div>
             <button
               onClick={goToToday}
-              className="px-3 py-1 text-sm bg-[#2F3640] hover:bg-[#353D47] text-gray-300 rounded-md border border-[#252A32] transition-colors"
+              className="px-3 py-1 text-sm bg-[#2F3640] hover:bg-[#353D47] text-slate-300 rounded-md border border-[#252A32] transition-colors"
             >
               Today
             </button>
@@ -173,7 +173,7 @@ export function CalendarView({
           {WEEKDAYS.map((day) => (
             <div
               key={day}
-              className="bg-[#2F3640] px-3 py-4 text-center font-semibold text-gray-400 text-sm"
+              className="bg-[#2F3640] px-3 py-4 text-center font-semibold text-slate-400 text-sm"
             >
               {day}
             </div>
@@ -204,7 +204,7 @@ export function CalendarView({
                 <div className={`
                   text-base font-medium mb-2
                   ${isCurrentDay ? 'text-red-400' : ''}
-                  ${isOtherMonth ? 'text-gray-600' : 'text-gray-300'}
+                  ${isOtherMonth ? 'text-gray-600' : 'text-slate-300'}
                 `}>
                   {day.date.getDate()}
                 </div>
@@ -234,7 +234,7 @@ export function CalendarView({
                       </div>
                     ))}
                     {day.scheduledHolds.length > 2 && (
-                      <div className="text-xs text-gray-500 px-2">
+                      <div className="text-xs text-slate-500 px-2">
                         +{day.scheduledHolds.length - 2} more
                       </div>
                     )}
@@ -254,7 +254,7 @@ export function CalendarView({
             <Clock className="w-8 h-8 text-red-500" />
             <span className="text-3xl font-bold text-gray-100">{stats.openVacancies}</span>
           </div>
-          <div className="text-sm text-gray-400">Open Vacancies</div>
+          <div className="text-sm text-slate-400">Open Vacancies</div>
         </div>
 
         {/* Scheduled */}
@@ -263,7 +263,7 @@ export function CalendarView({
             <Calendar className="w-8 h-8 text-blue-400" />
             <span className="text-3xl font-bold text-gray-100">{stats.scheduled}</span>
           </div>
-          <div className="text-sm text-gray-400">Scheduled</div>
+          <div className="text-sm text-slate-400">Scheduled</div>
         </div>
 
         {/* Completed */}
@@ -272,7 +272,7 @@ export function CalendarView({
             <CheckCircle2 className="w-8 h-8 text-emerald-500" />
             <span className="text-3xl font-bold text-gray-100">{stats.completed}</span>
           </div>
-          <div className="text-sm text-gray-400">Completed</div>
+          <div className="text-sm text-slate-400">Completed</div>
         </div>
 
         {/* Active Members */}
@@ -281,7 +281,7 @@ export function CalendarView({
             <Users className="w-8 h-8 text-amber-500" />
             <span className="text-3xl font-bold text-gray-100">{stats.activeMembers}</span>
           </div>
-          <div className="text-sm text-gray-400">Active Members</div>
+          <div className="text-sm text-slate-400">Active Members</div>
         </div>
       </div>
 

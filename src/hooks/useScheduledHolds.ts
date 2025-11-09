@@ -16,7 +16,7 @@
  * - No optimistic updates = simpler state management
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
 import { ToastType } from "./useToast";
 import { useScheduledHoldsData } from "./useScheduledHoldsData";
@@ -36,7 +36,7 @@ export function useScheduledHolds(
   } = useScheduledHoldsData(currentShift);
 
   // 2. Memoize callbacks for real-time hook (prevent subscription churn)
-  const memoizedShowToast = useCallback(showToast, []);
+  const memoizedShowToast = useCallback(showToast, [showToast]);
   const memoizedLoadScheduledHolds = useCallback(loadScheduledHolds, [
     loadScheduledHolds,
   ]);
@@ -51,15 +51,22 @@ export function useScheduledHolds(
   // 4. Mutations hook
   const mutations = useScheduledHoldsMutations({
     currentShift,
-    scheduledHolds,
-    showToast,
     onSuccess: memoizedLoadScheduledHolds,
   });
 
-  // Log error if data fetch failed
-  if (error) {
-    showToast(error, "error");
-  }
+  // Log error if data fetch failed (avoid triggering state updates during render)
+  const previousErrorRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!error) {
+      previousErrorRef.current = null;
+      return;
+    }
+
+    if (previousErrorRef.current !== error) {
+      showToast(error, "error");
+      previousErrorRef.current = error;
+    }
+  }, [error, showToast]);
 
   // Return combined API (maintains backward compatibility)
   return {

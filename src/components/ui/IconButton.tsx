@@ -61,8 +61,8 @@ export const IconButton = ({
   // Variant classes - different contexts
   const variantClasses = {
     default: isDarkMode
-      ? 'text-gray-400 hover:text-white hover:bg-slate-700'
-      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100',
+      ? 'text-slate-400 hover:text-white hover:bg-slate-700'
+      : 'text-gray-600 hover:text-slate-900 hover:bg-slate-100',
     primary: isDarkMode
       ? 'text-blue-400 hover:text-blue-300 hover:bg-blue-900/20'
       : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50',

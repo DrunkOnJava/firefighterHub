@@ -56,7 +56,7 @@ export function ButtonGroupExample() {
   return (
     <div className="flex gap-2">
       <Tooltip content="View profile">
-        <button className="p-2 hover:bg-gray-700 rounded">
+        <button className="p-2 hover:bg-slate-700 rounded">
           <Eye size={16} />
         </button>
       </Tooltip>
@@ -68,7 +68,7 @@ export function ButtonGroupExample() {
       </Tooltip>
 
       <Tooltip content="Reset roster order">
-        <button className="p-2 hover:bg-gray-700 rounded">
+        <button className="p-2 hover:bg-slate-700 rounded">
           <RefreshCw size={16} />
         </button>
       </Tooltip>

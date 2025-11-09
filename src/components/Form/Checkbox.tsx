@@ -60,17 +60,17 @@ export const Checkbox = ({
         disabled={disabled}
         className="
           w-4 h-4
-          rounded border-gray-300
+          rounded border-slate-300
           text-blue-600 
           focus:ring-blue-500 focus:ring-2 focus:ring-offset-2
-          dark:border-gray-600 dark:bg-slate-700
+          dark:border-slate-600 dark:bg-slate-700
           dark:focus:ring-offset-slate-900
           cursor-pointer
           disabled:opacity-50 disabled:cursor-not-allowed
           transition-colors
         "
       />
-      <span className="ml-3 text-sm text-gray-300 group-hover:text-white transition-colors">
+      <span className="ml-3 text-sm text-slate-300 group-hover:text-white transition-colors">
         {label}
       </span>
     </label>

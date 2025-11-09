@@ -21,25 +21,25 @@ describe("Theme WCAG Compliance", () => {
       expect(lightTheme.appBackground).toContain("gray-100");
       expect(lightTheme.appBackground).toContain("gray-200");
       expect(lightTheme.cardBackground).toBe("bg-white");
-      expect(lightTheme.cardBorder).toBe("border-gray-200");
+      expect(lightTheme.cardBorder).toBe("border-slate-200");
     });
 
     it("should use dark text on light backgrounds", () => {
-      expect(lightTheme.textPrimary).toBe("text-gray-900");
-      expect(lightTheme.textSecondary).toBe("text-gray-700");
+      expect(lightTheme.textPrimary).toBe("text-slate-900");
+      expect(lightTheme.textSecondary).toBe("text-slate-700");
       expect(lightTheme.textTertiary).toBe("text-gray-600");
     });
 
     it("should use white backgrounds for inputs with proper borders", () => {
       expect(lightTheme.input.background).toBe("bg-white");
-      expect(lightTheme.input.border).toBe("border-gray-300");
-      expect(lightTheme.input.text).toBe("text-gray-900");
+      expect(lightTheme.input.border).toBe("border-slate-300");
+      expect(lightTheme.input.text).toBe("text-slate-900");
       expect(lightTheme.input.placeholder).toBe("placeholder-gray-400");
     });
 
     it("should use white modal backgrounds with visible overlays", () => {
       expect(lightTheme.modal.background).toBe("bg-white");
-      expect(lightTheme.modal.border).toBe("border-gray-200");
+      expect(lightTheme.modal.border).toBe("border-slate-200");
       expect(lightTheme.modal.overlay).toBe("bg-black/60");
     });
 
@@ -49,8 +49,8 @@ describe("Theme WCAG Compliance", () => {
       expect(lightTheme.button.primary).toContain("text-white");
 
       // Secondary buttons: light gray with dark text
-      expect(lightTheme.button.secondary).toContain("bg-gray-100");
-      expect(lightTheme.button.secondary).toContain("text-gray-900");
+      expect(lightTheme.button.secondary).toContain("bg-slate-100");
+      expect(lightTheme.button.secondary).toContain("text-slate-900");
 
       // Danger buttons: red with white text (contrast: 5.4:1) ✅
       expect(lightTheme.button.danger).toContain("bg-red-600");
@@ -78,12 +78,12 @@ describe("Theme WCAG Compliance", () => {
     it("should have accessible calendar colors", () => {
       // Calendar grid uses white backgrounds
       expect(lightTheme.calendar.gridBackground).toBe("bg-white");
-      expect(lightTheme.calendar.headerBackground).toBe("bg-gray-100");
+      expect(lightTheme.calendar.headerBackground).toBe("bg-slate-100");
 
       // Calendar text has sufficient contrast
-      expect(lightTheme.calendar.headerText).toBe("text-gray-700"); // 10.7:1 ✅
-      expect(lightTheme.calendar.dayCellText).toBe("text-gray-900"); // 18.5:1 ✅
-      expect(lightTheme.calendar.dayCellTextOtherMonth).toBe("text-gray-400"); // 4.6:1 ✅
+      expect(lightTheme.calendar.headerText).toBe("text-slate-700"); // 10.7:1 ✅
+      expect(lightTheme.calendar.dayCellText).toBe("text-slate-900"); // 18.5:1 ✅
+      expect(lightTheme.calendar.dayCellTextOtherMonth).toBe("text-slate-400"); // 4.6:1 ✅
 
       // Hold badges are accessible
       expect(lightTheme.calendar.holdBadge).toContain("bg-red-100");
@@ -95,7 +95,7 @@ describe("Theme WCAG Compliance", () => {
     it("should have accessible roster colors", () => {
       // Search input
       expect(lightTheme.roster.searchInput).toContain("bg-white");
-      expect(lightTheme.roster.searchInput).toContain("text-gray-900");
+      expect(lightTheme.roster.searchInput).toContain("text-slate-900");
 
       // Header text
       expect(lightTheme.roster.headerTitle).toBe("text-slate-900");
@@ -122,14 +122,14 @@ describe("Theme WCAG Compliance", () => {
     it("should have accessible metric card colors", () => {
       expect(lightTheme.metricCard.background).toBe("bg-white");
       expect(lightTheme.metricCard.titleText).toBe("text-gray-600"); // 7.7:1 ✅
-      expect(lightTheme.metricCard.valueText).toBe("text-gray-900"); // 18.5:1 ✅
+      expect(lightTheme.metricCard.valueText).toBe("text-slate-900"); // 18.5:1 ✅
       expect(lightTheme.metricCard.icon).toBe("text-blue-600"); // 4.9:1 ✅
     });
 
     it("should have accessible confirm dialog colors", () => {
       expect(lightTheme.confirmDialog.background).toBe("bg-white");
-      expect(lightTheme.confirmDialog.title).toBe("text-gray-900");
-      expect(lightTheme.confirmDialog.message).toBe("text-gray-700");
+      expect(lightTheme.confirmDialog.title).toBe("text-slate-900");
+      expect(lightTheme.confirmDialog.message).toBe("text-slate-700");
       expect(lightTheme.confirmDialog.confirmButton).toContain("bg-red-600");
       expect(lightTheme.confirmDialog.confirmButton).toContain("text-white");
     });
@@ -145,8 +145,8 @@ describe("Theme WCAG Compliance", () => {
 
     it("should use light text on dark backgrounds", () => {
       expect(darkTheme.textPrimary).toBe("text-gray-50");
-      expect(darkTheme.textSecondary).toBe("text-gray-300");
-      expect(darkTheme.textTertiary).toBe("text-gray-400");
+      expect(darkTheme.textSecondary).toBe("text-slate-300");
+      expect(darkTheme.textTertiary).toBe("text-slate-400");
     });
 
     it("should have consistent structure between modes", () => {

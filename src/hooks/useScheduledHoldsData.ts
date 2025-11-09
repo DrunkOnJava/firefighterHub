@@ -70,7 +70,7 @@ export function useScheduledHoldsData(
     return () => {
       abortRef.current?.abort();
     };
-  }, [loadScheduledHolds]);
+  }, [currentShift]); // Use currentShift directly to avoid infinite loop
 
   return {
     scheduledHolds,

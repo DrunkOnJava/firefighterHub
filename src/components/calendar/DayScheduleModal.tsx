@@ -97,7 +97,7 @@ export function DayScheduleModal({
       <div
         ref={trapRef}
         className={`relative w-full max-w-lg rounded-lg shadow-xl ${
-          isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'
+          isDarkMode ? 'bg-slate-800 text-white' : 'bg-white text-slate-900'
         }`}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -107,7 +107,7 @@ export function DayScheduleModal({
         {/* Header */}
         <div
           className={`flex items-center justify-between p-6 border-b ${
-            isDarkMode ? 'border-gray-700' : 'border-gray-200'
+            isDarkMode ? 'border-slate-700' : 'border-slate-200'
           }`}
         >
           <div className="flex items-center gap-3">
@@ -126,8 +126,8 @@ export function DayScheduleModal({
             onClick={onClose}
             className={`p-2 rounded-lg transition-colors ${
               isDarkMode
-                ? 'hover:bg-gray-700 text-gray-400 hover:text-white'
-                : 'hover:bg-gray-100 text-gray-600 hover:text-gray-900'
+                ? 'hover:bg-slate-700 text-slate-400 hover:text-white'
+                : 'hover:bg-slate-100 text-gray-600 hover:text-slate-900'
             }`}
             aria-label="Close modal"
           >
@@ -140,12 +140,12 @@ export function DayScheduleModal({
           {/* Date Display */}
           <div
             className={`p-4 rounded-lg ${
-              isDarkMode ? 'bg-gray-700/50' : 'bg-gray-50'
+              isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'
             }`}
           >
             <p
               className={`text-sm font-medium ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                isDarkMode ? 'text-slate-400' : 'text-gray-600'
               }`}
             >
               Date
@@ -171,7 +171,7 @@ export function DayScheduleModal({
                 <p className="text-lg font-semibold">{nextFirefighter.name}</p>
                 <p
                   className={`text-sm ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                    isDarkMode ? 'text-slate-400' : 'text-gray-600'
                   }`}
                 >
                   Station {nextFirefighter.fire_station || 'N/A'} • Position{' '}
@@ -194,7 +194,7 @@ export function DayScheduleModal({
           <div>
             <label
               className={`block text-sm font-medium mb-2 ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                isDarkMode ? 'text-slate-300' : 'text-slate-700'
               }`}
             >
               <MapPin size={16} className="inline mr-2" />
@@ -207,7 +207,7 @@ export function DayScheduleModal({
             />
             <p
               className={`text-xs mt-1 ${
-                isDarkMode ? 'text-gray-500' : 'text-gray-600'
+                isDarkMode ? 'text-slate-500' : 'text-gray-600'
               }`}
             >
               Which station is this firefighter being held at?
@@ -219,7 +219,7 @@ export function DayScheduleModal({
             <div>
               <label
                 className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                  isDarkMode ? 'text-slate-300' : 'text-slate-700'
                 }`}
               >
                 Duration
@@ -229,8 +229,8 @@ export function DayScheduleModal({
                 onChange={(e) => setDuration(e.target.value as HoldDuration)}
                 className={`w-full px-3 py-2 rounded-lg border ${
                   isDarkMode
-                    ? 'bg-gray-700 border-gray-600 text-white'
-                    : 'bg-white border-gray-300 text-gray-900'
+                    ? 'bg-slate-700 border-slate-600 text-white'
+                    : 'bg-white border-slate-300 text-slate-900'
                 } focus:outline-none focus:ring-2 focus:ring-blue-500`}
               >
                 <option value="12h">12 hours</option>
@@ -240,7 +240,7 @@ export function DayScheduleModal({
             <div>
               <label
                 className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                  isDarkMode ? 'text-slate-300' : 'text-slate-700'
                 }`}
               >
                 <Clock size={16} className="inline mr-2" />
@@ -252,8 +252,8 @@ export function DayScheduleModal({
                 onChange={(e) => setStartTime(e.target.value)}
                 className={`w-full px-3 py-2 rounded-lg border ${
                   isDarkMode
-                    ? 'bg-gray-700 border-gray-600 text-white'
-                    : 'bg-white border-gray-300 text-gray-900'
+                    ? 'bg-slate-700 border-slate-600 text-white'
+                    : 'bg-white border-slate-300 text-slate-900'
                 } focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
             </div>
@@ -263,8 +263,8 @@ export function DayScheduleModal({
           <div
             className={`p-4 rounded-lg border ${
               isDarkMode
-                ? 'bg-gray-700/30 border-gray-600'
-                : 'bg-gray-50 border-gray-200'
+                ? 'bg-slate-700/30 border-slate-600'
+                : 'bg-slate-50 border-slate-200'
             }`}
           >
             <AnimatedToggle

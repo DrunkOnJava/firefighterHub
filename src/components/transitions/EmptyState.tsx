@@ -84,9 +84,9 @@ export function EmptyState({
 
     switch (variant) {
       case 'no-data':
-        return <Inbox {...iconProps} className={`${iconProps.className} text-gray-400`} />;
+        return <Inbox {...iconProps} className={`${iconProps.className} text-slate-400`} />;
       case 'search':
-        return <Search {...iconProps} className={`${iconProps.className} text-gray-400`} />;
+        return <Search {...iconProps} className={`${iconProps.className} text-slate-400`} />;
       case 'error':
         return <AlertCircle {...iconProps} className={`${iconProps.className} text-red-500`} />;
       case 'success':
@@ -96,9 +96,9 @@ export function EmptyState({
       case 'unauthorized':
         return <AlertCircle {...iconProps} className={`${iconProps.className} text-yellow-500`} />;
       case 'not-found':
-        return <FileQuestion {...iconProps} className={`${iconProps.className} text-gray-400`} />;
+        return <FileQuestion {...iconProps} className={`${iconProps.className} text-slate-400`} />;
       default:
-        return <Users {...iconProps} className={`${iconProps.className} text-gray-400`} />;
+        return <Users {...iconProps} className={`${iconProps.className} text-slate-400`} />;
     }
   };
 
@@ -128,7 +128,7 @@ export function EmptyState({
       <h3
         className={`
           text-xl font-semibold mb-2
-          ${isDarkMode ? 'text-white' : 'text-gray-900'}
+          ${isDarkMode ? 'text-white' : 'text-slate-900'}
           ${!prefersReducedMotion ? 'animate-fade-in' : ''}
         `}
         style={{ animationDelay: '100ms' }}
@@ -141,7 +141,7 @@ export function EmptyState({
         <p
           className={`
             text-sm max-w-sm mb-6
-            ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}
+            ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}
             ${!prefersReducedMotion ? 'animate-fade-in' : ''}
           `}
           style={{ animationDelay: '200ms' }}
@@ -168,8 +168,8 @@ export function EmptyState({
                 ${
                   primaryAction.variant === 'secondary'
                     ? isDarkMode
-                      ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                      : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                      ? 'bg-slate-700 hover:bg-slate-600 text-white'
+                      : 'bg-gray-200 hover:bg-gray-300 text-slate-900'
                     : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white'
                 }
                 ${!prefersReducedMotion ? 'transition-all duration-150 active:scale-95' : ''}
@@ -188,8 +188,8 @@ export function EmptyState({
                 min-h-[44px]
                 ${
                   isDarkMode
-                    ? 'bg-transparent border-2 border-gray-600 hover:border-gray-500 text-gray-300'
-                    : 'bg-transparent border-2 border-gray-300 hover:border-gray-400 text-gray-700'
+                    ? 'bg-transparent border-2 border-slate-600 hover:border-gray-500 text-slate-300'
+                    : 'bg-transparent border-2 border-slate-300 hover:border-gray-400 text-slate-700'
                 }
                 ${!prefersReducedMotion ? 'transition-all duration-150 active:scale-95' : ''}
                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
@@ -220,7 +220,7 @@ export function EmptyStateCard({
   return (
     <div
       className={`
-        ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+        ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}
         border-2 rounded-xl p-8
         ${cardClassName}
       `}

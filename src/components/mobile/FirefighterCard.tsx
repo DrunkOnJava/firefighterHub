@@ -200,7 +200,7 @@ export function FirefighterCard({
                 firefighter.apparatus_ambulance) && (
                 <div className="flex items-center gap-1">
                   <TruckIcon size={14} className="flex-shrink-0" />
-                  <span className="truncate">
+                  <span className="whitespace-nowrap">
                     {firefighter.apparatus_engine
                       ? 'Engine'
                       : firefighter.apparatus_truck

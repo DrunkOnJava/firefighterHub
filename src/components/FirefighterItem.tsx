@@ -8,9 +8,10 @@ import {
   UserX,
 } from "lucide-react";
 import { Firefighter, Shift } from "../lib/supabase";
-import { getTheme } from "../utils/theme";
 import { ShiftBadge } from "./ShiftSelector";
-import { gridUtilities } from "../styles";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface FirefighterItemProps {
   firefighter: Firefighter;
@@ -48,8 +49,6 @@ export function FirefighterItem({
   isAdminMode = false,
   isDarkMode = true,
 }: FirefighterItemProps) {
-  const theme = getTheme(isDarkMode);
-
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "No holds yet";
     const date = new Date(dateString);
@@ -61,8 +60,16 @@ export function FirefighterItem({
     });
   };
 
+  const getCardClasses = () => {
+    if (isDragging) return "opacity-50 scale-95";
+    if (isDragOver) return "ring-2 ring-primary scale-105";
+    if (!firefighter.is_available) return "opacity-60";
+    if (isNextInRotation) return "ring-2 ring-amber-500";
+    return "";
+  };
+
   return (
-    <div
+    <Card
       draggable={true}
       onDragStart={(e) => onDragStart?.(e, firefighter.id)}
       onDragOver={(e) => {
@@ -74,50 +81,36 @@ export function FirefighterItem({
         onDrop?.(e, firefighter.id);
       }}
       onDragEnd={onDragEnd}
-      className={`relative rounded-xl shadow-lg transition-all hover:shadow-xl cursor-move ${
-        isDragging
-          ? theme.firefighterItem.dragging
-          : isDragOver
-          ? theme.firefighterItem.dragOver
-          : !firefighter.is_available
-          ? theme.firefighterItem.unavailable
-          : isNextInRotation
-          ? theme.firefighterItem.nextInRotation
-          : theme.firefighterItem.available
-      }`}
+      className={`relative cursor-move transition-all hover:shadow-xl ${getCardClasses()}`}
     >
       {isNextInRotation && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg z-10 bg-amber-500 text-gray-900 border-2 border-black shadow-black/50">
-          <Star size={14} fill="currentColor" />
+        <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-900 font-bold shadow-lg z-10 flex items-center gap-1.5">
+          <Star className="h-3 w-3" fill="currentColor" />
           NEXT UP
-        </div>
+        </Badge>
       )}
 
-      <div className="p-5">
+      <CardContent className="p-5">
         <div className="flex items-start justify-between mb-4">
           {isAdminMode && (
             <div className="flex items-center gap-2 mr-2">
-              <div
-                className={`cursor-grab active:cursor-grabbing ${theme.firefighterItem.dragHandle}`}
-              >
-                <GripVertical size={20} />
+              <div className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground">
+                <GripVertical className="h-5 w-5" />
               </div>
             </div>
           )}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <h3
-                className={`text-xl font-bold truncate ${theme.firefighterItem.title}`}
+                className="text-xl font-bold whitespace-nowrap"
                 title={firefighter.name}
               >
                 {firefighter.name}
               </h3>
               {!firefighter.is_available && (
-                <span
-                  className={`px-2 py-1 rounded-md text-xs font-bold uppercase ${theme.firefighterItem.outOfRotationBadge}`}
-                >
-                  Out of Rotation
-                </span>
+                <Badge variant="secondary" className="font-bold">
+                  OUT OF ROTATION
+                </Badge>
               )}
             </div>
 
@@ -125,54 +118,42 @@ export function FirefighterItem({
               <div className="flex gap-2 flex-wrap">
                 <ShiftBadge shift={firefighter.shift as Shift} />
                 {firefighter.fire_station && (
-                  <div
-                    className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md ${theme.firefighterItem.stationBadge}`}
-                  >
+                  <Badge variant="outline" className="gap-1.5">
                     <span className="text-xs font-semibold">
                       Station #{firefighter.fire_station}
                     </span>
-                  </div>
+                  </Badge>
                 )}
-                <div
-                  className={`flex items-center gap-1.5 px-3 py-1.5 border rounded-md ${theme.firefighterItem.lastHoldBadge}`}
-                >
+                <Badge variant="outline" className="gap-1.5">
                   <span className="text-xs font-medium">Last Hold:</span>
                   <span className="text-xs font-semibold">
                     {formatDate(firefighter.last_hold_date)}
                   </span>
-                </div>
+                </Badge>
               </div>
 
               {(firefighter.is_fto ||
                 firefighter.is_bls ||
                 firefighter.is_als) && (
                 <div>
-                  <span
-                    className={`text-xs font-semibold mb-1.5 block ${theme.firefighterItem.certificationLabel}`}
-                  >
+                  <span className="text-xs font-semibold mb-1.5 block text-muted-foreground">
                     Certifications & Roles:
                   </span>
                   <div className="flex gap-2 flex-wrap">
                     {firefighter.is_fto && (
-                      <div
-                        className={`flex items-center gap-1.5 px-2.5 py-1 border rounded-md ${theme.firefighterItem.ftoBadge}`}
-                      >
-                        <span className="text-xs font-bold">FTO</span>
-                      </div>
+                      <Badge variant="secondary" className="font-bold">
+                        FTO
+                      </Badge>
                     )}
                     {firefighter.is_bls && (
-                      <div
-                        className={`flex items-center gap-1.5 px-2.5 py-1 border rounded-md ${theme.firefighterItem.blsBadge}`}
-                      >
-                        <span className="text-xs font-bold">BLS</span>
-                      </div>
+                      <Badge variant="secondary" className="font-bold">
+                        BLS
+                      </Badge>
                     )}
                     {firefighter.is_als && (
-                      <div
-                        className={`flex items-center gap-1.5 px-2.5 py-1 border rounded-md ${theme.firefighterItem.alsBadge}`}
-                      >
-                        <span className="text-xs font-bold">ALS</span>
-                      </div>
+                      <Badge variant="secondary" className="font-bold">
+                        ALS
+                      </Badge>
                     )}
                   </div>
                 </div>
@@ -180,18 +161,12 @@ export function FirefighterItem({
 
               {firefighter.certification_level && (
                 <div>
-                  <span
-                    className={`text-xs font-semibold mb-1.5 block ${theme.firefighterItem.certificationLabel}`}
-                  >
+                  <span className="text-xs font-semibold mb-1.5 block text-muted-foreground">
                     Medical Certification:
                   </span>
-                  <div
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 border rounded-md ${theme.firefighterItem.medicalCertBadge}`}
-                  >
-                    <span className="text-xs font-semibold">
-                      {firefighter.certification_level}
-                    </span>
-                  </div>
+                  <Badge variant="outline" className="font-semibold">
+                    {firefighter.certification_level}
+                  </Badge>
                 </div>
               )}
 
@@ -204,67 +179,33 @@ export function FirefighterItem({
                 firefighter.apparatus_utv ||
                 firefighter.apparatus_rescue_squad) && (
                 <div>
-                  <span
-                    className={`text-xs font-semibold mb-1.5 block ${theme.firefighterItem.certificationLabel}`}
-                  >
+                  <span className="text-xs font-semibold mb-1.5 block text-muted-foreground">
                     Apparatus Clearances:
                   </span>
                   <div className="flex gap-2 flex-wrap">
                     {firefighter.apparatus_ambulance && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        Ambulance
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Ambulance</Badge>
                     )}
                     {firefighter.apparatus_brush_truck && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        Brush Truck
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Brush Truck</Badge>
                     )}
                     {firefighter.apparatus_engine && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        Engine
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Engine</Badge>
                     )}
                     {firefighter.apparatus_tanker && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        Tanker
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Tanker</Badge>
                     )}
                     {firefighter.apparatus_truck && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        Truck
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Truck</Badge>
                     )}
                     {firefighter.apparatus_boat && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        Boat
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Boat</Badge>
                     )}
                     {firefighter.apparatus_utv && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.apparatusBadge}`}
-                      >
-                        UTV
-                      </span>
+                      <Badge variant="outline" className="font-semibold">UTV</Badge>
                     )}
                     {firefighter.apparatus_rescue_squad && (
-                      <span
-                        className={`px-2.5 py-1 border rounded-md text-xs font-semibold ${theme.firefighterItem.rescueSquadBadge}`}
-                      >
-                        Rescue Squad
-                      </span>
+                      <Badge variant="outline" className="font-semibold">Rescue Squad</Badge>
                     )}
                   </div>
                 </div>
@@ -273,67 +214,69 @@ export function FirefighterItem({
           </div>
 
           {isAdminMode && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => onDelete(firefighter.id)}
-              className={`p-2 rounded-lg transition-colors group focus-ring ${theme.firefighterItem.deleteButton}`}
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
               aria-label={`Remove ${firefighter.name} from roster`}
             >
-              <Trash2 className={theme.firefighterItem.deleteIcon} size={20} />
-            </button>
+              <Trash2 className="h-5 w-5" />
+            </Button>
           )}
         </div>
 
         {isAdminMode && (
           <>
-            <div className={gridUtilities.form.grid2Col}>
-              <button
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                variant="outline"
                 onClick={() => onDeactivate(firefighter.id)}
-                className={`py-3 px-4 rounded-lg font-semibold transition-all border flex items-center justify-center gap-2 focus-ring ${theme.firefighterItem.actionButton}`}
+                className="gap-2"
                 aria-label={`Deactivate ${firefighter.name}`}
               >
-                <UserX size={18} />
+                <UserX className="h-4 w-4" />
                 Deactivate
-              </button>
+              </Button>
 
-              <button
+              <Button
+                variant="outline"
                 onClick={() => onTransferShift(firefighter.id)}
-                className={`py-3 px-4 rounded-lg font-semibold transition-all border flex items-center justify-center gap-2 focus-ring ${theme.firefighterItem.actionButton}`}
+                className="gap-2"
                 aria-label={`Transfer ${firefighter.name} to different shift`}
               >
-                <ArrowRightLeft size={18} />
+                <ArrowRightLeft className="h-4 w-4" />
                 Transfer Shift
-              </button>
+              </Button>
             </div>
 
             {firefighter.is_available && (
-              <button
+              <Button
+                variant="default"
                 onClick={() => onCompleteHold(firefighter.id)}
-                className={`w-full mt-3 py-3 px-4 rounded-lg font-semibold transition-all text-white shadow-lg flex items-center justify-center gap-2 focus-ring ${theme.firefighterItem.completeHoldButton}`}
+                className="w-full mt-3 gap-2 bg-emerald-600 hover:bg-emerald-700"
                 aria-label={`Complete hold for ${firefighter.name}`}
               >
-                <CheckCircle size={18} />
+                <CheckCircle className="h-4 w-4" />
                 Finish Hold & Move to End
-              </button>
+              </Button>
             )}
           </>
         )}
 
         {/* Volunteer Hold Button - Available to ALL users */}
         {firefighter.is_available && onVolunteerHold && (
-          <button
+          <Button
+            variant="outline"
             onClick={() => onVolunteerHold(firefighter.id)}
-            className={`w-full mt-3 py-3 px-4 rounded-lg font-semibold transition-all border-2 flex items-center justify-center gap-2 focus-ring ${
-              isDarkMode
-                ? 'bg-green-900/30 border-green-500 text-green-400 hover:bg-green-900/50'
-                : 'bg-green-50 border-green-600 text-green-700 hover:bg-green-100'
-            }`}
+            className="w-full mt-3 gap-2 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-950"
             aria-label={`Volunteer to take hold for ${firefighter.name}`}
           >
-            <HandHeart size={18} />
+            <HandHeart className="h-4 w-4" />
             I'll Take This Hold
-          </button>
+          </Button>
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

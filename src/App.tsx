@@ -7,6 +7,7 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { useDevice } from './hooks/useDevice';
 import { useAnnounce } from './hooks/useAnnounce';
 import { Firefighter, Shift } from './lib/supabase';
+import { Toaster } from '@/components/ui/sonner';
 
 // Header component (always visible)
 import { Header } from './components/Header';
@@ -15,14 +16,13 @@ import { BottomNav } from './components/mobile/BottomNav';
 
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
-import { NextUpBarV2 } from './components/NextUpBarV2';
 import { FloatingActionButton } from './components/Common/FloatingActionButton';
 
 // Development tools (only in dev mode)
 import { GridOverlay } from './components/GridOverlay';
 
 // Lazy-loaded components (code splitting for performance)
-const BigCalendar = lazy(() => import('./components/calendar/BigCalendar').then(m => ({ default: m.BigCalendar })));
+const MainCalendar = lazy(() => import('./components/calendar/MainCalendar').then(m => ({ default: m.MainCalendar })));
 const HelpModal = lazy(() => import('./components/HelpModal').then(m => ({ default: m.HelpModal })));
 const ActivityLogModal = lazy(() => import('./components/ActivityLogModal').then(m => ({ default: m.ActivityLogModal })));
 const CompleteHoldModal = lazy(() => import('./components/CompleteHoldModal').then(m => ({ default: m.CompleteHoldModal })));
@@ -106,11 +106,8 @@ function App() {
   } = useFirefighters(showToast, currentShift);
 
   const {
-    scheduledHolds = [],
     loading: holdsLoading,
-    scheduleHold,
-    removeScheduledHold,
-    markHoldCompleted,
+    scheduledHolds,
   } = useScheduledHolds(showToast, currentShift);
 
   // Battalion Chief access - authenticated users with admin role
@@ -211,34 +208,21 @@ function App() {
 
       {/* Main Layout: Calendar + Roster */}
       <main id="main-content" tabIndex={-1} className="layout">
-        {/* Calendar Section with Next Up Bar */}
+        {/* Calendar Section */}
         <section className={`calendar card flex flex-col ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}`}>
-          {/* Next Up Bar V2 - Modern redesign with larger cards */}
-          <NextUpBarV2
-            firefighters={allFirefighters}
-            isDarkMode={isDarkMode}
-            onFirefighterClick={(ff) => setSelectedFirefighterFilter(ff?.id || null)}
-            selectedFirefighterId={selectedFirefighterFilter}
-          />
-          
           <Suspense fallback={
             <div className={`flex items-center justify-center h-96 ${
-              isDarkMode ? 'text-slate-400' : 'text-gray-500'
+              isDarkMode ? 'text-slate-400' : 'text-slate-500'
             }`}>
               Loading calendar...
             </div>
           }>
-            <BigCalendar
-              firefighters={firefighters}
-              scheduledHolds={scheduledHolds}
-              onScheduleHold={scheduleHold}
-              onRemoveHold={removeScheduledHold}
-              onMarkCompleted={markHoldCompleted}
-              onSkipFirefighter={moveToBottomOfRotation}
+            <MainCalendar
               loading={holdsLoading}
-              isAdminMode={isAdminMode}
               isDarkMode={isDarkMode}
-              currentShift={currentShift}
+              scheduledHolds={scheduledHolds}
+              firefighters={allFirefighters}
+              onFirefighterClick={(id) => setSelectedFirefighterFilter(id)}
               selectedFirefighterId={selectedFirefighterFilter}
             />
           </Suspense>
@@ -398,6 +382,9 @@ function App() {
       
       {/* Vercel Analytics */}
       <Analytics />
+      
+      {/* Toast Notifications */}
+      <Toaster />
     </>
   );
 }

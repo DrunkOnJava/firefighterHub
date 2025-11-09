@@ -9,7 +9,8 @@ import {
   Sun,
 } from "lucide-react";
 import { Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   ConnectionStatusDot,
   ConnectionStatusIndicator,
@@ -47,67 +48,36 @@ export function Header({
 }: HeaderProps) {
   return (
     <header
-      className={`
-        border-b-2 backdrop-blur-md sticky top-0
-        ${tokens.zIndex.sticky}
-        ${tokens.shadows.xl}
-        ${
-          isDarkMode
-            ? `${colors.structural.border.emphasis} bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950`
-            : "border-slate-300 bg-gradient-to-r from-white via-gray-50 to-white"
-        }
-      `}
+      className="h-16 sticky top-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50"
     >
-      <div className={`px-4 sm:px-6 py-3 flex items-center justify-between w-full gap-4`}>
+      <div className="px-4 sm:px-6 h-full flex items-center justify-between gap-6">
         {/* Logo & Title - LEFT SIDE */}
-        <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-shrink leading-tight">
-            <div className="flex-shrink-0 relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+        <div className="flex items-center gap-4 flex-shrink-0">
+            <div className="flex-shrink-0">
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-12 h-12 sm:w-14 sm:h-14 relative z-10 drop-shadow-xl"
+                className="w-10 h-10"
               />
             </div>
-            <div className="min-w-0">
-              <h1
-                className={`
-                  text-xl sm:text-2xl lg:text-3xl font-black truncate
-                  bg-gradient-to-r from-orange-500 via-red-600 to-orange-600 bg-clip-text text-transparent
-                  drop-shadow-sm
-                `}
-              >
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-bold whitespace-nowrap">
                 FirefighterHub
               </h1>
-              <p
-                className={`
-                  text-xs sm:text-sm font-semibold
-                  mt-0.5 hidden sm:block
-                  ${
-                    isDarkMode
-                      ? 'text-slate-400'
-                      : "text-slate-600"
-                  }
-                `}
-              >
+              <p className="text-xs text-muted-foreground whitespace-nowrap">
                 Hold Rotation Manager
               </p>
             </div>
           </div>
 
           {/* Right-aligned Navigation Actions - RIGHT SIDE */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             {/* Shift Selector + Action Buttons (Desktop) */}
-            <div className="hidden sm:flex items-center gap-2 lg:gap-3">
-              <div className={`flex items-center gap-2 pr-3 mr-2 border-r-2 ${
-                isDarkMode ? "border-slate-700/50" : "border-slate-300"
-              }`}>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-xs font-bold hidden lg:inline uppercase tracking-wider ${
-                      isDarkMode ? "text-slate-500" : "text-slate-600"
-                    }`}
-                  >
+            <div className="hidden sm:flex items-center gap-3 lg:gap-4">
+              <div className="flex items-center gap-3 pr-6 mr-4">
+                <Separator orientation="vertical" className="h-8 mr-4" />
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-semibold hidden lg:inline text-muted-foreground">
                     Shift:
                   </span>
                   <ShiftSelector
@@ -117,98 +87,97 @@ export function Header({
                 </div>
               </div>
 
-              {/* Action Buttons - Modern Icon Pills */}
-              <button
-                onClick={() => window.print()}
-                className={`px-3 py-2 rounded-lg transition-all focus-ring flex items-center gap-2 font-semibold text-sm border-2 ${
-                  isDarkMode
-                    ? "bg-slate-800/80 hover:bg-slate-700 border-slate-700/50 hover:border-slate-600 text-slate-300 hover:text-white shadow-lg hover:shadow-xl"
-                    : "bg-white hover:bg-slate-50 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 shadow-md hover:shadow-lg"
-                }`}
-                aria-label="Print calendar"
-              >
-                <Printer size={16} />
-                <span className="hidden lg:inline">Print</span>
-              </button>
-              <button
-                onClick={onShowActivityLog}
-                className={`px-3 py-2 ${tokens.touchTarget.min} rounded-lg transition-all focus-ring flex items-center gap-2 font-semibold text-sm border-2 ${
-                  isDarkMode
-                    ? "bg-slate-800/80 hover:bg-slate-700 border-slate-700/50 hover:border-slate-600 text-slate-300 hover:text-white shadow-lg hover:shadow-xl"
-                    : "bg-white hover:bg-slate-50 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 shadow-md hover:shadow-lg"
-                }`}
-                aria-label="View activity history"
-              >
-                <Clock size={16} />
-                <span className="hidden lg:inline">Activity</span>
-              </button>
-              <button
+              {/* Secondary Action Buttons Group */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="default"
+                  onClick={() => window.print()}
+                  className="gap-2"
+                  title="Print calendar"
+                >
+                  <Printer className="h-4 w-4" />
+                  <span className="hidden lg:inline">Print</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="default"
+                  onClick={onShowActivityLog}
+                  className="gap-2"
+                  title="View activity history"
+                >
+                  <Clock className="h-4 w-4" />
+                  <span className="hidden lg:inline">Activity</span>
+                </Button>
+              </div>
+
+              {/* Divider */}
+              <Separator orientation="vertical" className="h-8" />
+
+              {/* Primary Action Buttons Group */}
+              <div className="flex items-center gap-2">
+              <Button
+                variant="default"
+                size="default"
                 onClick={onToggleDarkMode}
-                className={`px-3 py-2 ${tokens.touchTarget.min} rounded-lg transition-all focus-ring flex items-center gap-2 font-semibold text-sm border-2 ${
-                  isDarkMode
-                    ? "bg-gradient-to-br from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 border-amber-500/30 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40"
-                    : "bg-gradient-to-br from-indigo-600 to-blue-700 hover:from-indigo-500 hover:to-blue-600 border-indigo-600/30 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40"
-                }`}
-                aria-label={
-                  isDarkMode ? "Switch to light mode" : "Switch to dark mode"
-                }
+                className="gap-2"
+                title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+                {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 <span className="hidden lg:inline">
                   {isDarkMode ? "Light" : "Dark"}
                 </span>
-              </button>
+              </Button>
               {isAdminMode ? (
-                <button
+                <Button
+                  variant="destructive"
+                  size="default"
                   onClick={onLogout}
-                  className={`px-3 py-2 ${tokens.touchTarget.min} rounded-lg transition-all focus-ring flex items-center gap-2 font-bold text-sm border-2 bg-gradient-to-br from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 border-orange-500/30 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50`}
-                  aria-label="Leave Battalion Chief Mode"
+                  className="gap-2 font-bold"
                   title="Leave Battalion Chief Mode"
                 >
-                  <LogOut size={16} />
-                  <span className="hidden xl:inline leading-tight">BC Mode</span>
-                </button>
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden xl:inline">BC Mode</span>
+                </Button>
               ) : (
-                <button
+                <Button
+                  variant="outline"
+                  size="default"
                   onClick={onShowLogin}
-                  className={`px-3 py-2 ${tokens.touchTarget.min} rounded-lg transition-all focus-ring flex items-center gap-2 font-bold text-sm border-2 ${
-                    isDarkMode
-                      ? "bg-slate-800/80 hover:bg-gradient-to-br hover:from-orange-500 hover:to-red-600 border-slate-700/50 hover:border-orange-500/30 text-orange-400 hover:text-white shadow-lg hover:shadow-xl hover:shadow-orange-500/30"
-                      : "bg-white hover:bg-gradient-to-br hover:from-orange-500 hover:to-red-600 border-slate-300 hover:border-orange-500/30 text-orange-600 hover:text-white shadow-md hover:shadow-lg hover:shadow-orange-500/30"
-                  }`}
-                  aria-label="Enter Battalion Chief Mode"
+                  className="gap-2 font-semibold text-destructive hover:text-destructive-foreground hover:bg-destructive"
                   title="Enter Battalion Chief Mode"
                 >
-                  <LogIn size={16} />
-                  <span className="hidden xl:inline leading-tight">BC Mode</span>
-                </button>
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden xl:inline">BC Mode</span>
+                </Button>
               )}
-              <button
+              </div>
+
+              {/* Divider */}
+              <Separator orientation="vertical" className="h-8" />
+
+              <Button
+                variant="outline"
+                size="default"
                 onClick={onShowHelp}
-                className={`px-3 py-2 ${tokens.touchTarget.min} rounded-lg transition-all focus-ring flex items-center gap-2 font-semibold text-sm border-2 ${
-                  isDarkMode
-                    ? "bg-slate-800/80 hover:bg-slate-700 border-slate-700/50 hover:border-slate-600 text-slate-300 hover:text-white shadow-lg hover:shadow-xl"
-                    : "bg-white hover:bg-slate-50 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 shadow-md hover:shadow-lg"
-                }`}
-                aria-label="Show help"
+                className="gap-2"
+                title="Show help and keyboard shortcuts"
               >
-                <HelpCircle size={16} />
+                <HelpCircle className="h-4 w-4" />
                 <span className="hidden lg:inline">Help</span>
-              </button>
+              </Button>
             </div>
 
             {/* Mobile Menu Button */}
-            <button
+            <Button
+              variant="outline"
+              size="icon"
+              className="sm:hidden"
               onClick={onOpenMobileMenu}
-              className={`sm:hidden p-2 ${tokens.touchTarget.min} rounded-lg transition-colors focus-ring ${
-                isDarkMode
-                  ? "hover:bg-gray-800 text-gray-300"
-                  : "hover:bg-slate-200 text-slate-600"
-              }`}
               aria-label="Open menu"
             >
-              <Menu size={24} />
-            </button>
+              <Menu className="h-5 w-5" />
+            </Button>
           </div>
 
         {/* Mobile Add Button */}

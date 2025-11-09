@@ -104,7 +104,7 @@ export function HoldList({
                     className={`${visualHeadings.subtitleMedium} ${
                       isDarkMode
                         ? colors.structural.text.primary
-                        : "text-gray-900"
+                        : "text-slate-900"
                     }`}
                   >
                     {hold.firefighter_name}
@@ -127,7 +127,7 @@ export function HoldList({
                       className={`${tokens.typography.body.small} ${
                         isDarkMode
                           ? colors.structural.text.tertiary
-                          : "text-gray-500"
+                          : "text-slate-500"
                       } mt-1 flex items-center gap-1`}
                     >
                       <Clock className={tokens.icons.xs} />
@@ -178,7 +178,7 @@ export function HoldList({
               {isAdminMode && (
                 <div
                   className={`flex gap-2 pt-3 border-t ${
-                    isDarkMode ? "border-gray-700" : "border-gray-200"
+                    isDarkMode ? "border-slate-700" : "border-slate-200"
                   }`}
                 >
                   {/* Complete Button: For 'scheduled' holds */}

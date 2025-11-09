@@ -123,8 +123,8 @@ export const colorTokens = {
   text: {
     dark: {
       primary: 'text-gray-100',      // #f3f4f6 - 15.2:1 contrast
-      secondary: 'text-gray-400',    // #9ca3af - 6.8:1 contrast
-      tertiary: 'text-gray-500',     // #6b7280 - 4.9:1 contrast
+      secondary: 'text-slate-400',    // #9ca3af - 6.8:1 contrast
+      tertiary: 'text-slate-500',     // #6b7280 - 4.9:1 contrast
       muted: 'text-[#a3b2c8]',       // 5.2:1 contrast (WCAG AA compliant)
     },
     light: {
@@ -147,8 +147,8 @@ export const colorTokens = {
     },
     light: {
       primary: 'bg-white',
-      secondary: 'bg-gray-50',
-      tertiary: 'bg-gray-100',
+      secondary: 'bg-slate-50',
+      tertiary: 'bg-slate-100',
       hover: 'hover:bg-gray-200',
     },
   },
@@ -163,8 +163,8 @@ export const colorTokens = {
       strong: 'border-slate-600',
     },
     light: {
-      default: 'border-gray-300',
-      subtle: 'border-gray-200',
+      default: 'border-slate-300',
+      subtle: 'border-slate-200',
       strong: 'border-gray-400',
     },
   },

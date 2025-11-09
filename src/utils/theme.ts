@@ -157,20 +157,20 @@ export function getTheme(isDarkMode: boolean): Theme {
       cardBorder: "border-slate-900",
 
       textPrimary: "text-gray-50",
-      textSecondary: "text-gray-300",
-      textTertiary: "text-gray-400",
+      textSecondary: "text-slate-300",
+      textTertiary: "text-slate-400",
       textMuted: "text-[#a3b2c8]", // WCAG AA: 5.2:1 contrast on slate-900 (was gray-600 3.5:1)
 
       button: {
         primary:
           "bg-red-700 hover:bg-red-600 text-white shadow-lg shadow-red-900/50",
-        secondary: "bg-gray-700 hover:bg-gray-600 text-gray-100",
+        secondary: "bg-slate-700 hover:bg-slate-600 text-gray-100",
         danger: "bg-red-700 hover:bg-red-600 text-white",
       },
 
       input: {
-        background: "bg-gray-900",
-        border: "border-gray-600",
+        background: "bg-slate-900",
+        border: "border-slate-600",
         text: "text-gray-100",
         placeholder: "placeholder-gray-500",
       },
@@ -185,7 +185,7 @@ export function getTheme(isDarkMode: boolean): Theme {
         success: "bg-emerald-950/80 text-emerald-300 border-emerald-800",
         warning: "bg-amber-950/80 text-amber-300 border-amber-800",
         error: "bg-red-950/80 text-red-300 border-red-800",
-        info: "bg-gray-800/80 text-gray-300 border-gray-700",
+        info: "bg-slate-800/80 text-slate-300 border-slate-700",
       },
 
       firefighterItem: {
@@ -196,10 +196,10 @@ export function getTheme(isDarkMode: boolean): Theme {
         nextInRotation:
           "bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-2 border-blue-500 shadow-blue-500/20",
         nextInRotationBadge:
-          "bg-amber-500 text-gray-900 border-2 border-black shadow-lg shadow-black/50",
+          "bg-amber-500 text-slate-900 border-2 border-black shadow-lg shadow-black/50",
         dragging: "opacity-50 scale-95",
         dragOver: "border-4 border-blue-400 scale-105",
-        dragHandle: "text-gray-500 hover:text-gray-400",
+        dragHandle: "text-slate-500 hover:text-slate-400",
         title: "text-white",
         outOfRotationBadge:
           "bg-red-600/20 text-red-400 border border-red-600/40",
@@ -207,7 +207,7 @@ export function getTheme(isDarkMode: boolean): Theme {
           "bg-sky-700 text-white border-2 border-sky-900 shadow-sm shadow-sky-900/50",
         lastHoldBadge:
           "bg-slate-700 text-white border-2 border-slate-900 shadow-sm",
-        certificationLabel: "text-gray-300",
+        certificationLabel: "text-slate-300",
         ftoBadge:
           "bg-amber-600 text-white border-2 border-amber-800 shadow-sm shadow-amber-900/50",
         blsBadge:
@@ -223,7 +223,7 @@ export function getTheme(isDarkMode: boolean): Theme {
         deleteButton: "hover:bg-red-900/40",
         deleteIcon: "text-red-400 group-hover:text-red-300",
         actionButton:
-          "bg-gray-700 hover:bg-gray-600 text-white border-gray-600 hover:border-gray-500",
+          "bg-slate-700 hover:bg-slate-600 text-white border-slate-600 hover:border-gray-500",
         completeHoldButton:
           "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600",
       },
@@ -237,52 +237,52 @@ export function getTheme(isDarkMode: boolean): Theme {
         dayCellToday: "bg-blue-900/30 border-blue-400",
         dayCellOtherMonth: "bg-slate-875",
         dayCellText: "text-gray-100",
-        dayCellTextOtherMonth: "text-gray-500",
+        dayCellTextOtherMonth: "text-slate-500",
         holdBadge: "bg-red-900/60 text-red-200 border-red-700",
         holdBadgeCompleted: "bg-green-900/60 text-green-200 border-green-700",
       },
 
       roster: {
         // RosterSearchBar
-        searchInput: "bg-gray-800 border-gray-700 text-gray-100",
-        searchIcon: "text-gray-400",
-        searchClearHover: "hover:bg-gray-700",
-        searchHelperText: "text-gray-400",
+        searchInput: "bg-slate-800 border-slate-700 text-gray-100",
+        searchIcon: "text-slate-400",
+        searchClearHover: "hover:bg-slate-700",
+        searchHelperText: "text-slate-400",
 
         // RosterHeader
         filterButton:
-          "bg-gray-700 hover:bg-gray-600 text-gray-200 border-gray-600",
+          "bg-slate-700 hover:bg-slate-600 text-gray-200 border-slate-600",
         filterButtonActive:
           "bg-blue-700 hover:bg-blue-600 text-white border-blue-600",
         exportButton:
-          "bg-gray-700 hover:bg-gray-600 text-gray-100 border-gray-600",
+          "bg-slate-700 hover:bg-slate-600 text-gray-100 border-slate-600",
         headerGradient: "bg-gradient-to-r from-slate-950 to-slate-900",
         headerBorder: "border-slate-900",
         headerIconGradient: "bg-gradient-to-br from-blue-500 to-blue-600",
         headerTitle: "text-gray-100",
-        headerDescription: "text-gray-400",
+        headerDescription: "text-slate-400",
 
         // BulkActions
         bulkActionsBg: "bg-blue-900/20 border border-blue-800/50",
         bulkActionsBorder: "border-blue-800/50",
         bulkActionsHover: "hover:bg-blue-800/30",
         bulkActionButton:
-          "bg-gray-700 hover:bg-gray-600 text-gray-100 border-gray-600",
-        bulkSelectIcon: "text-gray-400",
+          "bg-slate-700 hover:bg-slate-600 text-gray-100 border-slate-600",
+        bulkSelectIcon: "text-slate-400",
         bulkSelectedCount: "text-blue-400",
 
         // ExportMenu
-        exportMenuBg: "bg-gray-800",
-        exportMenuBorder: "border-gray-700",
-        exportMenuItemHover: "hover:bg-gray-700 text-white",
+        exportMenuBg: "bg-slate-800",
+        exportMenuBorder: "border-slate-700",
+        exportMenuItemHover: "hover:bg-slate-700 text-white",
         exportMenuText: "text-white",
-        exportMenuItemBorder: "border-gray-700",
+        exportMenuItemBorder: "border-slate-700",
       },
 
       metricCard: {
         background: "bg-gradient-to-br from-slate-825 to-slate-850",
         border: "border-slate-900",
-        titleText: "text-gray-300",
+        titleText: "text-slate-300",
         valueText: "text-gray-50",
         icon: "text-blue-400",
       },
@@ -292,9 +292,9 @@ export function getTheme(isDarkMode: boolean): Theme {
         background: "bg-gradient-to-br from-slate-825 to-slate-850",
         border: "border-slate-900",
         title: "text-gray-100",
-        message: "text-gray-300",
+        message: "text-slate-300",
         confirmButton: "bg-red-700 hover:bg-red-600 text-white",
-        cancelButton: "bg-gray-700 hover:bg-gray-600 text-gray-100",
+        cancelButton: "bg-slate-700 hover:bg-slate-600 text-gray-100",
       },
     };
   }
@@ -303,30 +303,30 @@ export function getTheme(isDarkMode: boolean): Theme {
   return {
     appBackground: "bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200",
     cardBackground: "bg-white",
-    cardBorder: "border-gray-200",
+    cardBorder: "border-slate-200",
 
-    textPrimary: "text-gray-900",
-    textSecondary: "text-gray-700",
+    textPrimary: "text-slate-900",
+    textSecondary: "text-slate-700",
     textTertiary: "text-gray-600",
     textMuted: "text-[#64748b]", // WCAG AA: 4.7:1 contrast on white (was gray-500 3.8:1)
 
     button: {
       primary: "bg-red-600 hover:bg-red-700 text-white",
-      secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900",
+      secondary: "bg-slate-100 hover:bg-gray-200 text-slate-900",
       danger: "bg-red-600 hover:bg-red-700 text-white",
     },
 
     input: {
       background: "bg-white",
-      border: "border-gray-300",
-      text: "text-gray-900",
+      border: "border-slate-300",
+      text: "text-slate-900",
       placeholder: "placeholder-gray-400",
     },
 
     modal: {
       overlay: "bg-black/60",
       background: "bg-white",
-      border: "border-gray-200",
+      border: "border-slate-200",
     },
 
     badge: {
@@ -343,7 +343,7 @@ export function getTheme(isDarkMode: boolean): Theme {
       nextInRotation:
         "bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-400 shadow-blue-400/20",
       nextInRotationBadge:
-        "bg-amber-500 text-gray-900 border-2 border-black shadow-lg shadow-black/50",
+        "bg-amber-500 text-slate-900 border-2 border-black shadow-lg shadow-black/50",
       dragging: "opacity-50 scale-95",
       dragOver: "border-4 border-blue-400 scale-105",
       dragHandle: "text-slate-400 hover:text-slate-500",
@@ -373,30 +373,30 @@ export function getTheme(isDarkMode: boolean): Theme {
 
     calendar: {
       gridBackground: "bg-white",
-      headerBackground: "bg-gray-100",
-      headerText: "text-gray-700",
-      dayCell: "bg-white border-gray-300",
-      dayCellHover: "hover:bg-gray-50",
+      headerBackground: "bg-slate-100",
+      headerText: "text-slate-700",
+      dayCell: "bg-white border-slate-300",
+      dayCellHover: "hover:bg-slate-50",
       dayCellToday: "bg-blue-50 border-blue-400",
-      dayCellOtherMonth: "bg-gray-100",
-      dayCellText: "text-gray-900",
-      dayCellTextOtherMonth: "text-gray-400",
+      dayCellOtherMonth: "bg-slate-100",
+      dayCellText: "text-slate-900",
+      dayCellTextOtherMonth: "text-slate-400",
       holdBadge: "bg-red-100 text-red-700 border-red-400",
       holdBadgeCompleted: "bg-green-100 text-green-700 border-green-400",
     },
 
     roster: {
       // RosterSearchBar
-      searchInput: "bg-white border-gray-300 text-gray-900",
-      searchIcon: "text-gray-500",
+      searchInput: "bg-white border-slate-300 text-slate-900",
+      searchIcon: "text-slate-500",
       searchClearHover: "hover:bg-gray-200",
       searchHelperText: "text-gray-600",
 
       // RosterHeader
-      filterButton: "bg-white hover:bg-gray-100 text-gray-700 border-gray-300",
+      filterButton: "bg-white hover:bg-slate-100 text-slate-700 border-slate-300",
       filterButtonActive:
         "bg-blue-600 hover:bg-blue-700 text-white border-blue-600",
-      exportButton: "bg-white hover:bg-gray-100 text-gray-700 border-gray-300",
+      exportButton: "bg-white hover:bg-slate-100 text-slate-700 border-slate-300",
       headerGradient: "bg-gradient-to-r from-red-50 to-amber-50",
       headerBorder: "border-slate-300",
       headerIconGradient: "bg-gradient-to-br from-blue-600 to-blue-700",
@@ -408,7 +408,7 @@ export function getTheme(isDarkMode: boolean): Theme {
       bulkActionsBorder: "border-blue-200",
       bulkActionsHover: "hover:bg-blue-100",
       bulkActionButton:
-        "bg-white hover:bg-gray-100 text-gray-700 border-gray-300",
+        "bg-white hover:bg-slate-100 text-slate-700 border-slate-300",
       bulkSelectIcon: "text-gray-600",
       bulkSelectedCount: "text-blue-700",
 
@@ -422,20 +422,20 @@ export function getTheme(isDarkMode: boolean): Theme {
 
     metricCard: {
       background: "bg-white",
-      border: "border-gray-300",
+      border: "border-slate-300",
       titleText: "text-gray-600",
-      valueText: "text-gray-900",
+      valueText: "text-slate-900",
       icon: "text-blue-600",
     },
 
     confirmDialog: {
       overlay: "bg-black/50",
       background: "bg-white",
-      border: "border-gray-300",
-      title: "text-gray-900",
-      message: "text-gray-700",
+      border: "border-slate-300",
+      title: "text-slate-900",
+      message: "text-slate-700",
       confirmButton: "bg-red-600 hover:bg-red-700 text-white",
-      cancelButton: "bg-gray-200 hover:bg-gray-300 text-gray-900",
+      cancelButton: "bg-gray-200 hover:bg-gray-300 text-slate-900",
     },
   };
 }

@@ -122,7 +122,7 @@ export function SuccessOverlay({
     >
       <div
         className={`
-          bg-white dark:bg-gray-800
+          bg-white dark:bg-slate-800
           rounded-2xl p-8
           flex flex-col items-center gap-4
           shadow-2xl
@@ -133,7 +133,7 @@ export function SuccessOverlay({
         <SuccessAnimation size={100} />
         
         {message && (
-          <p className="text-xl font-semibold text-gray-900 dark:text-white">
+          <p className="text-xl font-semibold text-slate-900 dark:text-white">
             {message}
           </p>
         )}

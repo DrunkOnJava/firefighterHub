@@ -54,11 +54,11 @@ export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
               ${tokens.borders.radius.sm}
               ${item.colorClass || ''}
               ${item.borderClass || ''}
-              ${!item.colorClass && !item.borderClass ? (isDarkMode ? 'bg-gray-700 border border-gray-600' : 'bg-gray-200 border border-gray-300') : ''}
+              ${!item.colorClass && !item.borderClass ? (isDarkMode ? 'bg-slate-700 border border-slate-600' : 'bg-gray-200 border border-slate-300') : ''}
             `}
             aria-label={item.description}
           />
-          <span className={isDarkMode ? colors.structural.text.secondary : 'text-gray-700'}>
+          <span className={isDarkMode ? colors.structural.text.secondary : 'text-slate-700'}>
             {item.label}
           </span>
         </div>

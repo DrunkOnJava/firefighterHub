@@ -86,15 +86,15 @@ export function getSidebarTheme(isDarkMode: boolean): SidebarTheme {
         nextUp: {
           background: "bg-red-950/40 border-red-800",
           numberBadge:
-            "bg-amber-500 text-gray-900 border-2 border-black shadow-lg shadow-black/50",
+            "bg-amber-500 text-slate-900 border-2 border-black shadow-lg shadow-black/50",
           name: "text-slate-50",
           badge:
-            "bg-amber-500 text-gray-900 border-2 border-black shadow-lg shadow-black/50",
+            "bg-amber-500 text-slate-900 border-2 border-black shadow-lg shadow-black/50",
         },
         others: {
           background: "bg-slate-900/50 border-slate-700",
           numberBadge:
-            "bg-slate-700 text-slate-300 border-2 border-gray-700 shadow-sm",
+            "bg-slate-700 text-slate-300 border-2 border-slate-700 shadow-sm",
           name: "text-slate-300",
         },
       },
@@ -133,10 +133,10 @@ export function getSidebarTheme(isDarkMode: boolean): SidebarTheme {
       nextUp: {
         background: "bg-red-100 border-red-400",
         numberBadge:
-          "bg-amber-500 text-gray-900 border-2 border-black shadow-lg shadow-black/50",
+          "bg-amber-500 text-slate-900 border-2 border-black shadow-lg shadow-black/50",
         name: "text-slate-900",
         badge:
-          "bg-amber-500 text-gray-900 border-2 border-black shadow-lg shadow-black/50",
+          "bg-amber-500 text-slate-900 border-2 border-black shadow-lg shadow-black/50",
       },
       others: {
         background: "bg-slate-100 border-slate-300",

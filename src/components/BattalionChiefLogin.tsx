@@ -2,7 +2,7 @@ import { Lock, X, AlertCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { colors, tokens } from "../styles";
-import { visualHeadings } from "../styles/visualHeadings";
+import { visualHeading } from "../styles/visualHeadings";
 
 interface BattalionChiefLoginProps {
   isOpen: boolean;

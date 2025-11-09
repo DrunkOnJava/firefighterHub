@@ -20,7 +20,7 @@ export function LoadingButton({
 }: LoadingButtonProps) {
   const variantClasses = {
     primary: `${colors.semantic.primary.solid} ${colors.semantic.primary.hover} disabled:bg-blue-800 text-white`,
-    secondary: `${colors.components.button.secondary} disabled:bg-gray-800`,
+    secondary: `${colors.components.button.secondary} disabled:bg-slate-800`,
     danger: `${colors.semantic.error.solid} ${colors.semantic.error.hover} disabled:bg-red-800 text-white`,
     success: `${colors.semantic.success.solid} ${colors.semantic.success.hover} disabled:bg-green-800 text-white`
   };

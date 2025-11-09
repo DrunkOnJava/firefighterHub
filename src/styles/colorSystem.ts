@@ -45,10 +45,10 @@ export const colors = {
     /** Text colors */
     text: {
       primary: "text-gray-100", // Main text (high contrast)
-      secondary: "text-gray-400", // Secondary text (medium contrast)
-      tertiary: "text-gray-500", // Tertiary text (low contrast)
+      secondary: "text-slate-400", // Secondary text (medium contrast)
+      tertiary: "text-slate-500", // Tertiary text (low contrast)
       muted: "text-gray-600", // Very subtle text
-      surface: "text-gray-300", // Text on surface backgrounds
+      surface: "text-slate-300", // Text on surface backgrounds
     },
   },
 
@@ -194,7 +194,7 @@ export const colors = {
       success:
         "bg-gradient-to-br from-emerald-600 to-green-700 hover:from-emerald-500 hover:to-green-600 text-white shadow-lg shadow-emerald-900/50 transition-all duration-150",
       ghost:
-        "bg-transparent hover:bg-slate-700 text-gray-300 transition-all duration-150",
+        "bg-transparent hover:bg-slate-700 text-slate-300 transition-all duration-150",
       disabled: "bg-slate-800 text-gray-600 cursor-not-allowed opacity-50",
       shadow: "shadow-lg shadow-gray-900/50",
     },

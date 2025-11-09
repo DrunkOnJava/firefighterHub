@@ -98,9 +98,9 @@ export function AnimatedButton({
       border-2 border-orange-600
     `,
     secondary: `
-      bg-gray-700 hover:bg-gray-600
+      bg-slate-700 hover:bg-slate-600
       text-white
-      border-2 border-gray-600
+      border-2 border-slate-600
     `,
     danger: `
       bg-gradient-to-r from-red-500 to-red-600
@@ -110,9 +110,9 @@ export function AnimatedButton({
       border-2 border-red-600
     `,
     ghost: `
-      bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
-      text-gray-700 dark:text-gray-300
-      border-2 border-transparent hover:border-gray-300
+      bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800
+      text-slate-700 dark:text-slate-300
+      border-2 border-transparent hover:border-slate-300
     `,
   };
 

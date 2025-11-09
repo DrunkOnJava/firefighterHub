@@ -178,7 +178,7 @@ function App() {
   }
 
   return (
-    <>
+    <div className="h-screen flex flex-col bg-background">
       {/* Skip Navigation Link - WCAG 2.4.1 Bypass Blocks */}
       <a
         href="#main-content"
@@ -202,43 +202,70 @@ function App() {
         onToggleDarkMode={toggleDarkMode}
       />
 
-      {/* Main Layout: Calendar (left) + Roster (right) */}
+      {/* Main Layout: viewport-locked, no page scroll */}
       <main 
         id="main-content" 
         tabIndex={-1} 
-        className={`flex flex-col lg:flex-row gap-4 px-4 lg:px-6 py-4 lg:py-6 max-w-[1920px] mx-auto w-full ${
-          device.isMobile ? 'pb-20' : ''
-        }`}
+        className={`
+          flex-1
+          flex
+          flex-col lg:flex-row
+          gap-4
+          px-4 pb-4 pt-2
+          overflow-hidden
+          ${device.isMobile ? 'pb-20' : ''}
+        `}
       >
-        {/* Calendar Section - Takes remaining space */}
+        {/* Calendar Section - flex-1 to take remaining horizontal space */}
         <section 
-          className={`flex-1 flex flex-col rounded-xl border border-border bg-card shadow-lg overflow-hidden ${
-            device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''
-          }`}
+          id="calendar-view"
+          className={`
+            flex-1
+            flex flex-col
+            rounded-xl
+            border border-border
+            bg-card
+            shadow-lg
+            overflow-hidden
+            min-w-0
+            ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}
+          `}
         >
-          <Suspense fallback={
-            <div className="flex items-center justify-center h-96 text-muted-foreground">
-              Loading calendar...
-            </div>
-          }>
-            <MainCalendar
-              loading={holdsLoading}
-              scheduledHolds={scheduledHolds}
-              firefighters={allFirefighters}
-              onFirefighterClick={(id) => setSelectedFirefighterFilter(id)}
-              selectedFirefighterId={selectedFirefighterFilter}
-            />
-          </Suspense>
+          {/* Calendar shell: min-h-0 lets flexbox shrink it properly */}
+          <div className="calendar-shell flex-1 min-h-0 overflow-hidden">
+            <Suspense fallback={
+              <div className="flex items-center justify-center h-full text-muted-foreground">
+                Loading calendar...
+              </div>
+            }>
+              <MainCalendar
+                loading={holdsLoading}
+                scheduledHolds={scheduledHolds}
+                firefighters={allFirefighters}
+                onFirefighterClick={(id) => setSelectedFirefighterFilter(id)}
+                selectedFirefighterId={selectedFirefighterFilter}
+              />
+            </Suspense>
+          </div>
         </section>
         
-        {/* Roster Sidebar - Fixed width on desktop, full width on mobile */}
+        {/* Roster Sidebar - fixed width, no shrink */}
         <aside 
-          className={`w-full lg:w-[380px] xl:w-[420px] flex flex-col rounded-xl border border-border bg-card shadow-lg overflow-hidden ${
-            device.isMobile && mobileActiveTab !== 'home' ? 'hidden' : ''
-          }`}
-          style={{ 
-            paddingBottom: device.isMobile ? 'calc(80px + env(safe-area-inset-bottom, 0px))' : undefined 
-          }}
+          id="sidebar"
+          className={`
+            w-full
+            lg:w-[380px]
+            xl:w-[420px]
+            flex flex-col
+            rounded-xl
+            border border-border
+            bg-card
+            shadow-lg
+            overflow-hidden
+            flex-shrink-0
+            min-h-0
+            ${device.isMobile && mobileActiveTab !== 'home' ? 'hidden' : ''}
+          `}
         >
           {/* Interactive Firefighter List */}
           <FirefighterList
@@ -391,7 +418,7 @@ function App() {
       
       {/* Toast Notifications */}
       <Toaster />
-    </>
+    </div>
   );
 }
 

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Viewport-locked layout: no page scroll, app fits 100vh */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Kill global page scroll */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

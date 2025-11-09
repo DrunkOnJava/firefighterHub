@@ -1,79 +1,183 @@
 # FirefighterHub - Comprehensive TODO
 
-**Last Updated**: January 9, 2025
-**Project**: Mobile-First Optimization & Performance
+**Last Updated**: January 9, 2025 (Evening Session)
+**Project**: Legacy UI Cleanup & Viewport Lock Implementation
 **Target URL**: https://firefighter-hub.vercel.app/
-**Status**: ✅ shadcn Migration 100% COMPLETE - Focus on Performance
+**Status**: 🟡 CRITICAL CLEANUP IN PROGRESS - 6/9 Legacy Components Remaining
 
 ---
 
 ## 📊 Project Overview
 
-### ✅ COMPLETED: shadcn/ui Migration
-**Status**: 100% Complete (63/63 components)
+### 🔴 CRITICAL DISCOVERY: Legacy UI Cleanup Required
+
+**Deep Audit Findings** (January 9, 2025 - Evening):
+- **221 isDarkMode prop usages** found (should be 0 with dark: variants)
+- **9 legacy UI components** with hardcoded colors discovered
+- **29 inline style={{}}** objects need cleanup
+- **Previous "100% migration" claim was inaccurate**
+
+See `LEGACY_STYLING_AUDIT.md` for complete audit report.
+
+**Current Status**:
+- ✅ 3/9 legacy components migrated (Modal, AnimatedButton, AnimatedInput)
+- ⏳ 6/9 legacy components remaining
+- 📉 isDarkMode usage: 221 → 150 (-71, -32% reduction)
+
+---
+
+### ✅ COMPLETED: Viewport-Locked Layout
+**Status**: Applied to source code (eliminates page scroll)
 **Completion Date**: January 9, 2025
-**Impact**: 
-- Bundle Size: 290KB → 263KB (-27KB, -9.3%)
-- Code Removed: ~55KB (8 components + 10 style files)
-- Build Time: 2.4-2.5s (stable)
-- Zero legacy imports remaining
+**Impact**:
+- No more ephemeral DevTools fixes
+- App constrained to 100vh viewport
+- Proper flexbox hierarchy with min-h-0
+- Calendar + Sidebar fit perfectly in viewport
 
-See `SHADCN_MIGRATION_FINAL_REPORT.md` for complete details.
-
----
-
-### Current Priority: Performance & Mobile Optimization
-**Goal**: Achieve <150KB bundle size and optimize mobile experience
-**Status**: Core infrastructure complete, optimization ongoing
-
-- **Performance**: LCP 611ms ✅, CLS 0.00 ✅
-- **Bundle Size**: 263KB gzipped (Target: <150KB - needs further optimization)
-- **Touch Targets**: WCAG 2.1 AA compliant (44px minimum) ✅
-- **PWA**: Service worker + manifest configured ✅
+See commit `c6fbfed` for implementation details.
 
 ---
 
-## ✅ COMPLETED: shadcn/ui Migration (100%)
+### ✅ COMPLETED: Table Auto-Fit System
+**Status**: Full implementation with utilities and hooks
+**Files Created**:
+- `src/utils/sidebarTableAutofit.ts` (254 lines)
+- `src/hooks/useSidebarTableAutofit.ts` (145 lines)
+- `src/components/examples/RotationScheduleTable.tsx` (139 lines)
+- `docs/SIDEBAR_TABLE_AUTOFIT.md` (comprehensive guide)
 
-**Completion Date**: January 9, 2025  
+**Features**:
+- Binary search algorithm (O(log n)) for optimal font-size
+- ResizeObserver integration with debouncing
+- React hooks for declarative usage
+- Ready to use in Sidebar or any constrained container
+
+---
+
+### 🎯 ACTIVE SPRINT: Legacy UI Component Cleanup
+
+**Goal**: Eliminate ALL isDarkMode props and hardcoded colors
+**Timeline**: 3-4 hours remaining
+**Risk**: Medium (Modal was critical, now complete)
+
+---
+
+## 📋 Session Progress (January 9, 2025)
+
+### Morning Session: shadcn/ui Migration Completion
+**Status**: 63/63 components claimed complete (later found inaccurate)
 **Documentation**: `SHADCN_MIGRATION_FINAL_REPORT.md`
 
-### Final Stats
-- **Components Migrated**: 63/63 (100%)
-- **Bundle Size Reduction**: 290KB → 263KB (-27KB, -9.3%)
-- **Code Removed**: ~55KB (8 obsolete components + 10 style files)
-- **Legacy Imports**: 0 remaining
-- **Build Time**: 2.4-2.5s (stable)
+- ✅ Top-down migration (Priorities 1-7)
+- ✅ Bottom-up completion (5 remaining components)
+- ✅ Legacy style system removal (src/styles/ directory)
+- ⚠️ Did not verify with grep for legacy patterns
 
-### Phases Completed
-- ✅ Phase 1: Quick Wins (5 small components)
-  - LoadingButton, ShiftIndicator, Toast, RosterHeader, RosterSearchBar
-- ✅ Phase 2: Complex Components (3 large components)
-  - FirefighterProfileModal, FirefightersModal, FirefighterList (already done)
-- ✅ Phase 3: Cleanup & Verification
-  - All obsolete files deleted
-  - Legacy style system removed (src/styles/ directory)
-  - Zero legacy imports verified
+### Afternoon Session: Table Auto-Fit System
+**Status**: Complete implementation
+**Files Created**: 4 (utilities, hooks, examples, docs)
+
+- ✅ Binary search algorithm for font-size optimization
+- ✅ ResizeObserver integration
+- ✅ React hooks (useTableAutofit, useTableAutofitManual)
+- ✅ Comprehensive documentation
+
+### Evening Session: Critical Discovery & Cleanup
+**Status**: Deep audit revealed significant legacy code remaining
+
+**Discoveries**:
+- 🔴 221 isDarkMode prop usages (should be 0)
+- 🔴 9 legacy UI components with hardcoded colors
+- 🔴 29 inline style={{}} objects
+- 🔴 CSS variable usage (var(--text), var(--bg-card))
+
+**Actions Taken**:
+- ✅ Created LEGACY_STYLING_AUDIT.md (comprehensive report)
+- ✅ Implemented viewport-locked layout (index.css + App.tsx)
+- ✅ Migrated Modal.tsx → shadcn Dialog (CRITICAL)
+- ✅ Migrated AnimatedButton.tsx → shadcn Button wrapper
+- ✅ Migrated AnimatedInput.tsx → shadcn Input + Label
+- 📉 Reduced isDarkMode usage: 221 → 150 (-71 usages)
+
+**Remaining**:
+- ⏳ 6 legacy UI components
+- ⏳ Hardcoded color cleanup
+- ⏳ Inline style conversion
+- ⏳ CSS variable removal
+
+**Commits**:
+- `c6fbfed` - Viewport-locked layout
+- `7eadf91` - Legacy UI cleanup Phase 1 & 2
 
 ---
 
-## 🎯 Current Sprint: Performance Optimization
+## 🎯 ACTIVE SPRINT: Legacy UI Cleanup (Phases 3 & 4)
 
-### Goals
-1. Reduce bundle size from 263KB to <150KB
-2. Further code splitting for on-demand loading
-3. Image optimization and lazy loading
-4. Service worker caching strategies
-5. Progressive Web App enhancements
+**Discovered via deep audit**: 9 legacy UI components still using isDarkMode props and hardcoded colors.
 
-### Tasks
-- [ ] Analyze bundle with `pnpm analyze` to identify large dependencies
-- [ ] Implement route-based code splitting
-- [ ] Optimize image assets and use WebP format
-- [ ] Configure aggressive service worker caching
-- [ ] Add offline fallback pages
-- [ ] Implement background sync for hold submissions
-- [ ] Add "Add to Home Screen" prompt
+### ✅ Phase 1: Critical Modal (COMPLETE)
+- [x] **Modal.tsx** → Migrated to shadcn Dialog
+  - Removed isDarkMode prop
+  - Replaced hardcoded colors with semantic classes
+  - Used @radix-ui/react-dialog primitives
+  - Maintained all accessibility features
+  - **Impact**: Used in 15+ components
+
+### ✅ Phase 2: Form Components (2/3 COMPLETE)
+- [x] **AnimatedButton.tsx** → Migrated to shadcn Button wrapper
+  - Removed hardcoded variant colors (bg-orange-600, bg-slate-700, etc.)
+  - Uses CVA for variant management
+  - Replaced custom spinner with Loader2
+  - Maintained all animations (ripple, shake, scale, loading)
+  
+- [x] **AnimatedInput.tsx** → Migrated to shadcn Input + Label wrapper
+  - Removed isDarkMode prop
+  - Replaced hardcoded colors with semantic classes
+  - Maintained floating label, success/error states
+  - Preserved auto-resize textarea
+
+- [ ] **AnimatedToggle.tsx** → Need shadcn Switch
+  - Current: Uses bg-blue-600, bg-green-600, bg-gray-300
+  - Target: shadcn Switch component
+  - Estimated: 30 minutes
+
+### ⏳ Phase 3: Loading Components (NEXT)
+- [ ] **Spinner.tsx** → Use Loader2 from lucide-react
+  - Current: isDarkMode conditionals, bg-blue-500/bg-blue-600
+  - Target: Semantic colors with Loader2 icon
+  - Estimated: 30 minutes
+
+- [ ] **ProgressBar.tsx** → Use shadcn Progress
+  - Current: bg-blue-600, bg-green-600, bg-red-600
+  - Target: shadcn Progress component
+  - Estimated: 30 minutes
+
+- [ ] **PulseLoader.tsx** → Use Skeleton or Loader2
+  - Current: bg-blue-500, bg-green-500, bg-red-500
+  - Target: shadcn Skeleton or Loader2 with semantic colors
+  - Estimated: 20 minutes
+
+### ⏳ Phase 4: Other Components
+- [ ] **FloatingActionButton.tsx** → shadcn Button (fixed positioning)
+  - Current: isDarkMode conditionals, bg-slate-800/bg-slate-900
+  - Target: shadcn Button with fixed positioning classes
+  - Estimated: 30 minutes
+
+- [ ] **Radio.tsx** → shadcn RadioGroup
+  - Current: hover:bg-slate-800/50, text-blue-600, bg-slate-800
+  - Target: shadcn RadioGroup component
+  - Estimated: 30 minutes
+
+### Phase 5: Hardcoded Color Cleanup
+- [ ] Fix skip link in App.tsx (focus:bg-blue-600 → focus:bg-primary)
+- [ ] Fix ConfirmDialog.tsx (bg-red-100, bg-blue-100 → semantic)
+- [ ] Fix LoginModal.tsx (bg-red-50 → bg-destructive/10)
+- [ ] Clean up remaining inline styles (29 occurrences)
+- [ ] Verify zero CSS variable usage (var(--text) → className)
+
+**Total Remaining**: 6 components + cleanup tasks
+**Estimated Time**: 3-4 hours
 
 ---
 

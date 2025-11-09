@@ -247,32 +247,37 @@ function App() {
       />
 
       {/* Main Layout: viewport-locked, no page scroll */}
-      <main 
-        id="main-content" 
-        tabIndex={-1} 
+      <main
+        id="main-content"
+        tabIndex={-1}
         className={`
           flex-1
           flex
           flex-col lg:flex-row
-          gap-4
-          p-4
+          gap-6
+          p-6
           items-stretch
+          overflow-hidden
+          min-h-0
           ${device.isMobile ? 'pb-20' : ''}
         `}
       >
         {/* Calendar Section - flex-1 to take remaining horizontal space */}
-        <Card 
+        <Card
           id="calendar-view"
           className={`
             flex-1
             flex flex-col
             overflow-hidden
             min-w-0
+            min-h-0
+            shadow-lg
+            border-2
             ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}
           `}
         >
           {/* Calendar shell: min-h-0 lets flexbox shrink it properly */}
-          <div className="calendar-shell flex-1 min-h-0 overflow-hidden">
+          <div className="calendar-shell flex-1 min-h-0 overflow-auto">
             <Suspense fallback={
               <div className="flex items-center justify-center h-full text-muted-foreground">
                 Loading calendar...
@@ -290,7 +295,7 @@ function App() {
         </Card>
         
         {/* Roster Sidebar - fixed width, no shrink */}
-        <Card 
+        <Card
           id="sidebar"
           className={`
             w-full
@@ -300,6 +305,8 @@ function App() {
             overflow-hidden
             flex-shrink-0
             min-h-0
+            shadow-lg
+            border-2
             ${device.isMobile && mobileActiveTab !== 'home' ? 'hidden' : ''}
           `}
         >

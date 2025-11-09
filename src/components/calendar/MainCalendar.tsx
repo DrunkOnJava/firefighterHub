@@ -86,24 +86,24 @@ export function MainCalendar({
   return (
     <div className="h-full flex flex-col">
       {/* Calendar Header with Next Up Section */}
-      <CardHeader className="pb-4">
-        <div className="flex items-start justify-between gap-6">
+      <CardHeader className="pb-6 bg-gradient-to-r from-background to-muted/20">
+        <div className="flex items-start justify-between gap-8">
           <div>
-            <CardTitle className="text-2xl">Schedule</CardTitle>
-            <CardDescription>Hold rotation & event overview</CardDescription>
+            <CardTitle className="text-3xl font-bold tracking-tight">Schedule</CardTitle>
+            <CardDescription className="text-base mt-1">Hold rotation & event overview</CardDescription>
           </div>
-          
+
           {/* Next Up Cards */}
-          <div className="flex flex-col gap-2">
-            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Next Up</span>
-            <div className="flex gap-2">
+          <div className="flex flex-col gap-3">
+            <span className="text-sm font-bold text-foreground/70 uppercase tracking-wider">Next Up</span>
+            <div className="flex gap-3">
               {[
                 { ff: nextUpA, shift: 'A' as const },
                 { ff: nextUpB, shift: 'B' as const },
                 { ff: nextUpC, shift: 'C' as const }
               ].map(({ ff, shift }) => {
                 const isSelected = ff && selectedFirefighterId === ff.id;
-                
+
                 return (
                   <Button
                     key={shift}
@@ -112,27 +112,30 @@ export function MainCalendar({
                     onClick={() => onFirefighterClick?.(ff ? ff.id : null)}
                     disabled={!ff}
                     className={`
-                      flex flex-col items-start h-auto py-2 px-3 min-w-[120px]
-                      ${shift === 'A' ? 'border-red-500/50 hover:border-red-500' : ''}
-                      ${shift === 'B' ? 'border-blue-500/50 hover:border-blue-500' : ''}
-                      ${shift === 'C' ? 'border-green-500/50 hover:border-green-500' : ''}
+                      flex flex-col items-start h-auto py-3 px-4 min-w-[140px]
+                      border-2 shadow-md hover:shadow-lg
+                      transition-all duration-300
+                      hover:scale-[1.02] hover:-translate-y-0.5
+                      ${shift === 'A' ? 'border-l-4 border-l-red-500 bg-red-50/30 dark:bg-red-950/20 hover:border-red-500/80' : ''}
+                      ${shift === 'B' ? 'border-l-4 border-l-blue-500 bg-blue-50/30 dark:bg-blue-950/20 hover:border-blue-500/80' : ''}
+                      ${shift === 'C' ? 'border-l-4 border-l-green-500 bg-green-50/30 dark:bg-green-950/20 hover:border-green-500/80' : ''}
                     `}
                     aria-label={ff ? `Next up for Shift ${shift}: ${ff.name}` : `No one available for Shift ${shift}`}
                   >
-                    <Badge 
-                      variant="outline" 
+                    <Badge
+                      variant="outline"
                       className={`
-                        mb-1 text-xs
-                        ${shift === 'A' ? 'bg-red-500/10 text-red-700 dark:text-red-400' : ''}
-                        ${shift === 'B' ? 'bg-blue-500/10 text-blue-700 dark:text-blue-400' : ''}
-                        ${shift === 'C' ? 'bg-green-500/10 text-green-700 dark:text-green-400' : ''}
+                        mb-2 text-xs font-bold
+                        ${shift === 'A' ? 'bg-red-500/20 text-red-700 dark:text-red-400 border-red-500/40' : ''}
+                        ${shift === 'B' ? 'bg-blue-500/20 text-blue-700 dark:text-blue-400 border-blue-500/40' : ''}
+                        ${shift === 'C' ? 'bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/40' : ''}
                       `}
                     >
                       Shift {shift}
                     </Badge>
                     {ff ? (
                       <>
-                        <span className="font-semibold text-sm">{ff.name}</span>
+                        <span className="font-bold text-sm mb-0.5">{ff.name}</span>
                         <span className="text-xs text-muted-foreground">
                           {ff.fire_station && `Stn ${ff.fire_station}`}
                           {ff.fire_station && ' • '}

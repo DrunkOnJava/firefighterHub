@@ -241,20 +241,22 @@ export function FirefighterList({
       ) : (
         <>
           {/* Header */}
-          <RosterHeader
-            firefighters={firefighters}
-            currentShift={currentShift || "A"}
-            isAdminMode={isAdminMode}
-            onAddClick={() => setShowAddForm(!showAddForm)}
-            onViewDeactivatedClick={() => setShowReactivateModal(true)}
-            onFilterToggle={() => setIsFilterPanelOpen(true)}
-            showExportMenu={showExportMenu}
-            onExportToggle={() => setShowExportMenu(!showExportMenu)}
-            activeFilterCount={activeFilterCount}
-            deactivatedCount={deactivatedFirefighters.length}
-          />
+          <div className="flex-shrink-0 border-b border-border/60 bg-gradient-to-r from-background to-muted/20">
+            <RosterHeader
+              firefighters={firefighters}
+              currentShift={currentShift || "A"}
+              isAdminMode={isAdminMode}
+              onAddClick={() => setShowAddForm(!showAddForm)}
+              onViewDeactivatedClick={() => setShowReactivateModal(true)}
+              onFilterToggle={() => setIsFilterPanelOpen(true)}
+              showExportMenu={showExportMenu}
+              onExportToggle={() => setShowExportMenu(!showExportMenu)}
+              activeFilterCount={activeFilterCount}
+              deactivatedCount={deactivatedFirefighters.length}
+            />
+          </div>
 
-          <CardContent className="p-0 flex-1 overflow-hidden">
+          <CardContent className="p-0 flex-1 overflow-hidden min-h-0">
             {/* Add Firefighter Form */}
             {isAdminMode && showAddForm && (
               <div className="px-6 my-6">

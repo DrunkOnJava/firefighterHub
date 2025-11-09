@@ -129,12 +129,9 @@ export function Calendar({
   }
 
   return (
-    <div className="
-      bg-card rounded-xl p-4 border border-border/20
-      shadow-sm overflow-hidden
-    ">
+    <div className="h-full flex flex-col bg-card rounded-xl overflow-hidden">
       {/* Header section */}
-      <div className="border-b border-border/10 pb-3">
+      <div className="border-b border-border/60 px-6 py-4 flex-shrink-0 bg-gradient-to-r from-background to-muted/30">
         <CalendarHeader
           currentDate={currentDate}
           onPreviousMonth={goToPreviousMonth}
@@ -144,8 +141,8 @@ export function Calendar({
         />
       </div>
 
-      {/* Calendar grid section */}
-      <div className="p-4 w-full">
+      {/* Calendar grid section - fills remaining space */}
+      <div className="p-6 flex-1 min-h-0">
         {device.isMobile ? (
           <MobileWeekView
             currentDate={currentDate}

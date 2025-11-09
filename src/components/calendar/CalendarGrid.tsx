@@ -73,22 +73,18 @@ export function CalendarGrid({
   }
 
   return (
-    <div 
-      className="w-full flex flex-col min-h-0 flex-1"
+    <div
+      className="w-full h-full flex flex-col min-h-0"
       ref={gridRef}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       {/* Weekday headers */}
-      {/* TODO: AUDIT FIX - Color contrast on weekday headers */}
-      {/* Current: text-muted-foreground may fail WCAG AA (3.21:1 ratio) */}
-      {/* Recommendation: Use text-foreground or text-slate-700 dark:text-slate-200 */}
-      {/* See: AUDIT_REPORT_2025-11-09.md - Section 5 (Color Contrast Audit) */}
-      <div className="grid grid-cols-7 gap-2 pb-1">
+      <div className="grid grid-cols-7 gap-3 pb-3 flex-shrink-0">
         {weekDays.map((day) => (
           <div
             key={day}
-            className="text-center font-bold text-xs text-muted-foreground"
+            className="text-center font-bold text-sm text-foreground/80 tracking-wide uppercase"
           >
             <span className="hidden sm:inline">{day}</span>
             <span className="sm:hidden">{day.slice(0, 1)}</span>
@@ -96,10 +92,8 @@ export function CalendarGrid({
         ))}
       </div>
 
-      {/* Calendar grid with max height */}
-      {/* NOTE: gap-2 provides good visual separation between day cells (8px) */}
-      {/* DayCell borders (border-2) handle individual cell definition */}
-      <div className="grid grid-cols-7 gap-2 auto-rows-fr max-h-[calc(100vh-280px)] overflow-auto">
+      {/* Calendar grid - dynamic height, fills available space */}
+      <div className="grid grid-cols-7 gap-3 auto-rows-fr flex-1 min-h-0">
         {calendarDays.map((day, index) => (
           <DayCell
             key={index}

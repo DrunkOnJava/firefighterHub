@@ -13,22 +13,19 @@
  */
 
 import { useRef } from 'react';
-import { User, MapPin, Calendar, Award as _Award } from 'lucide-react';
+import { User, MapPin, Calendar } from 'lucide-react';
 import { useDevice } from '../hooks/useDevice';
 import { useSwipeGesture } from '../hooks/useTouchGestures';
 import { Firefighter } from '../lib/supabase';
-import { tokens } from '../styles';
 
 interface NextUpBarV2Props {
   firefighters: Firefighter[];
-  isDarkMode?: boolean;
   onFirefighterClick?: (firefighter: Firefighter | null) => void;
   selectedFirefighterId?: string | null;
 }
 
 export function NextUpBarV2({ 
   firefighters, 
-  isDarkMode = true, 
   onFirefighterClick, 
   selectedFirefighterId 
 }: NextUpBarV2Props) {
@@ -105,15 +102,13 @@ export function NextUpBarV2({
         className={`
           group relative flex flex-col
           min-h-[140px]
-          ${tokens.borders.radius.xl}
-          ${tokens.transitions.fast}
+          rounded-xl
+          transition-all duration-150
           border-2
           ${firefighter ? 'cursor-pointer' : 'cursor-default'}
-          ${isSelected ? `ring-4 ${config.ring} ring-offset-2 ring-offset-slate-900` : ''}
+          ${isSelected ? `ring-4 ${config.ring} ring-offset-2 ring-offset-background` : ''}
           ${
-            isDarkMode
-              ? `bg-gradient-to-br ${config.gradient} ${firefighter ? config.hoverGradient : ''} ${isSelected ? 'shadow-2xl' : 'shadow-xl'} ${config.border}`
-              : `bg-gradient-to-br ${config.gradient} ${firefighter ? config.hoverGradient : ''} ${isSelected ? 'shadow-2xl' : 'shadow-lg'} border-white/20`
+            `bg-gradient-to-br ${config.gradient} ${firefighter ? config.hoverGradient : ''} ${isSelected ? 'shadow-2xl' : 'shadow-lg'} border-white/20`
           }
           ${firefighter ? 'hover:shadow-2xl hover:scale-[1.02] active:scale-[0.99]' : 'opacity-60'}
         `}
@@ -222,14 +217,8 @@ export function NextUpBarV2({
   return (
     <div
       className={`
-        ${tokens.spacing.section.lg} border-b
-        ${device.isMobile ? 'pb-6' : 'py-4'}
-        ${
-          isDarkMode
-            ? 'bg-slate-950/95 border-slate-800/50 backdrop-blur-sm'
-            : 'bg-white/95 border-slate-200 backdrop-blur-sm'
-        }
-        ${!device.isMobile && tokens.shadows.lg}
+        px-6 py-4 border-b bg-background/95 border-border backdrop-blur-sm shadow-lg
+        ${device.isMobile ? 'pb-6' : ''}
       `}
       style={
         device.isMobile

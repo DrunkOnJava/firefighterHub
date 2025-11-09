@@ -8,12 +8,9 @@
  * - Hold count badges (scheduled/completed)
  * - Visual states for scheduled/completed holds
  * - Hover and selected states
- *
- * Uses design tokens for consistent styling.
  */
 
 import { Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
 
 interface DayCellProps {
@@ -57,9 +54,9 @@ export function DayCell({
   // Determine styling based on state - WCAG 2.5.5: 44px minimum touch targets
   let cellClasses = `
     relative w-full p-2 text-left
-    ${tokens.touchTarget.min} min-w-[44px]
-    ${tokens.transitions.fast}
-    ${tokens.focus.default}
+    min-h-[44px] min-w-[44px]
+    transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
     flex flex-col
     aspect-square
     rounded-xl
@@ -67,15 +64,15 @@ export function DayCell({
   `;
 
   if (!day.isCurrentMonth) {
-    cellClasses += ` bg-slate-800/30 border-slate-700/20 text-gray-600 cursor-default opacity-40`;
+    cellClasses += ` bg-muted/30 border-border/20 text-muted-foreground cursor-default opacity-40`;
   } else {
     // Base state - thin outline on hover
-    cellClasses += ` bg-slate-800/80 border-slate-700/40 text-gray-200 hover:border-slate-500 hover:shadow-lg cursor-pointer active:bg-slate-700`;
+    cellClasses += ` bg-card border-border/40 text-foreground hover:border-border hover:shadow-lg cursor-pointer active:bg-muted`;
   }
 
   // Today indicator - STRONG accent fill (HIGHEST PRIORITY)
   if (day.isToday && day.isCurrentMonth) {
-    cellClasses += ` !bg-gradient-to-br !from-blue-600/40 !to-blue-700/50 !border-blue-500 !shadow-2xl !shadow-blue-500/40 ring-3 ring-blue-500/60`;
+    cellClasses += ` !bg-gradient-to-br !from-blue-600/40 !to-blue-700/50 dark:!from-blue-600/40 dark:!to-blue-700/50 !border-blue-500 !shadow-2xl !shadow-blue-500/40 ring-3 ring-blue-500/60`;
   }
 
   // Has holds - add left border accent
@@ -85,7 +82,7 @@ export function DayCell({
 
   // Selected firefighter highlight - accent outline
   if (hasSelectedFF && day.isCurrentMonth) {
-    cellClasses += ` ring-2 ring-blue-400 ring-offset-1 ring-offset-slate-900`;
+    cellClasses += ` ring-2 ring-blue-400 ring-offset-1 ring-offset-background`;
   }
 
   // Past date and not admin - make read-only
@@ -117,7 +114,7 @@ export function DayCell({
       <div className="flex items-center justify-between mb-1">
         {/* Day number */}
         <div className={`text-base font-extrabold ${
-          day.isToday ? 'text-blue-100' : day.isCurrentMonth ? 'text-slate-100' : 'text-gray-600'
+          day.isToday ? 'text-blue-100 dark:text-blue-100' : day.isCurrentMonth ? 'text-foreground' : 'text-muted-foreground'
         }`}>
           {day.date.getDate()}
         </div>
@@ -197,7 +194,7 @@ export function DayCell({
 
         {/* Show "more" indicator if there are additional holds */}
         {day.scheduledHolds.length > 3 && (
-          <div className="text-[10px] text-slate-400 px-1.5 font-semibold">
+          <div className="text-[10px] text-muted-foreground px-1.5 font-semibold">
             +{day.scheduledHolds.length - 3} more
           </div>
         )}

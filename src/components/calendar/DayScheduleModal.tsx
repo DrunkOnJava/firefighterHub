@@ -33,7 +33,7 @@ export function DayScheduleModal({
   onClose,
   onSchedule,
   onSkip,
-  isDarkMode,
+  isDarkMode: _isDarkMode,
 }: DayScheduleModalProps) {
   const [selectedStation, setSelectedStation] = useState('');
   const [duration, setDuration] = useState<HoldDuration>('24h');
@@ -96,25 +96,16 @@ export function DayScheduleModal({
     >
       <div
         ref={trapRef}
-        className={`relative w-full max-w-lg rounded-lg shadow-xl ${
-          isDarkMode ? 'bg-slate-800 text-white' : 'bg-white text-slate-900'
-        }`}
+        className="relative w-full max-w-lg rounded-lg shadow-xl bg-card text-foreground"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="day-schedule-title"
       >
         {/* Header */}
-        <div
-          className={`flex items-center justify-between p-6 border-b ${
-            isDarkMode ? 'border-slate-700' : 'border-slate-200'
-          }`}
-        >
+        <div className="flex items-center justify-between p-6 border-b border-border">
           <div className="flex items-center gap-3">
-            <Calendar
-              className={isDarkMode ? 'text-blue-400' : 'text-blue-600'}
-              size={24}
-            />
+            <Calendar className="text-blue-500" size={24} />
             <h2
               id="day-schedule-title"
               className="text-xl font-semibold"
@@ -124,11 +115,7 @@ export function DayScheduleModal({
           </div>
           <button
             onClick={onClose}
-            className={`p-2 rounded-lg transition-colors ${
-              isDarkMode
-                ? 'hover:bg-slate-700 text-slate-400 hover:text-white'
-                : 'hover:bg-slate-100 text-gray-600 hover:text-slate-900'
-            }`}
+            className="p-2 rounded-lg transition-colors hover:bg-muted text-muted-foreground hover:text-foreground"
             aria-label="Close modal"
           >
             <X size={20} />
@@ -138,53 +125,27 @@ export function DayScheduleModal({
         {/* Body */}
         <div className="p-6 space-y-6">
           {/* Date Display */}
-          <div
-            className={`p-4 rounded-lg ${
-              isDarkMode ? 'bg-slate-700/50' : 'bg-slate-50'
-            }`}
-          >
-            <p
-              className={`text-sm font-medium ${
-                isDarkMode ? 'text-slate-400' : 'text-gray-600'
-              }`}
-            >
+          <div className="p-4 rounded-lg bg-muted">
+            <p className="text-sm font-medium text-muted-foreground">
               Date
             </p>
             <p className="text-lg font-semibold mt-1">{formattedDate}</p>
           </div>
 
           {/* Next Firefighter */}
-          <div
-            className={`p-4 rounded-lg ${
-              isDarkMode ? 'bg-blue-900/20 border border-blue-500/30' : 'bg-blue-50 border border-blue-200'
-            }`}
-          >
-            <p
-              className={`text-sm font-medium mb-2 ${
-                isDarkMode ? 'text-blue-400' : 'text-blue-600'
-              }`}
-            >
+          <div className="p-4 rounded-lg bg-blue-900/20 dark:bg-blue-900/20 border border-blue-500/30">
+            <p className="text-sm font-medium mb-2 text-blue-500">
               Next in Rotation
             </p>
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-lg font-semibold">{nextFirefighter.name}</p>
-                <p
-                  className={`text-sm ${
-                    isDarkMode ? 'text-slate-400' : 'text-gray-600'
-                  }`}
-                >
+                <p className="text-sm text-muted-foreground">
                   Station {nextFirefighter.fire_station || 'N/A'} • Position{' '}
                   {nextFirefighter.order_position + 1}
                 </p>
               </div>
-              <div
-                className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  isDarkMode
-                    ? 'bg-blue-500/20 text-blue-400'
-                    : 'bg-blue-100 text-blue-700'
-                }`}
-              >
+              <div className="px-3 py-1 rounded-full text-xs font-medium bg-blue-500/20 text-blue-400">
                 Shift {nextFirefighter.shift}
               </div>
             </div>
@@ -192,11 +153,7 @@ export function DayScheduleModal({
 
           {/* Station Selection */}
           <div>
-            <label
-              className={`block text-sm font-medium mb-2 ${
-                isDarkMode ? 'text-slate-300' : 'text-slate-700'
-              }`}
-            >
+            <label className="block text-sm font-medium mb-2 text-foreground">
               <MapPin size={16} className="inline mr-2" />
               Hold Station
             </label>
@@ -205,11 +162,7 @@ export function DayScheduleModal({
               onStationChange={setSelectedStation}
               defaultStation={nextFirefighter.fire_station}
             />
-            <p
-              className={`text-xs mt-1 ${
-                isDarkMode ? 'text-slate-500' : 'text-gray-600'
-              }`}
-            >
+            <p className="text-xs mt-1 text-muted-foreground">
               Which station is this firefighter being held at?
             </p>
           </div>
@@ -217,32 +170,20 @@ export function DayScheduleModal({
           {/* Duration & Start Time */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label
-                className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-slate-300' : 'text-slate-700'
-                }`}
-              >
+              <label className="block text-sm font-medium mb-2 text-foreground">
                 Duration
               </label>
               <select
                 value={duration}
                 onChange={(e) => setDuration(e.target.value as HoldDuration)}
-                className={`w-full px-3 py-2 rounded-lg border ${
-                  isDarkMode
-                    ? 'bg-slate-700 border-slate-600 text-white'
-                    : 'bg-white border-slate-300 text-slate-900'
-                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className="w-full px-3 py-2 rounded-lg border bg-input border-input text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="12h">12 hours</option>
                 <option value="24h">24 hours</option>
               </select>
             </div>
             <div>
-              <label
-                className={`block text-sm font-medium mb-2 ${
-                  isDarkMode ? 'text-slate-300' : 'text-slate-700'
-                }`}
-              >
+              <label className="block text-sm font-medium mb-2 text-foreground">
                 <Clock size={16} className="inline mr-2" />
                 Start Time
               </label>
@@ -250,23 +191,13 @@ export function DayScheduleModal({
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className={`w-full px-3 py-2 rounded-lg border ${
-                  isDarkMode
-                    ? 'bg-slate-700 border-slate-600 text-white'
-                    : 'bg-white border-slate-300 text-slate-900'
-                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className="w-full px-3 py-2 rounded-lg border bg-input border-input text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               />
             </div>
           </div>
 
           {/* Voluntary Pickup Toggle */}
-          <div
-            className={`p-4 rounded-lg border ${
-              isDarkMode
-                ? 'bg-slate-700/30 border-slate-600'
-                : 'bg-slate-50 border-slate-200'
-            }`}
-          >
+          <div className="p-4 rounded-lg border bg-muted border-border">
             <AnimatedToggle
               checked={isVoluntary}
               onChange={setIsVoluntary}
@@ -311,13 +242,7 @@ export function DayScheduleModal({
 
           {/* Info Message */}
           {isVoluntary && (
-            <div
-              className={`p-3 rounded-lg text-sm ${
-                isDarkMode
-                  ? 'bg-green-900/20 text-green-400 border border-green-500/30'
-                  : 'bg-green-50 text-green-700 border border-green-200'
-              }`}
-            >
+            <div className="p-3 rounded-lg text-sm bg-green-900/20 dark:bg-green-900/20 text-green-400 border border-green-500/30">
               <strong>Voluntary pickup:</strong> {nextFirefighter.name} will be
               moved to the bottom of the rotation after completing this hold.
             </div>

@@ -1,8 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 8/63 components migrated (12.7%)  
-**Active Sprint:** Priority 1 - Core Layout (8/8 complete ✅)
+**Status:** 15/63 components migrated (23.8%)  
+**Active Sprint:** Priority 7 - Additional Features (7/7 complete ✅)
 
 ## Migration Strategy
 
@@ -113,16 +113,16 @@ Supporting components and utilities.
 
 ---
 
-## Priority 7: Additional Features (7 components)
+## Priority 7: Additional Features (7 components) ✅ COMPLETE
 
 Secondary features and enhancements.
 
-- [ ] `src/components/Reports.tsx` - Reports view
+- [x] ~~`src/components/Reports.tsx`~~ - ✅ Migrated (uses Card, Button, shadcn semantic classes)
 - [x] ~~`src/components/roster/BulkActions.tsx`~~ - ✅ Migrated (uses Button, Card)
 - [x] ~~`src/components/roster/ExportMenu.tsx`~~ - ✅ Migrated (uses Button, DropdownMenu)
 - [x] ~~`src/components/FilterPanel.tsx`~~ - ✅ Migrated (uses Dialog, Button, Checkbox)
 - [x] ~~`src/components/StationSelector.tsx`~~ - ✅ Migrated (pure shadcn semantic classes)
-- [ ] `src/components/NextUpBarV2.tsx` - Next up bar v2
+- [x] ~~`src/components/NextUpBarV2.tsx`~~ - ✅ Migrated (removed isDarkMode, uses semantic classes)
 - [x] ~~`src/components/MetricCard.tsx`~~ - ✅ Migrated (uses Card component)
 
 ---

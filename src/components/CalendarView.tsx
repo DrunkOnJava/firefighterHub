@@ -16,7 +16,6 @@ import {
 } from "../utils/calendarUtils";
 import { DayModal } from './calendar/DayModal';
 import { IconButton } from './ui/IconButton';
-import { gridUtilities } from '../styles';
 
 interface CalendarViewProps {
   firefighters: Firefighter[];
@@ -116,19 +115,19 @@ export function CalendarView({
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="bg-[#3A4149] border-b-2 border-[#252A32] px-6 py-4">
+      <div className="bg-muted border-b-2 border-border px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Month/Year Display */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
-              <Calendar className="w-6 h-6 text-red-500" />
-              <h2 className="text-2xl font-bold text-gray-100">
+              <Calendar className="w-6 h-6 text-destructive" />
+              <h2 className="text-2xl font-bold text-foreground">
                 {MONTH_NAMES[month]} {year}
               </h2>
             </div>
             <button
               onClick={goToToday}
-              className="px-3 py-1 text-sm bg-[#2F3640] hover:bg-[#353D47] text-slate-300 rounded-md border border-[#252A32] transition-colors"
+              className="px-3 py-1 text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-md border border-border transition-colors"
             >
               Today
             </button>
@@ -166,14 +165,14 @@ export function CalendarView({
         </div>
       </div>
 
-      {/* Calendar Grid - using grid system utilities */}
+      {/* Calendar Grid */}
       <div className="flex-1 p-6 overflow-auto">
-        <div className={`${gridUtilities.calendar.container} gap-px bg-[#252A32] border border-[#252A32] rounded-lg overflow-hidden shadow-xl`}>
+        <div className="grid grid-cols-7 gap-px bg-border border border-border rounded-lg overflow-hidden shadow-xl">
           {/* Weekday Headers */}
           {WEEKDAYS.map((day) => (
             <div
               key={day}
-              className="bg-[#2F3640] px-3 py-4 text-center font-semibold text-slate-400 text-sm"
+              className="bg-muted px-3 py-4 text-center font-semibold text-muted-foreground text-sm"
             >
               {day}
             </div>
@@ -193,25 +192,25 @@ export function CalendarView({
                 className={`
                   relative min-h-[100px] p-3 text-left transition-all
                   ${isOtherMonth
-                    ? 'bg-[#2A3039] text-gray-600 cursor-default'
-                    : 'bg-[#3A4149] text-gray-100 hover:bg-[#424A54] cursor-pointer'
+                    ? 'bg-muted/50 text-muted-foreground cursor-default'
+                    : 'bg-card text-foreground hover:bg-muted cursor-pointer'
                   }
-                  ${isCurrentDay && !isOtherMonth ? 'ring-2 ring-inset ring-red-500' : ''}
-                  ${hasScheduled && !isOtherMonth ? 'border-l-4 border-l-red-500' : ''}
+                  ${isCurrentDay && !isOtherMonth ? 'ring-2 ring-inset ring-destructive' : ''}
+                  ${hasScheduled && !isOtherMonth ? 'border-l-4 border-l-destructive' : ''}
                 `}
               >
-                {/* Day Number - Increased from text-sm to text-base for better scannability (VH Audit Priority 3.1) */}
+                {/* Day Number */}
                 <div className={`
                   text-base font-medium mb-2
-                  ${isCurrentDay ? 'text-red-400' : ''}
-                  ${isOtherMonth ? 'text-gray-600' : 'text-slate-300'}
+                  ${isCurrentDay ? 'text-destructive' : ''}
+                  ${isOtherMonth ? 'text-muted-foreground' : 'text-foreground'}
                 `}>
                   {day.date.getDate()}
                 </div>
 
                 {/* Hold Indicator Badge */}
                 {hasScheduled && !isOtherMonth && (
-                  <div className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                  <div className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                     {day.scheduledHolds.length}
                   </div>
                 )}
@@ -225,8 +224,8 @@ export function CalendarView({
                         className={`
                           text-xs px-2 py-1 rounded truncate
                           ${hold.status === 'completed'
-                            ? 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/50'
-                            : 'bg-blue-900/40 text-blue-300 border border-blue-700/50'
+                            ? 'bg-emerald-900/40 dark:bg-emerald-900/40 text-emerald-300 border border-emerald-700/50'
+                            : 'bg-blue-900/40 dark:bg-blue-900/40 text-blue-300 border border-blue-700/50'
                           }
                         `}
                       >
@@ -234,7 +233,7 @@ export function CalendarView({
                       </div>
                     ))}
                     {day.scheduledHolds.length > 2 && (
-                      <div className="text-xs text-slate-500 px-2">
+                      <div className="text-xs text-muted-foreground px-2">
                         +{day.scheduledHolds.length - 2} more
                       </div>
                     )}
@@ -246,42 +245,42 @@ export function CalendarView({
         </div>
       </div>
 
-      {/* Statistics Cards - using grid system utilities */}
-      <div className={`${gridUtilities.form.grid4Col} px-6 pb-6`}>
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-6 pb-6">
         {/* Open Vacancies */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-red-900/50 rounded-lg p-4">
+        <div className="bg-gradient-to-br from-card to-muted border-2 border-destructive/50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
-            <Clock className="w-8 h-8 text-red-500" />
-            <span className="text-3xl font-bold text-gray-100">{stats.openVacancies}</span>
+            <Clock className="w-8 h-8 text-destructive" />
+            <span className="text-3xl font-bold text-foreground">{stats.openVacancies}</span>
           </div>
-          <div className="text-sm text-slate-400">Open Vacancies</div>
+          <div className="text-sm text-muted-foreground">Open Vacancies</div>
         </div>
 
         {/* Scheduled */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-[#252A32] rounded-lg p-4">
+        <div className="bg-gradient-to-br from-card to-muted border-2 border-border rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
             <Calendar className="w-8 h-8 text-blue-400" />
-            <span className="text-3xl font-bold text-gray-100">{stats.scheduled}</span>
+            <span className="text-3xl font-bold text-foreground">{stats.scheduled}</span>
           </div>
-          <div className="text-sm text-slate-400">Scheduled</div>
+          <div className="text-sm text-muted-foreground">Scheduled</div>
         </div>
 
         {/* Completed */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-emerald-900/50 rounded-lg p-4">
+        <div className="bg-gradient-to-br from-card to-muted border-2 border-emerald-900/50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
             <CheckCircle2 className="w-8 h-8 text-emerald-500" />
-            <span className="text-3xl font-bold text-gray-100">{stats.completed}</span>
+            <span className="text-3xl font-bold text-foreground">{stats.completed}</span>
           </div>
-          <div className="text-sm text-slate-400">Completed</div>
+          <div className="text-sm text-muted-foreground">Completed</div>
         </div>
 
         {/* Active Members */}
-        <div className="bg-gradient-to-br from-[#3A4149] to-[#353D47] border-2 border-amber-900/50 rounded-lg p-4">
+        <div className="bg-gradient-to-br from-card to-muted border-2 border-amber-900/50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-2">
             <Users className="w-8 h-8 text-amber-500" />
-            <span className="text-3xl font-bold text-gray-100">{stats.activeMembers}</span>
+            <span className="text-3xl font-bold text-foreground">{stats.activeMembers}</span>
           </div>
-          <div className="text-sm text-slate-400">Active Members</div>
+          <div className="text-sm text-muted-foreground">Active Members</div>
         </div>
       </div>
 

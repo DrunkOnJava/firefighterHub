@@ -3,42 +3,34 @@
  * 
  * Displays the color legend for calendar day cells.
  * Shows what the different colors mean (scheduled, completed, today).
- * 
- * Uses design tokens for consistent styling.
  */
-
-import { colors, tokens } from '../../styles';
 
 interface CalendarLegendProps {
   isDarkMode?: boolean;
 }
 
-export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
+export function CalendarLegend({ _isDarkMode = true }: CalendarLegendProps) {
   const legendItems = [
     {
       label: 'Scheduled',
-      colorClass: colors.semantic.scheduled.solid,
+      colorClass: 'bg-orange-500',
       description: 'Has scheduled holds'
     },
     {
       label: 'Completed',
-      colorClass: colors.semantic.success.solid,
+      colorClass: 'bg-green-600',
       description: 'Has completed holds'
     },
     {
       label: 'Today',
-      borderClass: 'ring-2 ring-red-500',
+      borderClass: 'ring-2 ring-blue-500',
       description: 'Current date'
     }
   ];
 
   return (
     <div 
-      className={`
-        flex flex-wrap items-center justify-center gap-4 sm:gap-6
-        ${tokens.spacing.margin.lg}
-        ${tokens.typography.body.small}
-      `}
+      className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-6 text-sm"
       role="list"
       aria-label="Calendar legend"
     >
@@ -50,15 +42,14 @@ export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
         >
           <div 
             className={`
-              w-4 h-4
-              ${tokens.borders.radius.sm}
+              w-4 h-4 rounded
               ${item.colorClass || ''}
               ${item.borderClass || ''}
-              ${!item.colorClass && !item.borderClass ? (isDarkMode ? 'bg-slate-700 border border-slate-600' : 'bg-gray-200 border border-slate-300') : ''}
+              ${!item.colorClass && !item.borderClass ? 'bg-muted border border-border' : ''}
             `}
             aria-label={item.description}
           />
-          <span className={isDarkMode ? colors.structural.text.secondary : 'text-slate-700'}>
+          <span className="text-muted-foreground">
             {item.label}
           </span>
         </div>

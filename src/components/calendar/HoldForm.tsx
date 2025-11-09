@@ -6,15 +6,11 @@
  * - Hold details form (station, duration, start time)
  * - "Add another" checkbox
  * - Confirm/cancel buttons
- *
- * Uses design tokens for consistent styling.
  */
 
 import { useState } from "react";
 import { Firefighter, HoldDuration } from "../../lib/supabase";
-import { colors, tokens, visualHeadings } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
-import { getTheme } from "../../utils/theme";
 import { StationSelector } from "../StationSelector";
 
 interface HoldFormProps {
@@ -51,9 +47,8 @@ export function HoldForm({
   onStationChange,
   showAddAnother,
   onAddAnotherChange,
-  isDarkMode = true,
+  isDarkMode: _isDarkMode = true,
 }: HoldFormProps) {
-  const theme = getTheme(isDarkMode);
   const [duration, setDuration] = useState<HoldDuration>("24h");
   const [startTime, setStartTime] = useState<string>("08:00");
   const [isVoluntary, setIsVoluntary] = useState(false);
@@ -80,37 +75,29 @@ export function HoldForm({
     
     return (
       <div>
-        <h3
-          className={`${visualHeadings.subtitleMedium} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
-        >
+        <h3 className="text-lg font-semibold text-foreground mb-4">
           Select Firefighter:
         </h3>
 
         {/* Next in rotation - highlighted */}
         {nextInRotation && (
-          <div className={tokens.spacing.margin.md}>
-            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mb-2 font-semibold`}>
+          <div className="mb-4">
+            <p className="text-sm text-muted-foreground mb-2 font-semibold">
               NEXT IN ROTATION:
             </p>
             <button
               onClick={() => onFirefighterSelect(nextInRotation)}
-              className={`
-                w-full text-left
-                ${tokens.spacing.section.md}
-                ${tokens.borders.radius.lg}
-                border-2
-                ${isDarkMode ? 'border-blue-500 bg-blue-950/40' : 'border-blue-500 bg-blue-50'}
-                hover:opacity-80
-                ${tokens.transitions.fast}
-              `}
+              className="
+                w-full text-left p-3 rounded-lg border-2
+                border-blue-500 bg-blue-950/40 dark:bg-blue-950/40
+                hover:opacity-80 transition-all duration-200
+              "
             >
-              <div className={`font-bold ${theme.textPrimary} flex items-center gap-2`}>
+              <div className="font-bold text-foreground flex items-center gap-2">
                 <span className="text-xl">⭐</span>
                 {nextInRotation.name}
               </div>
-              <div
-                className={`${tokens.typography.body.small} ${theme.textSecondary}`}
-              >
+              <div className="text-sm text-muted-foreground">
                 Position: {nextInRotation.order_position + 1}
                 {nextInRotation.fire_station && ` • Station ${nextInRotation.fire_station}`}
               </div>
@@ -124,14 +111,11 @@ export function HoldForm({
                     onSkipFirefighter?.(nextInRotation.id);
                   }
                 }}
-                className={`
-                  w-full mt-2
-                  ${tokens.spacing.section.sm}
-                  ${tokens.borders.radius.lg}
-                  ${colors.components.button.secondary}
-                  font-semibold
-                  text-sm
-                `}
+                className="
+                  w-full mt-2 px-3 py-2 rounded-lg
+                  bg-secondary hover:bg-secondary/80 text-secondary-foreground
+                  font-semibold text-sm transition-colors
+                "
               >
                 Skip to Next Person
               </button>
@@ -142,33 +126,24 @@ export function HoldForm({
         {/* Rest of the list */}
         {availableFirefighters.length > 1 && (
           <>
-            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mt-6 mb-2 font-semibold`}>
+            <p className="text-sm text-muted-foreground mt-6 mb-2 font-semibold">
               OR SELECT SOMEONE ELSE:
             </p>
-            <div
-              className={`space-y-2 max-h-64 overflow-y-auto ${tokens.spacing.margin.lg}`}
-            >
+            <div className="space-y-2 max-h-64 overflow-y-auto mb-6">
               {availableFirefighters.slice(1).map((ff) => (
                 <button
                   key={ff.id}
                   onClick={() => onFirefighterSelect(ff)}
-                  className={`
-                    w-full text-left
-                    ${tokens.spacing.section.md}
-                    ${tokens.borders.radius.lg}
-                    border-2
-                    ${theme.modal.border}
-                    ${theme.modal.background}
-                    hover:opacity-80
-                    ${tokens.transitions.fast}
-                  `}
+                  className="
+                    w-full text-left p-3 rounded-lg border-2
+                    border-border bg-card hover:opacity-80
+                    transition-all duration-200
+                  "
                 >
-                  <div className={`font-medium ${theme.textPrimary}`}>
+                  <div className="font-medium text-foreground">
                     {ff.name}
                   </div>
-                  <div
-                    className={`${tokens.typography.body.small} ${theme.textSecondary}`}
-                  >
+                  <div className="text-sm text-muted-foreground">
                     Position: {ff.order_position + 1}
                     {ff.fire_station && ` • Station ${ff.fire_station}`}
                   </div>
@@ -179,23 +154,18 @@ export function HoldForm({
         )}
 
         {availableFirefighters.length === 0 && (
-          <p
-            className={`${tokens.typography.body.secondary} ${theme.textSecondary} text-center py-8`}
-          >
+          <p className="text-sm text-muted-foreground text-center py-8">
             No available firefighters
           </p>
         )}
 
         <button
           onClick={onCancel}
-          className={`
-            w-full
-            mt-4
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${colors.components.button.secondary}
-            font-semibold
-          `}
+          className="
+            w-full mt-4 px-3 py-2 rounded-lg
+            bg-secondary hover:bg-secondary/80 text-secondary-foreground
+            font-semibold transition-colors
+          "
         >
           Cancel
         </button>
@@ -206,18 +176,14 @@ export function HoldForm({
   // Hold details form
   return (
     <div>
-      <h3
-        className={`${visualHeadings.subtitleMedium} ${theme.textPrimary} ${tokens.spacing.margin.md}`}
-      >
+      <h3 className="text-lg font-semibold text-foreground mb-4">
         Scheduling: {selectedFirefighter.name}
       </h3>
 
       <div className="space-y-4">
         {/* Station selector */}
-        <div className="p-3 rounded-lg border-2 border-blue-500/30 dark:border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20">
-          <label
-            className={`block font-semibold ${theme.textPrimary} mb-2 text-base flex items-center gap-2`}
-          >
+        <div className="p-3 rounded-lg border-2 border-blue-500/30 bg-blue-50/50 dark:bg-blue-950/20">
+          <label className="block font-semibold text-foreground mb-2 text-base flex items-center gap-2">
             <span className="text-xl">🏢</span>
             Hold Station
             <span className="text-red-500">*</span>
@@ -230,20 +196,17 @@ export function HoldForm({
 
         {/* Duration selector */}
         <div>
-          <label
-            className={`block ${tokens.typography.body.secondary} ${theme.textSecondary} mb-2`}
-          >
+          <label className="block text-sm text-muted-foreground mb-2">
             Duration
           </label>
           <select
             value={duration}
             onChange={(e) => setDuration(e.target.value as HoldDuration)}
-            className={`
-              w-full
-              ${tokens.spacing.section.sm}
-              ${tokens.borders.radius.lg}
-              ${colors.components.input.default}
-            `}
+            className="
+              w-full px-3 py-2 rounded-lg
+              bg-input border border-input text-foreground
+              focus:outline-none focus:ring-2 focus:ring-ring
+            "
           >
             <option value="12h">12 hours</option>
             <option value="24h">24 hours</option>
@@ -252,38 +215,35 @@ export function HoldForm({
 
         {/* Start time */}
         <div>
-          <label
-            className={`block ${tokens.typography.body.secondary} ${theme.textSecondary} mb-2`}
-          >
+          <label className="block text-sm text-muted-foreground mb-2">
             Start Time
           </label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            className={`
-              w-full
-              ${tokens.spacing.section.sm}
-              ${tokens.borders.radius.lg}
-              ${colors.components.input.default}
-            `}
+            className="
+              w-full px-3 py-2 rounded-lg
+              bg-input border border-input text-foreground
+              focus:outline-none focus:ring-2 focus:ring-ring
+            "
           />
         </div>
 
         {/* Voluntary hold checkbox */}
-        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-green-500/30 dark:border-green-500/30 bg-green-50/50 dark:bg-green-950/20">
+        <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-green-500/30 bg-green-50/50 dark:bg-green-950/20">
           <input
             type="checkbox"
             checked={isVoluntary}
             onChange={(e) => setIsVoluntary(e.target.checked)}
-            className="w-5 h-5 rounded border-slate-600 text-green-600 focus:ring-green-500"
+            className="w-5 h-5 rounded border-border text-green-600 focus:ring-green-500"
           />
           <div className="flex-1">
-            <span className={`${tokens.typography.body.secondary} ${theme.textPrimary} font-semibold flex items-center gap-2`}>
+            <span className="text-sm text-foreground font-semibold flex items-center gap-2">
               <span className="text-xl">🙋</span>
               Mark as Voluntary Hold
             </span>
-            <p className={`${tokens.typography.body.small} ${theme.textSecondary} mt-0.5`}>
+            <p className="text-xs text-muted-foreground mt-0.5">
               Member volunteered for this hold (will move to end of rotation)
             </p>
           </div>
@@ -295,39 +255,33 @@ export function HoldForm({
             type="checkbox"
             checked={showAddAnother}
             onChange={(e) => onAddAnotherChange(e.target.checked)}
-            className="w-4 h-4 rounded border-slate-600"
+            className="w-4 h-4 rounded border-border"
           />
-          <span
-            className={`${tokens.typography.body.secondary} ${theme.textSecondary}`}
-          >
+          <span className="text-sm text-muted-foreground">
             Add another hold after this
           </span>
         </label>
 
         {/* Action buttons */}
-        <div className={`flex gap-3 ${tokens.spacing.margin.lg}`}>
+        <div className="flex gap-3 mt-6">
           <button
             onClick={onCancel}
-            className={`
-              flex-1
-              ${tokens.spacing.section.md}
-              ${tokens.borders.radius.lg}
-              ${colors.components.button.secondary}
-              font-semibold
-            `}
+            className="
+              flex-1 px-3 py-2 rounded-lg
+              bg-secondary hover:bg-secondary/80 text-secondary-foreground
+              font-semibold transition-colors
+            "
           >
             Back
           </button>
           <button
             onClick={handleConfirm}
-            className={`
-              flex-1
-              ${tokens.spacing.section.md}
-              ${tokens.borders.radius.lg}
-              ${colors.components.button.primary}
-              font-semibold
-              ${!selectedStation ? "opacity-50 cursor-not-allowed" : ""}
-            `}
+            className="
+              flex-1 px-3 py-2 rounded-lg
+              bg-primary hover:bg-primary/90 text-primary-foreground
+              font-semibold transition-colors
+              disabled:opacity-50 disabled:cursor-not-allowed
+            "
             disabled={!selectedStation}
           >
             Confirm

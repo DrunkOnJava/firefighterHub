@@ -1,7 +1,5 @@
 import {
   ArrowLeft,
-  // CheckCircle, // Removed - Completed Holds metric removed per user feedback
-  // Clock, // Removed - Avg Duration metric removed per user feedback
   Building2,
   Calendar,
   Download,
@@ -9,8 +7,9 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Firefighter, supabase } from "../lib/supabase";
-import { colors, tokens, visualHeadings, gridUtilities } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
+import { Button } from "./ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
 import {
   // calculateHoldsByStation, // Removed - not used
   calculateHoldsByShift,
@@ -27,14 +26,12 @@ import { MetricCard } from "./MetricCard";
 interface ReportsProps {
   firefighters: Firefighter[];
   holds: ScheduledHold[];
-  isDarkMode: boolean;
   onNavigate?: (view: "calendar" | "reports") => void;
 }
 
 export function Reports({
   firefighters,
   holds,
-  isDarkMode,
   onNavigate,
 }: ReportsProps) {
   const [dateRange, setDateRange] = useState<{
@@ -186,248 +183,120 @@ export function Reports({
   };
 
   return (
-    <div
-      className={`
-        min-h-screen ${tokens.spacing.card.xl}
-        ${tokens.transitions.fast}
-        ${isDarkMode ? colors.structural.bg.app : "bg-slate-50"}
-      `}
-    >
+    <div className="min-h-screen p-6 bg-background text-foreground">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div
-          className={`${tokens.spacing.margin.xl} flex items-center justify-between`}
-        >
+        <div className="mb-6 flex items-center justify-between">
           <div>
-            <h2
-              className={`
-                ${tokens.typography.heading.h2}
-                ${tokens.spacing.margin.sm}
-                ${isDarkMode ? colors.structural.text.primary : "text-slate-900"}
-              `}
-            >
+            <h2 className="text-3xl font-bold mb-2 text-foreground">
               Fire Department Hold Rotation Analytics
             </h2>
-            <p
-              className={
-                isDarkMode ? colors.structural.text.secondary : "text-gray-600"
-              }
-            >
+            <p className="text-muted-foreground">
               Comprehensive analytics for hold management
             </p>
           </div>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+          <div className="flex items-center gap-3">
             {onNavigate && (
-              <button
+              <Button
                 onClick={() => onNavigate("calendar")}
-                className={`
-                  flex items-center ${tokens.spacing.gap.sm}
-                  ${tokens.spacing.card.md}
-                  ${colors.interactive.button.default}
-                  ${colors.interactive.hover.bg}
-                  text-white
-                  ${tokens.borders.radius.lg}
-                  ${tokens.transitions.fast}
-                  focus-ring
-                `}
+                variant="default"
+                size="default"
                 title="Return to Calendar"
               >
-                <ArrowLeft className={tokens.icons.sm} />
-                <span className="hidden sm:inline">Back</span>
-              </button>
+                <ArrowLeft className="h-4 w-4" />
+                <span className="hidden sm:inline ml-2">Back</span>
+              </Button>
             )}
-            <button
+            <Button
               onClick={handleExportCSV}
-              className={`
-                flex items-center ${tokens.spacing.gap.sm}
-                ${tokens.spacing.card.md}
-                ${colors.semantic.scheduled.gradient}
-                ${colors.semantic.scheduled.hover}
-                text-white
-                ${tokens.borders.radius.lg}
-                ${tokens.transitions.fast}
-                focus-ring
-              `}
+              variant="default"
+              size="default"
             >
-              <Download className={tokens.icons.sm} />
-              <span className="hidden sm:inline">Export</span>
-            </button>
+              <Download className="h-4 w-4" />
+              <span className="hidden sm:inline ml-2">Export</span>
+            </Button>
           </div>
         </div>
 
         {/* Date Range Filter */}
-        <div
-          className={`
-            border ${tokens.borders.radius.lg}
-            ${tokens.spacing.card.md}
-            ${tokens.spacing.margin.xl}
-            ${
-              isDarkMode
-                ? `${colors.structural.bg.card} ${colors.structural.border.default}`
-                : "bg-white border-slate-200"
-            }
-          `}
-        >
-          <div className="flex items-center gap-4 flex-wrap">
-            <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
-              <Filter
-                className={`${tokens.icons.sm} ${
-                  isDarkMode
-                    ? colors.structural.text.secondary
-                    : "text-gray-600"
-                }`}
-              />
-              <span
-                className={`
-                  ${tokens.typography.weight.medium}
-                  ${
-                    isDarkMode
-                      ? colors.structural.text.primary
-                      : "text-slate-900"
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="font-medium text-foreground">
+                  Date Range Filter:
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-muted-foreground text-sm">From:</label>
+                <input
+                  type="date"
+                  value={dateRange.start}
+                  onChange={(e) =>
+                    setDateRange({ ...dateRange, start: e.target.value })
                   }
-                `}
-              >
-                Date Range Filter:
-              </span>
-            </div>
-            <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
-              <label
-                className={
-                  isDarkMode
-                    ? colors.structural.text.secondary
-                    : "text-gray-600"
-                }
-              >
-                From:
-              </label>
-              <input
-                type="date"
-                value={dateRange.start}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, start: e.target.value })
-                }
-                className={`
-                  px-3 py-1 border ${tokens.borders.radius.md}
-                  focus-ring
-                  ${
-                    isDarkMode
-                      ? `${colors.components.input.default}`
-                      : "bg-white border-slate-300 text-slate-900"
+                  className="px-3 py-1 border rounded-md bg-background text-foreground border-input focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-muted-foreground text-sm">To:</label>
+                <input
+                  type="date"
+                  value={dateRange.end}
+                  onChange={(e) =>
+                    setDateRange({ ...dateRange, end: e.target.value })
                   }
-                `}
-              />
-            </div>
-            <div className={`flex items-center ${tokens.spacing.gap.sm}`}>
-              <label
-                className={
-                  isDarkMode
-                    ? colors.structural.text.secondary
-                    : "text-gray-600"
-                }
+                  className="px-3 py-1 border rounded-md bg-background text-foreground border-input focus:outline-none focus:ring-2 focus:ring-ring"
+                />
+              </div>
+              <Button
+                onClick={() => setFilterActive(!filterActive)}
+                variant={filterActive ? "default" : "secondary"}
+                size="sm"
               >
-                To:
-              </label>
-              <input
-                type="date"
-                value={dateRange.end}
-                onChange={(e) =>
-                  setDateRange({ ...dateRange, end: e.target.value })
-                }
-                className={`
-                  px-3 py-1 border ${tokens.borders.radius.md}
-                  focus-ring
-                  ${
-                    isDarkMode
-                      ? `${colors.components.input.default}`
-                      : "bg-white border-slate-300 text-slate-900"
-                  }
-                `}
-              />
+                {filterActive ? "Filter Active" : "Apply Filter"}
+              </Button>
+              {filterActive && (
+                <Button
+                  onClick={() => {
+                    setFilterActive(false);
+                    setDateRange({ start: "", end: "" });
+                  }}
+                  variant="secondary"
+                  size="sm"
+                >
+                  Clear Filter
+                </Button>
+              )}
             </div>
-            <button
-              onClick={() => setFilterActive(!filterActive)}
-              className={`
-                ${tokens.spacing.card.md}
-                ${tokens.borders.radius.md}
-                ${tokens.transitions.fast}
-                focus-ring
-                ${
-                  filterActive
-                    ? `${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white`
-                    : `${colors.interactive.button.default} ${colors.interactive.hover.bg} text-white`
-                }
-              `}
-            >
-              {filterActive ? "Filter Active" : "Apply Filter"}
-            </button>
-            {filterActive && (
-              <button
-                onClick={() => {
-                  setFilterActive(false);
-                  setDateRange({ start: "", end: "" });
-                }}
-                className={`
-                  ${tokens.spacing.card.md}
-                  ${colors.interactive.button.default}
-                  ${colors.interactive.hover.bg}
-                  text-white
-                  ${tokens.borders.radius.md}
-                  ${tokens.transitions.fast}
-                  focus-ring
-                `}
-              >
-                Clear Filter
-              </button>
-            )}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Summary Metric Cards */}
-        <div className={`${gridUtilities.form.responsiveGrid2} mb-6`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <MetricCard
             title="Total Holds"
             value={filteredHolds.length}
             subtitle="All scheduled holds"
             icon={Calendar}
-            isDarkMode={isDarkMode}
             colorClass="blue"
           />
-          {/* REMOVED: Completed Holds metric per user feedback */}
-          {/* REMOVED: Avg Duration metric per user feedback */}
           <MetricCard
             title="Top Station"
             value={topStation?.station || "N/A"}
             subtitle={`${topStation?.count || 0} total holds`}
             icon={Building2}
-            isDarkMode={isDarkMode}
             colorClass="green"
           />
-          {/* REMOVED: 12h vs 24h Holds metric per user feedback */}
         </div>
 
         {/* Shift Breakdown */}
-        <div
-          className={`
-            border ${tokens.borders.radius.lg}
-            ${tokens.spacing.card.xl}
-            ${tokens.spacing.margin.xl}
-            ${
-              isDarkMode
-                ? `${colors.structural.bg.card} ${colors.structural.border.default}`
-                : "bg-white border-slate-200"
-            }
-          `}
-        >
-          <h2
-            className={`
-              ${tokens.typography.heading.h2}
-              ${tokens.spacing.margin.lg}
-              ${isDarkMode ? colors.structural.text.primary : "text-slate-900"}
-            `}
-          >
-            Holds by Shift
-          </h2>
-          <div className="space-y-4">
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Holds by Shift</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
             {(["A", "B", "C"] as const).map((shift) => {
               const count = shiftStats[shift];
               const total = shiftStats.A + shiftStats.B + shiftStats.C;
@@ -436,58 +305,20 @@ export function Reports({
               return (
                 <div key={shift} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span
-                      className={`
-                        ${visualHeadings.subtitleMedium}
-                        ${
-                          isDarkMode
-                            ? colors.structural.text.primary
-                            : "text-slate-900"
-                        }
-                      `}
-                    >
+                    <span className="text-sm font-medium text-foreground">
                       Shift {shift}
                     </span>
-                    <span
-                      className={`
-                        ${visualHeadings.metricLarge}
-                        ${
-                          isDarkMode
-                            ? colors.structural.text.primary
-                            : "text-slate-900"
-                        }
-                      `}
-                    >
+                    <span className="text-2xl font-bold text-foreground">
                       {count}
                     </span>
                   </div>
-                  <div
-                    className={`
-                      w-full ${tokens.borders.radius.full} h-6 overflow-hidden
-                      ${
-                        isDarkMode
-                          ? colors.structural.bg.surface
-                          : "bg-gray-200"
-                      }
-                    `}
-                  >
+                  <div className="w-full rounded-full h-6 overflow-hidden bg-secondary">
                     <div
-                      className={`
-                        h-6 ${tokens.borders.radius.full}
-                        ${tokens.transitions.fast}
-                        flex items-center justify-end pr-2
-                        ${colors.semantic.scheduled.solid}
-                      `}
+                      className="h-6 rounded-full transition-all duration-200 flex items-center justify-end pr-2 bg-primary"
                       style={{ width: `${percentage}%` }}
                     >
                       {percentage > 15 && (
-                        <span
-                          className={`
-                            ${tokens.typography.body.small}
-                            ${tokens.typography.weight.semibold}
-                            text-white
-                          `}
-                        >
+                        <span className="text-xs font-semibold text-primary-foreground">
                           {percentage.toFixed(0)}%
                         </span>
                       )}
@@ -496,140 +327,54 @@ export function Reports({
                 </div>
               );
             })}
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
         {/* Per-Firefighter Metrics Table */}
-        <div
-          className={`
-            border ${tokens.borders.radius.lg}
-            ${tokens.spacing.card.xl}
-            ${
-              isDarkMode
-                ? `${colors.structural.bg.card} ${colors.structural.border.default}`
-                : "bg-white border-slate-200"
-            }
-          `}
-        >
-          <h2
-            className={`
-              ${tokens.typography.heading.h2}
-              ${tokens.spacing.margin.lg}
-              ${isDarkMode ? colors.structural.text.primary : "text-slate-900"}
-            `}
-          >
-            Holds Per Firefighter
-          </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr
-                  className={
-                    isDarkMode ? colors.structural.bg.surface : "bg-slate-100"
-                  }
-                >
-                  <th
-                    className={`
-                      ${tokens.spacing.section.lg} text-left
-                      ${
-                        isDarkMode
-                          ? colors.structural.text.primary
-                          : "text-slate-900"
-                      }
-                    `}
-                  >
-                    Name
-                  </th>
-                  <th
-                    className={`
-                      ${tokens.spacing.section.lg} text-right
-                      ${
-                        isDarkMode
-                          ? colors.structural.text.primary
-                          : "text-slate-900"
-                      }
-                    `}
-                  >
-                    Total Holds
-                  </th>
-                  <th
-                    className={`
-                      ${tokens.spacing.section.lg} text-right
-                      ${
-                        isDarkMode
-                          ? colors.structural.text.primary
-                          : "text-slate-900"
-                      }
-                    `}
-                  >
-                    Avg Interval (days)
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {metrics.map((m, index) => (
-                  <tr
-                    key={m.firefighterId}
-                    className={`
-                      border-b
-                      ${
-                        index % 2 === 0
-                          ? isDarkMode
-                            ? colors.structural.bg.card
-                            : "bg-white"
-                          : isDarkMode
-                          ? colors.structural.bg.surface
-                          : "bg-slate-50"
-                      }
-                      ${
-                        isDarkMode
-                          ? colors.structural.border.default
-                          : "border-slate-200"
-                      }
-                    `}
-                  >
-                    <td
-                      className={`
-                        ${tokens.spacing.section.lg}
-                        ${
-                          isDarkMode
-                            ? colors.structural.text.primary
-                            : "text-slate-900"
-                        }
-                      `}
-                    >
-                      {m.name}
-                    </td>
-                    <td
-                      className={`
-                        ${tokens.spacing.section.lg} text-right
-                        ${
-                          isDarkMode
-                            ? colors.structural.text.primary
-                            : "text-slate-900"
-                        }
-                      `}
-                    >
-                      {m.totalHolds}
-                    </td>
-                    <td
-                      className={`
-                        ${tokens.spacing.section.lg} text-right
-                        ${
-                          isDarkMode
-                            ? colors.structural.text.primary
-                            : "text-slate-900"
-                        }
-                      `}
-                    >
-                      {m.averageIntervalDays || "N/A"}
-                    </td>
+        <Card>
+          <CardHeader>
+            <CardTitle>Holds Per Firefighter</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-secondary">
+                    <th className="px-4 py-3 text-left text-foreground font-semibold">
+                      Name
+                    </th>
+                    <th className="px-4 py-3 text-right text-foreground font-semibold">
+                      Total Holds
+                    </th>
+                    <th className="px-4 py-3 text-right text-foreground font-semibold">
+                      Avg Interval (days)
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+                </thead>
+                <tbody>
+                  {metrics.map((m, index) => (
+                    <tr
+                      key={m.firefighterId}
+                      className={`border-b border-border ${
+                        index % 2 === 0 ? "bg-card" : "bg-secondary"
+                      }`}
+                    >
+                      <td className="px-4 py-3 text-foreground whitespace-nowrap">
+                        {m.name}
+                      </td>
+                      <td className="px-4 py-3 text-right text-foreground whitespace-nowrap">
+                        {m.totalHolds}
+                      </td>
+                      <td className="px-4 py-3 text-right text-foreground whitespace-nowrap">
+                        {m.averageIntervalDays || "N/A"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

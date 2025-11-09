@@ -7,8 +7,6 @@
  * - Day header with date
  * - Conditional rendering: HoldList OR HoldForm
  * - Focus trap and keyboard handling (Escape key)
- *
- * Uses design tokens for consistent styling.
  */
 
 import { X } from "lucide-react";
@@ -16,9 +14,7 @@ import { useState } from "react";
 import { useFocusReturn } from "../../hooks/useFocusReturn";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { Firefighter, HoldDuration, Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
 import { CalendarDay, ScheduledHold } from "../../utils/calendarUtils";
-import { getTheme } from "../../utils/theme";
 import { HoldForm } from "./HoldForm";
 import { HoldList } from "./HoldList";
 
@@ -57,9 +53,8 @@ export function DayModal({
   onMarkCompleted,
   onSkipFirefighter,
   isAdminMode = false,
-  isDarkMode = true,
+  isDarkMode: _isDarkMode = true,
 }: DayModalProps) {
-  const theme = getTheme(isDarkMode);
   const [selectedStation, setSelectedStation] = useState<string>("");
   const [showAddAnother, setShowAddAnother] = useState(false);
 
@@ -111,12 +106,7 @@ export function DayModal({
 
   return (
     <div
-      className={`
-        fixed inset-0
-        ${tokens.zIndex.modal}
-        flex items-end sm:items-center justify-center
-        ${tokens.spacing.card.md}
-      `}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
       onClick={handleClose}
       role="dialog"
       aria-modal="true"
@@ -124,42 +114,29 @@ export function DayModal({
     >
       {/* Backdrop */}
       <div
-        className={`absolute inset-0 ${theme.confirmDialog.overlay}`}
+        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
         aria-hidden="true"
       />
 
       {/* Modal */}
       <div
         ref={modalTrapRef}
-        className={`
-          relative
-          ${theme.modal.background}
-          ${theme.modal.border}
-          border-2
-          ${tokens.shadows['2xl']}
-          ${tokens.borders.radius.xl}
-          max-w-md w-full
-          max-h-[90vh]
-          overflow-hidden
-          flex flex-col
-        `}
+        className="
+          relative bg-card border-2 border-border
+          shadow-2xl rounded-xl max-w-md w-full
+          max-h-[90vh] overflow-hidden flex flex-col
+        "
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div
-          className={`
-          ${theme.calendar.headerBackground}
-          border-b-2
-          ${theme.cardBorder}
-          ${tokens.spacing.card.lg}
-          flex items-center justify-between
-          sticky top-0 z-10
-        `}
-        >
+        <div className="
+          bg-muted border-b-2 border-border p-6
+          flex items-center justify-between sticky top-0 z-10
+        ">
           <div>
             <h3
               id="day-modal-title"
-              className={`${tokens.typography.heading.h3} ${theme.textPrimary}`}
+              className="text-xl font-bold text-foreground"
             >
               {selectedDay.date.toLocaleDateString("en-US", {
                 weekday: "long",
@@ -167,17 +144,13 @@ export function DayModal({
                 day: "numeric",
               })}
               {isPastDate && (
-                <span
-                  className={`ml-2 px-2 py-1 ${tokens.typography.body.small} bg-amber-900/70 text-amber-200 ${tokens.borders.radius.sm} font-semibold`}
-                >
+                <span className="ml-2 px-2 py-1 text-xs bg-amber-900/70 text-amber-200 rounded font-semibold">
                   PAST DATE
                 </span>
               )}
             </h3>
             {hasHolds && !showAddAnother && (
-              <p
-                className={`${tokens.typography.body.secondary} ${theme.textSecondary} mt-1`}
-              >
+              <p className="text-sm text-muted-foreground mt-1">
                 {selectedDay.scheduledHolds.length} hold
                 {selectedDay.scheduledHolds.length !== 1 ? "s" : ""} scheduled
               </p>
@@ -185,23 +158,19 @@ export function DayModal({
           </div>
           <button
             onClick={handleClose}
-            className={`
-              ${tokens.spacing.section.sm}
-              ${tokens.touchTarget.min}
-              ${tokens.borders.radius.lg}
-              ${theme.modal.background}
-              hover:opacity-80
-              ${tokens.transitions.fast}
-              flex items-end sm:items-center justify-center
-            `}
+            className="
+              p-2 min-h-[44px] min-w-[44px] rounded-lg
+              bg-card hover:opacity-80 transition-all duration-200
+              flex items-center justify-center
+            "
             aria-label="Close date dialog"
           >
-            <X className={`${tokens.icons.lg} ${theme.textTertiary}`} />
+            <X className="w-6 h-6 text-muted-foreground" />
           </button>
         </div>
 
         {/* Content */}
-        <div className={`${tokens.spacing.card.lg} overflow-y-auto`}>
+        <div className="p-6 overflow-y-auto">
           {hasHolds && !showAddAnother && !selectedFirefighter ? (
             <HoldList
               holds={selectedDay.scheduledHolds}
@@ -211,7 +180,7 @@ export function DayModal({
               onEdit={() => {}} // TODO: Implement hold editing
               onAddNew={handleAddNewClick}
               isAdminMode={isAdminMode}
-              isDarkMode={isDarkMode}
+              isDarkMode={_isDarkMode}
             />
           ) : (
             <HoldForm
@@ -226,7 +195,7 @@ export function DayModal({
               onStationChange={setSelectedStation}
               showAddAnother={showAddAnother}
               onAddAnotherChange={setShowAddAnother}
-              isDarkMode={isDarkMode}
+              isDarkMode={_isDarkMode}
             />
           )}
         </div>

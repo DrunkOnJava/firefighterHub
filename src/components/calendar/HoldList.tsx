@@ -6,8 +6,6 @@
  * - Action buttons (Edit, Delete, Mark Complete) - admin only
  * - Lock indicator for holds >1 week old
  * - Empty state when no holds exist
- *
- * Uses design tokens for consistent styling.
  */
 
 import {
@@ -19,7 +17,6 @@ import {
   Trash2,
 } from "lucide-react";
 import { Firefighter } from "../../lib/supabase";
-import { colors, tokens, visualHeadings } from "../../styles";
 import { ScheduledHold } from "../../utils/calendarUtils";
 import { isHoldLocked } from "../../utils/validation";
 import { EmptyState } from "../EmptyState";
@@ -41,13 +38,13 @@ export function HoldList({
   onMarkCompleted,
   onAddNew,
   isAdminMode = false,
-  isDarkMode = true,
+  isDarkMode: _isDarkMode = true,
 }: HoldListProps) {
   if (holds.length === 0) {
     return (
       <div>
         <EmptyState
-          icon={<Calendar className={`${tokens.icons.xl} ${colors.structural.text.tertiary}`} />}
+          icon={<Calendar className="w-16 h-16 text-muted-foreground" />}
           title="No holds scheduled"
           description="Click 'Add Hold' below to schedule someone"
         />
@@ -55,17 +52,14 @@ export function HoldList({
         {isAdminMode && (
           <button
             onClick={onAddNew}
-            className={`
-              w-full
-              ${tokens.spacing.margin.lg}
-              ${tokens.spacing.section.md}
-              ${tokens.borders.radius.lg}
-              ${colors.components.button.primary}
-              font-semibold
+            className="
+              w-full mt-6 px-3 py-2 rounded-lg
+              bg-primary hover:bg-primary/90 text-primary-foreground
+              font-semibold transition-colors
               flex items-center justify-center gap-2
-            `}
+            "
           >
-            <Plus className={tokens.icons.md} />
+            <Plus className="w-5 h-5" />
             Add Hold
           </button>
         )}
@@ -75,7 +69,7 @@ export function HoldList({
 
   return (
     <div>
-      <div className={`space-y-3 ${tokens.spacing.margin.lg}`}>
+      <div className="space-y-3 mb-6">
         {holds.map((hold) => {
           const locked = isHoldLocked(hold);
 
@@ -83,54 +77,29 @@ export function HoldList({
             <div
               key={hold.id}
               className={`
-                ${colors.components.hold.border}
-                ${
-                  colors.components.hold[
-                    hold.status as "scheduled" | "completed"
-                  ]
-                }
-                ${tokens.borders.radius.lg}
-                ${tokens.spacing.card.md}
+                border-2 rounded-lg p-4
                 ${
                   hold.status === "scheduled"
-                    ? "border-l-blue-500"
-                    : "border-l-emerald-500"
+                    ? "bg-blue-950/20 dark:bg-blue-950/20 border-blue-500/30 border-l-blue-500"
+                    : "bg-green-950/20 dark:bg-green-950/20 border-green-500/30 border-l-emerald-500"
                 }
               `}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p
-                    className={`${visualHeadings.subtitleMedium} ${
-                      isDarkMode
-                        ? colors.structural.text.primary
-                        : "text-slate-900"
-                    }`}
-                  >
+                  <p className="text-lg font-semibold text-foreground">
                     {hold.firefighter_name}
                   </p>
 
                   {hold.fire_station && (
-                    <p
-                      className={`${tokens.typography.body.secondary} ${
-                        isDarkMode
-                          ? colors.structural.text.secondary
-                          : "text-gray-600"
-                      } mt-1 font-semibold`}
-                    >
+                    <p className="text-sm text-muted-foreground mt-1 font-semibold">
                       Station #{hold.fire_station}
                     </p>
                   )}
 
                   {hold.duration && (
-                    <p
-                      className={`${tokens.typography.body.small} ${
-                        isDarkMode
-                          ? colors.structural.text.tertiary
-                          : "text-slate-500"
-                      } mt-1 flex items-center gap-1`}
-                    >
-                      <Clock className={tokens.icons.xs} />
+                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
                       {hold.duration === "12h" ? "12 Hour" : "24 Hour"} Hold
                       {hold.start_time && ` • Starts ${hold.start_time}`}
                     </p>
@@ -139,10 +108,7 @@ export function HoldList({
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
                     <span
                       className={`
-                        inline-block px-2 py-1
-                        ${tokens.borders.radius.sm}
-                        ${tokens.typography.body.small}
-                        font-bold
+                        inline-block px-2 py-1 rounded text-xs font-bold
                         ${
                           hold.status === "scheduled"
                             ? "bg-sky-900/70 text-sky-300"
@@ -155,7 +121,7 @@ export function HoldList({
 
                     {hold.is_voluntary && (
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-1 bg-green-900/70 text-green-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-green-900/70 text-green-200 text-xs font-bold rounded"
                         title="Member volunteered for this hold"
                       >
                         <span>🙋</span>
@@ -164,10 +130,8 @@ export function HoldList({
                     )}
 
                     {locked && (
-                      <span
-                        className={`inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 ${tokens.typography.body.small} font-bold ${tokens.borders.radius.sm}`}
-                      >
-                        <Lock className={tokens.icons.xs} />
+                      <span className="inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 text-xs font-bold rounded">
+                        <Lock className="w-3 h-3" />
                       </span>
                     )}
                   </div>
@@ -176,30 +140,21 @@ export function HoldList({
 
               {/* Action buttons */}
               {isAdminMode && (
-                <div
-                  className={`flex gap-2 pt-3 border-t ${
-                    isDarkMode ? "border-slate-700" : "border-slate-200"
-                  }`}
-                >
+                <div className="flex gap-2 pt-3 border-t border-border">
                   {/* Complete Button: For 'scheduled' holds */}
                   {hold.status === "scheduled" && (
                     <button
                       onClick={() => onMarkCompleted(hold)}
-                      className={`
-                        flex-1
-                        ${colors.components.button.success}
-                        ${tokens.spacing.section.sm}
-                        px-3
-                        ${tokens.borders.radius.lg}
-                        font-semibold
+                      className="
+                        flex-1 px-3 py-2 rounded-lg
+                        bg-green-600 hover:bg-green-700 text-white
+                        font-semibold transition-colors
                         flex items-center justify-center gap-2
-                      `}
+                      "
                       title="Mark as completed and move to end of rotation"
                     >
-                      <CheckCircle2 className={tokens.icons.sm} />
-                      <span className={tokens.typography.body.small}>
-                        Complete
-                      </span>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span className="text-xs">Complete</span>
                     </button>
                   )}
 
@@ -209,17 +164,13 @@ export function HoldList({
                       disabled={locked}
                       onClick={() => !locked && onRemove(hold.id)}
                       className={`
-                        flex-1
+                        flex-1 px-3 py-2 rounded-lg font-semibold transition-colors
+                        flex items-center justify-center gap-2
                         ${
                           locked
-                            ? "opacity-50 cursor-not-allowed"
-                            : colors.components.button.danger
+                            ? "opacity-50 cursor-not-allowed bg-destructive/50 text-destructive-foreground"
+                            : "bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                         }
-                        ${tokens.spacing.section.sm}
-                        px-3
-                        ${tokens.borders.radius.lg}
-                        font-semibold
-                        flex items-center justify-center gap-2
                       `}
                       title={
                         locked
@@ -230,13 +181,11 @@ export function HoldList({
                       }
                     >
                       {locked ? (
-                        <Lock className={tokens.icons.sm} />
+                        <Lock className="w-4 h-4" />
                       ) : (
                         <>
-                          <Trash2 className={tokens.icons.sm} />
-                          <span className={tokens.typography.body.small}>
-                            Cancel
-                          </span>
+                          <Trash2 className="w-4 h-4" />
+                          <span className="text-xs">Cancel</span>
                         </>
                       )}
                     </button>
@@ -252,17 +201,14 @@ export function HoldList({
       {isAdminMode && (
         <button
           onClick={onAddNew}
-          className={`
-            w-full
-            ${tokens.spacing.margin.lg}
-            ${tokens.spacing.section.md}
-            ${tokens.borders.radius.lg}
-            ${colors.components.button.primary}
-            font-semibold
+          className="
+            w-full mt-6 px-3 py-2 rounded-lg
+            bg-primary hover:bg-primary/90 text-primary-foreground
+            font-semibold transition-colors
             flex items-center justify-center gap-2
-          `}
+          "
         >
-          <Plus className={tokens.icons.md} />
+          <Plus className="w-5 h-5" />
           Add Another Hold
         </button>
       )}

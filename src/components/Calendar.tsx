@@ -17,7 +17,6 @@
 import { useState, useMemo } from "react";
 import { useDevice } from "../hooks/useDevice";
 import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
-import { colors, tokens } from "../styles";
 import {
   getMonthDays,
   attachScheduledHolds,
@@ -132,21 +131,12 @@ export function Calendar({
   }
 
   return (
-    <div
-      className={`
-        ${colors.structural.bg.card}
-        ${tokens.borders.radius.xl}
-        ${tokens.spacing.card.md}
-        border border-slate-700/20
-        ${tokens.shadows.sm}
-        overflow-hidden
-      `}
-    >
+    <div className="
+      bg-card rounded-xl p-4 border border-border/20
+      shadow-sm overflow-hidden
+    ">
       {/* Header section */}
-      <div className={`
-        border-b border-slate-700/10
-        ${tokens.spacing.section.md}
-      `}>
+      <div className="border-b border-border/10 pb-3">
         <CalendarHeader
           currentDate={currentDate}
           onPreviousMonth={goToPreviousMonth}
@@ -158,7 +148,7 @@ export function Calendar({
       </div>
 
       {/* Calendar grid section */}
-      <div className={`${tokens.spacing.card.md} w-full`}>
+      <div className="p-4 w-full">
         {device.isMobile ? (
           <MobileWeekView
             currentDate={currentDate}

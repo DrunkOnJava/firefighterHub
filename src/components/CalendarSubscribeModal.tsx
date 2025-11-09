@@ -11,9 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { colors, tokens, gridUtilities } from "../styles";
 import { IconButton } from "./ui/IconButton";
-import { visualHeading } from "../styles/visualHeadings";
 
 interface CalendarSubscribeModalProps {
   isOpen: boolean;
@@ -75,7 +73,7 @@ export function CalendarSubscribeModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 animate-fade-in"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -83,27 +81,23 @@ export function CalendarSubscribeModal({
     >
       <div
         ref={trapRef}
-        className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto ${tokens.borders.radius.lg} ${colors.components.modal.shadow} animate-scale-in ${colors.components.modal.background}`}
+        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl animate-scale-in bg-card"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div
-          className={`sticky top-0 z-10 flex items-center justify-between ${tokens.spacing.card.lg} border-b ${colors.structural.bg.surface} ${colors.structural.border.default}`}
-        >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`p-2 ${colors.semantic.warning.light} ${tokens.borders.radius.md}`}>
-              <Calendar className={`w-6 h-6 ${colors.semantic.warning.text}`} />
+        <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b bg-muted border-border">
+          <div className="flex items-center gap-4">
+            <div className="p-2 bg-orange-900/20 dark:bg-orange-900/20 rounded-md">
+              <Calendar className="w-6 h-6 text-orange-500" />
             </div>
             <div>
               <h2
                 id="calendar-subscribe-title"
-                className={visualHeading('h3', colors.structural.text.primary)}
+                className="text-2xl font-bold text-foreground"
               >
                 Subscribe to Calendar
               </h2>
-              <p
-                className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}
-              >
+              <p className="text-sm text-muted-foreground">
                 Get hold schedules automatically in your calendar app
               </p>
             </div>
@@ -119,14 +113,10 @@ export function CalendarSubscribeModal({
         </div>
 
         {/* Content */}
-        <div className={`${tokens.spacing.card.lg} space-y-6`}>
+        <div className="p-6 space-y-6">
           {/* How it works */}
-          <div
-            className={`${tokens.borders.radius.md} ${tokens.spacing.card.md} border ${colors.semantic.scheduled.light} ${colors.semantic.scheduled.border}`}
-          >
-            <h3
-              className={`font-semibold mb-3 ${colors.structural.text.primary}`}
-            >
+          <div className="rounded-md p-4 border bg-blue-950/20 dark:bg-blue-950/20 border-blue-500/30">
+            <h3 className="font-semibold mb-3 text-foreground">
               How it works
             </h3>
             <div className="space-y-2">
@@ -136,13 +126,9 @@ export function CalendarSubscribeModal({
                 "View holds alongside your personal appointments",
                 "Works with Google Calendar, Apple Calendar, Outlook, and more",
               ].map((item, index) => (
-                <div key={index} className={`flex items-start ${tokens.spacing.gap.sm}`}>
-                  <Check
-                    className={`w-4 h-4 mt-0.5 flex-shrink-0 ${colors.semantic.success.text}`}
-                  />
-                  <span
-                    className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}
-                  >
+                <div key={index} className="flex items-start gap-2">
+                  <Check className="w-4 h-4 mt-0.5 flex-shrink-0 text-green-500" />
+                  <span className="text-sm text-muted-foreground">
                     {item}
                   </span>
                 </div>
@@ -152,20 +138,18 @@ export function CalendarSubscribeModal({
 
           {/* Shift Selector */}
           <div>
-            <h3
-              className={`font-semibold mb-3 ${colors.structural.text.primary}`}
-            >
+            <h3 className="font-semibold mb-3 text-foreground">
               Select Schedule
             </h3>
-            <div className={gridUtilities.form.grid4Col}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {(["ALL", "A", "B", "C"] as const).map((shift) => (
                 <button
                   key={shift}
                   onClick={() => setSelectedShift(shift)}
-                  className={`px-4 py-3 ${tokens.borders.radius.md} font-medium transition-all ${
+                  className={`px-4 py-3 rounded-md font-medium transition-all ${
                     selectedShift === shift
-                      ? `${colors.semantic.warning.solid} text-white ring-2 ring-orange-500 ring-offset-2 ring-offset-gray-800`
-                      : `${colors.interactive.button.default} ${colors.structural.text.secondary} ${colors.interactive.hover.bg}`
+                      ? "bg-orange-600 text-white ring-2 ring-orange-500 ring-offset-2 ring-offset-background"
+                      : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                   }`}
                 >
                   {shift === "ALL" ? "All Shifts" : `Shift ${shift}`}
@@ -176,37 +160,27 @@ export function CalendarSubscribeModal({
 
           {/* Subscribe Now */}
           <div>
-            <h3
-              className={`font-semibold mb-3 ${colors.structural.text.primary}`}
-            >
+            <h3 className="font-semibold mb-3 text-foreground">
               Subscribe Now
             </h3>
 
             {/* iPhone & iPad */}
-            <div
-              className={`mb-4 ${tokens.borders.radius.md} border ${colors.structural.bg.surface} ${colors.structural.border.default}`}
-            >
-              <div className={tokens.spacing.card.md}>
-                <div className={`flex items-center ${tokens.spacing.gap.sm} mb-3`}>
-                  <Smartphone
-                    className={`w-5 h-5 ${colors.semantic.success.text}`}
-                  />
-                  <h4
-                    className={`font-semibold ${colors.structural.text.primary}`}
-                  >
+            <div className="mb-4 rounded-md border bg-muted border-border">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Smartphone className="w-5 h-5 text-green-500" />
+                  <h4 className="font-semibold text-foreground">
                     iPhone & iPad
                   </h4>
                 </div>
-                <ol
-                  className={`space-y-2 ${tokens.typography.body.secondary} mb-4 ${colors.structural.text.secondary}`}
-                >
+                <ol className="space-y-2 text-sm mb-4 text-muted-foreground">
                   <li>1. Click the button below to open Settings</li>
                   <li>2. Tap "Subscribe" to confirm</li>
                   <li>3. The calendar will appear in your Calendar app</li>
                 </ol>
                 <a
                   href={webcalURL}
-                  className={`inline-flex items-center ${tokens.spacing.gap.sm} px-4 py-2 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white ${tokens.borders.radius.md} font-medium transition-colors`}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium transition-colors"
                 >
                   <Calendar className="w-4 h-4" />
                   Subscribe on iPhone/iPad
@@ -215,23 +189,15 @@ export function CalendarSubscribeModal({
             </div>
 
             {/* Desktop */}
-            <div
-              className={`mb-4 ${tokens.borders.radius.md} border ${colors.structural.bg.surface} ${colors.structural.border.default}`}
-            >
-              <div className={tokens.spacing.card.md}>
-                <div className={`flex items-center ${tokens.spacing.gap.sm} mb-3`}>
-                  <Monitor
-                    className={`w-5 h-5 ${colors.semantic.scheduled.text}`}
-                  />
-                  <h4
-                    className={`font-semibold ${colors.structural.text.primary}`}
-                  >
+            <div className="mb-4 rounded-md border bg-muted border-border">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Monitor className="w-5 h-5 text-blue-500" />
+                  <h4 className="font-semibold text-foreground">
                     Desktop (Mac/Windows)
                   </h4>
                 </div>
-                <ol
-                  className={`space-y-2 ${tokens.typography.body.secondary} mb-4 ${colors.structural.text.secondary}`}
-                >
+                <ol className="space-y-2 text-sm mb-4 text-muted-foreground">
                   <li>
                     1. Click the button below to open your default calendar
                   </li>
@@ -239,7 +205,7 @@ export function CalendarSubscribeModal({
                 </ol>
                 <a
                   href={webcalURL}
-                  className={`inline-flex items-center ${tokens.spacing.gap.sm} px-4 py-2 ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white ${tokens.borders.radius.md} font-medium transition-colors`}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
                 >
                   <Calendar className="w-4 h-4" />
                   Subscribe on Desktop
@@ -248,42 +214,34 @@ export function CalendarSubscribeModal({
             </div>
 
             {/* Google Calendar & Others */}
-            <div
-              className={`${tokens.borders.radius.md} border ${colors.structural.bg.surface} ${colors.structural.border.default}`}
-            >
-              <div className={tokens.spacing.card.md}>
-                <div className={`flex items-center ${tokens.spacing.gap.sm} mb-3`}>
-                  <Globe
-                    className={`w-5 h-5 ${colors.semantic.warning.text}`}
-                  />
-                  <h4
-                    className={`font-semibold ${colors.structural.text.primary}`}
-                  >
+            <div className="rounded-md border bg-muted border-border">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Globe className="w-5 h-5 text-orange-500" />
+                  <h4 className="font-semibold text-foreground">
                     Google Calendar & Others
                   </h4>
                 </div>
-                <ol
-                  className={`space-y-2 ${tokens.typography.body.secondary} mb-4 ${colors.structural.text.secondary}`}
-                >
+                <ol className="space-y-2 text-sm mb-4 text-muted-foreground">
                   <li>1. Copy the URL below</li>
                   <li>
                     2. In Google Calendar: Settings → Add calendar → From URL
                   </li>
                   <li>3. Paste the URL and click "Add calendar"</li>
                 </ol>
-                <div className={`flex ${tokens.spacing.gap.sm}`}>
+                <div className="flex gap-2">
                   <input
                     type="text"
                     value={subscriptionURL}
                     readOnly
-                    className={`flex-1 px-3 py-2 ${tokens.borders.radius.md} border font-mono ${tokens.typography.body.secondary} ${colors.components.input.default}`}
+                    className="flex-1 px-3 py-2 rounded-md border font-mono text-sm bg-input border-input text-foreground"
                   />
                   <button
                     onClick={handleCopy}
-                    className={`px-4 py-2 ${tokens.borders.radius.md} font-medium transition-colors flex items-center ${tokens.spacing.gap.sm} ${
+                    className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
                       copied
-                        ? `${colors.semantic.success.solid} text-white`
-                        : `${colors.components.button.secondary}`
+                        ? "bg-green-600 text-white"
+                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                     }`}
                   >
                     {copied ? (
@@ -304,17 +262,11 @@ export function CalendarSubscribeModal({
           </div>
 
           {/* Troubleshooting */}
-          <div
-            className={`${tokens.borders.radius.md} ${tokens.spacing.card.md} border ${colors.structural.bg.surface} ${colors.structural.border.default}`}
-          >
-            <h3
-              className={`font-semibold mb-2 ${colors.structural.text.primary}`}
-            >
+          <div className="rounded-md p-4 border bg-muted border-border">
+            <h3 className="font-semibold mb-2 text-foreground">
               Troubleshooting
             </h3>
-            <ul
-              className={`space-y-1 ${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}
-            >
+            <ul className="space-y-1 text-sm text-muted-foreground">
               <li>• Calendar updates every 30 minutes automatically</li>
               <li>
                 • If events don't appear, check your calendar app's subscribed

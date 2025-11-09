@@ -6,16 +6,12 @@
  * - 7x6 grid of day cells
  * - Loading state
  * - Swipe navigation for month switching (tablet/desktop)
- *
- * Uses grid system utilities for consistent spacing and layout.
  */
 
 import { useRef } from "react";
 import { useSwipeGesture } from "../../hooks/useSwipeGesture";
 import { Shift } from "../../lib/supabase";
-import { gridUtilities } from "../../styles";
 import { CalendarDay } from "../../utils/calendarUtils";
-import { getTheme } from "../../utils/theme";
 import { DayCell } from "./DayCell";
 
 interface CalendarGridProps {
@@ -48,10 +44,9 @@ export function CalendarGrid({
   loading,
   isAdminMode = false,
   currentShift,
-  isDarkMode = true,
+  isDarkMode: _isDarkMode = true,
   selectedFirefighterId = null,
 }: CalendarGridProps) {
-  const theme = getTheme(isDarkMode);
   const gridRef = useRef<HTMLDivElement>(null);
 
   // Add swipe navigation
@@ -65,9 +60,9 @@ export function CalendarGrid({
     return (
       <div className="text-center py-20">
         <div
-          className={`inline-block animate-spin rounded-full h-12 w-12 border-b-2 ${theme.calendar.headerText}`}
+          className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"
         />
-        <p className={`mt-4 ${theme.textSecondary}`}>Loading calendar...</p>
+        <p className="mt-4 text-muted-foreground">Loading calendar...</p>
       </div>
     );
   }
@@ -79,12 +74,12 @@ export function CalendarGrid({
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Weekday headers - using grid system utilities */}
-      <div className={`${gridUtilities.calendar.weekdayHeader} pb-1`}>
+      {/* Weekday headers */}
+      <div className="grid grid-cols-7 gap-2 pb-1">
         {weekDays.map((day) => (
           <div
             key={day}
-            className={`text-center font-bold text-xs ${theme.calendar.headerText}`}
+            className="text-center font-bold text-xs text-muted-foreground"
           >
             <span className="hidden sm:inline">{day}</span>
             <span className="sm:hidden">{day.slice(0, 1)}</span>
@@ -92,8 +87,8 @@ export function CalendarGrid({
         ))}
       </div>
 
-      {/* Calendar grid - using grid system utilities with max height */}
-      <div className={`${gridUtilities.calendar.dayGrid} max-h-[calc(100vh-280px)] overflow-auto`}>
+      {/* Calendar grid with max height */}
+      <div className="grid grid-cols-7 gap-2 auto-rows-fr max-h-[calc(100vh-280px)] overflow-auto">
         {calendarDays.map((day, index) => (
           <DayCell
             key={index}
@@ -101,7 +96,7 @@ export function CalendarGrid({
             onDayClick={onDayClick}
             isAdminMode={isAdminMode}
             currentShift={currentShift}
-            isDarkMode={isDarkMode}
+            isDarkMode={_isDarkMode}
             selectedFirefighterId={selectedFirefighterId}
           />
         ))}

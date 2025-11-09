@@ -148,12 +148,7 @@ export function FirefighterCard({
           {/* Name & Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h3
-                className={`
-                  text-lg font-semibold truncate
-                  ${colors.structural.text.primary}
-                `}
-              >
+              <h3 className="text-lg font-semibold truncate text-foreground">
                 {firefighter.name}
               </h3>
               {isNextInRotation && (
@@ -164,7 +159,7 @@ export function FirefighterCard({
             </div>
 
             {/* Station + Apparatus */}
-            <div className={`flex items-center gap-3 text-sm ${colors.structural.text.secondary}`}>
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
               {firefighter.fire_station && (
                 <div className="flex items-center gap-1">
                   <MapPin size={14} className="flex-shrink-0" />
@@ -192,27 +187,21 @@ export function FirefighterCard({
             </div>
 
             {/* Last Hold Date */}
-            <div className={`text-xs ${colors.structural.text.tertiary} mt-1`}>
+            <div className="text-xs text-muted-foreground/70 mt-1">
               Last hold: {formatHoldDate(firefighter.last_hold_date) || 'Never'}
             </div>
           </div>
 
           {/* More Menu Icon */}
           <button
-            className={`
-              p-2 rounded-lg
-              ${colors.interactive.button.default}
-              ${colors.interactive.hover.bg}
-              ${tokens.transitions.fast}
-              flex-shrink-0
-            `}
+            className="p-2 rounded-lg hover:bg-accent text-muted-foreground transition-colors duration-200 flex-shrink-0"
             onClick={(e) => {
               e.stopPropagation();
               setIsExpanded(!isExpanded);
             }}
             aria-label="More options"
           >
-            <MoreVertical size={18} className={colors.structural.text.secondary} />
+            <MoreVertical size={18} />
           </button>
         </div>
 

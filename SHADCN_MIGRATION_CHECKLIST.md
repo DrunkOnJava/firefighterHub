@@ -1,8 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 22/63 components migrated (34.9%)  
-**Active Sprint:** Priority 5 - UI Primitives (Starting: 0/10)
+**Status:** 31/63 components migrated (49.2%)  
+**Active Sprint:** Priority 5 - UI Primitives (In Progress: 1/10) + Priority 6 (8/11 complete)
 
 ## Migration Strategy
 
@@ -78,12 +78,12 @@ Mobile-optimized views.
 
 ---
 
-## Priority 5: UI Primitives (10 components)
+## Priority 5: UI Primitives (10 components) ✅ 1/10 STARTED
 
 Reusable UI components (may be replaced entirely).
 
 - [ ] `src/components/ui/Modal.tsx` - Generic modal (→ use Dialog)
-- [ ] `src/components/ui/IconButton.tsx` - Icon button (→ use Button)
+- [x] ~~`src/components/ui/IconButton.tsx`~~ - ✅ Migrated (wraps shadcn Button)
 - [ ] `src/components/ui/FloatingActionButton.tsx` - FAB (→ use Button)
 - [ ] `src/components/ui/Checkbox.tsx` - Checkbox (→ shadcn Checkbox)
 - [ ] `src/components/ui/Radio.tsx` - Radio (→ shadcn RadioGroup)
@@ -95,17 +95,17 @@ Reusable UI components (may be replaced entirely).
 
 ---
 
-## Priority 6: Utilities & Helpers (11 components)
+## Priority 6: Utilities & Helpers (11 components) ✅ 8/11 COMPLETE
 
 Supporting components and utilities.
 
-- [ ] `src/components/Toast.tsx` - Toast notifications (→ shadcn Sonner)
+- [x] ~~`src/components/Toast.tsx`~~ - Toast notifications (→ shadcn Sonner)
 - [ ] `src/components/Tooltip.tsx` - Tooltips (→ shadcn Tooltip)
 - [ ] `src/components/ConfirmDialog.tsx` - Confirm dialogs (→ shadcn AlertDialog)
-- [ ] `src/components/EmptyState.tsx` - Empty state placeholder
-- [ ] `src/components/SkeletonLoader.tsx` - Skeleton loader
+- [x] ~~`src/components/EmptyState.tsx`~~ - ✅ Migrated (uses Button, shadcn semantic classes)
+- [x] ~~`src/components/SkeletonLoader.tsx`~~ - ✅ Migrated (uses shadcn semantic classes, cn utility)
 - [x] ~~`src/components/LoginModal.tsx`~~ - ✅ Migrated (uses Dialog, Input, Label) (commit 18ee07f)
-- [ ] `src/components/BattalionChiefLogin.tsx` - BC login
+- [x] ~~`src/components/BattalionChiefLogin.tsx`~~ - ✅ Migrated (uses Dialog, Input, Label, Alert, Button)
 - [x] ~~`src/components/HelpModal.tsx`~~ - ✅ Migrated (uses Dialog, Button) (commit 2bf6036)
 - [x] ~~`src/components/KeyboardShortcutsModal.tsx`~~ - ✅ Migrated (uses Dialog, Button) (commit 2bf6036)
 - [x] ~~`src/components/ActivityLogModal.tsx`~~ - ✅ Migrated (uses Dialog, shadcn semantic classes)
@@ -227,9 +227,13 @@ Update this section as you complete components:
 - Build status: ✅ Passing
 - Notes: Replaced all legacy `colors` and `tokens` imports with shadcn semantic classes. MobileNav still uses conditional dark mode classes (acceptable for gradient backgrounds).
 
-**Session 2 (Date: ___):**
-- Components migrated: 0
-- Time spent: 0h
+**Session 3 (Date: 2025-01-09):**
+- Components migrated: 9 (SkeletonLoader, EmptyState, BattalionChiefLogin, IconButton)
+- Priority 6: 8/11 complete (73%)
+- Priority 5: Started (1/10 complete)
+- Time spent: ~60min
+- Build status: ✅ Passing
+- Notes: Migrated bottom-up from Priority 7 → Priority 5. EmptyState now uses Button component. BattalionChiefLogin uses Input, Label, Alert. IconButton wraps shadcn Button. SkeletonLoader uses pure semantic classes.
 
 ---
 

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { UserPlus } from 'lucide-react';
-import { colors, tokens } from '../styles';
-import { AnimatedButton } from './ui/AnimatedButton';
-import { AnimatedInput } from './ui/AnimatedInput';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 interface AddFirefighterFormProps {
   onAdd: (name: string, fireStation: string) => void;
@@ -47,71 +47,89 @@ export function AddFirefighterForm({ onAdd }: AddFirefighterFormProps) {
 
   if (!isExpanded) {
     return (
-      <AnimatedButton
+      <Button
         onClick={() => setIsExpanded(true)}
         variant="default"
         size="lg"
-        fullWidth
-        icon={<UserPlus size={20} />}
-        iconPosition="left"
+        className="w-full"
         aria-label="Add team member to roster"
       >
+        <UserPlus className="mr-2 h-5 w-5" />
         Add Team Member
-      </AnimatedButton>
+      </Button>
     );
   }
 
   return (
     <form
       onSubmit={handleSubmit}
-      className={`${tokens.borders.radius.lg} ${tokens.spacing.card.md} border-2 ${colors.components.card.shadow} transition-all ${colors.structural.bg.card} ${colors.semantic.primary.border}`}
+      className="rounded-lg p-4 border-2 shadow-lg transition-all bg-card border-primary"
     >
       <div className="space-y-3">
-        <AnimatedInput
-          id="firefighter-name"
-          label="Full name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (errors.name) validateName(e.target.value);
-          }}
-          onBlur={(e) => validateName(e.target.value)}
-          placeholder="Full name (e.g., John Smith)"
-          autoFocus
-          error={errors.name}
-          required
-        />
+        <div className="space-y-2">
+          <Label htmlFor="firefighter-name">
+            Full name
+          </Label>
+          <Input
+            id="firefighter-name"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+              if (errors.name) validateName(e.target.value);
+            }}
+            onBlur={(e) => validateName(e.target.value)}
+            placeholder="Full name (e.g., John Smith)"
+            autoFocus
+            required
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? "firefighter-name-error" : undefined}
+            className={errors.name ? "border-destructive" : ""}
+          />
+          {errors.name && (
+            <p
+              id="firefighter-name-error"
+              className="text-destructive text-sm mt-1"
+              role="alert"
+            >
+              {errors.name}
+            </p>
+          )}
+        </div>
 
-        <AnimatedInput
-          id="firefighter-station"
-          label="Station number (optional)"
-          value={fireStation}
-          onChange={(e) => setFireStation(e.target.value)}
-          placeholder="Station number (optional)"
-        />
+        <div className="space-y-2">
+          <Label htmlFor="firefighter-station">
+            Station number (optional)
+          </Label>
+          <Input
+            id="firefighter-station"
+            value={fireStation}
+            onChange={(e) => setFireStation(e.target.value)}
+            placeholder="Station number (optional)"
+          />
+        </div>
       </div>
 
-      <div className={`flex ${tokens.spacing.gap.sm} mt-4`}>
-        <AnimatedButton
+      <div className="flex gap-2 mt-4">
+        <Button
           type="submit"
           disabled={!name.trim()}
           variant="default"
-          size="md"
-          fullWidth
+          size="default"
+          className="flex-1"
           aria-label="Add firefighter to rotation"
         >
           Add to Rotation
-        </AnimatedButton>
-        <AnimatedButton
+        </Button>
+        <Button
           type="button"
           onClick={handleCancel}
           variant="ghost"
-          size="md"
-          fullWidth
+          size="default"
+          className="flex-1"
           aria-label="Cancel adding firefighter"
         >
           Cancel
-        </AnimatedButton>
+        </Button>
       </div>
     </form>
   );

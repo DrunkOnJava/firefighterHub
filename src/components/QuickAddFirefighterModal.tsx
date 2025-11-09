@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Shift } from "../lib/supabase";
-import { colors, tokens, gridUtilities } from "../styles";
-import { AnimatedButton } from "./ui/AnimatedButton";
-import { IconButton } from "./ui/IconButton";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Checkbox } from "./ui/Checkbox";
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;
@@ -171,7 +172,7 @@ export function QuickAddFirefighterModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className="fixed inset-0 bg-black/80 z-50 flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -183,47 +184,44 @@ export function QuickAddFirefighterModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} sm:${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} w-full h-full sm:h-auto sm:max-w-2xl max-h-screen sm:max-h-[90vh] overflow-y-auto animate-slide-up sm:animate-scale-in`}
+        className="bg-card border-2 border-border sm:rounded-2xl shadow-xl w-full h-full sm:h-auto sm:max-w-2xl max-h-screen sm:max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-8 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={`${colors.semantic.success.light} border-b-2 ${colors.semantic.success.border} px-6 py-5 flex items-center justify-between`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <UserPlus className={colors.semantic.success.text} size={28} />
+        <div className="bg-green-900/20 border-b-2 border-green-700/50 px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <UserPlus className="text-green-400" size={28} />
             <div>
               <h2
                 id="quick-add-title"
-                className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}
+                className="text-xl font-semibold text-foreground"
               >
                 Add Team Member
               </h2>
-              <p className={`${tokens.typography.body.secondary} ${colors.semantic.success.text} mt-1`}>
+              <p className="text-sm text-green-400 mt-1">
                 Shift {currentShift}
               </p>
             </div>
           </div>
-          <IconButton
-            icon={X}
-            label="Close dialog"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            variant="default"
-            size="md"
-            isDarkMode={true}
-          />
+            aria-label="Close dialog"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className={`${tokens.spacing.card.lg} space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]`}
+          className="p-6 space-y-5 overflow-y-auto max-h-[calc(90vh-120px)]"
         >
-          <div className={gridUtilities.form.responsiveGrid2}>
-            <div>
-              <label
-                htmlFor="quick-firefighter-name"
-                className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}
-              >
-                Name <span className={colors.semantic.error.text}>*</span>
-              </label>
-              <input
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="quick-firefighter-name">
+                Name <span className="text-destructive">*</span>
+              </Label>
+              <Input
                 id="quick-firefighter-name"
                 type="text"
                 value={name}
@@ -237,16 +235,12 @@ export function QuickAddFirefighterModal({
                 autoFocus
                 aria-invalid={!!errors.name}
                 aria-describedby={errors.name ? "quick-name-error" : undefined}
-                className={`w-full px-4 py-3 ${errors.name ? colors.components.input.error : colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
-                  errors.name
-                    ? "focus:ring-red-500"
-                    : "focus:ring-green-500 focus:border-transparent"
-                }`}
+                className={errors.name ? "border-destructive" : ""}
               />
               {errors.name && (
                 <p
                   id="quick-name-error"
-                  className={`${colors.semantic.error.text} ${tokens.typography.body.small} mt-1`}
+                  className="text-destructive text-sm mt-1"
                   role="alert"
                 >
                   {errors.name}
@@ -254,36 +248,29 @@ export function QuickAddFirefighterModal({
               )}
             </div>
 
-            <div>
-              <label
-                htmlFor="quick-firefighter-station"
-                className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}
-              >
+            <div className="space-y-2">
+              <Label htmlFor="quick-firefighter-station">
                 Station Number
-              </label>
-              <input
+              </Label>
+              <Input
                 id="quick-firefighter-station"
                 type="text"
                 value={station}
                 onChange={(e) => setStation(e.target.value)}
                 placeholder="e.g., 1"
-                className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all`}
               />
             </div>
           </div>
 
-          <div>
-            <label
-              htmlFor="quick-firefighter-certification"
-              className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}
-            >
+          <div className="space-y-2">
+            <Label htmlFor="quick-firefighter-certification">
               Certification Level
-            </label>
+            </Label>
             <select
               id="quick-firefighter-certification"
               value={certificationLevel}
               onChange={(e) => setCertificationLevel(e.target.value)}
-              className={`w-full px-4 py-3 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all`}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <option value="">Not specified</option>
               {certificationLevels.slice(1).map((level) => (
@@ -297,22 +284,22 @@ export function QuickAddFirefighterModal({
           <button
             type="button"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={`w-full flex items-center justify-between px-4 py-3 ${colors.structural.bg.surface} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} border ${colors.structural.border.default} transition-all focus-ring`}
+            className="w-full flex items-center justify-between px-4 py-3 bg-muted hover:bg-accent rounded-md border border-border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             aria-expanded={showAdvanced}
             aria-controls="advanced-options"
           >
-            <span className={`${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary}`}>
+            <span className="text-sm font-semibold text-muted-foreground">
               Advanced Options{" "}
               {hasAnyAdvancedData && !showAdvanced && (
-                <span className={`ml-2 ${tokens.typography.body.small} ${colors.semantic.success.text}`}>
+                <span className="ml-2 text-xs text-green-400">
                   (configured)
                 </span>
               )}
             </span>
             {showAdvanced ? (
-              <ChevronUp className={colors.structural.text.tertiary} size={20} />
+              <ChevronUp className="text-muted-foreground" size={20} />
             ) : (
-              <ChevronDown className={colors.structural.text.tertiary} size={20} />
+              <ChevronDown className="text-muted-foreground" size={20} />
             )}
           </button>
 

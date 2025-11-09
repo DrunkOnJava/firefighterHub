@@ -9,15 +9,10 @@ import {
   Trash2,
   TrendingUp,
   Users,
-  X,
 } from "lucide-react";
-import { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { colors, tokens } from "../styles";
-import { visualHeading } from "../styles/visualHeadings";
-import { IconButton } from "./ui/IconButton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Button } from "./ui/button";
 
 interface HelpModalProps {
   isOpen: boolean;
@@ -37,311 +32,178 @@ export function HelpModal({
   user,
 }: HelpModalProps) {
   const { signOut } = useAuth();
-  const trapRef = useFocusTrap(isOpen);
-  useFocusReturn(isOpen);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
 
   return (
-    <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="help-modal-title"
-    >
-      <div
-        ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} max-w-3xl w-full max-h-[90vh] overflow-hidden ${colors.components.modal.shadow} animate-scale-in`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div
-          className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between sticky top-0`}
-        >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div
-              className={`${colors.semantic.scheduled.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}
-            >
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-hidden p-0">
+        <DialogHeader className="sticky top-0 bg-card border-b-2 p-6 z-10">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2 rounded-lg">
               <Calendar className="text-white" size={24} />
             </div>
-            <h2
-              id="help-modal-title"
-              className={visualHeading('h2', colors.structural.text.primary)}
-            >
+            <DialogTitle className="text-2xl font-bold">
               How to Use Hold List Manager
-            </h2>
+            </DialogTitle>
           </div>
-          <IconButton
-            icon={X}
-            label="Close help dialog"
-            onClick={onClose}
-            variant="default"
-            size="md"
-            isDarkMode={true}
-          />
-        </div>
+        </DialogHeader>
 
-        <div
-          className={`${tokens.spacing.card.lg} overflow-y-auto max-h-[calc(90vh-100px)]`}
-        >
-          <div className="space-y-6 pb-8">
-            <section
-              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
-            >
-              <div
-                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
-              >
-                <Calendar
-                  className={colors.semantic.scheduled.text}
-                  size={24}
-                />
-                <h3
-                  className={visualHeading('h3', colors.structural.text.primary)}
-                >
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+          <div className="space-y-6 pb-4">
+            {/* Calendar Management Section */}
+            <section className="bg-card border rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Calendar className="text-blue-600 dark:text-blue-400" size={24} />
+                <h3 className="text-lg font-semibold">
                   Calendar Management
                 </h3>
               </div>
-              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span
-                    className={`${colors.semantic.scheduled.text} font-bold`}
-                  >
-                    •
-                  </span>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                   <span>
-                    <strong>Schedule holds:</strong> Click any future date on
-                    the calendar to assign a firefighter
+                    <strong className="text-foreground">Schedule holds:</strong> Click any future date on the calendar to assign a firefighter
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span
-                    className={`${colors.semantic.scheduled.text} font-bold`}
-                  >
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                   <span>
-                    <strong>View details:</strong> Click on scheduled holds to
-                    view or modify them
+                    <strong className="text-foreground">View details:</strong> Click on scheduled holds to view or modify them
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span
-                    className={`${colors.semantic.scheduled.text} font-bold`}
-                  >
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                   <span>
-                    <strong>Navigate months:</strong> Use arrow buttons or
-                    "Today" button to navigate
+                    <strong className="text-foreground">Navigate months:</strong> Use arrow buttons or "Today" button to navigate
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span
-                    className={`${colors.semantic.scheduled.text} font-bold`}
-                  >
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">•</span>
                   <span>
-                    <strong>Color coding:</strong> Blue = scheduled, Green =
-                    completed, Ring = today
+                    <strong className="text-foreground">Color coding:</strong> Blue = scheduled, Green = completed, Ring = today
                   </span>
                 </li>
               </ul>
             </section>
 
-            <section
-              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
-            >
-              <div
-                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
-              >
-                <Users className={colors.semantic.success.text} size={24} />
-                <h3
-                  className={visualHeading('h3', colors.structural.text.primary)}
-                >
+            {/* Firefighter Management Section */}
+            <section className="bg-card border rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Users className="text-green-600 dark:text-green-400" size={24} />
+                <h3 className="text-lg font-semibold">
                   Firefighter Management
                 </h3>
               </div>
-              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.success.text} font-bold`}>
-                    •
-                  </span>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="text-green-600 dark:text-green-400 font-bold">•</span>
                   <span>
-                    <strong>Add firefighters:</strong> Click "Add Team Member"
-                    button and enter name and station
+                    <strong className="text-foreground">Add firefighters:</strong> Click "Add Team Member" button and enter name and station
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.success.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-green-600 dark:text-green-400 font-bold">•</span>
                   <span>
-                    <strong>Rotation order:</strong> Firefighters automatically
-                    rotate based on their position
+                    <strong className="text-foreground">Rotation order:</strong> Firefighters automatically rotate based on their position
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.success.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-green-600 dark:text-green-400 font-bold">•</span>
                   <span>
-                    <strong>Next in line:</strong> The next firefighter is
-                    highlighted with "NEXT FOR HOLD" badge
+                    <strong className="text-foreground">Next in line:</strong> The next firefighter is highlighted with "NEXT FOR HOLD" badge
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.success.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-green-600 dark:text-green-400 font-bold">•</span>
                   <span>
-                    <strong>On/Off duty:</strong> Toggle availability status -
-                    off-duty members skip rotation
+                    <strong className="text-foreground">On/Off duty:</strong> Toggle availability status - off-duty members skip rotation
                   </span>
                 </li>
               </ul>
             </section>
 
-            <section
-              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
-            >
-              <div
-                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
-              >
-                <CheckCircle
-                  className={colors.semantic.warning.text}
-                  size={24}
-                />
-                <h3
-                  className={visualHeading('h3', colors.structural.text.primary)}
-                >
+            {/* Completing Holds Section */}
+            <section className="bg-card border rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <CheckCircle className="text-yellow-600 dark:text-yellow-400" size={24} />
+                <h3 className="text-lg font-semibold">
                   Completing Holds
                 </h3>
               </div>
-              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.warning.text} font-bold`}>
-                    •
-                  </span>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="text-yellow-600 dark:text-yellow-400 font-bold">•</span>
                   <span>
-                    <strong>Complete hold:</strong> Click "Complete Hold" button
-                    on firefighter card
+                    <strong className="text-foreground">Complete hold:</strong> Click "Complete Hold" button on firefighter card
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.warning.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-yellow-600 dark:text-yellow-400 font-bold">•</span>
                   <span>
-                    <strong>Auto-update:</strong> Calendar and scheduled holds
-                    update automatically
+                    <strong className="text-foreground">Auto-update:</strong> Calendar and scheduled holds update automatically
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.warning.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-yellow-600 dark:text-yellow-400 font-bold">•</span>
                   <span>
-                    <strong>Rotation:</strong> Firefighter moves to bottom of
-                    rotation after completing hold
+                    <strong className="text-foreground">Rotation:</strong> Firefighter moves to bottom of rotation after completing hold
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.warning.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-yellow-600 dark:text-yellow-400 font-bold">•</span>
                   <span>
-                    <strong>History:</strong> Last hold date is tracked for each
-                    firefighter
+                    <strong className="text-foreground">History:</strong> Last hold date is tracked for each firefighter
                   </span>
                 </li>
               </ul>
             </section>
 
-            <section
-              className={`${colors.structural.bg.surface} ${colors.structural.border.default} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
-            >
-              <div
-                className={`flex items-center ${tokens.spacing.gap.md} mb-4`}
-              >
-                <TrendingUp className={colors.semantic.info.text} size={24} />
-                <h3
-                  className={visualHeading('h3', colors.structural.text.primary)}
-                >
+            {/* Sidebar Features Section */}
+            <section className="bg-card border rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <TrendingUp className="text-purple-600 dark:text-purple-400" size={24} />
+                <h3 className="text-lg font-semibold">
                   Sidebar Features
                 </h3>
               </div>
-              <ul className={`space-y-3 ${colors.structural.text.secondary}`}>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.info.text} font-bold`}>
-                    •
-                  </span>
+              <ul className="space-y-3 text-muted-foreground">
+                <li className="flex gap-3">
+                  <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
                   <span>
-                    <strong>Overview:</strong> See total, on-duty, and off-duty
-                    firefighter counts
+                    <strong className="text-foreground">Overview:</strong> See total, on-duty, and off-duty firefighter counts
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.info.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
                   <span>
-                    <strong>Upcoming holds:</strong> View next 7 scheduled holds
-                    at a glance
+                    <strong className="text-foreground">Upcoming holds:</strong> View next 7 scheduled holds at a glance
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.info.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
                   <span>
-                    <strong>Rotation order:</strong> See who's next in line for
-                    holds
+                    <strong className="text-foreground">Rotation order:</strong> See who's next in line for holds
                   </span>
                 </li>
-                <li className={`flex ${tokens.spacing.gap.md}`}>
-                  <span className={`${colors.semantic.info.text} font-bold`}>
-                    •
-                  </span>
+                <li className="flex gap-3">
+                  <span className="text-purple-600 dark:text-purple-400 font-bold">•</span>
                   <span>
-                    <strong>Real-time sync:</strong> All updates happen
-                    instantly across the app
+                    <strong className="text-foreground">Real-time sync:</strong> All updates happen instantly across the app
                   </span>
                 </li>
               </ul>
             </section>
 
-            <div
-              className={`${colors.semantic.scheduled.light} ${colors.semantic.scheduled.border} border ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
-            >
-              <h3
-                className={visualHeading('h4', colors.structural.text.primary, 'mb-3')}
-              >
+            {/* Pro Tips */}
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+              <h3 className="text-base font-semibold mb-3">
                 Pro Tips
               </h3>
-              <ul
-                className={`space-y-2 ${colors.structural.text.secondary} ${tokens.typography.body.secondary}`}
-              >
+              <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  • The system automatically maintains fair rotation by tracking
-                  each firefighter's position
+                  • The system automatically maintains fair rotation by tracking each firefighter's position
                 </li>
                 <li>
-                  • Hold dates can't be double-booked - only one firefighter per
-                  day
+                  • Hold dates can't be double-booked - only one firefighter per day
                 </li>
                 <li>• All changes sync in real-time using Supabase database</li>
                 <li>• Activity log tracks all actions for accountability</li>
@@ -350,135 +212,109 @@ export function HelpModal({
 
             {/* Battalion Chief Authentication */}
             <div
-              className={`border-2 ${tokens.borders.radius.lg} ${
-                tokens.spacing.section.lg
-              } ${
+              className={`border-2 rounded-lg p-6 ${
                 user
-                  ? `${colors.semantic.success.light} ${colors.semantic.success.border}`
-                  : `${colors.semantic.scheduled.light} ${colors.semantic.scheduled.border}`
+                  ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
+                  : "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800"
               }`}
             >
-              <div
-                className={`flex items-center ${tokens.spacing.gap.md} mb-3`}
-              >
+              <div className="flex items-center gap-3 mb-3">
                 {user ? (
-                  <Shield className={colors.semantic.success.text} size={24} />
+                  <Shield className="text-green-600 dark:text-green-400" size={24} />
                 ) : (
-                  <Lock className={colors.semantic.scheduled.text} size={24} />
+                  <Lock className="text-blue-600 dark:text-blue-400" size={24} />
                 )}
-                <h3
-                  className={visualHeading('h4',
-                    user
-                      ? colors.semantic.success.text
-                      : colors.semantic.scheduled.text
-                  )}
-                >
+                <h3 className={`text-base font-semibold ${
+                  user
+                    ? "text-green-700 dark:text-green-300"
+                    : "text-blue-700 dark:text-blue-300"
+                }`}>
                   {user ? "Battalion Chief Mode" : "Battalion Chief Login"}
                 </h3>
               </div>
 
               {user ? (
                 <>
-                  <div
-                    className={`${colors.semantic.success.light} ${colors.semantic.success.border} border ${tokens.borders.radius.md} ${tokens.spacing.card.sm} mb-4`}
-                  >
-                    <p
-                      className={`${colors.semantic.success.text} ${tokens.typography.body.secondary} font-semibold mb-1`}
-                    >
+                  <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-md p-3 mb-4">
+                    <p className="text-sm font-semibold text-green-700 dark:text-green-300 mb-1">
                       Logged in as:
                     </p>
-                    <p
-                      className={`${colors.structural.text.primary} font-mono ${tokens.typography.body.secondary}`}
-                    >
+                    <p className="font-mono text-sm text-foreground">
                       {user.email}
                     </p>
                   </div>
-                  <p
-                    className={`${colors.structural.text.secondary} ${tokens.typography.body.secondary} mb-4`}
-                  >
-                    You have full admin access to assign holds, manage the
-                    roster, and override rotation.
+                  <p className="text-sm text-muted-foreground mb-4">
+                    You have full admin access to assign holds, manage the roster, and override rotation.
                   </p>
-                  <button
+                  <Button
                     onClick={async () => {
                       await signOut();
                       onClose();
                     }}
-                    className={`w-full ${colors.components.button.secondary} font-bold py-3 ${tokens.borders.radius.md} flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
+                    variant="secondary"
+                    className="w-full"
                   >
-                    <LogOut size={20} />
+                    <LogOut className="mr-2" size={20} />
                     Sign Out
-                  </button>
+                  </Button>
                 </>
               ) : (
                 <>
-                  <p
-                    className={`${colors.structural.text.secondary} ${tokens.typography.body.secondary} mb-4`}
-                  >
-                    Battalion chiefs can log in to access admin features: assign
-                    holds, manage roster, override rotation, and track metrics.
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Battalion chiefs can log in to access admin features: assign holds, manage roster, override rotation, and track metrics.
                   </p>
-                  <button
+                  <Button
                     onClick={() => {
                       onShowLogin();
                       onClose();
                     }}
-                    className={`w-full ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm} focus-ring`}
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                   >
-                    <LogIn size={20} />
+                    <LogIn className="mr-2" size={20} />
                     Battalion Chief Login
-                  </button>
+                  </Button>
                 </>
               )}
             </div>
 
+            {/* Danger Zone */}
             {isAdminMode && (
-              <div
-                className={`${colors.semantic.error.light} border-2 ${colors.semantic.error.border} ${tokens.borders.radius.lg} ${tokens.spacing.section.lg}`}
-              >
-                <div
-                  className={`flex items-center ${tokens.spacing.gap.md} mb-3`}
-                >
-                  <Trash2 className={colors.semantic.error.text} size={24} />
-                  <h3
-                    className={visualHeading('h4', colors.semantic.error.text)}
-                  >
+              <div className="bg-red-50 dark:bg-red-950/30 border-2 border-red-200 dark:border-red-800 rounded-lg p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <Trash2 className="text-red-600 dark:text-red-400" size={24} />
+                  <h3 className="text-base font-semibold text-red-700 dark:text-red-300">
                     Danger Zone
                   </h3>
                 </div>
-                <p
-                  className={`${colors.structural.text.secondary} ${tokens.typography.body.secondary} mb-4`}
-                >
-                  Use this button to completely reset the system and start
-                  fresh. This will permanently delete all firefighters, holds,
-                  and history from all shifts.
+                <p className="text-sm text-muted-foreground mb-4">
+                  Use this button to completely reset the system and start fresh. This will permanently delete all firefighters, holds, and history from all shifts.
                 </p>
-                <button
+                <Button
                   onClick={() => {
                     onMasterReset();
                     onClose();
                   }}
-                  className={`w-full ${colors.components.button.danger} py-3 ${tokens.borders.radius.md} flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm}`}
+                  variant="destructive"
+                  className="w-full"
                 >
-                  <Trash2 size={20} />
+                  <Trash2 className="mr-2" size={20} />
                   Master Reset - Delete Everything
-                </button>
+                </Button>
               </div>
             )}
           </div>
         </div>
 
-        <div
-          className={`${colors.structural.bg.surface} border-t-2 ${colors.structural.border.default} ${tokens.spacing.section.lg} sticky bottom-0`}
-        >
-          <button
+        {/* Footer */}
+        <div className="sticky bottom-0 bg-card border-t-2 p-6">
+          <Button
             onClick={onClose}
-            className={`w-full ${colors.semantic.scheduled.gradient} ${colors.semantic.scheduled.hover} text-white font-bold py-3 ${tokens.borders.radius.md} transition-colors focus-ring`}
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
           >
             Got It!
-          </button>
+          </Button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

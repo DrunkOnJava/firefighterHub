@@ -12,9 +12,15 @@ export function useDarkMode() {
     return saved !== "false"; // Default to true (dark mode) if not set
   });
 
-  // Persist dark mode preference to localStorage
+  // Apply dark class to document and persist preference
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.DARK_MODE, String(isDarkMode));
+    
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, [isDarkMode]);
 
   const toggleDarkMode = () => setIsDarkMode((prev) => !prev);

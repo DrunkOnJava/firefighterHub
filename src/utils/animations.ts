@@ -34,7 +34,7 @@ export const scale = {
   exit: { scale: 0.9, opacity: 0 },
 };
 
-export function createRipple(event: React.MouseEvent<HTMLElement>) {
+export function createRipple(event: React.MouseEvent<HTMLElement>, color?: string) {
   const button = event.currentTarget;
   const circle = document.createElement("span");
   const diameter = Math.max(button.clientWidth, button.clientHeight);
@@ -44,6 +44,9 @@ export function createRipple(event: React.MouseEvent<HTMLElement>) {
   circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
   circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
   circle.classList.add("ripple");
+  if (color) {
+    circle.style.backgroundColor = color;
+  }
 
   const ripple = button.getElementsByClassName("ripple")[0];
   if (ripple) {
@@ -53,10 +56,10 @@ export function createRipple(event: React.MouseEvent<HTMLElement>) {
   button.appendChild(circle);
 }
 
-export const shake = {
+export const shake = () => ({
   initial: { x: 0 },
   animate: {
     x: [-10, 10, -10, 10, 0],
     transition: { duration: 0.4 },
   },
-};
+});

@@ -86,7 +86,6 @@ export function MobileWeekView({
   }
 
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const today = new Date();
 
   return (
     <div className="space-y-3">

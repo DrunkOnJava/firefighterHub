@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Firefighter, supabase } from "../lib/supabase";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { Button } from "./ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import {
   // calculateHoldsByStation, // Removed - not used
   calculateHoldsByShift,

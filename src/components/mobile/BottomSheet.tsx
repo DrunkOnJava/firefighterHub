@@ -89,9 +89,12 @@ export function BottomSheet({
 
       <div
         ref={(el) => {
-          sheetRef.current = el;
-          if (el && trapRef && 'current' in trapRef) {
-            Object.assign(trapRef, { current: el });
+          if (el) {
+            // @ts-ignore - Workaround for read-only ref assignment
+            sheetRef.current = el;
+            if (trapRef && 'current' in trapRef) {
+              Object.assign(trapRef, { current: el });
+            }
           }
         }}
         role="dialog"

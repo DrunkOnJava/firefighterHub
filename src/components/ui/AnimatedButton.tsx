@@ -26,7 +26,6 @@ import { useAnimation } from '../../hooks/useAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { createRipple, shake } from '../../utils/animations';
 import { Check } from 'lucide-react';
-import '../../styles/animations.css';
 
 export type ButtonState = 'idle' | 'hover' | 'active' | 'loading' | 'success' | 'error' | 'disabled';
 export type ButtonVariant = 'default' | 'primary' | 'secondary' | 'danger' | 'ghost' | 'success';

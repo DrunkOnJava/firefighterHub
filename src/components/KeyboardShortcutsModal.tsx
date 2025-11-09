@@ -1,10 +1,9 @@
-import { Keyboard, X } from "lucide-react";
+import { Keyboard } from "lucide-react";
 import {
   KeyboardShortcut,
   formatShortcut,
 } from "../hooks/useKeyboardShortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { Button } from "./ui/button";
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;

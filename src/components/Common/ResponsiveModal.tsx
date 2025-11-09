@@ -16,7 +16,6 @@
 import { X } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDevice } from '../../hooks/useDevice';
-import { tokens } from '../../styles';
 
 interface ResponsiveModalProps {
   isOpen: boolean;
@@ -80,22 +79,14 @@ export function ResponsiveModal({
 
   return (
     <div
-      className={`
-        fixed inset-0 ${tokens.zIndex.modal}
-        ${tokens.layout.flex.center}
-        ${device.isMobile ? '' : 'p-4'}
-      `}
+      className={`fixed inset-0 z-50 flex items-center justify-center ${device.isMobile ? '' : 'p-4'}`}
       role="dialog"
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
     >
       {/* Backdrop */}
       <div
-        className={`
-          absolute inset-0 
-          bg-black/50 dark:bg-black/70
-          ${tokens.animations.modal.fadeIn}
-        `}
+        className="absolute inset-0 bg-black/50 dark:bg-black/70 animate-in fade-in duration-200"
         onClick={onClose}
         aria-label="Close modal"
       />
@@ -106,19 +97,10 @@ export function ResponsiveModal({
           relative w-full
           ${
             device.isMobile
-              ? `
-                  h-full
-                  rounded-t-2xl
-                  ${tokens.animations.modal.slideUpMobile}
-                `
-              : `
-                  ${maxWidthClasses[maxWidth]}
-                  rounded-lg
-                  ${tokens.animations.modal.fadeIn}
-                  ${tokens.shadows.xl}
-                `
+              ? 'h-full rounded-t-2xl animate-in slide-in-from-bottom duration-300'
+              : `${maxWidthClasses[maxWidth]} rounded-lg animate-in fade-in zoom-in-95 duration-200 shadow-xl`
           }
-          ${isDarkMode ? 'bg-slate-900' : 'bg-white'}
+          bg-card border border-border
           overflow-hidden
           flex flex-col
         `}
@@ -126,12 +108,7 @@ export function ResponsiveModal({
       >
         {/* Header */}
         <div
-          className={`
-            flex items-center justify-between
-            ${tokens.spacing.modal.md}
-            ${isDarkMode ? 'border-slate-800' : 'border-slate-200'}
-            ${device.isMobile ? 'border-b' : ''}
-          `}
+          className={`flex items-center justify-between p-6 border-border ${device.isMobile ? 'border-b' : ''}`}
           style={{
             paddingTop: device.isMobile
               ? 'max(20px, env(safe-area-inset-top, 0px))'
@@ -139,13 +116,7 @@ export function ResponsiveModal({
           }}
         >
           {title && (
-            <h2
-              id="modal-title"
-              className={`
-                ${tokens.typography.heading.h4}
-                ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}
-              `}
-            >
+            <h2 id="modal-title" className="text-lg font-semibold text-foreground">
               {title}
             </h2>
           )}
@@ -153,15 +124,11 @@ export function ResponsiveModal({
           <button
             onClick={onClose}
             className={`
-              ${tokens.touchTarget.min}
+              min-h-[44px] min-w-[44px]
               rounded-lg
-              ${tokens.transitions.fast}
-              ${tokens.focus.default}
-              ${
-                isDarkMode
-                  ? 'text-slate-400 hover:text-slate-100 hover:bg-slate-800'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }
+              transition-colors
+              focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background
+              text-muted-foreground hover:text-foreground hover:bg-accent
               ${!title ? 'absolute right-4 top-4' : ''}
             `}
             aria-label="Close modal"
@@ -172,10 +139,7 @@ export function ResponsiveModal({
 
         {/* Content */}
         <div
-          className={`
-            flex-1 overflow-auto
-            ${tokens.spacing.modal.md}
-          `}
+          className="flex-1 overflow-auto p-6"
           style={{
             paddingBottom: device.isMobile
               ? 'max(24px, env(safe-area-inset-bottom, 0px))'

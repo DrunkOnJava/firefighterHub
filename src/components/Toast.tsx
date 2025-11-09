@@ -1,6 +1,5 @@
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
 import { Toast as ToastType } from '../hooks/useToast';
-import { tokens } from '../styles';
 
 export type { ToastType } from '../hooks/useToast';
 
@@ -12,9 +11,9 @@ interface SingleToastProps {
 
 function SingleToast({ toast, onClose, index }: SingleToastProps) {
   const icons = {
-    success: <CheckCircle className={`${tokens.icons.md} text-emerald-400`} />,
-    error: <XCircle className={`${tokens.icons.md} text-red-400`} />,
-    info: <AlertCircle className={`${tokens.icons.md} text-sky-400`} />
+    success: <CheckCircle className="h-5 w-5 text-emerald-400" />,
+    error: <XCircle className="h-5 w-5 text-red-400" />,
+    info: <AlertCircle className="h-5 w-5 text-sky-400" />
   };
 
   const colors = {
@@ -28,9 +27,9 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
       className={`
         ${colors[toast.type]}
         border-2
-        ${tokens.borders.radius.lg}
-        ${tokens.shadows['2xl']}
-        ${tokens.spacing.card.md}
+        rounded-lg
+        shadow-2xl
+        p-4
         min-w-[320px] max-w-[500px]
         backdrop-blur-sm
         animate-slide-up
@@ -46,10 +45,10 @@ function SingleToast({ toast, onClose, index }: SingleToastProps) {
         <p className="text-white font-medium flex-1">{toast.message}</p>
         <button
           onClick={() => onClose(toast.id)}
-          className={`p-1.5 ${tokens.touchTarget.min} hover:bg-white/10 rounded transition-colors focus-ring flex items-center justify-center`}
+          className="p-1.5 min-h-[44px] min-w-[44px] hover:bg-white/10 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 flex items-center justify-center"
           aria-label="Close notification"
         >
-          <X className={`${tokens.icons.sm} text-white`} />
+          <X className="h-4 w-4 text-white" />
         </button>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import { Shift } from '../lib/supabase';
-import { tokens } from '../styles';
 
 interface ShiftIndicatorProps {
   shift: Shift;
@@ -27,8 +26,8 @@ export function ShiftIndicator({ shift }: ShiftIndicatorProps) {
   const shiftColors = SHIFT_COLORS[shift];
 
   return (
-    <div className={`inline-flex items-center ${tokens.spacing.gap.sm} px-3 py-1.5 ${tokens.borders.radius.lg} border-2 ${shiftColors.bg} ${shiftColors.border} shadow-lg`}>
-      <span className={`${tokens.typography.body.small} font-semibold uppercase tracking-wide ${shiftColors.text} opacity-90`}>
+    <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border-2 ${shiftColors.bg} ${shiftColors.border} shadow-lg`}>
+      <span className={`text-xs font-semibold uppercase tracking-wide ${shiftColors.text} opacity-90`}>
         Shift
       </span>
       <span className={`text-lg font-bold ${shiftColors.text}`}>

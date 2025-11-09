@@ -1,6 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { Loader2 } from 'lucide-react';
-import { colors, tokens } from '../styles';
 
 interface LoadingButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
@@ -19,20 +18,20 @@ export function LoadingButton({
   ...props
 }: LoadingButtonProps) {
   const variantClasses = {
-    primary: `${colors.semantic.primary.solid} ${colors.semantic.primary.hover} disabled:bg-blue-800 text-white`,
-    secondary: `${colors.components.button.secondary} disabled:bg-slate-800`,
-    danger: `${colors.semantic.error.solid} ${colors.semantic.error.hover} disabled:bg-red-800 text-white`,
-    success: `${colors.semantic.success.solid} ${colors.semantic.success.hover} disabled:bg-green-800 text-white`
+    primary: 'bg-primary hover:bg-primary/90 disabled:bg-primary/50 text-primary-foreground',
+    secondary: 'bg-secondary hover:bg-secondary/80 disabled:bg-secondary/50 text-secondary-foreground',
+    danger: 'bg-destructive hover:bg-destructive/90 disabled:bg-destructive/50 text-destructive-foreground',
+    success: 'bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 dark:bg-green-700 dark:hover:bg-green-800 text-white'
   };
 
   return (
     <button
       className={`
-        relative flex items-center justify-center ${tokens.spacing.gap.sm} px-4 py-2 ${tokens.borders.radius.lg}
+        relative flex items-center justify-center gap-2 px-4 py-2 rounded-lg
         font-medium transition-all duration-200
         disabled:cursor-not-allowed disabled:opacity-60
         active:scale-95 overflow-hidden
-        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring
         shadow-sm hover:shadow-md
         ${variantClasses[variant]}
         ${className}
@@ -41,7 +40,7 @@ export function LoadingButton({
       {...props}
     >
       {isLoading && (
-        <Loader2 className={`${tokens.icons.sm} animate-spin`} />
+        <Loader2 className="h-4 w-4 animate-spin" />
       )}
       <span>{isLoading && loadingText ? loadingText : children}</span>
     </button>

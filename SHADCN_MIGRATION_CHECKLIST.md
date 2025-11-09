@@ -120,7 +120,7 @@ Secondary features and enhancements.
 - [ ] `src/components/Reports.tsx` - Reports view
 - [x] ~~`src/components/roster/BulkActions.tsx`~~ - ✅ Migrated (uses Button, Card)
 - [x] ~~`src/components/roster/ExportMenu.tsx`~~ - ✅ Migrated (uses Button, DropdownMenu)
-- [ ] `src/components/FilterPanel.tsx` - Filter panel
+- [x] ~~`src/components/FilterPanel.tsx`~~ - ✅ Migrated (uses Dialog, Button, Checkbox)
 - [x] ~~`src/components/StationSelector.tsx`~~ - ✅ Migrated (pure shadcn semantic classes)
 - [ ] `src/components/NextUpBarV2.tsx` - Next up bar v2
 - [x] ~~`src/components/MetricCard.tsx`~~ - ✅ Migrated (uses Card component)

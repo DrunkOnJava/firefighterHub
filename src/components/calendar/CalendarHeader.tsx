@@ -14,7 +14,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Shift } from "../../lib/supabase";
-import { tokens } from "../../styles";
 import { formatMonthYear } from "../../utils/calendarUtils";
 import { ShiftIndicator } from "../ShiftIndicator";
 
@@ -33,7 +32,7 @@ export function CalendarHeader({
   onNextMonth,
   onGoToToday,
   currentShift,
-  isDarkMode = true,
+  isDarkMode: _isDarkMode = true,
 }: CalendarHeaderProps) {
   const handleGoToToday = () => {
     const today = new Date();
@@ -53,12 +52,12 @@ export function CalendarHeader({
         <div className="flex items-center gap-1.5">
           <button
             onClick={onPreviousMonth}
-            className={`
+            className="
               p-1.5 rounded-lg
-              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-slate-700 active:bg-gray-300'}
-              ${tokens.transitions.fast}
-              ${tokens.touchTarget.min}
-            `}
+              hover:bg-muted text-muted-foreground active:bg-muted/80
+              transition-all duration-200
+              min-h-[44px]
+            "
             aria-label="Previous month"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -66,12 +65,12 @@ export function CalendarHeader({
 
           <button
             onClick={handleGoToToday}
-            className={`
+            className="
               px-3 py-1.5 rounded-lg font-bold text-sm
-              ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700 text-white active:bg-blue-800' : 'bg-blue-500 hover:bg-blue-600 text-white active:bg-blue-700'}
-              ${tokens.transitions.fast}
-              ${tokens.touchTarget.min}
-            `}
+              bg-primary hover:bg-primary/90 text-primary-foreground active:bg-primary/80
+              transition-all duration-200
+              min-h-[44px]
+            "
             aria-label="Go to today"
           >
             Today
@@ -79,21 +78,19 @@ export function CalendarHeader({
 
           <button
             onClick={onNextMonth}
-            className={`
+            className="
               p-1.5 rounded-lg
-              ${isDarkMode ? 'hover:bg-slate-700 text-slate-300 active:bg-slate-600' : 'hover:bg-gray-200 text-slate-700 active:bg-gray-300'}
-              ${tokens.transitions.fast}
-              ${tokens.touchTarget.min}
-            `}
+              hover:bg-muted text-muted-foreground active:bg-muted/80
+              transition-all duration-200
+              min-h-[44px]
+            "
             aria-label="Next month"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
 
           <h2
-            className={`text-xl font-bold ${
-              isDarkMode ? 'text-slate-100' : 'text-slate-900'
-            } ml-3`}
+            className="text-xl font-bold text-foreground ml-3"
           >
             {formatMonthYear(currentDate)}
           </h2>

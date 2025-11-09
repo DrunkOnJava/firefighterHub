@@ -1,6 +1,14 @@
 import { X, Filter, Trash2 } from 'lucide-react';
 import { FirefighterFilters } from '../hooks/useFilters';
-import { colors, tokens, gridUtilities } from '../styles';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface FilterPanelProps {
   isOpen: boolean;
@@ -23,8 +31,6 @@ export function FilterPanel({
   activeFilterCount,
   availableStations
 }: FilterPanelProps) {
-  if (!isOpen) return null;
-
   const certificationOptions = ['EMT', 'EMT-A', 'EMT-I', 'Paramedic'];
   const apparatusOptions = [
     { value: 'ambulance', label: 'Ambulance' },
@@ -43,201 +49,159 @@ export function FilterPanel({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className={`absolute inset-0 ${colors.components.modal.overlay}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Panel */}
-      <div
-        className={`relative w-full max-w-2xl max-h-[80vh] ${tokens.borders.radius.lg} ${colors.components.modal.shadow} overflow-hidden ${colors.components.modal.background} ${colors.structural.text.primary}`}
-        role="dialog"
-        aria-labelledby="filter-panel-title"
-        aria-modal="true"
-      >
-        {/* Header */}
-        <div className={`flex items-center justify-between ${tokens.spacing.card.lg} border-b ${colors.structural.border.default}`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`p-2 ${tokens.borders.radius.lg} ${colors.semantic.primary.light}`}>
-              <Filter className={`w-6 h-6 ${colors.semantic.primary.text}`} />
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <Filter className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h2
-                id="filter-panel-title"
-                className={`${tokens.typography.heading.h3}`}
-              >
-                Filter Firefighters
-              </h2>
+              <DialogTitle>Filter Firefighters</DialogTitle>
               {activeFilterCount > 0 && (
-                <p className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}>
+                <p className="text-sm text-muted-foreground">
                   {activeFilterCount} {activeFilterCount === 1 ? 'filter' : 'filters'} active
                 </p>
               )}
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${tokens.borders.radius.lg} transition-colors ${colors.interactive.hover.bg} ${colors.structural.text.secondary} hover:${colors.structural.text.primary} flex items-center justify-center`}
-            aria-label="Close filter panel"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        </DialogHeader>
 
-        {/* Content */}
-        <div className={`${tokens.spacing.card.lg} overflow-y-auto max-h-[60vh]`}>
+        <div className="space-y-6 py-4">
           {/* Availability Filter */}
-          <div className="mb-6">
-            <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
+          <div>
+            <label className="text-sm font-semibold text-foreground mb-3 block">
               Availability Status
             </label>
-            <div className={`flex ${tokens.spacing.gap.sm}`}>
-              {['all', 'available', 'unavailable'].map(status => (
-                <button
+            <div className="flex gap-2">
+              {(['all', 'available', 'unavailable'] as const).map(status => (
+                <Button
                   key={status}
-                  onClick={() => onUpdateFilter('availability', status as FirefighterFilters['availability'])}
-                  className={`px-4 py-2 ${tokens.borders.radius.lg} font-medium transition-all ${
-                    filters.availability === status
-                      ? `${colors.semantic.primary.solid} text-white`
-                      : `${colors.structural.bg.card} ${colors.interactive.hover.bg} ${colors.structural.text.secondary}`
-                  }`}
+                  variant={filters.availability === status ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => onUpdateFilter('availability', status)}
                 >
                   {status.charAt(0).toUpperCase() + status.slice(1)}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
 
           {/* Certification Filter */}
-          <div className="mb-6">
-            <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
+          <div>
+            <label className="text-sm font-semibold text-foreground mb-3 block">
               Certification Level
             </label>
-            <div className={gridUtilities.form.grid2Col}>
+            <div className="grid grid-cols-2 gap-3">
               {certificationOptions.map(cert => (
                 <label
                   key={cert}
-                  className={`flex items-center ${tokens.spacing.gap.sm} p-3 ${tokens.borders.radius.lg} cursor-pointer transition-all ${
+                  className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all border-2 ${
                     filters.certifications.includes(cert)
-                      ? `${colors.semantic.primary.light} border-2 ${colors.semantic.primary.border}`
-                      : `${colors.structural.bg.card} border-2 ${colors.structural.border.default} hover:${colors.structural.border.hover}`
+                      ? 'bg-primary/10 border-primary'
+                      : 'bg-card border-border hover:border-accent-foreground'
                   }`}
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={filters.certifications.includes(cert)}
-                    onChange={() => onToggleArrayFilter('certifications', cert)}
-                    className="w-4 h-4 rounded"
+                    onCheckedChange={() => onToggleArrayFilter('certifications', cert)}
                   />
-                  <span className="font-medium">{cert}</span>
+                  <span className="font-medium text-sm">{cert}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* Station Filter */}
-          <div className="mb-6">
-            <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
+          <div>
+            <label className="text-sm font-semibold text-foreground mb-3 block">
               Fire Stations
             </label>
-            <div className={gridUtilities.form.grid3Col}>
+            <div className="grid grid-cols-3 gap-2">
               {availableStations.map(station => (
                 <label
                   key={station}
-                  className={`flex items-center ${tokens.spacing.gap.sm} p-3 ${tokens.borders.radius.lg} cursor-pointer transition-all ${
+                  className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all border-2 ${
                     filters.stations.includes(station)
-                      ? `${colors.semantic.primary.light} border-2 ${colors.semantic.primary.border}`
-                      : `${colors.structural.bg.card} border-2 ${colors.structural.border.default} hover:${colors.structural.border.hover}`
+                      ? 'bg-primary/10 border-primary'
+                      : 'bg-card border-border hover:border-accent-foreground'
                   }`}
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={filters.stations.includes(station)}
-                    onChange={() => onToggleArrayFilter('stations', station)}
-                    className="w-4 h-4 rounded"
+                    onCheckedChange={() => onToggleArrayFilter('stations', station)}
                   />
-                  <span className="font-medium">Station {station}</span>
+                  <span className="font-medium text-sm">Station {station}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* Apparatus Filter */}
-          <div className="mb-6">
-            <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
+          <div>
+            <label className="text-sm font-semibold text-foreground mb-3 block">
               Apparatus Clearances
             </label>
-            <div className={gridUtilities.form.grid2Col}>
+            <div className="grid grid-cols-2 gap-3">
               {apparatusOptions.map(({ value, label }) => (
                 <label
                   key={value}
-                  className={`flex items-center ${tokens.spacing.gap.sm} p-3 ${tokens.borders.radius.lg} cursor-pointer transition-all ${
+                  className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all border-2 ${
                     filters.apparatus.includes(value)
-                      ? `${colors.semantic.primary.light} border-2 ${colors.semantic.primary.border}`
-                      : `${colors.structural.bg.card} border-2 ${colors.structural.border.default} hover:${colors.structural.border.hover}`
+                      ? 'bg-primary/10 border-primary'
+                      : 'bg-card border-border hover:border-accent-foreground'
                   }`}
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={filters.apparatus.includes(value)}
-                    onChange={() => onToggleArrayFilter('apparatus', value)}
-                    className="w-4 h-4 rounded"
+                    onCheckedChange={() => onToggleArrayFilter('apparatus', value)}
                   />
-                  <span className="font-medium">{label}</span>
+                  <span className="font-medium text-sm">{label}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* Qualifications Filter */}
-          <div className="mb-6">
-            <label className={`block ${tokens.typography.body.secondary} font-semibold mb-3`}>
+          <div>
+            <label className="text-sm font-semibold text-foreground mb-3 block">
               Special Qualifications
             </label>
-            <div className={gridUtilities.form.grid1Col}>
+            <div className="space-y-2">
               {qualificationOptions.map(({ value, label }) => (
                 <label
                   key={value}
-                  className={`flex items-center ${tokens.spacing.gap.sm} p-3 ${tokens.borders.radius.lg} cursor-pointer transition-all ${
+                  className={`flex items-center gap-2 p-3 rounded-lg cursor-pointer transition-all border-2 ${
                     filters.qualifications.includes(value)
-                      ? `${colors.semantic.primary.light} border-2 ${colors.semantic.primary.border}`
-                      : `${colors.structural.bg.card} border-2 ${colors.structural.border.default} hover:${colors.structural.border.hover}`
+                      ? 'bg-primary/10 border-primary'
+                      : 'bg-card border-border hover:border-accent-foreground'
                   }`}
                 >
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={filters.qualifications.includes(value)}
-                    onChange={() => onToggleArrayFilter('qualifications', value)}
-                    className="w-4 h-4 rounded"
+                    onCheckedChange={() => onToggleArrayFilter('qualifications', value)}
                   />
-                  <span className="font-medium">{label}</span>
+                  <span className="font-medium text-sm">{label}</span>
                 </label>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className={`flex ${tokens.spacing.gap.md} ${tokens.spacing.card.lg} border-t ${colors.structural.border.default} ${colors.structural.bg.surface}`}>
-          <button
+        <DialogFooter className="flex gap-2">
+          <Button
+            variant="outline"
             onClick={onClearAll}
-            className={`flex items-center ${tokens.spacing.gap.sm} px-4 py-2 ${tokens.borders.radius.lg} font-medium transition-all ${colors.components.button.secondary}`}
             disabled={activeFilterCount === 0}
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-4 h-4 mr-2" />
             Clear All Filters
-          </button>
-          <button
-            onClick={onClose}
-            className={`flex-1 ${colors.semantic.primary.solid} ${colors.semantic.primary.hover} text-white px-4 py-2 ${tokens.borders.radius.lg} font-medium transition-all`}
-          >
+          </Button>
+          <Button onClick={onClose}>
             Apply Filters
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -9,7 +9,10 @@ interface CalendarLegendProps {
   isDarkMode?: boolean;
 }
 
-export function CalendarLegend({ _isDarkMode = true }: CalendarLegendProps) {
+export function CalendarLegend({ isDarkMode = true }: CalendarLegendProps) {
+  // Suppress unused variable - kept for API compatibility
+  void isDarkMode;
+  
   const legendItems = [
     {
       label: 'Scheduled',

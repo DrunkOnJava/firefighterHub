@@ -1,4 +1,4 @@
-import { X, Filter, Trash2 } from 'lucide-react';
+import { Filter, Trash2 } from 'lucide-react';
 import { FirefighterFilters } from '../hooks/useFilters';
 import {
   Dialog,

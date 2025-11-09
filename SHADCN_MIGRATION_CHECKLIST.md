@@ -50,20 +50,20 @@ Main feature - calendar views and interactions.
 
 ---
 
-## Priority 3: Firefighter Management (10 components) ✅ 5/10 COMPLETE
+## Priority 3: Firefighter Management (10 components) ✅ COMPLETE
 
 Roster and firefighter CRUD operations.
 
-- [ ] `src/components/FirefighterList.tsx` - ❌ Still uses colors, tokens (1,001 lines)
-- [ ] `src/components/FirefighterProfileModal.tsx` - ❌ Still uses colors, tokens, visualHeadings, gridUtilities (975 lines)
-- [ ] `src/components/FirefightersModal.tsx` - ❌ Still uses colors, tokens, visualHeadings, gridUtilities (676 lines)
+- [x] ~~`src/components/FirefighterList.tsx`~~ - ✅ Already migrated (previous session)
+- [x] ~~`src/components/FirefighterProfileModal.tsx`~~ - ✅ Already migrated (previous session)
+- [x] ~~`src/components/FirefightersModal.tsx`~~ - ✅ Already migrated (previous session)
 - [x] ~~`src/components/AddFirefighterForm.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/QuickAddFirefighterModal.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/CompleteHoldModal.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/TransferShiftModal.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/ReactivateModal.tsx`~~ - ✅ Migrated
-- [ ] `src/components/roster/RosterHeader.tsx` - ❌ Still uses colors, tokens (incorrectly marked clean)
-- [ ] `src/components/roster/RosterSearchBar.tsx` - ❌ Still uses colors, tokens (incorrectly marked clean)
+- [x] ~~`src/components/roster/RosterHeader.tsx`~~ - ✅ Migrated (this session)
+- [x] ~~`src/components/roster/RosterSearchBar.tsx`~~ - ✅ Migrated (this session)
 
 ---
 
@@ -96,16 +96,13 @@ Reusable UI components (may be replaced entirely).
 
 ---
 
-## Priority 6: Utilities & Helpers (11 components) ⚠️ 8/11 COMPLETE
+## Priority 6: Utilities & Helpers (11 components) ✅ COMPLETE
 
 Supporting components and utilities.
 
-**Still Need Migration:**
-- [ ] `src/components/LoadingButton.tsx` - ❌ Still uses colors, tokens
-- [ ] `src/components/ShiftIndicator.tsx` - ❌ Still uses tokens  
-- [ ] `src/components/Toast.tsx` - ❌ Still uses tokens (incorrectly marked complete)
-
-**Completed:**
+- [x] ~~`src/components/LoadingButton.tsx`~~ - ✅ Migrated (this session)
+- [x] ~~`src/components/ShiftIndicator.tsx`~~ - ✅ Migrated (this session)
+- [x] ~~`src/components/Toast.tsx`~~ - ✅ Migrated (this session)
 - [x] ~~`src/components/Tooltip.tsx`~~ - ✅ Migrated (wraps shadcn Tooltip) (commit d12a07f)
 - [x] ~~`src/components/ConfirmDialog.tsx`~~ - ✅ Migrated (uses shadcn AlertDialog) (commit d12a07f)
 - [x] ~~`src/components/EmptyState.tsx`~~ - ✅ Migrated (uses Button, shadcn semantic classes)
@@ -142,37 +139,40 @@ Secondary features and enhancements.
 
 ---
 
-## Files to DELETE (after migration)
+## Files DELETED ✅ COMPLETE
 
-These are duplicates or obsolete:
+These obsolete files have been removed:
 
-- [ ] `src/components/ListView.tsx` - Duplicate of FirefighterList
-- [ ] `src/components/Breadcrumb.tsx` - Unused navigation breadcrumb
-- [ ] `src/components/GridOverlay.tsx` - Dev-only grid overlay
-- [ ] `src/components/Common/ResponsiveModal.tsx` - Duplicate of ui/Modal
-- [ ] `src/components/Form/Checkbox.tsx` - Duplicate of ui/Checkbox
-- [ ] `src/components/Form/RadioGroup.tsx` - Duplicate of ui/Radio
-- [ ] `src/components/transitions/Collapsible.tsx` - Unused
-- [ ] `src/components/transitions/EmptyState.tsx` - Duplicate
+- [x] ~~`src/components/ListView.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/Breadcrumb.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/GridOverlay.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/Common/ResponsiveModal.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/Form/Checkbox.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/Form/RadioGroup.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/transitions/Collapsible.tsx`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/components/transitions/EmptyState.tsx`~~ - ✅ Deleted (previous session)
 
-**Total to delete:** 8 files (~15KB)
+**Total deleted:** 8 component files (~15KB)
 
 ---
 
-## Style Files to DELETE (after all migrations)
+## Legacy Style System DELETED ✅ COMPLETE
 
-Once all components use shadcn semantic classes:
+All legacy theme files have been removed:
 
-- [ ] `src/styles/tokens.ts` (11KB)
-- [ ] `src/styles/colorSystem.ts` (9KB)
-- [ ] `src/styles/gridUtilities.ts` (8.6KB)
-- [ ] `src/styles/colorTokens.ts` (5.5KB)
-- [ ] `src/styles/spacingTokens.ts` (3.7KB)
-- [ ] `src/styles/index.ts` (1KB)
-- [ ] `src/utils/calendarTheme.ts`
-- [ ] `src/utils/sidebarTheme.ts`
+- [x] ~~`src/styles/`~~ - ✅ Entire directory deleted (previous session)
+  - ~~tokens.ts~~ (11KB)
+  - ~~colorSystem.ts~~ (9KB)
+  - ~~gridUtilities.ts~~ (8.6KB)
+  - ~~colorTokens.ts~~ (5.5KB)
+  - ~~spacingTokens.ts~~ (3.7KB)
+  - ~~visualHeadings.ts~~
+  - ~~index.ts~~ (1KB)
+- [x] ~~`src/utils/calendarTheme.ts`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/utils/sidebarTheme.ts`~~ - ✅ Deleted (previous session)
+- [x] ~~`src/utils/theme.ts`~~ - ✅ Deleted (previous session)
 
-**Total to delete:** ~40KB of legacy theme code
+**Total deleted:** ~40KB of legacy theme code
 
 ---
 

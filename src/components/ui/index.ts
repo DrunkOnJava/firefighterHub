@@ -26,16 +26,10 @@ export { ProgressBar, CircularProgress } from './ProgressBar';
 export { PulseLoader, BarLoader, ClockLoader } from './PulseLoader';
 
 // Skeleton Components
-export {
-  Skeleton,
-  SkeletonCard,
-  SkeletonTable,
-  SkeletonList,
-  SkeletonCalendar,
-} from './Skeleton';
+export { Skeleton } from './Skeleton';
 
 // Visual Hierarchy Audit - WCAG 2.5.5 Compliant Components
 export { IconButton } from './IconButton';
-export { Checkbox } from './Checkbox';
+export { Checkbox as CustomCheckbox } from './CustomCheckbox';
 export { Radio } from './Radio';
 export { FloatingActionButton } from './FloatingActionButton';

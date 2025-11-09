@@ -18,9 +18,6 @@ import { BottomNav } from './components/mobile/BottomNav';
 import { FirefighterList } from './components/FirefighterList';
 import { FloatingActionButton } from './components/Common/FloatingActionButton';
 
-// Development tools (only in dev mode)
-import { GridOverlay } from './components/GridOverlay';
-
 // Lazy-loaded components (code splitting for performance)
 const MainCalendar = lazy(() => import('./components/calendar/MainCalendar').then(m => ({ default: m.MainCalendar })));
 const HelpModal = lazy(() => import('./components/HelpModal').then(m => ({ default: m.HelpModal })));
@@ -381,9 +378,6 @@ function App() {
         />
       )}
 
-      {/* Grid Overlay (Development Only) */}
-      <GridOverlay />
-      
       {/* Floating Action Button for Quick Add (Priority 3.2: Relocate Quick Add to prominent Z-pattern location) */}
       {isAdmin && (
         <FloatingActionButton 

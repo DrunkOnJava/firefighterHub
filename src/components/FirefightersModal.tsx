@@ -258,7 +258,7 @@ export function FirefightersModal({
             <div className="text-center py-12">
               <Users
                 size={48}
-                className={`${colors.structural.text.tertiary.replace(
+                className={`text-muted-foreground.replace(
                   "text-",
                   ""
                 )} mx-auto mb-4`}
@@ -388,7 +388,7 @@ export function FirefightersModal({
                           Apparatus Clearances
                         </label>
                         <div
-                          className={gridUtilities.form.responsiveGrid4}
+                          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
                         >
                           {[
                             { key: "apparatus_ambulance", label: "Ambulance" },
@@ -443,7 +443,7 @@ export function FirefightersModal({
                           Certifications & Roles
                         </label>
                         <div
-                          className={gridUtilities.form.grid3Col}
+                          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
                         >
                           <label
                             className={`flex items-center gap-2 cursor-pointer bg-amber-900/20 px-3 py-2 rounded-lg hover:bg-amber-900/30 border border-amber-700/50 transition-colors`}
@@ -518,7 +518,7 @@ export function FirefightersModal({
                           className={`flex items-center gap-4`}
                         >
                           <h3
-                            className={`${tokens.typography.heading.h2} font-bold text-foreground`}
+                            className={`text-2xl font-bold text-foreground`}
                           >
                             {formatNameLastFirst(firefighter.name)}
                           </h3>
@@ -534,7 +534,7 @@ export function FirefightersModal({
                         {isAdminMode && (
                           <button
                             onClick={() => toggleEdit(firefighter.id)}
-                            className={`px-4 py-2 ${colors.semantic.info.solid} hover:${colors.semantic.info.hover} text-white rounded-lg flex items-center gap-2 font-semibold transition-colors`}
+                            className={`px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2 font-semibold transition-colors`}
                           >
                             <Edit2 size={18} />
                             Edit
@@ -573,21 +573,21 @@ export function FirefightersModal({
                           >
                             {firefighter.is_fto && (
                               <span
-                                className={`px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-700/50 rounded-md ${tokens.typography.body.small} font-bold`}
+                                className={`px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-700/50 rounded-md text-xs font-bold`}
                               >
                                 FTO
                               </span>
                             )}
                             {firefighter.is_bls && (
                               <span
-                                className={`px-3 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-700/50 rounded-md ${tokens.typography.body.small} font-bold`}
+                                className={`px-3 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-700/50 rounded-md text-xs font-bold`}
                               >
                                 BLS
                               </span>
                             )}
                             {firefighter.is_als && (
                               <span
-                                className={`px-3 py-1 bg-cyan-900/30 text-cyan-300 border border-cyan-700/50 rounded-md ${tokens.typography.body.small} font-bold`}
+                                className={`px-3 py-1 bg-cyan-900/30 text-cyan-300 border border-cyan-700/50 rounded-md text-xs font-bold`}
                               >
                                 ALS
                               </span>
@@ -628,7 +628,7 @@ export function FirefightersModal({
                             .map((apparatus) => (
                               <span
                                 key={apparatus.key}
-                                className={`px-3 py-1 bg-amber-950/70 text-amber-300 border border-amber-800 rounded-full ${tokens.typography.body.small} font-semibold`}
+                                className={`px-3 py-1 bg-amber-950/70 text-amber-300 border border-amber-800 rounded-full text-xs font-semibold`}
                               >
                                 {apparatus.label}
                               </span>

@@ -18,7 +18,6 @@ import { ConfirmOptions } from "../hooks/useConfirm";
 import { useDevice } from "../hooks/useDevice";
 import { useFilters } from "../hooks/useFilters";
 import { Firefighter, Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
 import { formatHoldDate } from "../utils/dateUtils";
 import { AddFirefighterForm } from "./AddFirefighterForm";
 import { NoFirefightersEmptyState, NoSearchResultsEmptyState } from "./EmptyState";
@@ -268,16 +267,7 @@ export function FirefighterList({
   // The menu directly calls exportRosterToCSV/exportRosterToJSON utils
 
   return (
-    <div
-      className={`
-        ${colors.structural.bg.card}
-        ${colors.structural.border.default}
-        ${tokens.borders.radius.xl}
-        ${tokens.shadows["2xl"]}
-        border-2
-        overflow-hidden
-      `}
-    >
+    <div className="bg-card border border-border rounded-xl shadow-2xl border-2 overflow-hidden">
       {isLoading ? (
         <FirefighterListSkeleton />
       ) : (
@@ -300,7 +290,7 @@ export function FirefighterList({
           <div className="px-6 pb-6">
             {/* Add Firefighter Form (Collapsible) */}
             {isAdminMode && showAddForm && (
-              <div className={tokens.spacing.margin.lg}>
+              <div className="my-6">
                 <AddFirefighterForm
                   onAdd={(name, station) => {
                     onAdd(name, station);
@@ -452,7 +442,7 @@ export function FirefighterList({
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <ArrowUpDown className={tokens.icons.xs} />
+                      <ArrowUpDown className="w-3 h-3" />
                       Order
                     </div>
                   </th>
@@ -799,14 +789,14 @@ export function FirefighterList({
                         <td className="px-4 py-2 whitespace-nowrap text-center">
                           <div className="flex flex-col items-center gap-1">
                             <div className="flex items-center gap-2">
-                              <Clock className={`${tokens.icons.xs} {isDarkMode ? "text-slate-400" : "text-slate-500"} />
+                              <Clock className={`w-3 h-3 ${isDarkMode ? "text-slate-400" : "text-slate-500"}`} />
                               <span className={`text-sm ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
                                 {firefighter.hours_worked_this_period || 0}h / 72h
                               </span>
                             </div>
                             {(firefighter.hours_worked_this_period || 0) > 60 && (
                               <span className="inline-flex items-center px-1.5 py-0.5 bg-amber-900/70 text-amber-200 text-[10px] rounded">
-                                <AlertTriangle className={`${tokens.icons.xs} mr-0.5`} />
+                                <AlertTriangle className="w-3 h-3 mr-0.5" />
                                 Near Limit
                               </span>
                             )}

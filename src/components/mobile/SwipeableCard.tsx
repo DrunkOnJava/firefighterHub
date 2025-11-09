@@ -27,7 +27,7 @@ export function SwipeableCard({
   onTransferShift,
   onDeactivate,
   isAdminMode,
-  isDarkMode,
+  isDarkMode: _isDarkMode,
   children,
 }: SwipeableCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);

@@ -5,7 +5,7 @@ import {
 } from "../hooks/useKeyboardShortcuts";
 import { colors, tokens } from "../styles";
 import { IconButton } from "./ui/IconButton";
-import { visualHeading } from "../utils/visualHeadings";
+import { visualHeading } from "../styles/visualHeadings";
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;

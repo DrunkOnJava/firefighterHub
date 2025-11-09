@@ -51,7 +51,7 @@ export function ExampleComponent() {
         message="Are you sure you want to remove this firefighter from the roster?"
         confirmText="Delete"
         cancelText="Cancel"
-        variant="destructive"
+        variant="danger"
         consequences={[
           'Any scheduled holds will be cancelled',
           'This action cannot be undone',

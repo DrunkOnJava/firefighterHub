@@ -29,7 +29,7 @@ import { Check } from 'lucide-react';
 import '../../styles/animations.css';
 
 export type ButtonState = 'idle' | 'hover' | 'active' | 'loading' | 'success' | 'error' | 'disabled';
-export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
+export type ButtonVariant = 'default' | 'primary' | 'secondary' | 'danger' | 'ghost' | 'success';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -90,6 +90,13 @@ export function AnimatedButton({
 
   // Variant styles
   const variantClasses = {
+    default: `
+      bg-gradient-to-r from-orange-500 to-orange-600 
+      hover:from-orange-600 hover:to-orange-700
+      text-white
+      shadow-md hover:shadow-lg
+      border-2 border-orange-600
+    `,
     primary: `
       bg-gradient-to-r from-orange-500 to-orange-600 
       hover:from-orange-600 hover:to-orange-700
@@ -108,6 +115,13 @@ export function AnimatedButton({
       text-white
       shadow-md hover:shadow-lg
       border-2 border-red-600
+    `,
+    success: `
+      bg-gradient-to-r from-green-500 to-green-600
+      hover:from-green-600 hover:to-green-700
+      text-white
+      shadow-md hover:shadow-lg
+      border-2 border-green-600
     `,
     ghost: `
       bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800

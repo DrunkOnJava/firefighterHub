@@ -9,7 +9,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { EventInput } from '@fullcalendar/core';
-import { ScheduledHold } from '../../lib/supabase';
+import { ScheduledHold, Firefighter } from '../../lib/supabase';
 
 import './MainCalendar.css';
 
@@ -17,15 +17,7 @@ interface MainCalendarProps {
   loading: boolean;
   isDarkMode?: boolean;
   scheduledHolds?: ScheduledHold[];
-  firefighters?: Array<{
-    id: string;
-    full_name: string;
-    shift: 'A' | 'B' | 'C';
-    fire_station: string | null;
-    order_position: number;
-    is_available: boolean;
-    last_hold_date: string | null;
-  }>;
+  firefighters?: Firefighter[];
   onFirefighterClick?: (firefighterId: string | null) => void;
   selectedFirefighterId?: string | null;
 }
@@ -75,7 +67,7 @@ export function MainCalendar({
       if (!firefighter) return null;
 
       const station = firefighter.fire_station ? ` - Station ${firefighter.fire_station}` : '';
-      const title = `${firefighter.full_name}${station}`;
+      const title = `${firefighter.name}${station}`;
 
       // Determine shift color class
       let shiftClass = 'event-shift-a';
@@ -132,14 +124,14 @@ export function MainCalendar({
                     onClick={() => onFirefighterClick?.(ff ? ff.id : null)}
                     disabled={!ff}
                     className={`next-up-card next-up-card-${color} ${isSelected ? 'selected' : ''} ${!ff ? 'disabled' : ''}`}
-                    aria-label={ff ? `Next up for Shift ${shift}: ${ff.full_name}` : `No one available for Shift ${shift}`}
+                    aria-label={ff ? `Next up for Shift ${shift}: ${ff.name}` : `No one available for Shift ${shift}`}
                   >
                     <div className="next-up-card-header">
                       <span className="next-up-shift">Shift {shift}</span>
                     </div>
                     {ff ? (
                       <>
-                        <div className="next-up-name">{ff.full_name}</div>
+                        <div className="next-up-name">{ff.name}</div>
                         <div className="next-up-details">
                           {ff.fire_station && <span>Stn {ff.fire_station}</span>}
                           <span className="next-up-separator">•</span>

@@ -28,7 +28,7 @@ import { LucideIcon } from 'lucide-react';
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: LucideIcon;
   label: string; // For aria-label and tooltip
-  variant?: 'default' | 'primary' | 'danger' | 'success';
+  variant?: 'default' | 'primary' | 'danger' | 'destructive' | 'success';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   isDarkMode?: boolean;
 }
@@ -67,6 +67,9 @@ export const IconButton = ({
       ? 'text-blue-400 hover:text-blue-300 hover:bg-blue-900/20'
       : 'text-blue-600 hover:text-blue-700 hover:bg-blue-50',
     danger: isDarkMode
+      ? 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
+      : 'text-red-600 hover:text-red-700 hover:bg-red-50',
+    destructive: isDarkMode
       ? 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
       : 'text-red-600 hover:text-red-700 hover:bg-red-50',
     success: isDarkMode

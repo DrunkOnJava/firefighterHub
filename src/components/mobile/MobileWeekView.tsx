@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMemo, useRef } from 'react';
 import { useDevice } from '../../hooks/useDevice';
 import { useHapticFeedback, useSwipeGesture } from '../../hooks/useTouchGestures';
-import { Firefighter, HoldDuration, Shift } from '../../lib/supabase';
+import { Firefighter, HoldDuration as _HoldDuration, Shift } from '../../lib/supabase';
 import { tokens, visualHeadings } from '../../styles';
 import { attachScheduledHolds, CalendarDay, getMonthDays, ScheduledHold } from '../../utils/calendarUtils';
 
@@ -29,10 +29,10 @@ export function MobileWeekView({
   firefighters,
   scheduledHolds,
   onDayClick,
-  currentShift,
+  currentShift: _currentShift,
   isDarkMode = true,
 }: MobileWeekViewProps) {
-  const device = useDevice();
+  const _device = useDevice();
   const haptic = useHapticFeedback();
   const containerRef = useRef<HTMLDivElement>(null);
 

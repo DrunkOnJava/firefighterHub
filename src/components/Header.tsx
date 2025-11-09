@@ -13,10 +13,6 @@ import { Shift } from "../lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { tokens } from "../styles";
-import {
-  ConnectionStatusDot,
-  ConnectionStatusIndicator,
-} from "./ConnectionStatusIndicator";
 import { ShiftSelector } from "./ShiftSelector";
 
 interface HeaderProps {
@@ -38,7 +34,7 @@ export function Header({
   onShowHelp,
   onShowActivityLog,
   onQuickAddFirefighter,
-  onNavigateToReports,
+  onNavigateToReports: _onNavigateToReports,
   onOpenMobileMenu,
   onShowLogin,
   onLogout,

@@ -13,7 +13,7 @@
  */
 
 import { useRef } from 'react';
-import { User, MapPin, Calendar, Award } from 'lucide-react';
+import { User, MapPin, Calendar, Award as _Award } from 'lucide-react';
 import { useDevice } from '../hooks/useDevice';
 import { useSwipeGesture } from '../hooks/useTouchGestures';
 import { Firefighter } from '../lib/supabase';

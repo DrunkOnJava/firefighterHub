@@ -74,7 +74,7 @@ export function Modal({
   closeOnEscape = true,
   isDarkMode = true,
 }: ModalProps) {
-  const device = useDevice();
+  const _device = useDevice();
   const trapRef = useFocusTrap(isOpen);
   const triggerElementRef = useRef<HTMLElement | null>(null);
   

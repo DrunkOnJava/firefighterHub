@@ -84,7 +84,7 @@ export function SuccessOverlay({
   isOpen,
   message = 'Success!',
   onClose,
-  showConfetti = true,
+  showConfetti: _showConfetti = true,
   autoClose = true,
   duration = 2000,
 }: SuccessOverlayProps) {

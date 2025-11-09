@@ -67,7 +67,7 @@ export function FirefighterList({
   currentShift,
   isAdminMode = false,
   isDarkMode = true,
-  searchInputRef,
+  searchInputRef: _searchInputRef,
   isLoading = false,
 }: FirefighterListProps) {
   // Maintain backwards compatibility by ensuring legacy callbacks stay referenced

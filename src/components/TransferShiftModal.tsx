@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift } from "../lib/supabase";
-import { colors, tokens, gridUtilities } from "../styles";
 import { Button } from "./ui/button";
-import { IconButton } from "./ui/IconButton";
 
 interface TransferShiftModalProps {
   isOpen: boolean;
@@ -64,7 +62,7 @@ export function TransferShiftModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className="fixed inset-0 bg-black/80 z-50 flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -76,47 +74,47 @@ export function TransferShiftModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} ${colors.components.modal.shadow} max-w-lg w-full max-h-[90vh] overflow-y-auto`}
+        className="bg-card border-2 border-border rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom-8 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className={`sticky top-0 ${colors.semantic.primary.gradient} backdrop-blur-sm border-b-2 ${colors.semantic.primary.border} ${tokens.spacing.card.lg} flex items-center justify-between z-10`}
+          className="sticky top-0 bg-blue-900/20 backdrop-blur-sm border-b-2 border-blue-700/50 p-6 flex items-center justify-between z-10"
         >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+          <div className="flex items-center gap-4">
             <ArrowRightLeft
-              className={colors.semantic.primary.text}
+              className="text-blue-400"
               size={28}
             />
             <div>
               <h2
                 id="transfer-shift-title"
-                className={`${tokens.typography.heading.h2} text-white`}
+                className="text-xl font-semibold text-white"
               >
                 Transfer Shift
               </h2>
               <p
-                className={`${tokens.typography.body.small} text-blue-200 mt-1`}
+                className="text-sm text-blue-200 mt-1"
               >
                 {firefighter.name}
               </p>
             </div>
           </div>
-          <IconButton
-            icon={X}
-            label="Close dialog"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            variant="default"
-            size="md"
-            isDarkMode={true}
-          />
+            aria-label="Close dialog"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
-        <div className={`${tokens.spacing.card.lg} space-y-6`}>
+        <div className="p-6 space-y-6">
           <div
-            className={`${colors.semantic.info.light} border ${colors.semantic.info.border} ${tokens.borders.radius.lg} ${tokens.spacing.card.md}`}
+            className="bg-cyan-900/20 border border-cyan-700/50 rounded-lg p-4"
           >
             <p
-              className={`${tokens.typography.body.secondary} ${colors.semantic.info.text}`}
+              className="text-sm text-cyan-300"
             >
               Transfer <strong>{firefighter.name}</strong> from{" "}
               <strong>Shift {firefighter.shift}</strong> to a different shift.
@@ -126,21 +124,19 @@ export function TransferShiftModal({
 
           <div className="space-y-3">
             <label
-              className={`${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary}`}
+              className="text-sm font-semibold text-muted-foreground"
             >
               Select New Shift
             </label>
-            <div className={gridUtilities.form.grid2Col}>
+            <div className="grid grid-cols-2 gap-3">
               {availableShifts.map((shift) => (
                 <button
                   key={shift}
                   onClick={() => setSelectedShift(shift)}
-                  className={`py-4 px-6 ${
-                    tokens.borders.radius.lg
-                  } font-bold text-lg transition-all border-2 ${
+                  className={`py-4 px-6 rounded-lg font-bold text-lg transition-all border-2 ${
                     selectedShift === shift
-                      ? `${colors.semantic.primary.solid} ${colors.semantic.primary.border} text-white ${colors.semantic.primary.shadow}`
-                      : `${colors.structural.bg.card} ${colors.structural.border.default} ${colors.structural.text.secondary} hover:${colors.structural.border.hover}`
+                      ? "bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-900/30"
+                      : "bg-muted border-border text-muted-foreground hover:border-accent-foreground"
                   }`}
                 >
                   Shift {shift}
@@ -149,12 +145,12 @@ export function TransferShiftModal({
             </div>
           </div>
 
-          <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
+          <div className="flex gap-4 pt-4">
             <Button
               onClick={onClose}
               variant="secondary"
               size="lg"
-              fullWidth
+              className="flex-1"
               disabled={isSubmitting}
             >
               Cancel
@@ -163,12 +159,20 @@ export function TransferShiftModal({
               onClick={handleConfirm}
               variant="default"
               size="lg"
-              fullWidth
-              state={isSubmitting ? 'loading' : 'idle'}
-              withRipple
-              leftIcon={<ArrowRightLeft size={20} />}
+              className="flex-1"
+              disabled={isSubmitting}
             >
-              Transfer
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin">⏳</span>
+                  Transferring...
+                </span>
+              ) : (
+                <>
+                  <ArrowRightLeft className="mr-2 h-5 w-5" />
+                  Transfer
+                </>
+              )}
             </Button>
           </div>
         </div>

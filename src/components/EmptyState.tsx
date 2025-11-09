@@ -5,7 +5,7 @@
  */
 
 import { Users, Calendar, AlertCircle, Plus, Search } from 'lucide-react';
-import { colors, tokens } from '../styles';
+import { Button } from '@/components/ui/button';
 
 interface EmptyStateProps {
   title: string;
@@ -26,38 +26,34 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center py-16 px-4 text-center ${colors.structural.text.secondary}`}
+      className="flex flex-col items-center justify-center py-16 px-4 text-center text-muted-foreground"
       role="status"
       aria-live="polite"
     >
       {icon && (
-        <div
-          className={`mb-6 p-4 ${tokens.borders.radius.full} ${colors.structural.bg.card} opacity-50`}
-        >
+        <div className="mb-6 p-4 rounded-full bg-card opacity-50">
           {icon}
         </div>
       )}
 
-      <h3
-        className={`${tokens.typography.heading.h3} mb-2 ${colors.structural.text.primary}`}
-      >
+      <h3 className="text-2xl font-bold mb-2 text-foreground">
         {title}
       </h3>
 
-      <p
-        className={`max-w-md mb-6 ${colors.structural.text.tertiary}`}
-      >
+      <p className="max-w-md mb-6 text-muted-foreground">
         {description}
       </p>
 
       {action && (
-        <button
+        <Button
           onClick={action.onClick}
-          className={`flex items-center ${tokens.spacing.gap.sm} px-6 py-3 ${tokens.borders.radius.lg} font-semibold transition-colors ${colors.components.button.shadow} ${colors.semantic.warning.gradient} ${colors.semantic.warning.hover} text-white`}
+          variant="default"
+          size="lg"
+          className="shadow-md"
         >
-          <Plus size={20} />
+          <Plus className="w-5 h-5 mr-2" />
           {action.label}
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -81,7 +77,7 @@ export function NoFirefightersEmptyState({
           ? "Get started by adding your first firefighter to the rotation. Click the button below to begin building your team."
           : "Your roster is empty. Contact an administrator to add team members to the rotation."
       }
-      icon={<Users size={48} className={colors.structural.text.tertiary} />}
+      icon={<Users size={48} className="text-muted-foreground" />}
       action={
         isAdminMode
           ? {
@@ -112,7 +108,7 @@ export function NoScheduledHoldsEmptyState({
           ? "Click on any date in the calendar to schedule a hold. The calendar will show scheduled and completed holds."
           : "No holds have been scheduled yet. Check back later or contact an administrator."
       }
-      icon={<Calendar size={48} className={colors.structural.text.tertiary} />}
+      icon={<Calendar size={48} className="text-muted-foreground" />}
       action={
         isAdminMode
           ? {
@@ -139,7 +135,7 @@ export function NoSearchResultsEmptyState({
     <EmptyState
       title="No Results Found"
       description={`No firefighters match "${searchTerm}". Try adjusting your search or clearing filters.`}
-      icon={<Search size={48} className={colors.structural.text.tertiary} />}
+      icon={<Search size={48} className="text-muted-foreground" />}
       action={{
         label: 'Clear Search',
         onClick: onClearSearch,
@@ -160,7 +156,7 @@ export function ConnectionErrorEmptyState({
     <EmptyState
       title="Connection Error"
       description="Unable to load data. Please check your internet connection and try again."
-      icon={<AlertCircle size={48} className={colors.semantic.error.text} />}
+      icon={<AlertCircle size={48} className="text-destructive" />}
       action={{
         label: 'Retry Connection',
         onClick: onRetry,
@@ -175,7 +171,7 @@ export function NoDeactivatedFirefightersEmptyState() {
     <EmptyState
       title="No Deactivated Members"
       description="All team members are currently active. Deactivated firefighters will appear here while preserving their history."
-      icon={<Users size={48} className={colors.structural.text.tertiary} />}
+      icon={<Users size={48} className="text-muted-foreground" />}
     />
   );
 }
@@ -186,7 +182,7 @@ export function NoActivityEmptyState() {
     <EmptyState
       title="No Activity Yet"
       description="Team actions and changes will be logged here. This helps track roster modifications and hold assignments."
-      icon={<AlertCircle size={48} className={colors.structural.text.tertiary} />}
+      icon={<AlertCircle size={48} className="text-muted-foreground" />}
     />
   );
 }
@@ -197,7 +193,7 @@ export function NoReportsDataEmptyState() {
     <EmptyState
       title="No Data Available"
       description="Reports will be generated once you have scheduled holds and team member activity. Add firefighters and schedule holds to see analytics."
-      icon={<Calendar size={48} className={colors.structural.text.tertiary} />}
+      icon={<Calendar size={48} className="text-muted-foreground" />}
     />
   );
 }

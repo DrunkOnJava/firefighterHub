@@ -319,7 +319,6 @@ export function FirefighterList({
               onBulkDelete={handleBulkDelete}
               onBulkDeactivate={handleBulkDeactivate}
               isAdminMode={isAdminMode}
-              isDarkMode={isDarkMode}
             />
 
             {firefighters.length === 0 ? (

@@ -89,16 +89,16 @@ export function ReactivateModal({
           </Button>
         </div>
 
-        <div className={`${tokens.spacing.card.lg} space-y-6`}>
+        <div className="p-6 space-y-6">
           <div>
-            <label htmlFor="position-select" className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
+            <label htmlFor="position-select" className="block text-sm font-semibold text-muted-foreground mb-3">
               Select Position in Rotation
             </label>
             <select
               id="position-select"
               value={selectedPosition}
               onChange={(e) => setSelectedPosition(Number(e.target.value))}
-              className={`w-full ${colors.components.input.default} border-2 ${tokens.borders.radius.lg} px-4 py-3 ${colors.structural.text.primary} font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent`}
+              className="flex h-10 w-full rounded-md border-2 border-input bg-background px-3 py-2 text-sm font-semibold text-foreground ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
               {positions.map((pos) => (
                 <option key={pos} value={pos}>
@@ -106,25 +106,25 @@ export function ReactivateModal({
                 </option>
               ))}
             </select>
-            <p className={`mt-2 ${tokens.typography.body.small} ${colors.structural.text.tertiary}`}>
+            <p className="mt-2 text-sm text-muted-foreground">
               Current roster has {currentRosterSize} active {currentRosterSize === 1 ? 'member' : 'members'}
             </p>
           </div>
 
-          <div className={`${colors.structural.bg.surface} border ${colors.structural.border.default} ${tokens.borders.radius.lg} ${tokens.spacing.card.md}`}>
-            <h3 className={`${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-2`}>Firefighter Details</h3>
-            <div className={`space-y-1 ${tokens.typography.body.secondary}`}>
-              <p className={colors.structural.text.tertiary}>
-                <span className="font-semibold">Name:</span> <span className={colors.structural.text.primary}>{firefighter.name}</span>
+          <div className="bg-muted border border-border rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-muted-foreground mb-2">Firefighter Details</h3>
+            <div className="space-y-1 text-sm">
+              <p className="text-muted-foreground">
+                <span className="font-semibold">Name:</span> <span className="text-foreground">{firefighter.name}</span>
               </p>
               {firefighter.fire_station && (
-                <p className={colors.structural.text.tertiary}>
-                  <span className="font-semibold">Station:</span> <span className={colors.structural.text.primary}>#{firefighter.fire_station}</span>
+                <p className="text-muted-foreground">
+                  <span className="font-semibold">Station:</span> <span className="text-foreground">#{firefighter.fire_station}</span>
                 </p>
               )}
-              <p className={colors.structural.text.tertiary}>
+              <p className="text-muted-foreground">
                 <span className="font-semibold">Last Hold:</span>{' '}
-                <span className={colors.structural.text.primary}>
+                <span className="text-foreground">
                   {firefighter.last_hold_date
                     ? new Date(firefighter.last_hold_date).toLocaleDateString('en-US', {
                         month: 'short',
@@ -137,20 +137,24 @@ export function ReactivateModal({
             </div>
           </div>
 
-          <div className={`flex ${tokens.spacing.gap.md}`}>
-            <button
+          <div className="flex gap-4">
+            <Button
               onClick={onClose}
-              className={`flex-1 px-6 py-3 ${colors.components.button.secondary} ${tokens.borders.radius.lg} font-semibold focus-ring`}
+              variant="secondary"
+              size="lg"
+              className="flex-1"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleConfirm}
-              className={`flex-1 px-6 py-3 ${colors.semantic.success.gradient} ${colors.semantic.success.hover} text-white ${tokens.borders.radius.lg} font-semibold transition-all ${colors.semantic.success.shadow} focus-ring flex items-end sm:items-center justify-center ${tokens.spacing.gap.sm}`}
+              variant="default"
+              size="lg"
+              className="flex-1 bg-green-600 hover:bg-green-700"
             >
-              <UserPlus className={tokens.icons.sm} />
+              <UserPlus className="mr-2 h-4 w-4" />
               Reactivate
-            </button>
+            </Button>
           </div>
         </div>
       </div>

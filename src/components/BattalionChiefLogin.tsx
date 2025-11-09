@@ -1,8 +1,10 @@
 import { Lock, X, AlertCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useFocusTrap } from "../hooks/useFocusTrap";
-import { colors, tokens } from "../styles";
-import { visualHeading } from "../styles/visualHeadings";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface BattalionChiefLoginProps {
   isOpen: boolean;
@@ -60,7 +62,7 @@ export function BattalionChiefLogin({ isOpen, onClose, onSuccess }: BattalionChi
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center ${colors.components.modal.overlay}`}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
       onClick={handleOverlayClick}
       role="dialog"
       aria-modal="true"
@@ -68,56 +70,54 @@ export function BattalionChiefLogin({ isOpen, onClose, onSuccess }: BattalionChi
     >
       <div
         ref={trapRef}
-        className={`relative w-full max-w-md mx-4 ${colors.components.modal.background} ${tokens.borders.radius.lg} ${colors.components.modal.shadow} overflow-hidden animate-scale-in`}
+        className="relative w-full max-w-md mx-4 bg-card rounded-lg shadow-lg overflow-hidden animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className={`flex items-center justify-between ${tokens.spacing.card.lg} border-b ${colors.structural.border.default}`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`p-2 ${colors.semantic.warning.light} ${tokens.borders.radius.md}`}>
-              <Lock className={`w-5 h-5 ${colors.semantic.warning.text}`} />
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <div className="flex items-center gap-4">
+            <div className="p-2 bg-orange-500/10 rounded-md">
+              <Lock className="w-5 h-5 text-orange-500" />
             </div>
             <h2
               id="battalion-chief-login-title"
-              className={visualHeading('h3', colors.structural.text.primary)}
+              className="text-2xl font-bold text-foreground"
             >
               Battalion Chief Mode
             </h2>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors flex items-center justify-center`}
             aria-label="Close login modal"
           >
-            <X className={`w-5 h-5 ${colors.structural.text.secondary}`} />
-          </button>
+            <X className="w-5 h-5" />
+          </Button>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className={`mx-6 mt-6 ${tokens.spacing.card.md} ${colors.semantic.error.light} border ${colors.semantic.error.border} ${tokens.borders.radius.md} flex items-start ${tokens.spacing.gap.md}`}>
-            <AlertCircle className={`w-5 h-5 ${colors.semantic.error.text} flex-shrink-0 mt-0.5`} />
-            <p className={`${tokens.typography.body.secondary} ${colors.semantic.error.text}`}>{error}</p>
+          <div className="mx-6 mt-6">
+            <Alert variant="destructive">
+              <AlertCircle className="w-5 h-5" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className={`${tokens.spacing.card.lg} space-y-4`}>
-          <p className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}>
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <p className="text-sm text-muted-foreground">
             Enter password to enable Battalion Chief Mode and unlock admin features:
           </p>
 
           {/* Password Field */}
-          <div>
-            <label
-              htmlFor="password"
-              className={`block ${tokens.typography.body.secondary} font-medium ${colors.structural.text.secondary} mb-2`}
-            >
-              Password
-            </label>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
             <div className="relative">
-              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${colors.structural.text.tertiary}`} />
-              <input
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
                 type="password"
                 id="password"
                 value={password}
@@ -126,20 +126,21 @@ export function BattalionChiefLogin({ isOpen, onClose, onSuccess }: BattalionChi
                 autoComplete="off"
                 autoFocus
                 placeholder="Enter password"
-                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
+                className="pl-10"
                 disabled={isLoading}
               />
             </div>
           </div>
 
           {/* Submit Button */}
-          <button
+          <Button
             type="submit"
             disabled={isLoading || !password}
-            className={`w-full py-3 px-4 ${colors.semantic.warning.gradient} ${colors.semantic.warning.hover} disabled:${colors.interactive.button.disabled} text-white font-medium ${tokens.borders.radius.md} transition-colors focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:cursor-not-allowed`}
+            className="w-full bg-orange-500 hover:bg-orange-600"
+            size="lg"
           >
             {isLoading ? (
-              <span className={`flex items-center justify-center ${tokens.spacing.gap.sm}`}>
+              <span className="flex items-center justify-center gap-2">
                 <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                   <circle
                     className="opacity-25"
@@ -161,10 +162,10 @@ export function BattalionChiefLogin({ isOpen, onClose, onSuccess }: BattalionChi
             ) : (
               "Unlock Admin Features"
             )}
-          </button>
+          </Button>
 
           {/* Help Text */}
-          <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} text-center mt-4`}>
+          <p className="text-xs text-muted-foreground text-center mt-4">
             Battalion Chief Mode allows managing roster, assigning holds, and overriding rotation.
           </p>
         </form>

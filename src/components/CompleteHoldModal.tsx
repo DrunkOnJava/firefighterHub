@@ -7,10 +7,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
-import { colors, tokens } from "../styles";
 import { StationSelector } from "./StationSelector";
-import { AnimatedButton } from "./ui/AnimatedButton";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
@@ -88,13 +88,7 @@ export function CompleteHoldModal({
 
   return (
     <div
-      className={`
-        fixed inset-0 z-50
-        flex items-end sm:items-center justify-center
-        ${tokens.spacing.card.md}
-        ${colors.components.modal.overlay}
-        animate-fade-in
-      `}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/80 animate-in fade-in duration-200"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -106,43 +100,23 @@ export function CompleteHoldModal({
     >
       <div
         ref={trapRef}
-        className={`
-          w-full h-full sm:h-auto
-          sm:max-w-lg max-h-screen sm:max-h-[90vh]
-          overflow-y-auto
-          ${colors.components.modal.background}
-          ${colors.components.modal.border}
-          sm:${tokens.borders.radius['2xl']}
-          ${colors.components.modal.shadow}
-          animate-slide-up sm:animate-scale-in
-        `}
+        className="w-full h-full sm:h-auto sm:max-w-lg max-h-screen sm:max-h-[90vh] overflow-y-auto bg-card border-2 border-border sm:rounded-2xl shadow-xl animate-in slide-in-from-bottom-8 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className={`
-            sticky top-0 z-10
-            ${tokens.spacing.card.xl}
-            flex items-center justify-between
-            border-b-2
-            ${colors.semantic.success.gradient}
-            ${colors.semantic.success.border}
-            backdrop-blur-sm
-          `}
+          className="sticky top-0 z-10 p-6 flex items-center justify-between border-b-2 bg-green-600 border-green-700/50 backdrop-blur-sm"
         >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <CheckCircle className={colors.semantic.success.text} size={28} />
+          <div className="flex items-center gap-4">
+            <CheckCircle className="text-white" size={28} />
             <div>
               <h2
                 id="complete-hold-title"
-                className={`
-                  ${tokens.typography.heading.h1}
-                  text-white
-                `}
+                className="text-xl font-bold text-white"
               >
                 Complete Hold
               </h2>
               <p
-                className={`${tokens.typography.body.secondary} text-green-200 mt-1`}
+                className="text-sm text-green-200 mt-1"
               >
                 {firefighter.name}
               </p>
@@ -153,50 +127,35 @@ export function CompleteHoldModal({
             size="icon"
             onClick={onClose}
             aria-label="Close dialog"
+            className="text-white hover:bg-green-700"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
 
-        <div className={`${tokens.spacing.card.xl} space-y-6`}>
+        <div className="p-6 space-y-6">
           <div
-            className={`
-              border ${tokens.borders.radius.lg}
-              ${tokens.spacing.card.md}
-              ${colors.semantic.scheduled.light}
-              ${colors.semantic.scheduled.border}
-            `}
+            className="border rounded-lg p-4 bg-blue-900/20 border-blue-700/50"
           >
-            <p className={`${tokens.typography.body.secondary} text-blue-200`}>
+            <p className="text-sm text-blue-200">
               This will mark the hold as completed and update{" "}
               <strong>{firefighter.name}</strong>'s position in the rotation.
             </p>
           </div>
 
           <div className="space-y-3">
-            <label
-              className={`
-                flex items-center ${tokens.spacing.gap.sm}
-                ${tokens.typography.body.secondary}
-                ${tokens.typography.weight.semibold}
-                ${colors.structural.text.secondary}
-              `}
+            <Label
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
               <CalendarIcon size={18} className="text-orange-400" />
               <span>Hold Date</span>
-            </label>
-            <input
+            </Label>
+            <Input
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
               min={today}
               max={maxDateStr}
-              className={`
-                w-full px-4 py-3
-                ${tokens.borders.radius.lg}
-                ${colors.components.input.default}
-                ${tokens.transitions.fast}
-              `}
             />
           </div>
 
@@ -207,21 +166,16 @@ export function CompleteHoldModal({
           />
 
           <div className="space-y-3">
-            <label
+            <Label
               htmlFor="lent-to-shift"
-              className={`
-                flex items-center ${tokens.spacing.gap.sm}
-                ${tokens.typography.body.secondary}
-                ${tokens.typography.weight.semibold}
-                ${colors.structural.text.secondary}
-              `}
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
               <ArrowRight
                 size={18}
-                className={colors.semantic.scheduled.text}
+                className="text-blue-400"
               />
               <span>Lent to Shift (Optional)</span>
-            </label>
+            </Label>
             <div className="space-y-2">
               <select
                 id="lent-to-shift"
@@ -229,12 +183,7 @@ export function CompleteHoldModal({
                 onChange={(e) =>
                   setLentToShift((e.target.value as Shift | null) || null)
                 }
-                className={`
-                  w-full px-4 py-3
-                  ${tokens.borders.radius.lg}
-                  ${colors.components.input.default}
-                  ${tokens.transitions.fast}
-                `}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <option value="">None (not being lent out)</option>
                 <option value="A">A-Shift</option>
@@ -242,7 +191,7 @@ export function CompleteHoldModal({
                 <option value="C">C-Shift</option>
               </select>
               <p
-                className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                className="text-sm text-muted-foreground"
               >
                 Select which shift this firefighter is being lent to, if
                 applicable.
@@ -251,35 +200,25 @@ export function CompleteHoldModal({
           </div>
 
           <div className="space-y-3">
-            <label
+            <Label
               htmlFor="hold-duration"
-              className={`
-                flex items-center ${tokens.spacing.gap.sm}
-                ${tokens.typography.body.secondary}
-                ${tokens.typography.weight.semibold}
-                ${colors.structural.text.secondary}
-              `}
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
               <Clock size={18} className="text-purple-400" />
               <span>Hold Duration</span>
-            </label>
+            </Label>
             <div className="space-y-2">
               <select
                 id="hold-duration"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value as HoldDuration)}
-                className={`
-                  w-full px-4 py-3
-                  ${tokens.borders.radius.lg}
-                  ${colors.components.input.default}
-                  ${tokens.transitions.fast}
-                `}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 <option value="12h">12 Hours</option>
                 <option value="24h">24 Hours (Default)</option>
               </select>
               <p
-                className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                className="text-sm text-muted-foreground"
               >
                 Length of the hold shift. Most holds are 24 hours.
               </p>
@@ -287,33 +226,22 @@ export function CompleteHoldModal({
           </div>
 
           <div className="space-y-3">
-            <label
+            <Label
               htmlFor="start-time"
-              className={`
-                flex items-center ${tokens.spacing.gap.sm}
-                ${tokens.typography.body.secondary}
-                ${tokens.typography.weight.semibold}
-                ${colors.structural.text.secondary}
-              `}
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
               <Clock size={18} className="text-purple-400" />
               <span>Start Time</span>
-            </label>
+            </Label>
             <div className="space-y-2">
-              <input
+              <Input
                 id="start-time"
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
-                className={`
-                  w-full px-4 py-3
-                  ${tokens.borders.radius.lg}
-                  ${colors.components.input.default}
-                  ${tokens.transitions.fast}
-                `}
               />
               <p
-                className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                className="text-sm text-muted-foreground"
               >
                 Hold start time (default: 07:00). Member may be called back
                 mid-shift if needed.
@@ -322,28 +250,18 @@ export function CompleteHoldModal({
           </div>
 
           <div className="space-y-3">
-            <label
+            <Label
               htmlFor="new-position"
-              className={`
-                flex items-center ${tokens.spacing.gap.sm}
-                ${tokens.typography.body.secondary}
-                ${tokens.typography.weight.semibold}
-                ${colors.structural.text.secondary}
-              `}
+              className="flex items-center gap-2 text-sm font-semibold text-muted-foreground"
             >
               <span>New Position in Rotation</span>
-            </label>
+            </Label>
             <div className="space-y-2">
               <select
                 id="new-position"
                 value={newPosition}
                 onChange={(e) => setNewPosition(Number(e.target.value))}
-                className={`
-                  w-full px-4 py-3
-                  ${tokens.borders.radius.lg}
-                  ${colors.components.input.default}
-                  ${tokens.transitions.fast}
-                `}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               >
                 {Array.from({ length: totalFirefighters }, (_, i) => i + 1).map(
                   (pos) => (
@@ -357,7 +275,7 @@ export function CompleteHoldModal({
                 )}
               </select>
               <p
-                className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}
+                className="text-sm text-muted-foreground"
               >
                 Default is bottom of the list. Select a different position if
                 needed.
@@ -365,27 +283,35 @@ export function CompleteHoldModal({
             </div>
           </div>
 
-          <div className={`flex ${tokens.spacing.gap.md} pt-4`}>
-            <AnimatedButton
+          <div className="flex gap-4 pt-4">
+            <Button
               onClick={onClose}
               variant="secondary"
               size="lg"
-              fullWidth
+              className="flex-1"
               disabled={isSubmitting}
             >
               Cancel
-            </AnimatedButton>
-            <AnimatedButton
+            </Button>
+            <Button
               onClick={handleConfirm}
-              disabled={!selectedDate}
-              state={isSubmitting ? 'loading' : 'idle'}
+              disabled={!selectedDate || isSubmitting}
               variant="default"
               size="lg"
-              fullWidth
-              icon={<CheckCircle size={20} />}
+              className="flex-1"
             >
-              Complete Hold
-            </AnimatedButton>
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin">⏳</span>
+                  Completing...
+                </span>
+              ) : (
+                <>
+                  <CheckCircle className="mr-2 h-5 w-5" />
+                  Complete Hold
+                </>
+              )}
+            </Button>
           </div>
         </div>
       </div>

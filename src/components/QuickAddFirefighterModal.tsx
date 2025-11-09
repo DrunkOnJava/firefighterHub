@@ -6,7 +6,6 @@ import { Shift } from "../lib/supabase";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { Checkbox } from "./ui/Checkbox";
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;
@@ -324,9 +323,11 @@ export function QuickAddFirefighterModal({
                     { state: apparatusRescueSquad, setState: setApparatusRescueSquad, label: "Rescue Squad" },
                   ].map(({ state, setState, label }) => (
                     <label key={label} className="flex items-center gap-2 cursor-pointer bg-muted px-3 py-2 rounded-md hover:bg-accent transition-colors">
-                      <Checkbox
+                      <input
+                        type="checkbox"
                         checked={state}
-                        onCheckedChange={(checked) => setState(!!checked)}
+                        onChange={(e) => setState(e.target.checked)}
+                        className="w-4 h-4 rounded border-input bg-background text-primary focus:ring-2 focus:ring-ring"
                       />
                       <span className="text-sm text-muted-foreground">{label}</span>
                     </label>
@@ -340,27 +341,33 @@ export function QuickAddFirefighterModal({
                 </Label>
                 <div className="grid grid-cols-3 gap-2">
                   <label className="flex items-center gap-2 cursor-pointer bg-amber-900/20 px-3 py-2 rounded-md hover:bg-amber-900/30 border border-amber-700/50 transition-colors">
-                    <Checkbox
+                    <input
+                      type="checkbox"
                       checked={isFTO}
-                      onCheckedChange={(checked) => setIsFTO(!!checked)}
+                      onChange={(e) => setIsFTO(e.target.checked)}
+                      className="w-4 h-4 rounded border-amber-600 bg-slate-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
                     />
                     <span className="text-sm font-semibold text-amber-300">
                       FTO
                     </span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer bg-emerald-900/20 px-3 py-2 rounded-md hover:bg-emerald-900/30 border border-emerald-700/50 transition-colors">
-                    <Checkbox
+                    <input
+                      type="checkbox"
                       checked={isBLS}
-                      onCheckedChange={(checked) => setIsBLS(!!checked)}
+                      onChange={(e) => setIsBLS(e.target.checked)}
+                      className="w-4 h-4 rounded border-emerald-600 bg-slate-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
                     />
                     <span className="text-sm font-semibold text-emerald-300">
                       BLS
                     </span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer bg-cyan-900/20 px-3 py-2 rounded-md hover:bg-cyan-900/30 border border-cyan-700/50 transition-colors">
-                    <Checkbox
+                    <input
+                      type="checkbox"
                       checked={isALS}
-                      onCheckedChange={(checked) => setIsALS(!!checked)}
+                      onChange={(e) => setIsALS(e.target.checked)}
+                      className="w-4 h-4 rounded border-cyan-600 bg-slate-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
                     />
                     <span className="text-sm font-semibold text-cyan-300">
                       ALS

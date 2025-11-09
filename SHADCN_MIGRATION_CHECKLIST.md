@@ -1,7 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 0/63 components migrated (0%)
+**Status:** 4/63 components migrated (6.3%)  
+**Active Sprint:** Priority 1 - Core Layout (4/8 complete)
 
 ## Migration Strategy
 
@@ -18,10 +19,10 @@ For each component:
 
 Critical components affecting main app structure.
 
-- [ ] `src/components/Header.tsx` - Main header with shift selector
+- [x] ~~`src/components/Header.tsx`~~ - ✅ Migrated (commit f029f47)
 - [ ] `src/components/Sidebar.tsx` - Navigation sidebar
-- [ ] `src/components/MobileNav.tsx` - Mobile navigation
-- [ ] `src/components/mobile/BottomNav.tsx` - Mobile bottom navigation
+- [x] ~~`src/components/MobileNav.tsx`~~ - ✅ Migrated (commit 64a1dfd)
+- [x] ~~`src/components/mobile/BottomNav.tsx`~~ - ✅ Migrated (commit 1358c89)
 - [ ] `src/App.tsx` - Root app component
 - [ ] `src/components/ErrorBoundary.tsx` - Error boundary wrapper
 - [ ] `src/components/ConnectionStatusIndicator.tsx` - Realtime status

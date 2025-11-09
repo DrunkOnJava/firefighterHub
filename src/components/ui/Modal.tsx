@@ -16,7 +16,7 @@ import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { useFocusReturn } from "../../hooks/useFocusReturn";
 import { useDevice } from "../../hooks/useDevice";
 import { colors, tokens } from "../../styles";
-import { Button } from "./Button";
+import { Button } from "./button";
 
 export interface ModalProps {
   /** Controls modal visibility */

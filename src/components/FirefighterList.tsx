@@ -821,7 +821,7 @@ export function FirefighterList({
                               icon={Repeat}
                               label={`Transfer ${firefighter.name} to different shift`}
                               onClick={() => onTransferShift(firefighter.id)}
-                              variant="primary"
+                              variant="default"
                               size="xs"
                               isDarkMode={isDarkMode}
                             />
@@ -837,7 +837,7 @@ export function FirefighterList({
                               icon={Trash2}
                               label={`Delete ${firefighter.name} permanently`}
                               onClick={() => onDelete(firefighter.id)}
-                              variant="danger"
+                              variant="destructive"
                               size="xs"
                               isDarkMode={isDarkMode}
                             />
@@ -926,7 +926,7 @@ export function FirefighterList({
                           setSelectedFirefighter(firefighter);
                           setShowProfileModal(true);
                         }}
-                        variant="primary"
+                        variant="default"
                         size="xs"
                         isDarkMode={isDarkMode}
                       />

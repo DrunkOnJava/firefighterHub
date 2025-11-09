@@ -18,6 +18,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock IntersectionObserver
+// @ts-ignore
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
@@ -29,6 +30,7 @@ global.IntersectionObserver = class IntersectionObserver {
 } as any;
 
 // Mock ResizeObserver
+// @ts-ignore
 global.ResizeObserver = class ResizeObserver {
   constructor() {}
   disconnect() {}

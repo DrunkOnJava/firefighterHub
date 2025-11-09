@@ -4,7 +4,7 @@ import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { Firefighter, Shift } from "../lib/supabase";
 import { colors, tokens, gridUtilities } from "../styles";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import { IconButton } from "./ui/IconButton";
 
 interface TransferShiftModalProps {
@@ -161,7 +161,7 @@ export function TransferShiftModal({
             </Button>
             <Button
               onClick={handleConfirm}
-              variant="primary"
+              variant="default"
               size="lg"
               fullWidth
               state={isSubmitting ? 'loading' : 'idle'}

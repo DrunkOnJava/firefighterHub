@@ -407,7 +407,7 @@ export function QuickAddFirefighterModal({
               type="submit"
               disabled={!name.trim()}
               state={isSubmitting ? 'loading' : 'idle'}
-              variant="primary"
+              variant="default"
               size="lg"
               fullWidth
               icon={<UserPlus size={20} />}

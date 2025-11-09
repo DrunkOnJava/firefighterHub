@@ -7,10 +7,12 @@ import {
   Moon,
   Printer,
   Sun,
+  UserPlus,
 } from "lucide-react";
 import { Shift } from "../lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { tokens } from "../styles";
 import {
   ConnectionStatusDot,
   ConnectionStatusIndicator,

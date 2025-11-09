@@ -49,7 +49,7 @@ export function AddFirefighterForm({ onAdd }: AddFirefighterFormProps) {
     return (
       <AnimatedButton
         onClick={() => setIsExpanded(true)}
-        variant="primary"
+        variant="default"
         size="lg"
         fullWidth
         icon={<UserPlus size={20} />}
@@ -95,7 +95,7 @@ export function AddFirefighterForm({ onAdd }: AddFirefighterFormProps) {
         <AnimatedButton
           type="submit"
           disabled={!name.trim()}
-          variant="primary"
+          variant="default"
           size="md"
           fullWidth
           aria-label="Add firefighter to rotation"

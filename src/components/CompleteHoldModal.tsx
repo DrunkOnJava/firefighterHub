@@ -3,13 +3,14 @@ import {
   Calendar as CalendarIcon,
   CheckCircle,
   Clock,
+  X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
 import { colors, tokens } from "../styles";
 import { StationSelector } from "./StationSelector";
 import { AnimatedButton } from "./ui/AnimatedButton";
-import { ResponsiveModal } from "./Common/ResponsiveModal";
+import { Button } from "@/components/ui/button";
 
 interface CompleteHoldModalProps {
   isOpen: boolean;
@@ -41,6 +42,7 @@ export function CompleteHoldModal({
   const [duration, setDuration] = useState<HoldDuration>("24h"); // Default to 24 hours
   const [startTime, setStartTime] = useState("07:00"); // Default to 07:00
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const trapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && firefighter) {
@@ -146,14 +148,14 @@ export function CompleteHoldModal({
               </p>
             </div>
           </div>
-          <IconButton
-            icon={X}
-            label="Close dialog"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            variant="default"
-            size="md"
-            isDarkMode={true}
-          />
+            aria-label="Close dialog"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
         <div className={`${tokens.spacing.card.xl} space-y-6`}>
@@ -377,7 +379,7 @@ export function CompleteHoldModal({
               onClick={handleConfirm}
               disabled={!selectedDate}
               state={isSubmitting ? 'loading' : 'idle'}
-              variant="primary"
+              variant="default"
               size="lg"
               fullWidth
               icon={<CheckCircle size={20} />}

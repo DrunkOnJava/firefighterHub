@@ -2,7 +2,7 @@ import { AlertTriangle, Info, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { tokens, visualHeadings } from "../styles";
 import { getTheme } from "../utils/theme";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 
 type ConfirmVariant = "danger" | "warning" | "info";
 

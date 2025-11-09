@@ -126,7 +126,7 @@ export function useLongPress(
 ) {
   const { delay = 500, onLongPress } = options;
   const device = useDevice();
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!device.hasTouch) return;

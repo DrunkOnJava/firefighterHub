@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useFocusReturn } from "../hooks/useFocusReturn";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { colors, tokens, visualHeadings } from "../styles";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -168,7 +168,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
             type="submit"
             disabled={!email || !password}
             state={isLoading ? 'loading' : 'idle'}
-            variant="primary"
+            variant="default"
             size="lg"
             fullWidth
             withRipple

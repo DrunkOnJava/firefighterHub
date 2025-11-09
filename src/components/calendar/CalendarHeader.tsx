@@ -96,7 +96,7 @@ export function CalendarHeader({
           </h2>
           
           {/* Hint text */}
-          <span className={`ml-2 text-xs ${isDarkMode ? 'text-slate-500' : 'text-slate-500'} hidden lg:inline`}>
+          <span className="ml-2 text-xs text-muted-foreground hidden lg:inline">
             Navigate via ← →
           </span>
         </div>
@@ -106,16 +106,16 @@ export function CalendarHeader({
           {/* Mini legend */}
           <div className="hidden lg:flex items-center gap-4 text-xs">
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded border-l-4 border-orange-500 bg-slate-700" />
-              <span className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>Scheduled</span>
+              <div className="w-3 h-3 rounded border-l-4 border-orange-500 bg-slate-700 dark:bg-slate-700" />
+              <span className="text-muted-foreground">Scheduled</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded border-l-4 border-green-500 bg-slate-700 opacity-75" />
-              <span className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>Completed</span>
+              <div className="w-3 h-3 rounded border-l-4 border-green-500 bg-slate-700 dark:bg-slate-700 opacity-75" />
+              <span className="text-muted-foreground">Completed</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded bg-blue-600/30 ring-2 ring-blue-500" />
-              <span className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>Today</span>
+              <span className="text-muted-foreground">Today</span>
             </div>
           </div>
           

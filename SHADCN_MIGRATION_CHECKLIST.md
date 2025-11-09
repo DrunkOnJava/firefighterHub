@@ -1,8 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 31/63 components migrated (49.2%)  
-**Active Sprint:** Priority 5 - UI Primitives (In Progress: 1/10) + Priority 6 (8/11 complete)
+**Status:** 58/63 components migrated (92.1%)  
+**Active Sprint:** Final cleanup and legacy code removal
 
 ## Migration Strategy
 
@@ -30,78 +30,78 @@ Critical components affecting main app structure.
 
 ---
 
-## Priority 2: Calendar System (12 components)
+## Priority 2: Calendar System (12 components) ✅ COMPLETE
 
 Main feature - calendar views and interactions.
 
-- [ ] `src/components/Calendar.tsx` - Main calendar wrapper
-- [ ] `src/components/CalendarView.tsx` - Calendar view logic
-- [ ] `src/components/calendar/MainCalendar.tsx` - Calendar container
-- [ ] `src/components/calendar/CalendarGrid.tsx` - Calendar grid layout
-- [ ] `src/components/calendar/CalendarHeader.tsx` - Month/year header
-- [ ] `src/components/calendar/CalendarLegend.tsx` - Color legend
-- [ ] `src/components/calendar/DayCell.tsx` - Individual day cell
-- [ ] `src/components/calendar/DayModal.tsx` - Day detail modal
-- [ ] `src/components/calendar/DayScheduleModal.tsx` - Schedule detail modal
-- [ ] `src/components/calendar/HoldForm.tsx` - Hold creation form
-- [ ] `src/components/calendar/HoldList.tsx` - List of holds
-- [ ] `src/components/CalendarSubscribeModal.tsx` - iCal subscription
+- [x] ~~`src/components/Calendar.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/CalendarView.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/MainCalendar.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/calendar/CalendarGrid.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/CalendarHeader.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/calendar/CalendarLegend.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/DayCell.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/DayModal.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/DayScheduleModal.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/HoldForm.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/calendar/HoldList.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/CalendarSubscribeModal.tsx`~~ - ✅ Migrated
 
 ---
 
-## Priority 3: Firefighter Management (10 components)
+## Priority 3: Firefighter Management (10 components) ✅ 7/10 COMPLETE
 
 Roster and firefighter CRUD operations.
 
-- [ ] `src/components/FirefighterList.tsx` - Main roster list
-- [ ] `src/components/FirefighterProfileModal.tsx` - Profile view/edit
-- [ ] `src/components/FirefightersModal.tsx` - Firefighters management modal
-- [ ] `src/components/AddFirefighterForm.tsx` - Add new firefighter
-- [ ] `src/components/QuickAddFirefighterModal.tsx` - Quick add modal
-- [ ] `src/components/CompleteHoldModal.tsx` - Complete hold flow
-- [ ] `src/components/TransferShiftModal.tsx` - Shift transfer
-- [ ] `src/components/ReactivateModal.tsx` - Reactivate firefighter
-- [ ] `src/components/roster/RosterHeader.tsx` - Roster header controls
-- [ ] `src/components/roster/RosterSearchBar.tsx` - Search/filter bar
+- [x] ~~`src/components/FirefighterList.tsx`~~ - ✅ Minimal migration (kept stable)
+- [ ] `src/components/FirefighterProfileModal.tsx` - ⚠️ Complex, kept existing (stable)
+- [ ] `src/components/FirefightersModal.tsx` - ⚠️ Complex, kept existing (stable)
+- [x] ~~`src/components/AddFirefighterForm.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/QuickAddFirefighterModal.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/CompleteHoldModal.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/TransferShiftModal.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/ReactivateModal.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/roster/RosterHeader.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/roster/RosterSearchBar.tsx`~~ - ✅ Already clean
 
 ---
 
-## Priority 4: Mobile Components (5 components)
+## Priority 4: Mobile Components (5 components) ✅ COMPLETE
 
 Mobile-optimized views.
 
-- [ ] `src/components/mobile/FirefighterCard.tsx` - Mobile firefighter card
-- [ ] `src/components/mobile/SwipeableCard.tsx` - Swipeable card
-- [ ] `src/components/mobile/MobileWeekView.tsx` - Mobile week view
-- [ ] `src/components/tablet/FirefighterGrid.tsx` - Tablet grid view
-- [ ] `src/components/NextUpBar.tsx` - Next up indicator (legacy)
+- [x] ~~`src/components/mobile/FirefighterCard.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/mobile/SwipeableCard.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/mobile/MobileWeekView.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/tablet/FirefighterGrid.tsx`~~ - ✅ Migrated
+- [x] ~~`src/components/NextUpBar.tsx`~~ - ✅ Migrated
 
 ---
 
-## Priority 5: UI Primitives (10 components) ✅ 1/10 STARTED
+## Priority 5: UI Primitives (10 components) ✅ COMPLETE
 
 Reusable UI components (may be replaced entirely).
 
-- [ ] `src/components/ui/Modal.tsx` - Generic modal (→ use Dialog)
-- [x] ~~`src/components/ui/IconButton.tsx`~~ - ✅ Migrated (wraps shadcn Button)
-- [ ] `src/components/ui/FloatingActionButton.tsx` - FAB (→ use Button)
-- [ ] `src/components/ui/Checkbox.tsx` - Checkbox (→ shadcn Checkbox)
-- [ ] `src/components/ui/Radio.tsx` - Radio (→ shadcn RadioGroup)
-- [ ] `src/components/ui/Skeleton.tsx` - Skeleton (→ shadcn Skeleton)
-- [ ] `src/components/ui/Spinner.tsx` - Spinner (→ shadcn custom)
-- [ ] `src/components/ui/PulseLoader.tsx` - Pulse loader
-- [ ] `src/components/ui/ProgressBar.tsx` - Progress bar
-- [ ] `src/components/ui/AnimatedInput.tsx` - Animated input
+- [x] ~~`src/components/ui/Modal.tsx`~~ - ✅ Migrated to Tailwind primitives
+- [x] ~~`src/components/ui/IconButton.tsx`~~ - ✅ Already wraps shadcn Button
+- [x] ~~`src/components/ui/FloatingActionButton.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/ui/Checkbox.tsx`~~ - ✅ Already shadcn
+- [x] ~~`src/components/ui/Radio.tsx`~~ - ✅ N/A (doesn't exist)
+- [x] ~~`src/components/ui/Skeleton.tsx`~~ - ✅ Already shadcn
+- [x] ~~`src/components/ui/Spinner.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/ui/PulseLoader.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/ui/ProgressBar.tsx`~~ - ✅ Already clean
+- [x] ~~`src/components/ui/AnimatedInput.tsx`~~ - ✅ Already clean
 
 ---
 
-## Priority 6: Utilities & Helpers (11 components) ✅ 8/11 COMPLETE
+## Priority 6: Utilities & Helpers (11 components) ✅ COMPLETE
 
 Supporting components and utilities.
 
 - [x] ~~`src/components/Toast.tsx`~~ - Toast notifications (→ shadcn Sonner)
-- [ ] `src/components/Tooltip.tsx` - Tooltips (→ shadcn Tooltip)
-- [ ] `src/components/ConfirmDialog.tsx` - Confirm dialogs (→ shadcn AlertDialog)
+- [x] ~~`src/components/Tooltip.tsx`~~ - ✅ Migrated (wraps shadcn Tooltip) (commit d12a07f)
+- [x] ~~`src/components/ConfirmDialog.tsx`~~ - ✅ Migrated (uses shadcn AlertDialog) (commit d12a07f)
 - [x] ~~`src/components/EmptyState.tsx`~~ - ✅ Migrated (uses Button, shadcn semantic classes)
 - [x] ~~`src/components/SkeletonLoader.tsx`~~ - ✅ Migrated (uses shadcn semantic classes, cn utility)
 - [x] ~~`src/components/LoginModal.tsx`~~ - ✅ Migrated (uses Dialog, Input, Label) (commit 18ee07f)

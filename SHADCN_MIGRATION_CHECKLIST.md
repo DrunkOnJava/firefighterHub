@@ -1,8 +1,9 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 58/63 components migrated (92.1%)  
-**Active Sprint:** Final cleanup and legacy code removal
+**Status:** 53/63 components migrated (84.1%) - CORRECTED AFTER AUDIT  
+**Active Sprint:** Bottom-up session - Final 10 components + cleanup  
+**Remaining:** 10 components with legacy imports (verified via grep)
 
 ## Migration Strategy
 
@@ -49,20 +50,20 @@ Main feature - calendar views and interactions.
 
 ---
 
-## Priority 3: Firefighter Management (10 components) ✅ 7/10 COMPLETE
+## Priority 3: Firefighter Management (10 components) ✅ 5/10 COMPLETE
 
 Roster and firefighter CRUD operations.
 
-- [x] ~~`src/components/FirefighterList.tsx`~~ - ✅ Minimal migration (kept stable)
-- [ ] `src/components/FirefighterProfileModal.tsx` - ⚠️ Complex, kept existing (stable)
-- [ ] `src/components/FirefightersModal.tsx` - ⚠️ Complex, kept existing (stable)
+- [ ] `src/components/FirefighterList.tsx` - ❌ Still uses colors, tokens (1,001 lines)
+- [ ] `src/components/FirefighterProfileModal.tsx` - ❌ Still uses colors, tokens, visualHeadings, gridUtilities (975 lines)
+- [ ] `src/components/FirefightersModal.tsx` - ❌ Still uses colors, tokens, visualHeadings, gridUtilities (676 lines)
 - [x] ~~`src/components/AddFirefighterForm.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/QuickAddFirefighterModal.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/CompleteHoldModal.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/TransferShiftModal.tsx`~~ - ✅ Migrated
 - [x] ~~`src/components/ReactivateModal.tsx`~~ - ✅ Migrated
-- [x] ~~`src/components/roster/RosterHeader.tsx`~~ - ✅ Already clean
-- [x] ~~`src/components/roster/RosterSearchBar.tsx`~~ - ✅ Already clean
+- [ ] `src/components/roster/RosterHeader.tsx` - ❌ Still uses colors, tokens (incorrectly marked clean)
+- [ ] `src/components/roster/RosterSearchBar.tsx` - ❌ Still uses colors, tokens (incorrectly marked clean)
 
 ---
 
@@ -95,11 +96,16 @@ Reusable UI components (may be replaced entirely).
 
 ---
 
-## Priority 6: Utilities & Helpers (11 components) ✅ COMPLETE
+## Priority 6: Utilities & Helpers (11 components) ⚠️ 8/11 COMPLETE
 
 Supporting components and utilities.
 
-- [x] ~~`src/components/Toast.tsx`~~ - Toast notifications (→ shadcn Sonner)
+**Still Need Migration:**
+- [ ] `src/components/LoadingButton.tsx` - ❌ Still uses colors, tokens
+- [ ] `src/components/ShiftIndicator.tsx` - ❌ Still uses tokens  
+- [ ] `src/components/Toast.tsx` - ❌ Still uses tokens (incorrectly marked complete)
+
+**Completed:**
 - [x] ~~`src/components/Tooltip.tsx`~~ - ✅ Migrated (wraps shadcn Tooltip) (commit d12a07f)
 - [x] ~~`src/components/ConfirmDialog.tsx`~~ - ✅ Migrated (uses shadcn AlertDialog) (commit d12a07f)
 - [x] ~~`src/components/EmptyState.tsx`~~ - ✅ Migrated (uses Button, shadcn semantic classes)
@@ -110,6 +116,15 @@ Supporting components and utilities.
 - [x] ~~`src/components/KeyboardShortcutsModal.tsx`~~ - ✅ Migrated (uses Dialog, Button) (commit 2bf6036)
 - [x] ~~`src/components/ActivityLogModal.tsx`~~ - ✅ Migrated (uses Dialog, shadcn semantic classes)
 - [x] ~~`src/components/ActivityLog.tsx`~~ - ✅ Migrated (uses Card, Button, semantic classes)
+
+---
+
+## Priority 8: Additional Components (2 components) ⚠️ NOT STARTED
+
+Components not in original list but found with legacy imports:
+
+- [ ] `src/components/LoadingButton.tsx` - Uses `colors`, `tokens` - needs shadcn Button migration
+- [ ] `src/components/ShiftIndicator.tsx` - Uses `tokens` - needs Tailwind utilities
 
 ---
 

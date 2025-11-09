@@ -1,54 +1,202 @@
-# FirefighterHub Mobile Optimization - Comprehensive TODO
+# FirefighterHub - Comprehensive TODO
 
-**Last Updated**: November 6, 2025
-**Project**: Mobile-First Web App Optimization
+**Last Updated**: January 9, 2025
+**Project**: shadcn/ui Migration & Mobile-First Optimization
 **Target URL**: https://firefighter-hub.vercel.app/
-**Status**: 🟢 Phase 2 Complete - Moving to Phase 3
+**Status**: 🟡 shadcn Migration 84.1% Complete - 10 Components Remaining
 
 ---
 
 ## 📊 Project Overview
 
-### Objectives
-Transform FirefighterHub into a mobile-optimized web application that:
-- Automatically detects mobile browsers and adapts UI accordingly
-- Achieves <3 second load times on mobile networks (3G/4G)
-- Provides touch-friendly interface with 44px+ touch targets (WCAG 2.1 AA)
-- Maintains brand consistency and all essential functionality
-- Supports iOS Safari, Chrome Mobile, and Firefox Mobile
+### Current Priority: shadcn/ui Migration
+**Goal**: Replace legacy style system with shadcn/ui semantic classes
+**Progress**: 53/63 components migrated (84.1%)
+**Remaining**: 10 components (5 small + 3 complex + 2 cleanup)
+**Timeline**: 10-14 hours estimated completion
 
-### Success Metrics
-- **Performance**: LCP < 2.5s, FID < 100ms, CLS < 0.1
-- **Accessibility**: WCAG 2.1 AA compliance (currently passing)
-- **Usability**: 100% feature parity with desktop version
-- **PWA Score**: 90+ on Lighthouse
-- **Bundle Size**: <150 KB initial JS bundle (currently 119.52 KB ✅)
+### Migration Benefits Achieved
+- **Bundle Size**: Reduced by 12KB (290KB → 278KB, -4.1%)
+- **Code Quality**: 50+ legacy imports removed
+- **Maintainability**: Consistent theming with Tailwind semantic classes
+- **Dark Mode**: Simplified with `dark:` variants (no isDarkMode props)
 
-### Current Baseline (November 6, 2025)
-- **LCP**: 611ms ✅ (Target: <2.5s)
-- **CLS**: 0.00 ✅ (Target: <0.1)
-- **Bundle Size**: 119.52 KB gzipped ✅ (48.6% reduction from 202.66 KB)
-- **Touch Targets**: 17 components updated to 44px minimum ✅
-- **PWA Setup**: Service worker + manifest configured ✅
+### Mobile Optimization Status
+**Goal**: Mobile-optimized web application with PWA capabilities
+**Status**: Core optimizations complete, ongoing refinements
+
+- **Performance**: LCP 611ms ✅, CLS 0.00 ✅
+- **Bundle Size**: 278KB gzipped ✅ (Target: <150KB after migration complete)
+- **Touch Targets**: WCAG 2.1 AA compliant (44px minimum) ✅
+- **PWA**: Service worker + manifest configured ✅
 
 ---
 
-## 🎯 Phase Progress Summary
+## 🎯 Active Sprint: shadcn/ui Migration Completion
 
-| Phase | Status | Progress | Key Deliverables |
-|-------|--------|----------|------------------|
-| Phase 1 | ✅ Complete | 100% | Performance audit, device detection, viewport config |
-| Phase 2 | ✅ Complete | 100% | Code splitting, bundle optimization (48.6% reduction) |
-| Phase 3 | 🔄 In Progress | 40% | Mobile-first layout refactoring |
-| Phase 4 | 📋 Planned | 0% | Touch gestures, mobile interactions |
-| Phase 5 | 📋 Planned | 0% | Navigation, typography, contrast |
-| Phase 6 | 📋 Planned | 0% | Loading states, error handling, sync optimization |
-| Phase 7 | 🟡 Partial | 30% | PWA features (manifest ✅, service worker ✅) |
-| Phase 8 | 📋 Planned | 0% | Mobile E2E testing |
-| Phase 9 | 📋 Planned | 0% | Accessibility audit, documentation |
-| Phase 10 | 📋 Planned | 0% | Performance round 2, final optimizations |
+### Phase 1: Quick Wins - Small Components (5 files, ~2-3 hours)
+**Priority**: HIGH - Fix incorrectly marked components
+**Assignee**: Bottom-up session
 
-**Overall Progress**: 27% Complete (2.7/10 phases)
+- [ ] `src/components/LoadingButton.tsx` (uses `colors`, `tokens`)
+  - Replace with shadcn `Button` + loading state
+  - Estimated: 30 minutes
+  
+- [ ] `src/components/ShiftIndicator.tsx` (uses `tokens`)
+  - Replace with Tailwind utilities
+  - Estimated: 20 minutes
+  
+- [ ] `src/components/Toast.tsx` (uses `tokens`)
+  - Verify shadcn Sonner integration, remove token imports
+  - Estimated: 30 minutes
+  
+- [ ] `src/components/roster/RosterHeader.tsx` (uses `colors`, `tokens`)
+  - Replace theme objects with semantic classes
+  - Estimated: 45 minutes
+  
+- [ ] `src/components/roster/RosterSearchBar.tsx` (uses `colors`, `tokens`)
+  - Replace theme objects with semantic classes
+  - Estimated: 45 minutes
+
+**Checkpoint**: Run `pnpm build && pnpm typecheck` after completing small components
+
+---
+
+### Phase 2: Complex Components (3 files, ~8-11 hours)
+**Priority**: HIGH - Main roster components
+**Assignee**: Bottom-up session (use UI/UX Implementation Specialist agent)
+
+- [ ] `src/components/FirefighterList.tsx` (1,001 lines)
+  - Uses: `colors`, `tokens`
+  - Strategy: Systematic search-replace, test after each section
+  - Risk: HIGH (main roster view, drag-drop, sorting)
+  - Estimated: 3-4 hours
+  
+- [ ] `src/components/FirefightersModal.tsx` (676 lines)
+  - Uses: `colors`, `tokens`, `visualHeadings`, `gridUtilities`
+  - Strategy: Section-by-section migration
+  - Risk: MEDIUM (inline editing, validation)
+  - Estimated: 2-3 hours
+  
+- [ ] `src/components/FirefighterProfileModal.tsx` (975 lines)
+  - Uses: `colors`, `tokens`, `visualHeadings`, `gridUtilities`
+  - Strategy: Tab-by-tab migration
+  - Risk: MEDIUM (multiple tabs, form states)
+  - Estimated: 2-3 hours
+
+**Checkpoint**: Run `pnpm build && pnpm test:run` after each complex component
+
+---
+
+### Phase 3: Cleanup & Verification (~1 hour)
+**Priority**: MEDIUM - Remove legacy code
+**Assignee**: Bottom-up session
+
+#### Step 1: Verify No Legacy Imports Remain
+```bash
+# Should return 0 matches:
+grep -r "import.*from.*['\"].*styles" src/ --include="*.tsx" --include="*.ts" | \
+  grep -E "(colors|tokens|colorSystem|gridUtilities|visualHeadings)"
+
+# Alternative checks:
+grep -r "from ['\"]@/styles" src/ --include="*.tsx" --include="*.ts"
+grep -r "from ['\"]../styles" src/ --include="*.tsx" --include="*.ts"
+```
+
+#### Step 2: Delete Obsolete Component Files (8 files, ~15KB)
+- [ ] `src/components/ListView.tsx` - Duplicate of FirefighterList
+- [ ] `src/components/Breadcrumb.tsx` - Unused navigation breadcrumb
+- [ ] `src/components/GridOverlay.tsx` - Dev-only grid overlay
+- [ ] `src/components/Common/ResponsiveModal.tsx` - Duplicate of ui/Modal
+- [ ] `src/components/Form/Checkbox.tsx` - Duplicate of ui/Checkbox
+- [ ] `src/components/Form/RadioGroup.tsx` - Duplicate of ui/Radio
+- [ ] `src/components/transitions/Collapsible.tsx` - Unused
+- [ ] `src/components/transitions/EmptyState.tsx` - Duplicate
+
+#### Step 3: Delete Legacy Style System (8 files, ~40KB)
+- [ ] `src/styles/tokens.ts` (11KB)
+- [ ] `src/styles/colorSystem.ts` (9KB)
+- [ ] `src/styles/gridUtilities.ts` (8.6KB)
+- [ ] `src/styles/colorTokens.ts` (5.5KB)
+- [ ] `src/styles/spacingTokens.ts` (3.7KB)
+- [ ] `src/styles/visualHeadings.ts` (if exists)
+- [ ] `src/styles/index.ts` (1KB)
+- [ ] `src/utils/calendarTheme.ts`
+- [ ] `src/utils/sidebarTheme.ts`
+- [ ] `src/utils/theme.ts` (if exists)
+
+#### Step 4: Final Build Verification
+```bash
+pnpm build          # Should pass
+pnpm typecheck      # Should pass
+pnpm lint           # Should pass
+pnpm test:run       # Check for failures
+```
+
+---
+
+## 📋 Completed Migration Work (53/63 components - 84.1%)
+
+### ✅ Priority 1: Core Layout (8/8) - 100% COMPLETE
+- [x] Header.tsx, Sidebar.tsx, MobileNav.tsx, BottomNav.tsx
+- [x] App.tsx, ErrorBoundary.tsx, ConnectionStatusIndicator.tsx, UpdateNotification.tsx
+
+### ✅ Priority 2: Calendar System (12/12) - 100% COMPLETE
+- [x] Calendar.tsx, CalendarView.tsx, MainCalendar.tsx, CalendarGrid.tsx
+- [x] CalendarHeader.tsx, CalendarLegend.tsx, DayCell.tsx, DayModal.tsx
+- [x] DayScheduleModal.tsx, HoldForm.tsx, HoldList.tsx, CalendarSubscribeModal.tsx
+
+### ✅ Priority 3: Firefighter Management (5/10) - 50% COMPLETE
+- [x] AddFirefighterForm.tsx, QuickAddFirefighterModal.tsx, CompleteHoldModal.tsx
+- [x] TransferShiftModal.tsx, ReactivateModal.tsx
+- [ ] RosterHeader.tsx - ⚠️ Needs migration (incorrectly marked complete)
+- [ ] RosterSearchBar.tsx - ⚠️ Needs migration (incorrectly marked complete)
+- [ ] FirefighterList.tsx - ⚠️ Partial only
+- [ ] FirefighterProfileModal.tsx - ⚠️ Not started
+- [ ] FirefightersModal.tsx - ⚠️ Not started
+
+### ✅ Priority 4: Mobile Components (5/5) - 100% COMPLETE
+- [x] FirefighterCard.tsx, SwipeableCard.tsx, MobileWeekView.tsx
+- [x] FirefighterGrid.tsx, NextUpBar.tsx
+
+### ✅ Priority 5: UI Primitives (10/10) - 100% COMPLETE
+- [x] Modal.tsx, IconButton.tsx, FloatingActionButton.tsx, Checkbox.tsx
+- [x] Skeleton.tsx, Spinner.tsx, PulseLoader.tsx, ProgressBar.tsx, AnimatedInput.tsx
+
+### ✅ Priority 6: Utilities & Helpers (9/11) - 82% COMPLETE
+- [x] Tooltip.tsx, ConfirmDialog.tsx, EmptyState.tsx, SkeletonLoader.tsx
+- [x] LoginModal.tsx, BattalionChiefLogin.tsx, HelpModal.tsx
+- [x] KeyboardShortcutsModal.tsx, ActivityLogModal.tsx, ActivityLog.tsx
+- [ ] Toast.tsx - ⚠️ Needs migration (incorrectly marked complete)
+- [ ] LoadingButton.tsx - ⚠️ Needs migration (not checked)
+
+### ✅ Priority 7: Additional Features (7/7) - 100% COMPLETE
+- [x] Reports.tsx, BulkActions.tsx, ExportMenu.tsx, FilterPanel.tsx
+- [x] StationSelector.tsx, NextUpBarV2.tsx, MetricCard.tsx
+
+---
+
+## 🔄 Historical: Mobile Optimization Phases
+
+### ✅ Phase 1: Mobile Performance Audit & Foundation [COMPLETE]
+**Status**: ✅ 100% Complete (November 6, 2025)
+**Documentation**: `docs/MOBILE_OPTIMIZATION_PHASE1_COMPLETE.md`
+
+- [x] Performance baseline measurement (LCP 611ms, CLS 0.00)
+- [x] Device detection infrastructure (`useMediaQuery`, `useDevice` hooks)
+- [x] Mobile-first configuration (viewport meta, touch targets, safe areas)
+
+### ✅ Phase 2: Bundle Optimization & Code Splitting [COMPLETE]
+**Status**: ✅ 100% Complete (November 6, 2025)
+**Documentation**: `docs/MOBILE_OPTIMIZATION_PHASE2_COMPLETE.md`
+
+- [x] Moment.js migration to date-fns (15.29 KB savings)
+- [x] Code splitting implementation (83.14 KB moved to separate chunks)
+- [x] Total savings: 98.43 KB gzipped (48.6% reduction)
+
+### ✅ Phase 3: Mobile-First Layout Refactor [COMPLETE]
+**Status**: ✅ 100% Complete (November 7, 2025)
+**Documentation**: `MOBILE_IMPLEMENTATION.md`
 
 ---
 

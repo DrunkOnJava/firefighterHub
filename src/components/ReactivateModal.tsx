@@ -3,8 +3,7 @@ import { X, UserPlus } from 'lucide-react';
 import { Firefighter } from '../lib/supabase';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
-import { colors, tokens } from '../styles';
-import { IconButton } from './ui/IconButton';
+import { Button } from './ui/button';
 
 interface ReactivateModalProps {
   isOpen: boolean;
@@ -57,7 +56,7 @@ export function ReactivateModal({
 
   return (
     <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
+      className="fixed inset-0 bg-black/80 z-50 flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -65,29 +64,29 @@ export function ReactivateModal({
     >
       <div
         ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} max-w-lg w-full ${colors.components.modal.shadow} animate-scale-in`}
+        className="bg-card border-2 border-border rounded-2xl max-w-lg w-full shadow-xl animate-in slide-in-from-bottom-8 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`${colors.semantic.success.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}>
-              <UserPlus className={`${tokens.icons.lg} text-white`} />
+        <div className="bg-muted border-b-2 border-border p-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="bg-green-600 p-2 rounded-lg">
+              <UserPlus className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h2 id="reactivate-modal-title" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>
+              <h2 id="reactivate-modal-title" className="text-xl font-semibold text-foreground">
                 Reactivate {firefighter.name}
               </h2>
-              <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary}`}>Choose position in rotation</p>
+              <p className="text-sm text-muted-foreground">Choose position in rotation</p>
             </div>
           </div>
-          <IconButton
-            icon={X}
-            label="Close reactivate dialog"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onClose}
-            variant="default"
-            size="md"
-            isDarkMode={true}
-          />
+            aria-label="Close reactivate dialog"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         </div>
 
         <div className={`${tokens.spacing.card.lg} space-y-6`}>

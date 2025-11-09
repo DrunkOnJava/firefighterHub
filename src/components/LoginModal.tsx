@@ -1,10 +1,10 @@
-import { AlertCircle, Lock, Mail, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { AlertCircle, Lock, Mail } from "lucide-react";
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { colors, tokens, visualHeadings } from "../styles";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -19,20 +19,13 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const trapRef = useFocusTrap(isOpen);
-  const triggerElementRef = useRef<HTMLElement | null>(null);
-
-  useFocusReturn(isOpen);
-
-  useEffect(() => {
-    if (isOpen) {
-      triggerElementRef.current = document.activeElement as HTMLElement;
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
       setError(null);
       setPassword("");
+      onClose();
     }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +45,6 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
         }
         setIsLoading(false);
       } else {
-        // Success
         setEmail("");
         setPassword("");
         onSuccess?.();
@@ -64,68 +56,36 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
     }
   };
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   return (
-    <div
-      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center ${colors.components.modal.overlay}`}
-      onClick={handleOverlayClick}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="login-modal-title"
-    >
-      <div
-        ref={trapRef}
-        className={`relative w-full h-full sm:h-auto sm:max-w-md sm:mx-4 max-h-screen sm:max-h-[90vh] ${colors.components.modal.background} sm:${tokens.borders.radius.lg} ${colors.components.modal.shadow} overflow-y-auto animate-slide-up sm:animate-scale-in`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className={`flex items-center justify-between ${tokens.spacing.card.lg} border-b ${colors.structural.border.default}`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`p-2 ${colors.semantic.warning.light} ${tokens.borders.radius.md}`}>
-              <Lock className={`w-5 h-5 ${colors.semantic.warning.text}`} />
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-md">
+              <Lock className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
             </div>
-            <h2
-              id="login-modal-title"
-              className={`${visualHeadings.subtitleLarge} ${colors.structural.text.primary}`}
-            >
+            <DialogTitle className="text-xl font-semibold">
               Battalion Chief Sign In
-            </h2>
+            </DialogTitle>
           </div>
-          <button
-            onClick={onClose}
-            className={`p-2 ${tokens.touchTarget.min} ${colors.interactive.hover.bg} ${tokens.borders.radius.md} transition-colors flex items-center justify-center`}
-            aria-label="Close login modal"
-          >
-            <X className={`w-5 h-5 ${colors.structural.text.secondary}`} />
-          </button>
-        </div>
+        </DialogHeader>
 
         {/* Error Alert */}
         {error && (
-          <div className={`mx-6 mt-6 ${tokens.spacing.card.md} ${colors.semantic.error.light} border ${colors.semantic.error.border} ${tokens.borders.radius.md} flex items-start ${tokens.spacing.gap.md}`}>
-            <AlertCircle className={`w-5 h-5 ${colors.semantic.error.text} flex-shrink-0 mt-0.5`} />
-            <p className={`${tokens.typography.body.secondary} ${colors.semantic.error.text}`}>{error}</p>
+          <div className="p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className={`${tokens.spacing.card.lg} space-y-4`}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Field */}
           <div>
-            <label
-              htmlFor="email"
-              className={`block ${tokens.typography.body.secondary} font-medium ${colors.structural.text.secondary} mb-2`}
-            >
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${colors.structural.text.tertiary}`} />
-              <input
+            <Label htmlFor="email">Email Address</Label>
+            <div className="relative mt-2">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
                 type="email"
                 id="email"
                 value={email}
@@ -133,7 +93,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 required
                 autoComplete="email"
                 placeholder="admin@example.com"
-                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
+                className="pl-10"
                 disabled={isLoading}
               />
             </div>
@@ -141,15 +101,10 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
 
           {/* Password Field */}
           <div>
-            <label
-              htmlFor="password"
-              className={`block ${tokens.typography.body.secondary} font-medium ${colors.structural.text.secondary} mb-2`}
-            >
-              Password
-            </label>
-            <div className="relative">
-              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 ${colors.structural.text.tertiary}`} />
-              <input
+            <Label htmlFor="password">Password</Label>
+            <div className="relative mt-2">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
                 type="password"
                 id="password"
                 value={password}
@@ -157,7 +112,7 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
                 required
                 autoComplete="current-password"
                 placeholder="Enter your password"
-                className={`w-full pl-10 pr-4 py-2.5 ${colors.components.input.default} ${tokens.borders.radius.md} ${colors.structural.text.primary} placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all`}
+                className="pl-10"
                 disabled={isLoading}
               />
             </div>
@@ -166,22 +121,18 @@ export function LoginModal({ isOpen, onClose, onSuccess }: LoginModalProps) {
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={!email || !password}
-            state={isLoading ? 'loading' : 'idle'}
-            variant="default"
-            size="lg"
-            fullWidth
-            withRipple
+            disabled={!email || !password || isLoading}
+            className="w-full"
           >
-            Sign In
+            {isLoading ? "Signing in..." : "Sign In"}
           </Button>
 
           {/* Help Text */}
-          <p className={`${tokens.typography.body.secondary} ${colors.structural.text.tertiary} text-center mt-4`}>
+          <p className="text-sm text-muted-foreground text-center">
             Only authorized Battalion Chiefs can access admin features.
           </p>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

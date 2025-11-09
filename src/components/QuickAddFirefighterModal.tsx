@@ -306,13 +306,13 @@ export function QuickAddFirefighterModal({
           {showAdvanced && (
             <div
               id="advanced-options"
-              className={`space-y-5 pl-2 border-l-2 ${colors.semantic.success.border}`}
+              className="space-y-5 pl-2 border-l-2 border-green-700/50"
             >
               <div>
-                <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
+                <Label className="block mb-3">
                   Apparatus Clearances
-                </label>
-                <div className={gridUtilities.form.responsiveGrid4}>
+                </Label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                   {[
                     { state: apparatusAmbulance, setState: setApparatusAmbulance, label: "Ambulance" },
                     { state: apparatusBrushTruck, setState: setApparatusBrushTruck, label: "Brush Truck" },
@@ -323,54 +323,46 @@ export function QuickAddFirefighterModal({
                     { state: apparatusUtv, setState: setApparatusUtv, label: "UTV" },
                     { state: apparatusRescueSquad, setState: setApparatusRescueSquad, label: "Rescue Squad" },
                   ].map(({ state, setState, label }) => (
-                    <label key={label} className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.structural.bg.surface} px-3 py-2 ${tokens.borders.radius.md} ${colors.interactive.hover.bg} transition-colors`}>
-                      <input
-                        type="checkbox"
+                    <label key={label} className="flex items-center gap-2 cursor-pointer bg-muted px-3 py-2 rounded-md hover:bg-accent transition-colors">
+                      <Checkbox
                         checked={state}
-                        onChange={(e) => setState(e.target.checked)}
-                        className="w-4 h-4 rounded border-slate-600 bg-slate-800 text-green-600 focus:ring-2 focus:ring-green-500"
+                        onCheckedChange={(checked) => setState(!!checked)}
                       />
-                      <span className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary}`}>{label}</span>
+                      <span className="text-sm text-muted-foreground">{label}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className={`block ${tokens.typography.body.secondary} font-semibold ${colors.structural.text.secondary} mb-3`}>
+                <Label className="block mb-3">
                   Certifications & Roles
-                </label>
-                <div className={gridUtilities.form.grid3Col}>
-                  <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.warning.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-amber-900/30 border ${colors.semantic.warning.border} transition-colors`}>
-                    <input
-                      type="checkbox"
+                </Label>
+                <div className="grid grid-cols-3 gap-2">
+                  <label className="flex items-center gap-2 cursor-pointer bg-amber-900/20 px-3 py-2 rounded-md hover:bg-amber-900/30 border border-amber-700/50 transition-colors">
+                    <Checkbox
                       checked={isFTO}
-                      onChange={(e) => setIsFTO(e.target.checked)}
-                      className="w-4 h-4 rounded border-amber-600 bg-slate-800 text-amber-600 focus:ring-2 focus:ring-amber-500"
+                      onCheckedChange={(checked) => setIsFTO(!!checked)}
                     />
-                    <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.warning.text}`}>
+                    <span className="text-sm font-semibold text-amber-300">
                       FTO
                     </span>
                   </label>
-                  <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.success.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-emerald-900/30 border ${colors.semantic.success.border} transition-colors`}>
-                    <input
-                      type="checkbox"
+                  <label className="flex items-center gap-2 cursor-pointer bg-emerald-900/20 px-3 py-2 rounded-md hover:bg-emerald-900/30 border border-emerald-700/50 transition-colors">
+                    <Checkbox
                       checked={isBLS}
-                      onChange={(e) => setIsBLS(e.target.checked)}
-                      className="w-4 h-4 rounded border-emerald-600 bg-slate-800 text-emerald-600 focus:ring-2 focus:ring-emerald-500"
+                      onCheckedChange={(checked) => setIsBLS(!!checked)}
                     />
-                    <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.success.text}`}>
+                    <span className="text-sm font-semibold text-emerald-300">
                       BLS
                     </span>
                   </label>
-                  <label className={`flex items-center ${tokens.spacing.gap.sm} cursor-pointer ${colors.semantic.info.light} px-3 py-2 ${tokens.borders.radius.md} hover:bg-cyan-900/30 border ${colors.semantic.info.border} transition-colors`}>
-                    <input
-                      type="checkbox"
+                  <label className="flex items-center gap-2 cursor-pointer bg-cyan-900/20 px-3 py-2 rounded-md hover:bg-cyan-900/30 border border-cyan-700/50 transition-colors">
+                    <Checkbox
                       checked={isALS}
-                      onChange={(e) => setIsALS(e.target.checked)}
-                      className="w-4 h-4 rounded border-cyan-600 bg-slate-800 text-cyan-600 focus:ring-2 focus:ring-cyan-500"
+                      onCheckedChange={(checked) => setIsALS(!!checked)}
                     />
-                    <span className={`${tokens.typography.body.secondary} font-semibold ${colors.semantic.info.text}`}>
+                    <span className="text-sm font-semibold text-cyan-300">
                       ALS
                     </span>
                   </label>
@@ -379,28 +371,36 @@ export function QuickAddFirefighterModal({
             </div>
           )}
 
-          <div className={`flex ${tokens.spacing.gap.md} pt-2 border-t ${colors.structural.border.default}`}>
-            <AnimatedButton
+          <div className="flex gap-4 pt-2 border-t border-border">
+            <Button
               type="button"
               onClick={onClose}
               variant="secondary"
               size="lg"
-              fullWidth
+              className="flex-1"
               disabled={isSubmitting}
             >
               Cancel
-            </AnimatedButton>
-            <AnimatedButton
+            </Button>
+            <Button
               type="submit"
-              disabled={!name.trim()}
-              state={isSubmitting ? 'loading' : 'idle'}
+              disabled={!name.trim() || isSubmitting}
               variant="default"
               size="lg"
-              fullWidth
-              icon={<UserPlus size={20} />}
+              className="flex-1"
             >
-              Add Member
-            </AnimatedButton>
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin">⏳</span>
+                  Adding...
+                </span>
+              ) : (
+                <>
+                  <UserPlus className="mr-2 h-5 w-5" />
+                  Add Member
+                </>
+              )}
+            </Button>
           </div>
         </form>
       </div>

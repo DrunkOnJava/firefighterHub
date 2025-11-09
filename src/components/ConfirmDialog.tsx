@@ -1,8 +1,15 @@
-import { AlertTriangle, Info, Trash2, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { tokens, visualHeadings } from "../styles";
-import { getTheme } from "../utils/theme";
-import { Button } from "./ui/button";
+// ✅ Migrated to shadcn/ui - uses AlertDialog component
+import { AlertTriangle, Info, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type ConfirmVariant = "danger" | "warning" | "info";
 
@@ -16,7 +23,6 @@ interface ConfirmDialogProps {
   cancelText?: string;
   variant?: ConfirmVariant;
   consequences?: string[];
-  isDarkMode?: boolean;
 }
 
 export function ConfirmDialog({
@@ -29,149 +35,55 @@ export function ConfirmDialog({
   cancelText = "Cancel",
   variant = "warning",
   consequences = [],
-  isDarkMode = true,
 }: ConfirmDialogProps) {
-  const confirmButtonRef = useRef<HTMLButtonElement>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const theme = getTheme(isDarkMode);
-
-  useEffect(() => {
-    if (isOpen) {
-      // Focus confirm button when dialog opens (for keyboard users)
-      confirmButtonRef.current?.focus();
-
-      // Prevent body scroll when dialog is open
-      document.body.style.overflow = "hidden";
-
-      // Handle escape key
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          onClose();
-        }
-      };
-
-      document.addEventListener("keydown", handleEscape);
-
-      return () => {
-        document.body.style.overflow = "";
-        document.removeEventListener("keydown", handleEscape);
-      };
-    }
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
   const variantConfig = {
     danger: {
       icon: Trash2,
       iconBg: "bg-red-100 dark:bg-red-900/30",
       iconColor: "text-red-600 dark:text-red-400",
-      buttonBg: "bg-red-600 hover:bg-red-700",
-      borderColor: "border-red-200 dark:border-red-800",
     },
     warning: {
       icon: AlertTriangle,
       iconBg: "bg-amber-100 dark:bg-amber-900/30",
       iconColor: "text-amber-600 dark:text-amber-400",
-      buttonBg: "bg-amber-600 hover:bg-amber-700",
-      borderColor: "border-amber-200 dark:border-amber-800",
     },
     info: {
       icon: Info,
       iconBg: "bg-blue-100 dark:bg-blue-900/30",
       iconColor: "text-blue-600 dark:text-blue-400",
-      buttonBg: "bg-blue-600 hover:bg-blue-700",
-      borderColor: "border-blue-200 dark:border-blue-800",
     },
   };
 
   const config = variantConfig[variant];
   const Icon = config.icon;
 
-  const handleConfirm = async () => {
-    if (isSubmitting) return;
-    setIsSubmitting(true);
-    try {
-      await onConfirm();
-      onClose();
-    } catch (error) {
-      console.error('Confirm action failed:', error);
-      setIsSubmitting(false);
-    }
-  };
-
-  // Map variant to Button variant
-  const buttonVariant = variant === 'danger' ? 'danger' : variant === 'info' ? 'primary' : 'primary';
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <div
-        className={`absolute inset-0 backdrop-blur-sm ${theme.confirmDialog.overlay}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
-
-      {/* Dialog */}
-      <div
-        className={`relative w-full max-w-md rounded-2xl shadow-2xl border ${config.borderColor} ${theme.confirmDialog.background}`}
-        role="alertdialog"
-        aria-labelledby="confirm-dialog-title"
-        aria-describedby="confirm-dialog-description"
-      >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className={`absolute top-4 right-4 p-1 ${tokens.touchTarget.min} rounded-lg transition-colors flex items-center justify-center ${
-            isDarkMode
-              ? "hover:bg-slate-700 text-slate-400 hover:text-white"
-              : "hover:bg-slate-100 text-slate-400 hover:text-slate-900"
-          }`}
-          aria-label="Close dialog"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        {/* Content */}
-        <div className="p-6">
-          {/* Icon and title */}
-          <div className="flex items-start gap-4 mb-4">
+    <AlertDialog open={isOpen} onOpenChange={onClose}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <div className="flex items-start gap-4">
             <div className={`p-3 rounded-md ${config.iconBg}`}>
               <Icon className={`w-6 h-6 ${config.iconColor}`} />
             </div>
             <div className="flex-1">
-              <h2
-                id="confirm-dialog-title"
-                className={`${visualHeadings.subtitleLarge} mb-2 ${theme.confirmDialog.title}`}
-              >
-                {title}
-              </h2>
-              <p
-                id="confirm-dialog-description"
-                className={theme.confirmDialog.message}
-              >
+              <AlertDialogTitle>{title}</AlertDialogTitle>
+              <AlertDialogDescription className="mt-2">
                 {message}
-              </p>
+              </AlertDialogDescription>
             </div>
           </div>
 
           {/* Consequences list */}
           {consequences.length > 0 && (
-            <div
-              className={`mt-4 p-4 rounded-lg ${
-                isDarkMode ? "bg-slate-900/50" : "bg-slate-50"
-              }`}
-            >
-              <p
-                className={`text-sm font-medium mb-2 ${theme.confirmDialog.message}`}
-              >
+            <div className="mt-4 p-4 rounded-lg bg-muted">
+              <p className="text-sm font-medium mb-2 text-foreground">
                 This action will:
               </p>
               <ul className="space-y-1">
                 {consequences.map((consequence, index) => (
                   <li
                     key={index}
-                    className={`text-sm flex items-start gap-2 ${theme.textTertiary}`}
+                    className="text-sm flex items-start gap-2 text-muted-foreground"
                   >
                     <span className="mt-1">•</span>
                     <span>{consequence}</span>
@@ -180,32 +92,24 @@ export function ConfirmDialog({
               </ul>
             </div>
           )}
+        </AlertDialogHeader>
 
-          {/* Actions */}
-          <div className="flex gap-3 mt-6">
-            <Button
-              onClick={onClose}
-              variant="secondary"
-              size="lg"
-              fullWidth
-              disabled={isSubmitting}
-            >
-              {cancelText}
-            </Button>
-            <Button
-              ref={confirmButtonRef}
-              onClick={handleConfirm}
-              variant={buttonVariant}
-              size="lg"
-              fullWidth
-              state={isSubmitting ? 'loading' : 'idle'}
-              withRipple
-            >
-              {confirmText}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel>{cancelText}</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={onConfirm}
+            className={
+              variant === "danger"
+                ? "bg-red-600 hover:bg-red-700 text-white"
+                : variant === "warning"
+                  ? "bg-amber-600 hover:bg-amber-700 text-white"
+                  : undefined
+            }
+          >
+            {confirmText}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

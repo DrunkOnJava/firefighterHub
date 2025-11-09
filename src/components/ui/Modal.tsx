@@ -15,8 +15,8 @@ import { useEffect, useRef } from "react";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { useFocusReturn } from "../../hooks/useFocusReturn";
 import { useDevice } from "../../hooks/useDevice";
-import { colors, tokens } from "../../styles";
 import { Button } from "./button";
+import { cn } from "@/lib/utils";
 
 export interface ModalProps {
   /** Controls modal visibility */
@@ -125,7 +125,7 @@ export function Modal({
   
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-end sm:items-center justify-center ${colors.components.modal.overlay}`}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm"
       onClick={handleOverlayClick}
       role="dialog"
       aria-modal="true"
@@ -134,30 +134,26 @@ export function Modal({
       {/* Modal container */}
       <div
         ref={trapRef}
-        className={`
-          w-full h-full sm:h-auto
-          ${maxWidthClasses[maxWidth]} sm:mx-4
-          ${colors.components.modal.background}
-          sm:rounded-lg
-          shadow-2xl
-          flex flex-col
-          max-h-screen sm:max-h-[90vh]
-          animate-slide-up sm:animate-fade-in
-          ${tokens.focus.default}
-        `}
+        className={cn(
+          "w-full h-full sm:h-auto sm:mx-4 sm:rounded-lg shadow-2xl flex flex-col max-h-screen sm:max-h-[90vh] animate-slide-up sm:animate-fade-in",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2",
+          maxWidthClasses[maxWidth],
+          isDarkMode ? "bg-slate-900 ring-offset-slate-900" : "bg-white ring-offset-white"
+        )}
       >
         {/* Header */}
         <div
-          className={`
-            flex items-center justify-between
-            px-4 sm:px-6 py-4
-            border-b ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}
-            flex-shrink-0
-          `}
+          className={cn(
+            "flex items-center justify-between px-4 sm:px-6 py-4 border-b flex-shrink-0",
+            isDarkMode ? "border-slate-700" : "border-slate-200"
+          )}
         >
           <h2
             id="modal-title"
-            className={`text-lg sm:text-xl font-bold ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
+            className={cn(
+              "text-lg sm:text-xl font-bold",
+              isDarkMode ? "text-white" : "text-slate-900"
+            )}
           >
             {title}
           </h2>
@@ -171,10 +167,7 @@ export function Modal({
                 variant="ghost"
                 size="sm"
                 aria-label="Close modal"
-                className={`
-                  ${tokens.touchTarget.min}
-                  hover:bg-slate-700
-                `}
+                className="min-h-[44px] min-w-[44px] hover:bg-slate-700"
               >
                 <X className="w-5 h-5" />
               </Button>
@@ -190,11 +183,10 @@ export function Modal({
         {/* Footer */}
         {footer && (
           <div
-            className={`
-              px-4 sm:px-6 py-4
-              border-t ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}
-              flex-shrink-0
-            `}
+            className={cn(
+              "px-4 sm:px-6 py-4 border-t flex-shrink-0",
+              isDarkMode ? "border-slate-700" : "border-slate-200"
+            )}
           >
             {footer}
           </div>

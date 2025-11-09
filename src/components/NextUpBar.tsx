@@ -14,7 +14,7 @@ import { useRef } from 'react';
 import { useDevice } from '../hooks/useDevice';
 import { useSwipeGesture } from '../hooks/useTouchGestures';
 import { Firefighter } from '../lib/supabase';
-import { colors, tokens, gridUtilities } from '../styles';
+import { cn } from '@/lib/utils';
 
 interface NextUpBarProps {
   firefighters: Firefighter[];
@@ -88,17 +88,14 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
       <button
         onClick={() => onFirefighterClick?.(isSelected ? null : firefighter)}
         disabled={!firefighter}
-        className={`
-          flex items-center gap-3 px-4 py-5 rounded-xl relative
-          ${tokens.transitions.fast}
-          ${firefighter ? 'cursor-pointer hover:scale-[1.02] hover:shadow-xl active:scale-98' : 'cursor-default'}
-          ${isSelected ? 'ring-3 ring-blue-500 ring-offset-2 ring-offset-slate-900' : ''}
-          ${
-            isDarkMode
-              ? `bg-slate-700/90 border ${isSelected ? 'border-blue-500' : 'border-slate-600/50'} shadow-lg ${firefighter ? 'hover:bg-slate-650 hover:border-slate-500' : ''}`
-              : `bg-slate-50 border ${isSelected ? 'border-blue-500' : 'border-slate-200'} ${firefighter ? 'hover:bg-slate-100' : ''}`
-          }
-        `}
+        className={cn(
+          "flex items-center gap-3 px-4 py-5 rounded-xl relative transition-all duration-200",
+          firefighter ? "cursor-pointer hover:scale-[1.02] hover:shadow-xl active:scale-98" : "cursor-default",
+          isSelected && "ring-3 ring-blue-500 ring-offset-2 ring-offset-background",
+          isDarkMode
+            ? `bg-slate-700/90 border ${isSelected ? 'border-blue-500' : 'border-slate-600/50'} shadow-lg ${firefighter ? 'hover:bg-slate-650 hover:border-slate-500' : ''}`
+            : `bg-slate-50 border ${isSelected ? 'border-blue-500' : 'border-slate-200'} ${firefighter ? 'hover:bg-slate-100' : ''}`
+        )}
         aria-live="polite"
         aria-atomic="true"
         aria-label={`Next up for Shift ${shift}${isSelected ? ' (selected)' : ''}`}
@@ -108,23 +105,18 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
 
         <div className="flex-1 min-w-0 relative z-10 group">
           <div
-            className={`
-              text-xl font-extrabold flex items-center gap-3 whitespace-nowrap overflow-hidden
-              ${
-                isDarkMode
-                  ? 'text-white'
-                  : 'text-slate-900'
-              }
-            `}
+            className={cn(
+              "text-xl font-extrabold flex items-center gap-3 whitespace-nowrap overflow-hidden",
+              isDarkMode ? "text-white" : "text-slate-900"
+            )}
           >
             {firefighter ? (
               <>
                 <span className="whitespace-nowrap font-bold">{firefighter.name}</span>
-                <span className={`flex-shrink-0 text-sm font-medium ${
-                  isDarkMode
-                    ? colors.structural.text.secondary
-                    : 'text-gray-600'
-                }`}>
+                <span className={cn(
+                  "flex-shrink-0 text-sm font-medium",
+                  isDarkMode ? "text-slate-400" : "text-gray-600"
+                )}>
                   Station #{firefighter.fire_station || 'Unassigned'}
                 </span>
               </>
@@ -176,16 +168,13 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
 
   return (
     <div
-      className={`
-        px-4 sm:px-6 py-3
-        ${device.isMobile ? 'fixed bottom-0 left-0 right-0 z-30' : ''}
-        ${
-          isDarkMode
-            ? 'bg-slate-950 border-b border-slate-800'
-            : 'bg-white border-b border-slate-200'
-        }
-        ${tokens.shadows.lg}
-      `}
+      className={cn(
+        "px-4 sm:px-6 py-3 shadow-lg",
+        device.isMobile && "fixed bottom-0 left-0 right-0 z-30",
+        isDarkMode
+          ? "bg-slate-950 border-b border-slate-800"
+          : "bg-white border-b border-slate-200"
+      )}
       style={
         device.isMobile
           ? {
@@ -196,22 +185,18 @@ export function NextUpBar({ firefighters, isDarkMode = true, onFirefighterClick,
     >
       <div className="flex items-center gap-2 mb-3">
         <h2
-          className={`
-            text-xl font-black uppercase tracking-wide overflow-hidden truncate
-            ${
-              isDarkMode
-                ? 'text-slate-50'
-                : 'text-slate-900'
-            }
-          `}
+          className={cn(
+            "text-xl font-black uppercase tracking-wide overflow-hidden truncate",
+            isDarkMode ? "text-slate-50" : "text-slate-900"
+          )}
         >
           Next Up for Hold
         </h2>
       </div>
 
-      {/* Desktop: Grid layout - using grid system utilities */}
+      {/* Desktop: Grid layout */}
       {!device.isMobile && (
-        <div className={gridUtilities.nextUpBar.container}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {renderShiftSection('A', nextA)}
           {renderShiftSection('B', nextB)}
           {renderShiftSection('C', nextC)}

@@ -35,12 +35,10 @@ export function FirefighterGrid({
 
   return (
     <div
-      className={`
-        grid
-        ${columns === 2 ? 'grid-cols-2' : 'grid-cols-3'}
-        ${tokens.spacing.gap.md}
-        ${tokens.spacing.card.md}
-      `}
+      className={cn(
+        "grid gap-3 p-4",
+        columns === 2 ? "grid-cols-2" : "grid-cols-3"
+      )}
     >
       {firefighters.map((firefighter) => (
         <FirefighterCard

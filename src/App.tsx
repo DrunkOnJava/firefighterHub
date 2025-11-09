@@ -364,6 +364,7 @@ function App() {
           setCurrentShift(shift);
         }}
         isAdminMode={isAdminMode}
+        isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
       />
 

@@ -127,60 +127,60 @@ export function Sidebar({
       {onNavigate && isAdminMode && (
         <button
           onClick={() => onNavigate("reports")}
-          className={`
+          className="
             flex items-center justify-center gap-2
-            ${tokens.spacing.card.md}
-            ${colors.semantic.info.gradient}
-            ${colors.semantic.info.hover}
+            p-4
+            bg-gradient-to-r from-blue-500 to-blue-600
+            hover:from-blue-600 hover:to-blue-700
             text-white font-semibold
-            ${tokens.borders.radius.lg}
-            ${tokens.transitions.fast}
+            rounded-lg
+            transition-all duration-200
             focus-ring w-full
-          `}
+          "
           title="View Reports"
         >
-          <BarChart3 className={tokens.icons.sm} />
+          <BarChart3 className="w-5 h-5" />
           <span className="hidden sm:inline">Reports</span>
         </button>
       )}
 
       <div
-        className={`
-          border-2 ${tokens.borders.radius.xl} ${tokens.shadows.md}
+        className="
+          border-2 rounded-xl shadow-md
           overflow-hidden
-          ${colors.structural.bg.card}
-          ${colors.structural.border.default}
-        `}
+          bg-card
+          border-border
+        "
       >
         <div
-          className={`
-            border-b-2 ${tokens.spacing.card.md}
-            ${colors.structural.bg.surface}
-            ${colors.structural.border.default}
-          `}
+          className="
+            border-b-2 p-4
+            bg-muted
+            border-border
+          "
         >
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
+          <div className="flex items-center gap-3">
             <div
-              className={`
-                ${tokens.spacing.section.md}
-                ${tokens.borders.radius.lg}
-                ${colors.semantic.primary.gradient}
-              `}
+              className="
+                p-3
+                rounded-lg
+                bg-gradient-to-r from-blue-600 to-blue-700
+              "
             >
-              <Calendar className={`${tokens.icons.md} text-white`} />
+              <Calendar className="w-5 h-5 text-white" />
             </div>
             <h2
-              className={`
-                ${tokens.typography.heading.h4}
-                ${colors.structural.text.primary}
-              `}
+              className="
+                text-lg font-bold
+                text-foreground
+              "
             >
               Upcoming Schedule
             </h2>
           </div>
         </div>
 
-        <div className={`${tokens.spacing.card.md} space-y-4`}>
+        <div className="p-4 space-y-4">
           {/* Empty state when no firefighters and no holds */}
           {nextUpAllShifts.length === 0 && 
            currentShiftRotation.length === 0 && 
@@ -200,27 +200,27 @@ export function Sidebar({
           {nextUpAllShifts.length > 0 && (
             <div>
               <h3
-                className={`
-                  ${tokens.typography.body.small}
-                  ${tokens.typography.weight.bold}
-                  uppercase tracking-wide ${tokens.spacing.margin.sm}
-                  ${colors.structural.text.secondary}
-                `}
+                className="
+                  text-sm
+                  font-bold
+                  uppercase tracking-wide mb-2
+                  text-muted-foreground
+                "
               >
                 Next Up for Hold (All Shifts)
               </h3>
-              <div className={`space-y-2`}>
+              <div className="space-y-2">
                 {nextUpAllShifts.map((ff, index) => (
                   <div
                     key={ff.id}
                     className={`
-                      ${tokens.borders.radius.lg}
-                      ${tokens.spacing.section.lg}
+                      rounded-lg
+                      p-4
                       border
                       ${
                         index === 0
-                          ? `${colors.semantic.warning.light} ${colors.semantic.warning.border}`
-                          : `${colors.structural.bg.surface} ${colors.structural.border.default}`
+                          ? "bg-amber-500/10 border-amber-500/50"
+                          : "bg-muted border-border"
                       }
                     `}
                   >
@@ -229,13 +229,13 @@ export function Sidebar({
                       <span
                         className={`
                           w-6 h-6 rounded-full flex items-center justify-center
-                          ${tokens.typography.body.small}
-                          ${tokens.typography.weight.bold}
+                          text-sm
+                          font-bold
                           border-2 shadow-sm
                           ${
                             index === 0
                               ? "bg-amber-500 text-slate-900 border-black shadow-black/50"
-                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-slate-700`
+                              : "bg-card text-muted-foreground border-slate-700"
                           }
                         `}
                       >
@@ -251,12 +251,12 @@ export function Sidebar({
                       <div>
                         <p
                           className={`
-                            ${tokens.typography.weight.semibold}
-                            ${tokens.typography.body.secondary}
+                            font-semibold
+                            text-sm
                             ${
                               index === 0
-                                ? colors.semantic.warning.text
-                                : colors.structural.text.primary
+                                ? "text-amber-700 dark:text-amber-400"
+                                : "text-foreground"
                             }
                           `}
                         >
@@ -264,10 +264,10 @@ export function Sidebar({
                         </p>
                         {ff.fire_station && (
                           <p
-                            className={`
-                              ${tokens.typography.body.small}
-                              ${colors.structural.text.tertiary}
-                            `}
+                            className="
+                              text-sm
+                              text-muted-foreground
+                            "
                           >
                             Station #{ff.fire_station}
                           </p>
@@ -277,14 +277,14 @@ export function Sidebar({
                       {/* Next Up Badge */}
                       {index === 0 && (
                         <span
-                          className={`
+                          className="
                             px-2 py-0.5
-                            ${tokens.typography.body.small}
-                            ${tokens.typography.weight.bold}
-                            ${tokens.borders.radius.md}
+                            text-sm
+                            font-bold
+                            rounded-md
                             bg-amber-500 text-white
                             border-2 border-black
-                          `}
+                          "
                         >
                           Next Up
                         </span>
@@ -299,18 +299,18 @@ export function Sidebar({
           {/* Current Shift Rotation (5 positions) */}
           {currentShiftRotation.length > 0 && (
             <div
-              className={`
+              className="
                 pt-4 border-t-2
-                ${colors.structural.border.default}
-              `}
+                border-border
+              "
             >
               <h3
-                className={`
-                  ${tokens.typography.body.small}
-                  ${tokens.typography.weight.bold}
-                  uppercase tracking-wide ${tokens.spacing.margin.sm}
-                  ${colors.structural.text.secondary}
-                `}
+                className="
+                  text-sm
+                  font-bold
+                  uppercase tracking-wide mb-2
+                  text-muted-foreground
+                "
               >
                 Shift {currentShift} Rotation (Next 5)
               </h3>
@@ -319,13 +319,13 @@ export function Sidebar({
                   <div
                     key={ff.id}
                     className={`
-                      ${tokens.borders.radius.lg}
-                      ${tokens.spacing.section.lg}
+                      rounded-lg
+                      p-4
                       border
                       ${
                         index === 0
-                          ? `${colors.semantic.warning.light} ${colors.semantic.warning.border}`
-                          : `${colors.structural.bg.surface} ${colors.structural.border.default}`
+                          ? "bg-amber-500/10 border-amber-500/50"
+                          : "bg-muted border-border"
                       }
                     `}
                   >
@@ -334,13 +334,13 @@ export function Sidebar({
                       <span
                         className={`
                           w-6 h-6 rounded-full flex items-center justify-center
-                          ${tokens.typography.body.small}
-                          ${tokens.typography.weight.bold}
+                          text-sm
+                          font-bold
                           border-2 shadow-sm
                           ${
                             index === 0
                               ? "bg-amber-500 text-slate-900 border-black shadow-black/50"
-                              : `${colors.structural.bg.card} ${colors.structural.text.secondary} border-slate-700`
+                              : "bg-card text-muted-foreground border-slate-700"
                           }
                         `}
                       >
@@ -356,12 +356,12 @@ export function Sidebar({
                       <div>
                         <p
                           className={`
-                            ${tokens.typography.weight.semibold}
-                            ${tokens.typography.body.secondary}
+                            font-semibold
+                            text-sm
                             ${
                               index === 0
-                                ? colors.semantic.warning.text
-                                : colors.structural.text.primary
+                                ? "text-amber-700 dark:text-amber-400"
+                                : "text-foreground"
                             }
                           `}
                         >
@@ -369,10 +369,10 @@ export function Sidebar({
                         </p>
                         {ff.fire_station && (
                           <p
-                            className={`
-                              ${tokens.typography.body.small}
-                              ${colors.structural.text.tertiary}
-                            `}
+                            className="
+                              text-sm
+                              text-muted-foreground
+                            "
                           >
                             Station #{ff.fire_station}
                           </p>
@@ -382,14 +382,14 @@ export function Sidebar({
                       {/* Next Up Badge */}
                       {index === 0 && (
                         <span
-                          className={`
+                          className="
                             px-2 py-0.5
-                            ${tokens.typography.body.small}
-                            ${tokens.typography.weight.bold}
-                            ${tokens.borders.radius.md}
+                            text-sm
+                            font-bold
+                            rounded-md
                             bg-amber-500 text-white
                             border-2 border-black
-                          `}
+                          "
                         >
                           Next Up
                         </span>
@@ -404,18 +404,18 @@ export function Sidebar({
           {/* Scheduled Holds */}
           {displayedHolds.length > 0 && (
             <div
-              className={`
+              className="
                 pt-4 border-t-2
-                ${colors.structural.border.default}
-              `}
+                border-border
+              "
             >
               <h3
-                className={`
-                  ${tokens.typography.body.small}
-                  ${tokens.typography.weight.bold}
-                  uppercase tracking-wide ${tokens.spacing.margin.sm}
-                  ${colors.structural.text.secondary}
-                `}
+                className="
+                  text-sm
+                  font-bold
+                  uppercase tracking-wide mb-2
+                  text-muted-foreground
+                "
               >
                 Scheduled Holds
               </h3>
@@ -423,43 +423,43 @@ export function Sidebar({
                 {displayedHolds.map((group) => (
                   <div
                     key={group.date}
-                    className={`
-                      border ${tokens.borders.radius.lg}
-                      ${tokens.spacing.section.lg}
-                      ${tokens.transitions.fast}
-                      ${colors.structural.bg.surface}
-                      ${colors.structural.border.default}
-                      hover:${colors.structural.border.hover}
-                    `}
+                    className="
+                      border rounded-lg
+                      p-4
+                      transition-all duration-200
+                      bg-muted
+                      border-border
+                      hover:border-blue-500
+                    "
                   >
                     <div
-                      className={`flex items-center justify-between ${tokens.spacing.margin.sm}`}
+                      className="flex items-center justify-between mb-2"
                     >
                       <span
-                        className={`
+                        className="
                           px-2 py-0.5
-                          ${tokens.typography.body.small}
-                          ${tokens.typography.weight.bold}
-                          ${tokens.borders.radius.md}
-                          ${colors.semantic.scheduled.solid}
+                          text-sm
+                          font-bold
+                          rounded-md
+                          bg-blue-600
                           text-white
-                        `}
+                        "
                       >
                         {formatDate(group.date)}
                       </span>
                       {group.holds.length > 1 && (
                         <span
-                          className={`
+                          className="
                             px-2 py-0.5
-                            ${tokens.typography.body.small}
-                            ${tokens.typography.weight.bold}
-                            ${tokens.borders.radius.md}
+                            text-sm
+                            font-bold
+                            rounded-md
                             flex items-center gap-1
-                            ${colors.structural.bg.card}
-                            ${colors.structural.text.secondary}
-                          `}
+                            bg-card
+                            text-muted-foreground
+                          "
                         >
-                          <Users className={tokens.icons.xs} />
+                          <Users className="w-3 h-3" />
                           {group.holds.length}
                         </span>
                       )}
@@ -472,20 +472,20 @@ export function Sidebar({
                         >
                           <div className="flex-1">
                             <p
-                              className={`
-                                ${tokens.typography.weight.semibold}
-                                ${tokens.typography.body.secondary}
-                                ${colors.structural.text.primary}
-                              `}
+                              className="
+                                font-semibold
+                                text-sm
+                                text-foreground
+                              "
                             >
                               {hold.firefighter_name}
                             </p>
                             {hold.fire_station && (
                               <p
-                                className={`
-                                  ${tokens.typography.body.small}
-                                  ${colors.structural.text.tertiary}
-                                `}
+                                className="
+                                  text-sm
+                                  text-muted-foreground
+                                "
                               >
                                 Station #{hold.fire_station}
                               </p>
@@ -504,19 +504,19 @@ export function Sidebar({
           {displayedHolds.length === 0 && 
            (nextUpAllShifts.length > 0 || currentShiftRotation.length > 0) && (
             <div
-              className={`
+              className="
                 pt-4 border-t-2
-                ${colors.structural.border.default}
-              `}
+                border-border
+              "
             >
               <div className="text-center py-8">
                 <Calendar 
-                  className={`w-12 h-12 mx-auto mb-3 ${colors.structural.text.tertiary}`} 
+                  className="w-12 h-12 mx-auto mb-3 text-muted-foreground" 
                 />
-                <p className={`${tokens.typography.body.secondary} ${colors.structural.text.secondary} mb-1`}>
+                <p className="text-sm text-muted-foreground mb-1">
                   No Upcoming Holds
                 </p>
-                <p className={`${tokens.typography.body.small} ${colors.structural.text.tertiary}`}>
+                <p className="text-sm text-muted-foreground">
                   Click any date to schedule
                 </p>
               </div>

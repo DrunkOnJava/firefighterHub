@@ -9,12 +9,12 @@
  * - Bulk deactivate button
  * - Only visible when items are selected
  *
- * Uses design tokens for consistent styling.
+ * Migrated to shadcn/ui.
  */
 
 import { CheckSquare, Square, Trash2, UserX } from "lucide-react";
-import { colors, tokens } from "../../styles";
-import { getTheme } from "../../utils/theme";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface BulkActionsProps {
   selectedCount: number;
@@ -24,7 +24,6 @@ interface BulkActionsProps {
   onBulkDelete: () => void;
   onBulkDeactivate: () => void;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
 }
 
 export function BulkActions({
@@ -35,92 +34,64 @@ export function BulkActions({
   onBulkDelete,
   onBulkDeactivate,
   isAdminMode = false,
-  isDarkMode = true,
 }: BulkActionsProps) {
   if (!isAdminMode || selectedCount === 0) {
     return null;
   }
 
   const allSelected = selectedCount === totalCount;
-  const theme = getTheme(isDarkMode);
 
   return (
-    <div
-      className={`
-        ${tokens.spacing.card.md}
-        ${tokens.borders.radius.lg}
-        ${theme.roster.bulkActionsBg}
-        ${tokens.spacing.margin.lg}
-      `}
-    >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Selection controls */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={allSelected ? onDeselectAll : onSelectAll}
-            className={`
-              flex items-center gap-2
-              ${tokens.spacing.section.sm}
-              ${tokens.borders.radius.md}
-              ${theme.roster.bulkActionsHover}
-              ${tokens.transitions.fast}
-            `}
-            aria-label={allSelected ? "Deselect all" : "Select all"}
-          >
-            {allSelected ? (
-              <CheckSquare className={colors.semantic.info.text} size={18} />
-            ) : (
-              <Square className={theme.roster.bulkSelectIcon} size={18} />
-            )}
-            <span
-              className={`${tokens.typography.body.secondary} font-medium ${theme.textPrimary}`}
+    <Card className="my-4">
+      <CardContent className="p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {/* Selection controls */}
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={allSelected ? onDeselectAll : onSelectAll}
+              aria-label={allSelected ? "Deselect all" : "Select all"}
             >
-              {allSelected ? "Deselect All" : "Select All"}
+              {allSelected ? (
+                <CheckSquare className="text-blue-500 mr-2" size={18} />
+              ) : (
+                <Square className="text-muted-foreground mr-2" size={18} />
+              )}
+              <span className="font-medium">
+                {allSelected ? "Deselect All" : "Select All"}
+              </span>
+            </Button>
+
+            <span className="text-sm font-semibold text-foreground">
+              {selectedCount} selected
             </span>
-          </button>
+          </div>
 
-          <span
-            className={`${tokens.typography.body.secondary} font-semibold ${theme.roster.bulkSelectedCount}`}
-          >
-            {selectedCount} selected
-          </span>
+          {/* Bulk actions */}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={onBulkDeactivate}
+              title={`Deactivate ${selectedCount} selected firefighters`}
+            >
+              <UserX size={16} className="mr-2" />
+              <span className="text-xs">Deactivate</span>
+            </Button>
+
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={onBulkDelete}
+              title={`Delete ${selectedCount} selected firefighters`}
+            >
+              <Trash2 size={16} className="mr-2" />
+              <span className="text-xs">Delete</span>
+            </Button>
+          </div>
         </div>
-
-        {/* Bulk actions */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={onBulkDeactivate}
-            className={`
-              flex items-center gap-2
-              ${tokens.spacing.section.sm}
-              px-4
-              ${tokens.borders.radius.lg}
-              ${colors.components.button.secondary}
-              font-semibold
-            `}
-            title={`Deactivate ${selectedCount} selected firefighters`}
-          >
-            <UserX size={16} />
-            <span className={tokens.typography.body.small}>Deactivate</span>
-          </button>
-
-          <button
-            onClick={onBulkDelete}
-            className={`
-              flex items-center gap-2
-              ${tokens.spacing.section.sm}
-              px-4
-              ${tokens.borders.radius.lg}
-              ${colors.components.button.danger}
-              font-semibold
-            `}
-            title={`Delete ${selectedCount} selected firefighters`}
-          >
-            <Trash2 size={16} />
-            <span className={tokens.typography.body.small}>Delete</span>
-          </button>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

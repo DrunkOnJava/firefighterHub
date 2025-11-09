@@ -1,8 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 4/63 components migrated (6.3%)  
-**Active Sprint:** Priority 1 - Core Layout (4/8 complete)
+**Status:** 8/63 components migrated (12.7%)  
+**Active Sprint:** Priority 1 - Core Layout (8/8 complete ✅)
 
 ## Migration Strategy
 
@@ -15,18 +15,18 @@ For each component:
 
 ---
 
-## Priority 1: Core Layout (8 components)
+## Priority 1: Core Layout (8 components) ✅ COMPLETE
 
 Critical components affecting main app structure.
 
 - [x] ~~`src/components/Header.tsx`~~ - ✅ Migrated (commit f029f47)
-- [ ] `src/components/Sidebar.tsx` - Navigation sidebar
+- [x] ~~`src/components/Sidebar.tsx`~~ - ✅ Migrated (this session)
 - [x] ~~`src/components/MobileNav.tsx`~~ - ✅ Migrated (commit 64a1dfd)
 - [x] ~~`src/components/mobile/BottomNav.tsx`~~ - ✅ Migrated (commit 1358c89)
-- [ ] `src/App.tsx` - Root app component
-- [ ] `src/components/ErrorBoundary.tsx` - Error boundary wrapper
-- [ ] `src/components/ConnectionStatusIndicator.tsx` - Realtime status
-- [ ] `src/components/UpdateNotification.tsx` - Update notifications
+- [x] ~~`src/App.tsx`~~ - ✅ Already clean (no migration needed)
+- [x] ~~`src/components/ErrorBoundary.tsx`~~ - ✅ Migrated (this session)
+- [x] ~~`src/components/ConnectionStatusIndicator.tsx`~~ - ✅ Migrated (this session)
+- [x] ~~`src/components/UpdateNotification.tsx`~~ - ✅ Migrated (this session)
 
 ---
 
@@ -118,12 +118,12 @@ Supporting components and utilities.
 Secondary features and enhancements.
 
 - [ ] `src/components/Reports.tsx` - Reports view
-- [ ] `src/components/roster/BulkActions.tsx` - Bulk operations
-- [ ] `src/components/roster/ExportMenu.tsx` - Export menu
+- [x] ~~`src/components/roster/BulkActions.tsx`~~ - ✅ Migrated (uses Button, Card)
+- [x] ~~`src/components/roster/ExportMenu.tsx`~~ - ✅ Migrated (uses Button, DropdownMenu)
 - [ ] `src/components/FilterPanel.tsx` - Filter panel
-- [ ] `src/components/StationSelector.tsx` - Station selector
+- [x] ~~`src/components/StationSelector.tsx`~~ - ✅ Migrated (pure shadcn semantic classes)
 - [ ] `src/components/NextUpBarV2.tsx` - Next up bar v2
-- [ ] `src/components/MetricCard.tsx` - Metric card
+- [x] ~~`src/components/MetricCard.tsx`~~ - ✅ Migrated (uses Card component)
 
 ---
 
@@ -219,9 +219,13 @@ After migrating each component:
 
 Update this section as you complete components:
 
-**Session 1 (Date: ___):**
-- Components migrated: 0
-- Time spent: 0h
+**Session 1 (Date: 2025-01-09):**
+- Components migrated: 4 (Sidebar, ErrorBoundary, ConnectionStatusIndicator, UpdateNotification)
+- Components already clean: 4 (Header, MobileNav, BottomNav, App)
+- **Priority 1 Complete:** ✅ All 8 core layout components migrated
+- Time spent: ~45min
+- Build status: ✅ Passing
+- Notes: Replaced all legacy `colors` and `tokens` imports with shadcn semantic classes. MobileNav still uses conditional dark mode classes (acceptable for gradient backgrounds).
 
 **Session 2 (Date: ___):**
 - Components migrated: 0

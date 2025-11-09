@@ -1,7 +1,8 @@
 /**
- * AnimatedInput Component
+ * AnimatedInput Component (shadcn Input + Label wrapper with animations)
  * 
  * Enhanced input field with floating label and validation animations.
+ * Uses semantic colors (no isDarkMode needed).
  * 
  * Features:
  * - Floating label animation
@@ -29,6 +30,9 @@ import { InputHTMLAttributes, TextareaHTMLAttributes, useEffect, useRef, useStat
 import { useAnimation } from '../../hooks/useAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Check, AlertCircle } from 'lucide-react';
+import { Input } from './input';
+import { Label } from './label';
+import { cn } from '@/lib/utils';
 import '../../styles/animations.css';
 
 type InputVariant = 'text' | 'textarea';
@@ -42,6 +46,7 @@ interface BaseInputProps {
   showCharCount?: boolean;
   variant?: InputVariant;
   className?: string;
+  /** @deprecated No longer needed - uses dark: variants automatically */
   isDarkMode?: boolean;
 }
 
@@ -59,8 +64,7 @@ export function AnimatedInput({
   maxLength,
   showCharCount = false,
   variant = 'text',
-  className = '',
-  isDarkMode = true,
+  className,
   ...props
 }: AnimatedInputProps) {
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
@@ -128,38 +132,6 @@ export function AnimatedInput({
     }
   };
 
-  const baseClasses = `
-    w-full px-4 py-3 rounded-lg
-    ${isDarkMode ? 'bg-slate-800 text-white' : 'bg-white text-slate-900'}
-    border-2
-    ${
-      error
-        ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-        : success
-        ? 'border-green-500 focus:border-green-500 focus:ring-green-500'
-        : isDarkMode
-        ? 'border-slate-700 focus:border-blue-500 focus:ring-blue-500'
-        : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500'
-    }
-    focus:outline-none focus:ring-2 focus:ring-offset-0
-    ${!isReducedMotion ? 'transition-all duration-200' : ''}
-    ${props.disabled ? 'opacity-50 cursor-not-allowed' : ''}
-    ${label ? 'pt-6' : ''}
-    ${className}
-  `;
-
-  const labelClasses = `
-    absolute left-4 pointer-events-none
-    ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}
-    ${!isReducedMotion ? 'transition-all duration-200' : ''}
-    ${
-      isLabelFloating
-        ? 'top-1.5 text-xs'
-        : 'top-1/2 -translate-y-1/2 text-base'
-    }
-    ${error ? 'text-red-500' : success ? 'text-green-500' : ''}
-  `;
-
   return (
     <div className="relative">
       <div className="relative">
@@ -167,16 +139,40 @@ export function AnimatedInput({
         {variant === 'textarea' ? (
           <textarea
             ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-            className={baseClasses}
+            className={cn(
+              'w-full px-4 py-3 rounded-lg bg-background text-foreground',
+              'border-2',
+              error
+                ? 'border-destructive focus:border-destructive focus:ring-destructive'
+                : success
+                ? 'border-green-500 focus:border-green-500 focus:ring-green-500'
+                : 'border-input focus:border-ring focus:ring-ring',
+              'focus:outline-none focus:ring-2 focus:ring-offset-0',
+              !isReducedMotion && 'transition-all duration-200',
+              props.disabled && 'opacity-50 cursor-not-allowed',
+              label && 'pt-6',
+              className
+            )}
             onFocus={handleFocus}
             onBlur={handleBlur}
             maxLength={maxLength}
             {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
           />
         ) : (
-          <input
+          <Input
             ref={inputRef as React.RefObject<HTMLInputElement>}
-            className={baseClasses}
+            className={cn(
+              'h-auto px-4 py-3 rounded-lg',
+              'border-2',
+              error
+                ? 'border-destructive focus-visible:ring-destructive'
+                : success
+                ? 'border-green-500 focus-visible:ring-green-500'
+                : '',
+              !isReducedMotion && 'transition-all duration-200',
+              label && 'pt-6',
+              className
+            )}
             onFocus={handleFocus}
             onBlur={handleBlur}
             maxLength={maxLength}
@@ -186,19 +182,27 @@ export function AnimatedInput({
 
         {/* Floating Label */}
         {label && (
-          <label className={labelClasses}>
+          <Label
+            className={cn(
+              'absolute left-4 pointer-events-none text-muted-foreground',
+              !isReducedMotion && 'transition-all duration-200',
+              isLabelFloating
+                ? 'top-1.5 text-xs'
+                : 'top-1/2 -translate-y-1/2 text-base',
+              error ? 'text-destructive' : success ? 'text-green-500' : ''
+            )}
+          >
             {label}
-          </label>
+          </Label>
         )}
 
         {/* Success Icon */}
         {success && !error && (
           <div
-            className={`
-              absolute right-3 top-1/2 -translate-y-1/2
-              text-green-500
-              ${!isReducedMotion ? 'animate-scale-in' : ''}
-            `}
+            className={cn(
+              'absolute right-3 top-1/2 -translate-y-1/2 text-green-500',
+              !isReducedMotion && 'animate-in zoom-in-50 duration-200'
+            )}
           >
             <Check className="w-5 h-5" />
           </div>
@@ -206,7 +210,7 @@ export function AnimatedInput({
 
         {/* Error Icon */}
         {error && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-500">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-destructive">
             <AlertCircle className="w-5 h-5" />
           </div>
         )}
@@ -218,15 +222,15 @@ export function AnimatedInput({
         <div className="flex-1">
           {error ? (
             <p
-              className={`
-                text-red-500 flex items-center gap-1
-                ${!isReducedMotion ? 'animate-slide-in-down' : ''}
-              `}
+              className={cn(
+                'text-destructive flex items-center gap-1',
+                !isReducedMotion && 'animate-in slide-in-from-top-1 duration-200'
+              )}
             >
               {error}
             </p>
           ) : helperText ? (
-            <p className={isDarkMode ? 'text-slate-400' : 'text-gray-600'}>
+            <p className="text-muted-foreground">
               {helperText}
             </p>
           ) : null}
@@ -235,12 +239,12 @@ export function AnimatedInput({
         {/* Right side: Character count */}
         {showCharCount && maxLength && (
           <p
-            className={`
-              ${isDarkMode ? 'text-slate-400' : 'text-gray-600'}
-              ${charCount > maxLength * 0.9 ? 'text-yellow-500' : ''}
-              ${charCount >= maxLength ? 'text-red-500 font-semibold' : ''}
-              ${!isReducedMotion ? 'transition-colors duration-200' : ''}
-            `}
+            className={cn(
+              'text-muted-foreground',
+              charCount > maxLength * 0.9 && 'text-yellow-500',
+              charCount >= maxLength && 'text-destructive font-semibold',
+              !isReducedMotion && 'transition-colors duration-200'
+            )}
           >
             {charCount} / {maxLength}
           </p>
@@ -268,17 +272,17 @@ interface InputGroupItem {
 
 interface AnimatedInputGroupProps {
   inputs: InputGroupItem[];
+  /** @deprecated No longer needed - uses dark: variants automatically */
   isDarkMode?: boolean;
   className?: string;
 }
 
 export function AnimatedInputGroup({
   inputs,
-  isDarkMode = true,
-  className = '',
+  className,
 }: AnimatedInputGroupProps) {
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={cn('space-y-4', className)}>
       {inputs.map((input) => (
         <AnimatedInput
           key={input.id}
@@ -290,7 +294,6 @@ export function AnimatedInputGroup({
           helperText={input.helperText}
           value={input.value}
           onChange={(e) => input.onChange?.(e.target.value)}
-          isDarkMode={isDarkMode}
         />
       ))}
     </div>

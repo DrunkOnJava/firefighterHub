@@ -7,17 +7,16 @@
 import { Calendar, Clock, Home } from 'lucide-react';
 import { useDevice } from '../../hooks/useDevice';
 import { useHapticFeedback } from '../../hooks/useTouchGestures';
-import { tokens } from '../../styles';
+import { Button } from '@/components/ui/button';
 
 type TabId = 'home' | 'calendar' | 'activity';
 
 interface BottomNavProps {
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
-  isDarkMode?: boolean;
 }
 
-export function BottomNav({ activeTab, onTabChange, isDarkMode = true }: BottomNavProps) {
+export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const device = useDevice();
   const haptic = useHapticFeedback();
 
@@ -36,11 +35,7 @@ export function BottomNav({ activeTab, onTabChange, isDarkMode = true }: BottomN
 
   return (
     <nav
-      className={`
-        fixed bottom-0 left-0 right-0 z-40
-        ${isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}
-        border-t ${tokens.shadows.lg}
-      `}
+      className="fixed bottom-0 left-0 right-0 z-40 bg-background border-t border-border shadow-lg"
       style={{
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
@@ -53,32 +48,22 @@ export function BottomNav({ activeTab, onTabChange, isDarkMode = true }: BottomN
           const Icon = tab.icon;
 
           return (
-            <button
+            <Button
               key={tab.id}
+              variant="ghost"
               onClick={() => handleTabClick(tab.id)}
               className={`
                 flex flex-col items-center justify-center gap-1
-                ${tokens.touchTarget.min} w-full py-2
-                ${tokens.transitions.fast}
-                ${tokens.focus.noOffset}
-                ${
-                  isActive
-                    ? isDarkMode
-                      ? 'text-blue-400'
-                      : 'text-blue-600'
-                    : isDarkMode
-                    ? 'text-slate-400'
-                    : 'text-slate-600'
-                }
+                min-h-[56px] w-full py-2 rounded-none
+                transition-colors
+                ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-muted-foreground'}
               `}
               aria-label={tab.label}
               aria-current={isActive ? 'page' : undefined}
             >
-              <Icon size={24} />
-              <span className={`${tokens.typography.body.small} font-medium`}>
-                {tab.label}
-              </span>
-            </button>
+              <Icon className="h-6 w-6" />
+              <span className="text-xs font-medium">{tab.label}</span>
+            </Button>
           );
         })}
       </div>

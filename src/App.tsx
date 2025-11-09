@@ -377,7 +377,6 @@ function App() {
               setShowActivityLog(true);
             }
           }}
-          isDarkMode={isDarkMode}
         />
       )}
 

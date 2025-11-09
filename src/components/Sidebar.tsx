@@ -1,7 +1,6 @@
 import { BarChart3, Calendar, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Firefighter, Shift, supabase } from "../lib/supabase";
-import { colors, tokens } from "../styles";
 import { ScheduledHold } from "../utils/calendarUtils";
 import { NoScheduledHoldsEmptyState } from "./EmptyState";
 import { ShiftBadge } from "./ShiftBadge";
@@ -25,13 +24,11 @@ interface GroupedHold {
 export function Sidebar({
   firefighters,
   scheduledHolds,
-  isDarkMode, // Unused - design tokens handle dark mode automatically
+  isDarkMode: _isDarkMode, // Unused - shadcn handles dark mode via dark: variants
   currentShift,
   onNavigate,
   isAdminMode = false,
 }: SidebarProps) {
-  // Suppress unused variable warning - kept for API compatibility
-  void isDarkMode;
   const [allShiftFirefighters, setAllShiftFirefighters] = useState<
     Firefighter[]
   >([]);

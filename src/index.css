@@ -17,6 +17,24 @@ body {
   overflow: hidden; /* Kill global page scroll */
 }
 
+/**
+ * TODO: AUDIT FIX - WCAG AA Color Contrast
+ *
+ * Some color combinations fail WCAG AA (4.5:1 for normal text, 3:1 for large text)
+ * Problem areas identified in audit:
+ *
+ * 1. --muted-foreground (45.1% lightness) on light backgrounds: 3.21:1 ratio ❌
+ *    - Used in: Calendar weekday headers, secondary text throughout
+ *    - Fix: Increase to ~40% lightness for 4.5:1+ ratio
+ *
+ * 2. Dark mode --muted-foreground (63.9%) may also need adjustment
+ *    - Test against --background (3.9%) for sufficient contrast
+ *
+ * Recommendation: Adjust these values slightly darker/lighter for accessibility
+ * See: AUDIT_REPORT_2025-11-09.md - Section 5 (Color Contrast Audit)
+ *
+ * Test all changes with: https://webaim.org/resources/contrastchecker/
+ */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -30,7 +48,7 @@ body {
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted-foreground: 0 0% 45.1%; /* TODO: May need darkening for WCAG AA */
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
@@ -52,7 +70,7 @@ body {
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted-foreground: 0 0% 63.9%; /* TODO: Verify WCAG AA contrast */
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;

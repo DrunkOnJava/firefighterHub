@@ -29,7 +29,6 @@ interface HoldListProps {
   onEdit: (holdId: string, station: string) => void;
   onAddNew: () => void;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
 }
 
 export function HoldList({
@@ -38,7 +37,6 @@ export function HoldList({
   onMarkCompleted,
   onAddNew,
   isAdminMode = false,
-  isDarkMode: _isDarkMode = true,
 }: HoldListProps) {
   if (holds.length === 0) {
     return (

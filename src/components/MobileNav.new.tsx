@@ -4,7 +4,6 @@ import {
   Lightbulb,
   LogIn,
   LogOut,
-  Moon,
   Sun,
   UserPlus,
 } from "lucide-react";
@@ -47,8 +46,6 @@ export function MobileNav({
   onShiftChange,
   onToggleDarkMode,
 }: MobileNavProps) {
-  const isDarkMode = document.documentElement.classList.contains("dark");
-
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="right" className="w-80 max-w-[85vw]">
@@ -162,15 +159,11 @@ export function MobileNav({
                 className="w-full justify-between h-auto py-4 px-4"
               >
                 <div className="flex items-center gap-3">
-                  {isDarkMode ? (
-                    <Sun className="h-5 w-5 text-amber-400" />
-                  ) : (
-                    <Moon className="h-5 w-5 text-slate-700" />
-                  )}
+                  <Sun className="h-5 w-5 text-amber-400" />
                   <div className="text-left">
                     <div className="font-semibold">Theme</div>
                     <div className="text-sm text-muted-foreground">
-                      {isDarkMode ? "Dark mode" : "Light mode"}
+                      Dark mode
                     </div>
                   </div>
                 </div>

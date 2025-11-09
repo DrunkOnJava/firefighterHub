@@ -22,7 +22,6 @@ interface CalendarGridProps {
   loading: boolean;
   isAdminMode?: boolean;
   currentShift: Shift;
-  isDarkMode?: boolean;
   selectedFirefighterId?: string | null;
 }
 
@@ -44,10 +43,16 @@ export function CalendarGrid({
   loading,
   isAdminMode = false,
   currentShift,
-  isDarkMode: _isDarkMode = true,
   selectedFirefighterId = null,
 }: CalendarGridProps) {
   const gridRef = useRef<HTMLDivElement>(null);
+
+  // TODO: AUDIT IMPROVEMENT - Keyboard navigation for calendar
+  // Recommendation: Add arrow key navigation (Up/Down/Left/Right) between day cells
+  // Implementation: handleKeyDown handler that calculates next cell index based on key
+  // Left/Right: ±1 day, Up/Down: ±7 days
+  // Focus management: use data-date attributes to find and focus target cells
+  // See: AUDIT_REPORT_2025-11-09.md - Section 4 (Keyboard Navigation)
 
   // Add swipe navigation
   const { handleTouchStart, handleTouchEnd } = useSwipeGesture(
@@ -75,6 +80,10 @@ export function CalendarGrid({
       onTouchEnd={handleTouchEnd}
     >
       {/* Weekday headers */}
+      {/* TODO: AUDIT FIX - Color contrast on weekday headers */}
+      {/* Current: text-muted-foreground may fail WCAG AA (3.21:1 ratio) */}
+      {/* Recommendation: Use text-foreground or text-slate-700 dark:text-slate-200 */}
+      {/* See: AUDIT_REPORT_2025-11-09.md - Section 5 (Color Contrast Audit) */}
       <div className="grid grid-cols-7 gap-2 pb-1">
         {weekDays.map((day) => (
           <div
@@ -88,6 +97,8 @@ export function CalendarGrid({
       </div>
 
       {/* Calendar grid with max height */}
+      {/* NOTE: gap-2 provides good visual separation between day cells (8px) */}
+      {/* DayCell borders (border-2) handle individual cell definition */}
       <div className="grid grid-cols-7 gap-2 auto-rows-fr max-h-[calc(100vh-280px)] overflow-auto">
         {calendarDays.map((day, index) => (
           <DayCell
@@ -96,7 +107,6 @@ export function CalendarGrid({
             onDayClick={onDayClick}
             isAdminMode={isAdminMode}
             currentShift={currentShift}
-            isDarkMode={_isDarkMode}
             selectedFirefighterId={selectedFirefighterId}
           />
         ))}

@@ -19,7 +19,6 @@ interface MobileWeekViewProps {
   scheduledHolds: ScheduledHold[];
   onDayClick: (day: CalendarDay) => void;
   currentShift: Shift;
-  isDarkMode?: boolean;
 }
 
 export function MobileWeekView({

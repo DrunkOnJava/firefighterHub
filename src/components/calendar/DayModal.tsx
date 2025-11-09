@@ -37,7 +37,6 @@ interface DayModalProps {
   onMarkCompleted: (hold: ScheduledHold) => void;
   onSkipFirefighter?: (firefighterId: string) => void;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
   currentShift: Shift;
 }
 
@@ -53,7 +52,6 @@ export function DayModal({
   onMarkCompleted,
   onSkipFirefighter,
   isAdminMode = false,
-  isDarkMode: _isDarkMode = true,
 }: DayModalProps) {
   const [selectedStation, setSelectedStation] = useState<string>("");
   const [showAddAnother, setShowAddAnother] = useState(false);
@@ -180,7 +178,6 @@ export function DayModal({
               onEdit={() => {}} // TODO: Implement hold editing
               onAddNew={handleAddNewClick}
               isAdminMode={isAdminMode}
-              isDarkMode={_isDarkMode}
             />
           ) : (
             <HoldForm
@@ -195,7 +192,6 @@ export function DayModal({
               onStationChange={setSelectedStation}
               showAddAnother={showAddAnother}
               onAddAnotherChange={setShowAddAnother}
-              isDarkMode={_isDarkMode}
             />
           )}
         </div>

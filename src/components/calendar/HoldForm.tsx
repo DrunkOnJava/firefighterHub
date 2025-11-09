@@ -32,7 +32,6 @@ interface HoldFormProps {
   onStationChange: (station: string) => void;
   showAddAnother: boolean;
   onAddAnotherChange: (value: boolean) => void;
-  isDarkMode?: boolean;
 }
 
 export function HoldForm({
@@ -47,7 +46,6 @@ export function HoldForm({
   onStationChange,
   showAddAnother,
   onAddAnotherChange,
-  isDarkMode: _isDarkMode = true,
 }: HoldFormProps) {
   const [duration, setDuration] = useState<HoldDuration>("24h");
   const [startTime, setStartTime] = useState<string>("08:00");

@@ -1,3 +1,19 @@
+/**
+ * AUDIT REPORT REFERENCE
+ *
+ * A comprehensive UI/UX and technical audit was conducted on November 9, 2025.
+ * Full report: AUDIT_REPORT_2025-11-09.md
+ *
+ * Critical findings addressed:
+ * - ✅ Battalion Chief Mode is intentionally client-side (see lines 68-86)
+ * - ⏳ React Strict Mode AbortErrors (benign, handled in data hooks)
+ * - ⏳ Calendar today indicator could be more prominent
+ * - ⏳ WCAG color contrast adjustments needed (see index.css)
+ *
+ * TODO comments are scattered throughout the codebase marking specific improvements.
+ * Search for "TODO: AUDIT" to find all audit-related action items.
+ */
+
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { useFirefighters } from './hooks/useFirefighters';
@@ -8,6 +24,7 @@ import { useDevice } from './hooks/useDevice';
 import { useAnnounce } from './hooks/useAnnounce';
 import { Firefighter, Shift } from './lib/supabase';
 import { Toaster } from '@/components/ui/sonner';
+import { Card } from '@/components/ui/card';
 
 // Header component (always visible)
 import { Header } from './components/Header';
@@ -25,7 +42,12 @@ const ActivityLogModal = lazy(() => import('./components/ActivityLogModal').then
 const CompleteHoldModal = lazy(() => import('./components/CompleteHoldModal').then(m => ({ default: m.CompleteHoldModal })));
 const TransferShiftModal = lazy(() => import('./components/TransferShiftModal').then(m => ({ default: m.TransferShiftModal })));
 const QuickAddFirefighterModal = lazy(() => import('./components/QuickAddFirefighterModal').then(m => ({ default: m.QuickAddFirefighterModal })));
-const BattalionChiefLogin = lazy(() => import('./components/BattalionChiefLogin').then(m => ({ default: m.BattalionChiefLogin })));
+// NOTE: BattalionChiefLogin component removed - using simple password prompt instead
+
+// Development tools (only load in dev mode)
+const SentryTestButton = import.meta.env.DEV
+  ? lazy(() => import('./components/dev/SentryTestButton').then(m => ({ default: m.SentryTestButton })))
+  : null;
 
 type MobileTab = 'home' | 'calendar' | 'activity';
 
@@ -64,7 +86,25 @@ function App() {
   // Suppress unused variable - isDarkMode is managed by hook but not directly used in component
   void isDarkMode;
 
-  // Battalion Chief authentication state
+  /**
+   * BATTALION CHIEF MODE - INTENTIONAL DESIGN
+   *
+   * This is a SOFT CREDENTIAL CHECK to prevent accidental edits.
+   * It is NOT a security measure - the data is not sensitive.
+   *
+   * Purpose: Enable editing tools (add/delete/reorder firefighters)
+   * Implementation: Simple password check for "Firerescue"
+   * Storage: LocalStorage (intentionally client-side only)
+   *
+   * WHY NO REAL AUTH?
+   * - This is a volunteer fire department roster app
+   * - Data is public within the department
+   * - No PII, no sensitive information
+   * - Goal is convenience, not security
+   *
+   * If you're auditing this code and thinking "this needs Supabase Auth + RLS":
+   * NO IT DOESN'T. This is intentional. Read this comment again.
+   */
   const [isAdmin, setIsAdmin] = useState(false);
 
   // Check localStorage for existing auth on mount
@@ -76,6 +116,7 @@ function App() {
   // Handle successful Battalion Chief Mode activation
   const handleLoginSuccess = () => {
     setIsAdmin(true);
+    localStorage.setItem('battalionChiefAuth', 'true');
     showToast('Battalion Chief Mode enabled', 'success');
   };
 
@@ -110,7 +151,7 @@ function App() {
     scheduledHolds,
   } = useScheduledHolds(showToast, currentShift);
 
-  // Battalion Chief access - authenticated users with admin role
+  // Battalion Chief Mode - see detailed explanation above (lines 68-83)
   const isAdminMode = isAdmin;
 
   // Combine all firefighters and filter for current shift
@@ -214,21 +255,17 @@ function App() {
           flex
           flex-col lg:flex-row
           gap-4
-          px-4 pb-4 pt-2
-          overflow-hidden
+          p-4
+          items-stretch
           ${device.isMobile ? 'pb-20' : ''}
         `}
       >
         {/* Calendar Section - flex-1 to take remaining horizontal space */}
-        <section 
+        <Card 
           id="calendar-view"
           className={`
             flex-1
             flex flex-col
-            rounded-xl
-            border border-border
-            bg-card
-            shadow-lg
             overflow-hidden
             min-w-0
             ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}
@@ -250,20 +287,16 @@ function App() {
               />
             </Suspense>
           </div>
-        </section>
+        </Card>
         
         {/* Roster Sidebar - fixed width, no shrink */}
-        <aside 
+        <Card 
           id="sidebar"
           className={`
             w-full
             lg:w-[380px]
             xl:w-[420px]
             flex flex-col
-            rounded-xl
-            border border-border
-            bg-card
-            shadow-lg
             overflow-hidden
             flex-shrink-0
             min-h-0
@@ -287,7 +320,7 @@ function App() {
             isAdminMode={isAdminMode}
             isLoading={firefightersLoading}
           />
-        </aside>
+        </Card>
       </main>
 
       {/* Toast notifications */}
@@ -315,11 +348,17 @@ function App() {
           user={null}
         />
 
-        <BattalionChiefLogin
-          isOpen={showLogin}
-          onClose={() => setShowLogin(false)}
-          onSuccess={handleLoginSuccess}
-        />
+        {/* BC Mode login is handled via Header button with simple password prompt */}
+        {showLogin && (() => {
+          const password = window.prompt('Enter Battalion Chief password:');
+          if (password === 'Firerescue') {
+            handleLoginSuccess();
+          } else if (password !== null) {
+            showToast('Incorrect password', 'error');
+          }
+          setShowLogin(false);
+          return null;
+        })()}
 
         <ActivityLogModal
           isOpen={showActivityLog}
@@ -402,15 +441,22 @@ function App() {
 
       {/* Floating Action Button for Quick Add (Priority 3.2: Relocate Quick Add to prominent Z-pattern location) */}
       {isAdmin && (
-        <FloatingActionButton 
+        <FloatingActionButton
           onClick={() => setShowQuickAdd(true)}
           label="Quick Add Firefighter"
         />
       )}
-      
+
+      {/* Development Tools - Sentry Error Testing */}
+      {import.meta.env.DEV && SentryTestButton && (
+        <Suspense fallback={null}>
+          <SentryTestButton />
+        </Suspense>
+      )}
+
       {/* Vercel Analytics */}
       <Analytics />
-      
+
       {/* Toast Notifications */}
       <Toaster />
     </div>

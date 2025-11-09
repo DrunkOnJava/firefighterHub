@@ -16,7 +16,6 @@ interface SwipeableCardProps {
   onTransferShift: (id: string) => void;
   onDeactivate: (id: string) => void;
   isAdminMode: boolean;
-  isDarkMode: boolean;
   children: React.ReactNode;
 }
 
@@ -26,7 +25,6 @@ export function SwipeableCard({
   onTransferShift,
   onDeactivate,
   isAdminMode,
-  isDarkMode: _isDarkMode,
   children,
 }: SwipeableCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);

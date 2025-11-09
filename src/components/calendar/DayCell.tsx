@@ -18,7 +18,6 @@ interface DayCellProps {
   onDayClick: (day: CalendarDay) => void;
   isAdminMode?: boolean;
   currentShift: Shift;
-  isDarkMode?: boolean;
   selectedFirefighterId?: string | null;
 }
 
@@ -70,6 +69,10 @@ export function DayCell({
     cellClasses += ` bg-card border-border/40 text-foreground hover:border-border hover:shadow-lg cursor-pointer active:bg-muted`;
   }
 
+  // TODO: AUDIT FIX - Today indicator visibility
+  // Current: Blue gradient with shadow (works but could be more prominent)
+  // Recommendation: Add a "Today" badge or use filled red background for higher contrast
+  // See: AUDIT_REPORT_2025-11-09.md - Section 2 (Calendar Day Cell Selected State)
   // Today indicator - STRONG accent fill (HIGHEST PRIORITY)
   if (day.isToday && day.isCurrentMonth) {
     cellClasses += ` !bg-gradient-to-br !from-blue-600/40 !to-blue-700/50 dark:!from-blue-600/40 dark:!to-blue-700/50 !border-blue-500 !shadow-2xl !shadow-blue-500/40 ring-3 ring-blue-500/60`;

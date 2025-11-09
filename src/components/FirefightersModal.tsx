@@ -208,7 +208,6 @@ export function FirefightersModal({
             onClick={onClose}
             variant="default"
             size="md"
-            isDarkMode={true}
           />
         </div>
 

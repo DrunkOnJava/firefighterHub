@@ -77,7 +77,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -123,7 +122,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -165,7 +163,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -217,7 +214,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={false} // Read-only mode
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -265,7 +261,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={false} // Read-only mode
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -312,7 +307,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={false} // Read-only mode
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -358,7 +352,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={true} // Admin mode
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -389,7 +382,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -410,7 +402,6 @@ describe("Calendar Component", () => {
           onMarkCompleted={mockOnMarkCompleted}
           loading={false}
           isAdminMode={false}
-          isDarkMode={true}
           currentShift="A"
         />
       );

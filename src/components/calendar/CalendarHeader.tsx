@@ -23,7 +23,6 @@ interface CalendarHeaderProps {
   onNextMonth: () => void;
   onGoToToday?: () => void;
   currentShift: Shift;
-  isDarkMode?: boolean;
 }
 
 export function CalendarHeader({
@@ -32,7 +31,6 @@ export function CalendarHeader({
   onNextMonth,
   onGoToToday,
   currentShift,
-  isDarkMode: _isDarkMode = true,
 }: CalendarHeaderProps) {
   const handleGoToToday = () => {
     const today = new Date();

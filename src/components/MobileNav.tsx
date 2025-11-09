@@ -4,7 +4,6 @@ import {
   Lightbulb,
   LogIn,
   LogOut,
-  Moon,
   Sun,
   UserPlus,
   X,
@@ -44,9 +43,6 @@ export function MobileNav({
 }: MobileNavProps) {
   const trapRef = useFocusTrap(isOpen);
   useFocusReturn(isOpen);
-  
-  // Read dark mode from DOM instead of prop
-  const isDarkMode = document.documentElement.classList.contains('dark');
 
   useEffect(() => {
     if (!isOpen) return;
@@ -79,27 +75,17 @@ export function MobileNav({
       />
       <nav
         ref={trapRef}
-        className={`fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] border-l-2 z-50 shadow-2xl animate-slide-in-right ${
-          isDarkMode
-            ? "bg-gradient-to-b from-gray-800 to-gray-900 border-slate-700"
-            : "bg-gradient-to-b from-slate-50 to-white border-slate-300"
-        }`}
+        className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] border-l-2 z-50 shadow-2xl animate-slide-in-right bg-gradient-to-b from-gray-800 to-gray-900 dark:from-gray-800 dark:to-gray-900 border-slate-700"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
           <div
-            className={`border-b-2 p-5 flex items-center justify-between ${
-              isDarkMode
-                ? "bg-gradient-to-r from-gray-900 to-gray-800 border-slate-700"
-                : "bg-gradient-to-r from-slate-100 to-slate-50 border-slate-300"
-            }`}
+            className="border-b-2 p-5 flex items-center justify-between bg-gradient-to-r from-gray-900 to-gray-800 border-slate-700"
           >
             <div>
               <h2
                 id="mobile-nav-title"
-                className={`text-xl font-bold ${
-                  isDarkMode ? "text-white" : "text-slate-900"
-                }`}
+                className="text-xl font-bold text-white"
               >
                 Menu
               </h2>
@@ -107,12 +93,10 @@ export function MobileNav({
                 <div className="flex items-center gap-1.5 mt-1">
                   <LogOut
                     size={12}
-                    className={isDarkMode ? "text-orange-400" : "text-orange-600"}
+                    className="text-orange-400"
                   />
                   <span
-                    className={`text-xs font-bold ${
-                      isDarkMode ? "text-orange-400" : "text-orange-600"
-                    }`}
+                    className="text-xs font-bold text-orange-400"
                   >
                     BATTALION CHIEF MODE
                   </span>
@@ -121,11 +105,7 @@ export function MobileNav({
             </div>
             <button
               onClick={onClose}
-              className={`p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex items-center justify-center ${
-                isDarkMode
-                  ? "hover:bg-slate-700 text-slate-400"
-                  : "hover:bg-slate-200 text-slate-600"
-              }`}
+              className="p-2 min-h-[44px] rounded-lg transition-colors focus-ring flex items-center justify-center hover:bg-slate-700 text-slate-400"
               aria-label="Close menu"
             >
               <X size={24} />
@@ -136,18 +116,14 @@ export function MobileNav({
             {/* Context Section */}
             <section>
               <h3
-                className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-slate-400" : "text-slate-600"
-                }`}
+                className="text-sm font-bold uppercase tracking-wide mb-3 text-slate-400"
               >
                 Current Context
               </h3>
               <div className="space-y-3">
                 <div>
                   <label
-                    className={`text-xs font-semibold mb-2 block ${
-                      isDarkMode ? "text-slate-400" : "text-slate-600"
-                    }`}
+                    className="text-xs font-semibold mb-2 block text-slate-400"
                   >
                     Active Shift
                   </label>
@@ -163,9 +139,7 @@ export function MobileNav({
             {isAdminMode && (
               <section>
                 <h3
-                  className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                    isDarkMode ? "text-slate-400" : "text-slate-600"
-                  }`}
+                  className="text-sm font-bold uppercase tracking-wide mb-3 text-slate-400"
                 >
                   Quick Actions
                 </h3>
@@ -185,9 +159,7 @@ export function MobileNav({
             {/* Secondary Actions */}
             <section>
               <h3
-                className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-slate-400" : "text-slate-600"
-                }`}
+                className="text-sm font-bold uppercase tracking-wide mb-3 text-slate-400"
               >
                 Tools
               </h3>
@@ -197,28 +169,20 @@ export function MobileNav({
                     onShowActivityLog();
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring ${
-                    isDarkMode
-                      ? "bg-slate-800 hover:bg-slate-700 border-slate-700"
-                      : "bg-white hover:bg-slate-50 border-slate-300"
-                  }`}
+                  className="w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring bg-slate-800 hover:bg-slate-700 border-slate-700"
                 >
                   <Clock
                     size={22}
-                    className={isDarkMode ? "text-blue-400" : "text-blue-600"}
+                    className="text-blue-400"
                   />
                   <div>
                     <div
-                      className={`font-semibold ${
-                        isDarkMode ? "text-white" : "text-slate-900"
-                      }`}
+                      className="font-semibold text-white"
                     >
                       Activity History
                     </div>
                     <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-slate-400" : "text-slate-600"
-                      }`}
+                      className="text-sm text-slate-400"
                     >
                       View recent actions
                     </div>
@@ -230,30 +194,20 @@ export function MobileNav({
                     onShowHelp();
                     onClose();
                   }}
-                  className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring ${
-                    isDarkMode
-                      ? "bg-slate-800 hover:bg-slate-700 border-slate-700"
-                      : "bg-white hover:bg-slate-50 border-slate-300"
-                  }`}
+                  className="w-full flex items-center gap-3 p-4 border rounded-lg transition-colors text-left focus-ring bg-slate-800 hover:bg-slate-700 border-slate-700"
                 >
                   <HelpCircle
                     size={22}
-                    className={
-                      isDarkMode ? "text-purple-400" : "text-purple-600"
-                    }
+                    className="text-purple-400"
                   />
                   <div>
                     <div
-                      className={`font-semibold ${
-                        isDarkMode ? "text-white" : "text-slate-900"
-                      }`}
+                      className="font-semibold text-white"
                     >
                       Help & Guide
                     </div>
                     <div
-                      className={`text-sm ${
-                        isDarkMode ? "text-slate-400" : "text-slate-600"
-                      }`}
+                      className="text-sm text-slate-400"
                     >
                       Learn about features
                     </div>
@@ -265,48 +219,32 @@ export function MobileNav({
             {/* Settings */}
             <section>
               <h3
-                className={`text-sm font-bold uppercase tracking-wide mb-3 ${
-                  isDarkMode ? "text-slate-400" : "text-slate-600"
-                }`}
+                className="text-sm font-bold uppercase tracking-wide mb-3 text-slate-400"
               >
                 Preferences
               </h3>
               <div className="space-y-2">
                 <button
                   onClick={onToggleDarkMode}
-                  className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
-                    isDarkMode
-                      ? "bg-slate-800 hover:bg-slate-700 border-slate-700"
-                      : "bg-white hover:bg-slate-50 border-slate-300"
-                  }`}
+                  className="w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring bg-slate-800 hover:bg-slate-700 border-slate-700"
                 >
                   <div className="flex items-center gap-3">
-                    {isDarkMode ? (
-                      <Sun size={22} className="text-amber-400" />
-                    ) : (
-                      <Moon size={22} className="text-slate-700" />
-                    )}
+                    <Sun size={22} className="text-amber-400" />
                     <div className="text-left">
                       <div
-                        className={`font-semibold ${
-                          isDarkMode ? "text-white" : "text-slate-900"
-                        }`}
+                        className="font-semibold text-white"
                       >
                         Theme
                       </div>
                       <div
-                        className={`text-sm ${
-                          isDarkMode ? "text-slate-400" : "text-slate-600"
-                        }`}
+                        className="text-sm text-slate-400"
                       >
-                        {isDarkMode ? "Dark mode" : "Light mode"}
+                        Dark mode
                       </div>
                     </div>
                   </div>
                   <div
-                    className={`text-xs font-semibold ${
-                      isDarkMode ? "text-slate-500" : "text-slate-500"
-                    }`}
+                    className="text-xs font-semibold text-slate-500"
                   >
                     Toggle
                   </div>
@@ -318,35 +256,25 @@ export function MobileNav({
                       onLogout();
                       onClose();
                     }}
-                    className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
-                      isDarkMode
-                        ? "bg-slate-800 hover:bg-slate-700 border-orange-600"
-                        : "bg-white hover:bg-slate-50 border-orange-500"
-                    }`}
+                    className="w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring bg-slate-800 hover:bg-slate-700 border-orange-600"
                   >
                     <div className="flex items-center gap-3">
-                      <LogOut size={22} className={isDarkMode ? "text-orange-400" : "text-orange-600"} />
+                      <LogOut size={22} className="text-orange-400" />
                       <div className="text-left">
                         <div
-                          className={`font-semibold ${
-                            isDarkMode ? "text-white" : "text-slate-900"
-                          }`}
+                          className="font-semibold text-white"
                         >
                           Battalion Chief Mode
                         </div>
                         <div
-                          className={`text-sm ${
-                            isDarkMode ? "text-slate-400" : "text-slate-600"
-                          }`}
+                          className="text-sm text-slate-400"
                         >
                           Active - Click to leave
                         </div>
                       </div>
                     </div>
                     <div
-                      className={`text-xs font-semibold ${
-                        isDarkMode ? "text-orange-400" : "text-orange-600"
-                      }`}
+                      className="text-xs font-semibold text-orange-400"
                     >
                       Leave
                     </div>
@@ -357,35 +285,25 @@ export function MobileNav({
                       onShowLogin();
                       onClose();
                     }}
-                    className={`w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring ${
-                      isDarkMode
-                        ? "bg-slate-800 hover:bg-slate-700 border-orange-600"
-                        : "bg-white hover:bg-slate-50 border-orange-500"
-                    }`}
+                    className="w-full flex items-center justify-between p-4 border rounded-lg transition-colors focus-ring bg-slate-800 hover:bg-slate-700 border-orange-600"
                   >
                     <div className="flex items-center gap-3">
-                      <LogIn size={22} className={isDarkMode ? "text-orange-400" : "text-orange-600"} />
+                      <LogIn size={22} className="text-orange-400" />
                       <div className="text-left">
                         <div
-                          className={`font-semibold ${
-                            isDarkMode ? "text-white" : "text-slate-900"
-                          }`}
+                          className="font-semibold text-white"
                         >
                           Battalion Chief Mode
                         </div>
                         <div
-                          className={`text-sm ${
-                            isDarkMode ? "text-slate-400" : "text-slate-600"
-                          }`}
+                          className="text-sm text-slate-400"
                         >
                           Enable admin features
                         </div>
                       </div>
                     </div>
                     <div
-                      className={`text-xs font-semibold ${
-                        isDarkMode ? "text-orange-400" : "text-orange-600"
-                      }`}
+                      className="text-xs font-semibold text-orange-400"
                     >
                       Enter
                     </div>
@@ -398,28 +316,18 @@ export function MobileNav({
             {!isAdminMode && (
               <section className="pt-4 border-t-2">
                 <div
-                  className={`border rounded-lg p-4 ${
-                    isDarkMode
-                      ? "bg-blue-900/30 border-blue-700"
-                      : "bg-blue-50 border-blue-300"
-                  }`}
+                  className="border rounded-lg p-4 bg-blue-900/30 border-blue-700"
                 >
                   <h3
-                    className={`font-semibold mb-2 flex items-center gap-2 ${
-                      isDarkMode ? "text-white" : "text-slate-900"
-                    }`}
+                    className="font-semibold mb-2 flex items-center gap-2 text-white"
                   >
                     <Lightbulb
-                      className={`w-4 h-4 ${
-                        isDarkMode ? "text-blue-400" : "text-blue-600"
-                      }`}
+                      className="w-4 h-4 text-blue-400"
                     />
                     Quick Tip
                   </h3>
                   <p
-                    className={`text-sm ${
-                      isDarkMode ? "text-slate-300" : "text-slate-700"
-                    }`}
+                    className="text-sm text-slate-300"
                   >
                     Enable Admin mode to add firefighters and schedule holds.
                   </p>

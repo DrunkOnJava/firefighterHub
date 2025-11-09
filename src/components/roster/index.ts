@@ -11,4 +11,6 @@ export { RosterHeader } from './RosterHeader';
 export { RosterSearchBar } from './RosterSearchBar';
 export { BulkActions } from './BulkActions';
 export { ExportMenu } from './ExportMenu';
+export { DeactivatedFirefightersList } from './DeactivatedFirefightersList';
+export { RosterTable, RosterTableRow } from './table';
 

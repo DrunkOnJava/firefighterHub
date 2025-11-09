@@ -141,7 +141,6 @@ export function CalendarView({
               onClick={goToPreviousMonth}
               variant="default"
               size="md"
-              isDarkMode={true}
             />
             <IconButton
               icon={ChevronRight}
@@ -149,7 +148,6 @@ export function CalendarView({
               onClick={goToNextMonth}
               variant="default"
               size="md"
-              isDarkMode={true}
             />
             <button
               className="ml-2 px-4 py-2 bg-gradient-to-br from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white rounded-md font-medium shadow-lg shadow-red-900/50 transition-all flex items-center gap-2"
@@ -296,7 +294,6 @@ export function CalendarView({
         onRemoveHold={onRemoveHold}
         onMarkCompleted={onMarkCompleted}
         isAdminMode={isAdminMode}
-        isDarkMode={true}
         currentShift={currentShift}
       />
     </div>

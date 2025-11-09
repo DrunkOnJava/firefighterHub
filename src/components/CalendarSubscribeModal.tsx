@@ -108,7 +108,6 @@ export function CalendarSubscribeModal({
             onClick={onClose}
             variant="default"
             size="md"
-            isDarkMode={true}
           />
         </div>
 

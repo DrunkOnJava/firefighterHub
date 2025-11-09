@@ -10,7 +10,6 @@ type View = "calendar" | "reports";
 interface SidebarProps {
   firefighters: Firefighter[];
   scheduledHolds: ScheduledHold[];
-  isDarkMode?: boolean;
   currentShift: Shift;
   onNavigate?: (view: View) => void;
   isAdminMode?: boolean;
@@ -24,7 +23,6 @@ interface GroupedHold {
 export function Sidebar({
   firefighters,
   scheduledHolds,
-  isDarkMode: _isDarkMode, // Unused - shadcn handles dark mode via dark: variants
   currentShift,
   onNavigate,
   isAdminMode = false,

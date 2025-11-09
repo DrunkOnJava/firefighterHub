@@ -77,7 +77,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -101,7 +100,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={false}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -125,7 +123,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={false}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -152,7 +149,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -180,7 +176,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -209,7 +204,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={false}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -236,7 +230,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );
@@ -265,7 +258,6 @@ describe("FirefighterList Component", () => {
           onResetAll={mockOnResetAll}
           onReorder={mockOnReorder}
           isAdminMode={true}
-          isDarkMode={true}
           currentShift="A"
         />
       );

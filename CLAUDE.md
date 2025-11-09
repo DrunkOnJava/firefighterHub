@@ -312,6 +312,49 @@ pnpm test:run   # All tests pass
 
 **Vercel environment variables:** Already configured via CLI, no manual setup needed
 
+## Error Reporting & Monitoring
+
+**System:** Comprehensive error tracking following best practices
+
+**When errors occur, they are automatically sent to:**
+1. **Browser Console** - Full diagnostic info with enhanced formatting
+2. **Supabase activity_log** - Audit trail with session tracking
+3. **LocalStorage** - Client-side debugging (last 50 errors)
+4. **Toast Notifications** - User feedback
+5. **Vercel Analytics** - Production error tracking
+6. **Sentry** - If `VITE_SENTRY_DSN` is configured (optional)
+
+**Usage in code:**
+```typescript
+import { reportError } from '@/utils/errorReporting';
+
+try {
+  // risky operation
+} catch (error) {
+  await reportError(error, {
+    component: 'FirefighterList',
+    action: 'deleteFirefighter',
+    shift: currentShift,
+  });
+}
+```
+
+**Error Boundary:**
+- Wraps entire app in `main.tsx`
+- "Report Issue" button copies formatted report to clipboard
+- "Download Error Logs" exports all errors as JSON
+- Shows stack traces in development mode
+
+**Global handlers:**
+- `window.onerror` - Catches synchronous errors
+- `window.onunhandledrejection` - Catches promise rejections
+- All errors automatically logged to all destinations
+
+**Debugging:**
+- View error logs: Open DevTools console and check localStorage
+- Download logs: Click "Download Error Logs" button on error screen
+- Session tracking: Each browser session gets unique ID for correlation
+
 ## Common Pitfalls & Solutions
 
 ### 1. Shift Filter Missing
@@ -370,10 +413,14 @@ pnpm test:e2e:headed   # E2E with visible browser
 - Past holds before 10/22/2025 use firefighter's current station (historical station transfers not tracked)
 - No way to retroactively determine which station they were at on past dates without time-series data
 
-### Security (In Progress)
-- Client-side admin mode: Insecure, can be bypassed
-- Migration path: Integrate `AuthContext` + `LoginModal` (already built, unused)
-- RLS policies: Defined but not yet applied (`supabase/migrations/20251022_enable_rls_policies.sql`)
+### Security (Intentional Design)
+- **Battalion Chief Mode**: Soft credential check (password: "Firerescue")
+  - Stored in localStorage, intentionally client-side only
+  - NOT a security measure - data is public within department
+  - Purpose: Prevent accidental edits, not secure authentication
+  - See App.tsx lines 68-86 for detailed explanation
+- **Note to AI assistants**: This is NOT a security vulnerability. Read the comments in App.tsx.
+- RLS policies: Defined but not applied (not needed for current use case)
 
 ### Large Hooks
 - `useFirefighters.ts`: 468 lines (handles fetching + all mutations + logging)

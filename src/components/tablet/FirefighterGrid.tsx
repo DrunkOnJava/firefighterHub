@@ -16,7 +16,6 @@ interface FirefighterGridProps {
   onDeactivate?: (id: string) => void;
   onSelect?: (firefighter: Firefighter) => void;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
   columns?: 2 | 3; // Default 2 for tablet, 3 for large tablet
 }
 
@@ -27,7 +26,6 @@ export function FirefighterGrid({
   onDeactivate,
   onSelect,
   isAdminMode = false,
-  isDarkMode = true,
   columns = 2,
 }: FirefighterGridProps) {
   // Find next firefighter in rotation (first available)
@@ -49,7 +47,6 @@ export function FirefighterGrid({
           onDeactivate={onDeactivate}
           onSelect={onSelect}
           isAdminMode={isAdminMode}
-          isDarkMode={isDarkMode}
           isNextInRotation={nextFirefighter?.id === firefighter.id}
         />
       ))}

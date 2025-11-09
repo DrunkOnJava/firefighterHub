@@ -24,7 +24,6 @@ interface FirefighterCardProps {
   onDeactivate?: (id: string) => void;
   onSelect?: (firefighter: Firefighter) => void;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
   isNextInRotation?: boolean;
 }
 

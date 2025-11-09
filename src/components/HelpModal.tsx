@@ -1,16 +1,14 @@
-import type { User } from "@supabase/supabase-js";
 import {
   Calendar,
   CheckCircle,
   Lock,
   LogIn,
-  LogOut,
   Shield,
   Trash2,
   TrendingUp,
   Users,
 } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
+// NOTE: AuthContext removed - using simple BC Mode instead (see App.tsx lines 68-83)
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
 
@@ -20,7 +18,7 @@ interface HelpModalProps {
   onMasterReset: () => void;
   isAdminMode: boolean;
   onShowLogin: () => void;
-  user: User | null;
+  user: null; // Kept for backwards compatibility, always null now
 }
 
 export function HelpModal({
@@ -29,9 +27,8 @@ export function HelpModal({
   onMasterReset,
   isAdminMode,
   onShowLogin,
-  user,
 }: HelpModalProps) {
-  const { signOut } = useAuth();
+  // NOTE: useAuth removed - BC Mode uses localStorage (see App.tsx)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -213,55 +210,51 @@ export function HelpModal({
             {/* Battalion Chief Authentication */}
             <div
               className={`border-2 rounded-lg p-6 ${
-                user
+                isAdminMode
                   ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
                   : "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800"
               }`}
             >
               <div className="flex items-center gap-3 mb-3">
-                {user ? (
+                {isAdminMode ? (
                   <Shield className="text-green-600 dark:text-green-400" size={24} />
                 ) : (
                   <Lock className="text-blue-600 dark:text-blue-400" size={24} />
                 )}
                 <h3 className={`text-base font-semibold ${
-                  user
+                  isAdminMode
                     ? "text-green-700 dark:text-green-300"
                     : "text-blue-700 dark:text-blue-300"
                 }`}>
-                  {user ? "Battalion Chief Mode" : "Battalion Chief Login"}
+                  {isAdminMode ? "Battalion Chief Mode Active" : "Battalion Chief Login"}
                 </h3>
               </div>
 
-              {user ? (
+              {isAdminMode ? (
                 <>
                   <div className="bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-md p-3 mb-4">
                     <p className="text-sm font-semibold text-green-700 dark:text-green-300 mb-1">
-                      Logged in as:
+                      Editing Enabled
                     </p>
-                    <p className="font-mono text-sm text-foreground">
-                      {user.email}
+                    <p className="text-sm text-muted-foreground">
+                      You can add, edit, and delete firefighters.
                     </p>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    You have full admin access to assign holds, manage the roster, and override rotation.
+                    You have full access to assign holds, manage the roster, and override rotation.
                   </p>
-                  <Button
-                    onClick={async () => {
-                      await signOut();
-                      onClose();
-                    }}
-                    variant="secondary"
-                    className="w-full"
-                  >
-                    <LogOut className="mr-2" size={20} />
-                    Sign Out
-                  </Button>
+                  {/* Note: Logout handled by Header component, not in modal */}
+                  <p className="text-xs text-muted-foreground italic">
+                    Use the BC Mode button in the header to disable editing.
+                  </p>
                 </>
               ) : (
                 <>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Battalion chiefs can log in to access admin features: assign holds, manage roster, override rotation, and track metrics.
+                    Battalion chiefs can enable editing mode to access admin features: assign holds, manage roster, override rotation, and track metrics.
+                  </p>
+                  <p className="text-xs text-yellow-700 dark:text-yellow-300 mb-4 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded border border-yellow-200 dark:border-yellow-800">
+                    <strong>Note:</strong> This is a soft credential check (password: "Firerescue") to prevent accidental edits. Data is not sensitive. See App.tsx for details.
                   </p>
                   <Button
                     onClick={() => {
@@ -271,7 +264,7 @@ export function HelpModal({
                     className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                   >
                     <LogIn className="mr-2" size={20} />
-                    Battalion Chief Login
+                    Enable Battalion Chief Mode
                   </Button>
                 </>
               )}

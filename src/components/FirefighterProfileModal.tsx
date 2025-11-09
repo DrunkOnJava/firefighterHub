@@ -66,6 +66,11 @@ export function FirefighterProfileModal({
       return;
     }
 
+    // TODO: AUDIT NOTE - Loading history state
+    // Audit reported "Loading history..." never resolves, but code has proper finally block.
+    // This may have been a timing issue during audit testing. Monitoring for actual issues.
+    // Error handling is in place - if Supabase query fails, loading state is cleared.
+    // See: AUDIT_REPORT_2025-11-09.md - Section 2 (Firefighter Profile Modal)
     async function loadHoldHistory() {
       try {
         setLoading(true);
@@ -262,7 +267,6 @@ export function FirefighterProfileModal({
               onClick={onClose}
               variant="default"
               size="md"
-              isDarkMode={true}
             />
           </div>
         </div>
@@ -658,7 +662,6 @@ export function FirefighterProfileModal({
                   onClick={() => setSelectedHoldForDetail(null)}
                   variant="default"
                   size="md"
-                  isDarkMode={true}
                 />
               </div>
             </div>

@@ -22,7 +22,6 @@ interface DayScheduleModalProps {
     isVoluntary: boolean
   ) => void;
   onSkip: (firefighterId: string) => void;
-  isDarkMode: boolean;
   currentShift: Shift;
 }
 
@@ -33,7 +32,6 @@ export function DayScheduleModal({
   onClose,
   onSchedule,
   onSkip,
-  isDarkMode: _isDarkMode,
 }: DayScheduleModalProps) {
   const [selectedStation, setSelectedStation] = useState('');
   const [duration, setDuration] = useState<HoldDuration>('24h');

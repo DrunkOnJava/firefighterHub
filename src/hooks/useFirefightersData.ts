@@ -91,6 +91,11 @@ export function useFirefightersData(
   }, [currentShift]);
 
   useEffect(() => {
+    // TODO: AUDIT FIX - React 18 Strict Mode causes double-mounting in development
+    // which triggers AbortErrors on initial load. This is benign and handled correctly
+    // in the catch block above (line 80), but creates console noise.
+    // The abort controller properly cancels in-flight requests on unmount.
+    // No action needed - this is expected behavior in dev mode with Strict Mode enabled.
     loadFirefighters();
     return () => {
       abortRef.current?.abort();

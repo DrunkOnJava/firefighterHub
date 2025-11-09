@@ -1,17 +1,20 @@
 /**
- * FirefighterHub Calendar Component
+ * Main Calendar Component
  * 
- * Built with shadcn/ui Calendar (react-day-picker) instead of FullCalendar
- * Displays scheduled holds for firefighters with shift-based styling
+ * FullCalendar-based calendar view for firefighter hold rotation schedule
  */
 
-import { useMemo, useState } from 'react';
-import { ScheduledHold, Firefighter } from '@/lib/supabase';
+import { useMemo } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { EventInput } from '@fullcalendar/core';
+import { ScheduledHold, Firefighter } from '../../lib/supabase';
 import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar-shadcn';
-import { addMonths, subMonths, format, parseISO } from 'date-fns';
+
+import './MainCalendar.css';
 
 interface MainCalendarProps {
   loading: boolean;
@@ -28,9 +31,7 @@ export function MainCalendar({
   onFirefighterClick,
   selectedFirefighterId,
 }: MainCalendarProps) {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-
-  // Get next up firefighters per shift
+  // Get next up firefighters per shift (memoized to prevent infinite loops)
   const { nextUpA, nextUpB, nextUpC } = useMemo(() => {
     const getNextUpByShift = (shift: 'A' | 'B' | 'C') => {
       const shiftFFs = firefighters
@@ -52,28 +53,36 @@ export function MainCalendar({
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  // Dates that have scheduled holds
-  const datesWithHolds = useMemo(() => {
-    return scheduledHolds
-      .filter(h => h.hold_date)
-      .map(h => parseISO(h.hold_date!));
-  }, [scheduledHolds]);
+  // Convert scheduled holds to calendar events
+  const events: EventInput[] = useMemo(() => {
+    if (!scheduledHolds || scheduledHolds.length === 0) return [];
 
-  // Handle day click to show holds for that date
-  const handleDayClick = (date: Date | undefined) => {
-    if (!date) return;
-    
-    const holdsForDate = scheduledHolds.filter(hold => {
-      if (!hold.hold_date) return false;
-      const holdDate = parseISO(hold.hold_date);
-      return holdDate.toDateString() === date.toDateString();
-    });
+    return scheduledHolds.map((hold) => {
+      const firefighter = firefighters.find((ff) => ff.id === hold.firefighter_id);
+      
+      if (!firefighter) return null;
 
-    // TODO: Show modal or popover with holds for this date
-    if (holdsForDate.length > 0) {
-      console.log('Holds for', date, holdsForDate);
-    }
-  };
+      const station = firefighter.fire_station ? ` - Station ${firefighter.fire_station}` : '';
+      const title = `${firefighter.name}${station}`;
+
+      // Determine shift color class
+      let shiftClass = 'event-shift-a';
+      if (firefighter.shift === 'B') shiftClass = 'event-shift-b';
+      if (firefighter.shift === 'C') shiftClass = 'event-shift-c';
+
+      return {
+        id: hold.id,
+        title,
+        start: hold.hold_date,
+        className: shiftClass,
+        extendedProps: {
+          firefighterId: hold.firefighter_id,
+          status: hold.status,
+          shift: firefighter.shift,
+        },
+      };
+    }).filter(Boolean) as EventInput[];
+  }, [scheduledHolds, firefighters]);
 
   if (loading) {
     return (
@@ -84,7 +93,7 @@ export function MainCalendar({
   }
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col dark-theme">
       {/* Calendar Header with Next Up Section */}
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between gap-6">
@@ -150,75 +159,35 @@ export function MainCalendar({
         </div>
       </CardHeader>
 
-      {/* shadcn/ui Calendar */}
-      <CardContent className="flex-1 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">
-            {format(currentMonth, 'MMMM yyyy')}
-          </h3>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            >
-              <span className="sr-only">Previous month</span>
-              ←
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentMonth(new Date())}
-            >
-              Today
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            >
-              <span className="sr-only">Next month</span>
-              →
-            </Button>
-          </div>
-        </div>
-
-        <Calendar
-          mode="single"
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
-          onDayClick={handleDayClick}
-          modifiers={{
-            hasHolds: datesWithHolds,
-          }}
-          modifiersClassNames={{
-            hasHolds: 'font-bold bg-primary/5 hover:bg-primary/10',
-          }}
-          className="rounded-md border w-full"
-        />
-
-        {/* Hold indicators legend */}
-        <div className="flex items-center justify-center gap-4 mt-4 text-xs">
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-red-500" />
-            <span className="text-muted-foreground">Shift A</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-blue-500" />
-            <span className="text-muted-foreground">Shift B</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-2 h-2 rounded-full bg-green-500" />
-            <span className="text-muted-foreground">Shift C</span>
-          </div>
+      {/* FullCalendar Container */}
+      <CardContent className="flex-1 p-0">
+        <div className="calendar-grid-wrapper">
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            headerToolbar={{
+              left: '',
+              center: 'today prev title next',
+              right: ''
+            }}
+            events={events}
+            contentHeight="auto"
+            expandRows={false}
+            dayMaxEvents={false}
+            editable={false}
+            selectable={false}
+            eventDisplay="block"
+          />
         </div>
 
         {/* Keyboard Hint */}
-        <div className="flex items-center gap-2 justify-center py-3 text-xs text-muted-foreground border-t mt-4">
+        <div className="flex items-center gap-2 justify-center py-3 text-xs text-muted-foreground border-t">
           <span>Use</span>
           <kbd className="px-2 py-1 bg-muted rounded border text-xs">←</kbd>
           <kbd className="px-2 py-1 bg-muted rounded border text-xs">→</kbd>
-          <span>to navigate months</span>
+          <span>or</span>
+          <kbd className="px-2 py-1 bg-muted rounded border text-xs">T</kbd>
+          <span>to navigate</span>
         </div>
       </CardContent>
     </div>

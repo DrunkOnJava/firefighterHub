@@ -44,7 +44,6 @@ interface CalendarProps {
   onSkipFirefighter?: (firefighterId: string) => void;
   loading: boolean;
   isAdminMode?: boolean;
-  isDarkMode?: boolean;
   currentShift: Shift;
 }
 
@@ -57,7 +56,6 @@ export function Calendar({
   onSkipFirefighter,
   loading,
   isAdminMode = false,
-  isDarkMode = true,
   currentShift,
 }: CalendarProps) {
   const device = useDevice();
@@ -143,7 +141,6 @@ export function Calendar({
           onNextMonth={goToNextMonth}
           onGoToToday={goToToday}
           currentShift={currentShift}
-          isDarkMode={isDarkMode}
         />
       </div>
 
@@ -157,7 +154,6 @@ export function Calendar({
             scheduledHolds={scheduledHolds}
             onDayClick={handleDayClick}
             currentShift={currentShift}
-            isDarkMode={isDarkMode}
           />
         ) : (
           <CalendarGrid
@@ -168,7 +164,6 @@ export function Calendar({
             loading={loading}
             isAdminMode={isAdminMode}
             currentShift={currentShift}
-            isDarkMode={isDarkMode}
           />
         )}
       </div>
@@ -195,7 +190,6 @@ export function Calendar({
                 onMarkCompleted={onMarkCompleted}
                 onSkipFirefighter={onSkipFirefighter}
                 isAdminMode={isAdminMode}
-                isDarkMode={isDarkMode}
                 currentShift={currentShift}
               />
             </div>
@@ -214,7 +208,6 @@ export function Calendar({
           onMarkCompleted={onMarkCompleted}
           onSkipFirefighter={onSkipFirefighter}
           isAdminMode={isAdminMode}
-          isDarkMode={isDarkMode}
           currentShift={currentShift}
         />
       )}

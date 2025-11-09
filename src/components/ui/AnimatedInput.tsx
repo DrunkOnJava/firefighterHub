@@ -30,8 +30,6 @@ import { useAnimation } from '../../hooks/useAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { Check, AlertCircle } from 'lucide-react';
 import '../../styles/animations.css';
-import { Check, AlertCircle } from 'lucide-react';
-import '../../styles/animations.css';
 
 type InputVariant = 'text' | 'textarea';
 

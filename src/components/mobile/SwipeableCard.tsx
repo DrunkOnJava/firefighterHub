@@ -9,7 +9,6 @@ import { ArrowRightLeft, CheckCircle, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useHapticFeedback, useSwipeGesture } from '../../hooks/useTouchGestures';
 import { Firefighter } from '../../lib/supabase';
-import { tokens } from '../../styles';
 
 interface SwipeableCardProps {
   firefighter: Firefighter;
@@ -73,11 +72,7 @@ export function SwipeableCard({
           {firefighter.is_available && (
             <button
               onClick={() => handleAction(() => onCompleteHold(firefighter.id))}
-              className={`
-                w-[60px] flex flex-col items-center justify-center gap-1
-                bg-green-600 text-white
-                ${tokens.transitions.fast}
-              `}
+              className="w-[60px] flex flex-col items-center justify-center gap-1 bg-green-600 text-white transition-all duration-200"
               aria-label="Complete hold"
             >
               <CheckCircle size={20} />
@@ -88,11 +83,7 @@ export function SwipeableCard({
           {/* Transfer Shift */}
           <button
             onClick={() => handleAction(() => onTransferShift(firefighter.id))}
-            className={`
-              w-[60px] flex flex-col items-center justify-center gap-1
-              bg-blue-600 text-white
-              ${tokens.transitions.fast}
-            `}
+            className="w-[60px] flex flex-col items-center justify-center gap-1 bg-blue-600 text-white transition-all duration-200"
             aria-label="Transfer shift"
           >
             <ArrowRightLeft size={20} />
@@ -102,11 +93,7 @@ export function SwipeableCard({
           {/* Delete */}
           <button
             onClick={() => handleAction(() => onDeactivate(firefighter.id))}
-            className={`
-              w-[60px] flex flex-col items-center justify-center gap-1
-              bg-red-600 text-white
-              ${tokens.transitions.fast}
-            `}
+            className="w-[60px] flex flex-col items-center justify-center gap-1 bg-red-600 text-white transition-all duration-200"
             aria-label="Delete"
           >
             <Trash2 size={20} />
@@ -118,11 +105,7 @@ export function SwipeableCard({
       {/* Main Card */}
       <div
         ref={cardRef}
-        className={`
-          relative z-10
-          ${tokens.transitions.fast}
-          ${isRevealed ? '' : 'active:scale-[0.98]'}
-        `}
+        className={`relative z-10 transition-all duration-200 ${isRevealed ? '' : 'active:scale-[0.98]'}`}
         style={{
           transform: `translateX(${swipeOffset}px)`,
         }}

@@ -6,7 +6,7 @@
  */
 
 import { Firefighter } from '../../lib/supabase';
-import { tokens } from '../../styles';
+import { cn } from '@/lib/utils';
 import { FirefighterCard } from '../mobile/FirefighterCard';
 
 interface FirefighterGridProps {

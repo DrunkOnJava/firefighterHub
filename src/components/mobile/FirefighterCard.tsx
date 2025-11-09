@@ -207,7 +207,7 @@ export function FirefighterCard({
 
         {/* Expanded Details (Optional) */}
         {isExpanded && (
-          <div className={`mt-3 pt-3 border-t ${colors.structural.border.default}`}>
+          <div className="mt-3 pt-3 border-t border-border">
             {/* Certifications */}
             {(firefighter.is_fto ||
               firefighter.is_bls ||
@@ -239,19 +239,19 @@ export function FirefighterCard({
 
             {/* Availability Status */}
             <div className="flex items-center gap-2 text-sm">
-              <span className={colors.structural.text.secondary}>Status:</span>
+              <span className="text-muted-foreground">Status:</span>
               <span
-                className={`
-                  px-2 py-1 rounded text-xs font-semibold
-                  ${firefighter.is_available ? 'bg-green-600 text-white' : 'bg-yellow-600 text-white'}
-                `}
+                className={cn(
+                  "px-2 py-1 rounded text-xs font-semibold",
+                  firefighter.is_available ? "bg-green-600 text-white" : "bg-yellow-600 text-white"
+                )}
               >
                 {firefighter.is_available ? 'Available' : 'On Hold'}
               </span>
             </div>
 
             {/* Position in rotation */}
-            <div className={`text-sm ${colors.structural.text.secondary} mt-2`}>
+            <div className="text-sm text-muted-foreground mt-2">
               Position: #{firefighter.order_position + 1}
             </div>
           </div>

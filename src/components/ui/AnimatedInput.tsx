@@ -28,7 +28,8 @@
 import { InputHTMLAttributes, TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { useAnimation } from '../../hooks/useAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { shake } from '../../utils/animations';
+import { Check, AlertCircle } from 'lucide-react';
+import '../../styles/animations.css';
 import { Check, AlertCircle } from 'lucide-react';
 import '../../styles/animations.css';
 

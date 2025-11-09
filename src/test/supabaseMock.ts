@@ -66,8 +66,6 @@ export function createMockQueryBuilder(
   });
 
   mockAbortSignal.mockReturnValue({
-    eq: mockEq,
-    single: mockSingle,
     ...createPromise(response),
   });
 

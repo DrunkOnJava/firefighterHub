@@ -1,8 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 17/63 components migrated (27.0%)  
-**Active Sprint:** Priority 6 - Utilities & Helpers (2/11 complete)
+**Status:** 22/63 components migrated (34.9%)  
+**Active Sprint:** Priority 5 - UI Primitives (Starting: 0/10)
 
 ## Migration Strategy
 
@@ -104,10 +104,10 @@ Supporting components and utilities.
 - [ ] `src/components/ConfirmDialog.tsx` - Confirm dialogs (→ shadcn AlertDialog)
 - [ ] `src/components/EmptyState.tsx` - Empty state placeholder
 - [ ] `src/components/SkeletonLoader.tsx` - Skeleton loader
-- [ ] `src/components/LoginModal.tsx` - Login modal
+- [x] ~~`src/components/LoginModal.tsx`~~ - ✅ Migrated (uses Dialog, Input, Label) (commit 18ee07f)
 - [ ] `src/components/BattalionChiefLogin.tsx` - BC login
-- [ ] `src/components/HelpModal.tsx` - Help modal
-- [ ] `src/components/KeyboardShortcutsModal.tsx` - Shortcuts modal
+- [x] ~~`src/components/HelpModal.tsx`~~ - ✅ Migrated (uses Dialog, Button) (commit 2bf6036)
+- [x] ~~`src/components/KeyboardShortcutsModal.tsx`~~ - ✅ Migrated (uses Dialog, Button) (commit 2bf6036)
 - [x] ~~`src/components/ActivityLogModal.tsx`~~ - ✅ Migrated (uses Dialog, shadcn semantic classes)
 - [x] ~~`src/components/ActivityLog.tsx`~~ - ✅ Migrated (uses Card, Button, semantic classes)
 

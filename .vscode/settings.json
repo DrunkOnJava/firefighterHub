@@ -1,8 +1,38 @@
 {
-  "npm.packageManager": "pnpm",
-  "npm.enableRunFromFolder": true,
-  "npm.scriptExplorerAction": "run",
-  "npm.scriptExplorerExclude": [
-    "node_modules"
-  ]
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": ".github/copilot-instructions.md"
+    }
+  ],
+  "chat.instructionsFilesLocations": {
+    ".github": true,
+    ".copilot": true
+  },
+  "chat.promptFiles": true,
+  "chat.promptFilesLocations": {
+    ".github/prompts": true,
+    ".copilot/prompts": true
+  },
+  "chat.modeFilesLocations": {
+    ".github/modes": true,
+    ".copilot/modes": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.associations": {
+    "*.md": "markdown",
+    "*.prompt.md": "markdown",
+    "*.mode.md": "markdown"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.git": true,
+    "**/pnpm-lock.yaml": true
+  }
 }

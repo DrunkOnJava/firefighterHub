@@ -56,6 +56,7 @@ export function FirefighterList({
   // Maintain backwards compatibility
   void _onCompleteHold;
   void _onResetAll;
+  void _searchInputRef;
 
   const device = useDevice();
   const [localFirefighters, setLocalFirefighters] = useState<Firefighter[]>(firefighters || []);

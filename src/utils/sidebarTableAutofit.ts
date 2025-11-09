@@ -74,7 +74,7 @@ export function autoFitTableContent(
     });
 
     // Force reflow
-    table.offsetHeight;
+    void table.offsetHeight;
 
     // Check if content fits
     const tableHeight = table.scrollHeight;
@@ -179,7 +179,7 @@ export function scaleTableToFit(
   table.style.transformOrigin = 'top left';
 
   // Force reflow
-  table.offsetHeight;
+  void table.offsetHeight;
 
   // Get dimensions
   const containerWidth = tableContainer.clientWidth - padding;

@@ -359,7 +359,7 @@ export function createMockSupabaseClient() {
     from: (table: keyof typeof mockDatabase) => new MockQueryBuilder(table),
     channel: vi.fn(() => ({
       on: vi.fn().mockReturnThis(),
-      subscribe: vi.fn((callback) => {
+      subscribe: vi.fn((_callback) => {
         // Don't actually call the callback - prevents re-loading during tests
         return 'SUBSCRIBED';
       }),

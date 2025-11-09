@@ -110,7 +110,7 @@ function logPerformanceMetrics(metrics: PerformanceMetrics) {
     console.warn(
       `[Animation Performance] "${name}" low FPS: ${fps.toFixed(2)} (target: ${PERFORMANCE_BUDGETS.TARGET_FPS})`
     );
-  } else if (process.env.NODE_ENV === 'development') {
+  } else if (import.meta.env.DEV) {
     console.log(
       `[Animation Performance] "${name}" ✓ ${fps.toFixed(2)} fps, ${duration.toFixed(2)}ms`
     );
@@ -137,14 +137,14 @@ ${active.map(([name, metrics]) => {
 /**
  * Throttle function calls to improve performance
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: never[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
   let lastRan: number | null = null;
 
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     if (!lastRan) {
       func.apply(this, args);
       lastRan = Date.now();
@@ -164,15 +164,15 @@ export function throttle<T extends (...args: any[]) => any>(
 /**
  * Debounce function calls
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: never[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     if (timeout) clearTimeout(timeout);
-    
+
     timeout = setTimeout(() => {
       func.apply(this, args);
     }, wait);
@@ -182,12 +182,12 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * RAF-based throttle for scroll/resize handlers
  */
-export function rafThrottle<T extends (...args: any[]) => any>(
+export function rafThrottle<T extends (...args: never[]) => unknown>(
   func: T
 ): (...args: Parameters<T>) => void {
   let rafId: number | null = null;
 
-  return function (this: any, ...args: Parameters<T>) {
+  return function (this: unknown, ...args: Parameters<T>) {
     if (rafId !== null) return;
 
     rafId = requestAnimationFrame(() => {
@@ -207,8 +207,9 @@ export function measureLayoutShift(callback: (cls: number) => void) {
 
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
-      if (!(entry as any).hadRecentInput) {
-        clsScore += (entry as any).value;
+      const layoutShift = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
+      if (!layoutShift.hadRecentInput) {
+        clsScore += layoutShift.value ?? 0;
         callback(clsScore);
       }
     }
@@ -233,7 +234,10 @@ export function canSafelyAnimate(): boolean {
 
   // Check battery status (if available)
   if ('getBattery' in navigator) {
-    (navigator as any).getBattery().then((battery: any) => {
+    type NavigatorWithBattery = Navigator & {
+      getBattery: () => Promise<{ level: number; charging: boolean }>;
+    };
+    (navigator as NavigatorWithBattery).getBattery().then((battery) => {
       if (battery.level < 0.2 && !battery.charging) {
         console.warn(
           '[Animation Performance] Low battery detected. Consider reducing animations.'

@@ -46,10 +46,11 @@ export const IconButton = ({
 }: IconButtonProps) => {
   // Suppress unused variable - kept for API compatibility
   void isDarkMode;
-  
-  // Map custom sizes to shadcn sizes
+
+  // Map custom sizes to shadcn sizes (reserved for future use)
   const sizeMap = { xs: 'sm' as const, sm: 'sm' as const, md: 'default' as const, lg: 'lg' as const };
   const shadcnSize = sizeMap[size];
+  void shadcnSize; // Suppress unused - reserved for future size customization
   
   // Map variant to shadcn variant
   const shadcnVariant = 

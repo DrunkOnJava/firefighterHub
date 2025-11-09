@@ -1,23 +1,21 @@
 /**
  * Bottom Sheet Component
  * 
- * iOS-style bottom sheet that slides up from the bottom on mobile.
- * Supports drag-to-dismiss, snap points, and safe-area-inset.
+ * Slide-up sheet for mobile using shadcn/ui styling.
  */
 
 import { X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useFocusTrap } from '../../hooks/useFocusTrap';
 import { useSwipeGesture } from '../../hooks/useTouchGestures';
-import { tokens } from '../../styles';
 
 interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
   children: React.ReactNode;
-  isDarkMode?: boolean;
-  /** Height of sheet: 'auto' | 'half' | 'full' */
   height?: 'auto' | 'half' | 'full';
 }
 
@@ -26,7 +24,6 @@ export function BottomSheet({
   onClose,
   title,
   children,
-  isDarkMode = true,
   height = 'auto',
 }: BottomSheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -84,84 +81,54 @@ export function BottomSheet({
 
   return (
     <>
-      {/* Backdrop */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-50 ${tokens.animations.entrance.fadeIn}`}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 animate-in fade-in-0 duration-200"
         onClick={onClose}
         role="presentation"
       />
 
-      {/* Bottom Sheet */}
       <div
         ref={(el) => {
           sheetRef.current = el;
-          if (el && typeof trapRef === 'object' && trapRef !== null) {
-            (trapRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+          if (el && trapRef && 'current' in trapRef) {
+            Object.assign(trapRef, { current: el });
           }
         }}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? 'bottom-sheet-title' : undefined}
-        className={`
-          fixed bottom-0 left-0 right-0 z-50
-          ${heightClasses[height]}
-          ${isDarkMode ? 'bg-slate-800' : 'bg-white'}
-          ${tokens.borders.radius['2xl']} rounded-b-none
-          ${tokens.shadows['2xl']}
-          overflow-hidden
-          ${isDragging ? '' : tokens.transitions.fast}
-          ${tokens.animations.entrance.slideUp}
-        `}
+        className={cn(
+          "fixed bottom-0 left-0 right-0 z-50",
+          heightClasses[height],
+          "bg-background rounded-t-2xl shadow-2xl overflow-hidden",
+          isDragging ? "" : "transition-transform duration-200",
+          "animate-in slide-in-from-bottom"
+        )}
         style={{
           transform: isDragging ? `translateY(${translateY}px)` : 'translateY(0)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}
       >
-        {/* Drag Handle */}
         <div className="flex justify-center pt-3 pb-2">
-          <div
-            className={`w-12 h-1 rounded-full ${
-              isDarkMode ? 'bg-slate-600' : 'bg-slate-300'
-            }`}
-          />
+          <div className="w-12 h-1 rounded-full bg-muted" />
         </div>
 
-        {/* Header */}
         {title && (
-          <div
-            className={`
-              flex items-center justify-between px-6 py-4
-              border-b ${isDarkMode ? 'border-slate-700' : 'border-slate-200'}
-            `}
-          >
-            <h2
-              id="bottom-sheet-title"
-              className={`${tokens.typography.heading.h3} ${
-                isDarkMode ? 'text-white' : 'text-slate-900'
-              }`}
-            >
+          <div className="flex items-center justify-between px-6 py-4 border-b">
+            <h2 id="bottom-sheet-title" className="text-lg font-semibold">
               {title}
             </h2>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={onClose}
-              className={`
-                ${tokens.touchTarget.min} p-2 rounded-lg
-                ${tokens.focus.default}
-                ${tokens.transitions.fast}
-                ${
-                  isDarkMode
-                    ? 'hover:bg-slate-700 text-slate-400'
-                    : 'hover:bg-slate-100 text-slate-600'
-                }
-              `}
               aria-label="Close"
             >
-              <X size={24} />
-            </button>
+              <X className="h-5 w-5" />
+            </Button>
           </div>
         )}
 
-        {/* Content */}
         <div className="overflow-y-auto" style={{ maxHeight: height === 'auto' ? '70vh' : '100%' }}>
           {children}
         </div>

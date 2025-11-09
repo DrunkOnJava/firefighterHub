@@ -2,15 +2,14 @@
  * Mobile Week View Component
  * 
  * Compact week view optimized for mobile screens with horizontal swipe navigation.
- * Shows single week with larger touch targets and streamlined layout.
  */
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMemo, useRef } from 'react';
-import { useDevice } from '../../hooks/useDevice';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useHapticFeedback, useSwipeGesture } from '../../hooks/useTouchGestures';
-import { Firefighter, HoldDuration as _HoldDuration, Shift } from '../../lib/supabase';
-import { tokens, visualHeadings } from '../../styles';
+import { Firefighter, Shift } from '../../lib/supabase';
 import { attachScheduledHolds, CalendarDay, getMonthDays, ScheduledHold } from '../../utils/calendarUtils';
 
 interface MobileWeekViewProps {
@@ -29,10 +28,7 @@ export function MobileWeekView({
   firefighters,
   scheduledHolds,
   onDayClick,
-  currentShift: _currentShift,
-  isDarkMode = true,
 }: MobileWeekViewProps) {
-  const _device = useDevice();
   const haptic = useHapticFeedback();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +42,7 @@ export function MobileWeekView({
     // Find the week containing current date
     const currentDay = currentDate.getDate();
     const dayIndex = daysWithHolds.findIndex(
-      (d) => d.day === currentDay && d.isCurrentMonth
+      (d) => d.dayNumber === currentDay && d.isCurrentMonth
     );
 
     if (dayIndex === -1) return daysWithHolds.slice(0, 7);
@@ -94,127 +90,75 @@ export function MobileWeekView({
 
   return (
     <div className="space-y-3">
-      {/* Week Navigation */}
       <div className="flex items-center justify-between px-2">
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={goToPreviousWeek}
-          className={`
-            ${tokens.touchTarget.min} p-3 rounded-lg
-            ${tokens.focus.default}
-            ${tokens.transitions.fast}
-            ${
-              isDarkMode
-                ? 'hover:bg-slate-700 text-slate-300'
-                : 'hover:bg-slate-100 text-slate-700'
-            }
-          `}
           aria-label="Previous week"
         >
-          <ChevronLeft size={20} />
-        </button>
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
 
-        <div className={`${visualHeadings.subtitleMedium} ${
-          isDarkMode ? 'text-white' : 'text-slate-900'
-        }`}>
+        <div className="text-sm font-medium">
           {currentDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
         </div>
 
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={goToNextWeek}
-          className={`
-            ${tokens.touchTarget.min} p-3 rounded-lg
-            ${tokens.focus.default}
-            ${tokens.transitions.fast}
-            ${
-              isDarkMode
-                ? 'hover:bg-slate-700 text-slate-300'
-                : 'hover:bg-slate-100 text-slate-700'
-            }
-          `}
           aria-label="Next week"
         >
-          <ChevronRight size={20} />
-        </button>
+          <ChevronRight className="h-5 w-5" />
+        </Button>
       </div>
 
-      {/* Week Grid */}
       <div ref={containerRef} className="touch-pan-y">
-        {/* Weekday Headers */}
         <div className="grid grid-cols-7 gap-1 mb-2">
           {weekdays.map((day) => (
             <div
               key={day}
-              className={`
-                text-center py-2
-                ${tokens.typography.body.small}
-                font-semibold uppercase
-                ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}
-              `}
+              className="text-center py-2 text-xs font-semibold uppercase text-muted-foreground"
             >
               {day}
             </div>
           ))}
         </div>
 
-        {/* Day Cells */}
         <div className="grid grid-cols-7 gap-1">
           {weekDays.map((day) => {
-            const isToday =
-              day.isCurrentMonth &&
-              day.day === today.getDate() &&
-              day.month === today.getMonth() &&
-              day.year === today.getFullYear();
-
-            const holds = day.holds || [];
+            const holds = day.scheduledHolds || [];
             const hasHolds = holds.length > 0;
 
             return (
               <button
-                key={`${day.year}-${day.month}-${day.day}`}
+                key={day.date.toISOString()}
                 onClick={() => handleDayClick(day)}
                 disabled={!day.isCurrentMonth}
-                className={`
-                  ${tokens.touchTarget.min}
-                  aspect-square rounded-lg
-                  ${tokens.transitions.fast}
-                  ${tokens.focus.noOffset}
-                  ${
-                    !day.isCurrentMonth
-                      ? isDarkMode
-                        ? 'bg-slate-900 text-slate-600 cursor-not-allowed'
-                        : 'bg-slate-50 text-slate-400 cursor-not-allowed'
-                      : isToday
-                      ? 'bg-blue-600 text-white ring-2 ring-blue-400'
-                      : hasHolds
-                      ? isDarkMode
-                        ? 'bg-slate-700 hover:bg-slate-600 text-white'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-900'
-                      : isDarkMode
-                      ? 'bg-slate-800 hover:bg-slate-700 text-slate-300'
-                      : 'bg-white hover:bg-slate-50 text-slate-900'
-                  }
-                  border-2 ${
-                    isToday
-                      ? 'border-blue-400'
-                      : isDarkMode
-                      ? 'border-slate-700'
-                      : 'border-slate-200'
-                  }
-                `}
-                aria-label={`${day.day} ${hasHolds ? `with ${holds.length} hold(s)` : ''}`}
+                className={cn(
+                  "min-h-[44px] aspect-square rounded-md transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                  !day.isCurrentMonth && "bg-muted/50 text-muted-foreground cursor-not-allowed",
+                  day.isCurrentMonth && !day.isToday && !hasHolds && "bg-background hover:bg-accent hover:text-accent-foreground",
+                  day.isCurrentMonth && !day.isToday && hasHolds && "bg-accent hover:bg-accent/80",
+                  day.isToday && "bg-primary text-primary-foreground ring-2 ring-ring"
+                )}
+                aria-label={`${day.dayNumber} ${hasHolds ? `with ${holds.length} hold(s)` : ''}`}
               >
                 <div className="flex flex-col items-center justify-center h-full">
-                  <span className={`${tokens.typography.body.secondary} font-semibold`}>
-                    {day.day}
+                  <span className="text-sm font-semibold">
+                    {day.dayNumber}
                   </span>
                   {hasHolds && (
                     <div className="flex gap-0.5 mt-1">
-                      {holds.slice(0, 3).map((_, i) => (
+                      {holds.slice(0, 3).map((_: any, i: number) => (
                         <div
                           key={i}
-                          className={`w-1 h-1 rounded-full ${
-                            isToday ? 'bg-white' : 'bg-blue-500'
-                          }`}
+                          className={cn(
+                            "w-1 h-1 rounded-full",
+                            day.isToday ? "bg-primary-foreground" : "bg-primary"
+                          )}
                         />
                       ))}
                     </div>

@@ -35,7 +35,6 @@ export function FirefighterCard({
   onDeactivate,
   onSelect,
   isAdminMode = false,
-  isDarkMode = true,
   isNextInRotation = false,
 }: FirefighterCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);

@@ -189,7 +189,6 @@ export function Calendar({
           isOpen={selectedDay !== null}
           onClose={handleCloseModal}
           title={selectedDay ? selectedDay.date.toLocaleDateString() : ''}
-          isDarkMode={isDarkMode}
           height="auto"
         >
           {selectedDay && (

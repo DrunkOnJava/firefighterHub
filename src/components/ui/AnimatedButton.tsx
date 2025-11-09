@@ -1,37 +1,40 @@
 /**
- * AnimatedButton Component
+ * AnimatedButton Component (shadcn Button wrapper with animations)
  * 
  * Enhanced button with micro-interactions:
  * - Press-down scale effect
  * - Ripple effect on click
- * - Loading state with spinner
+ * - Loading state with spinner (Loader2 icon)
  * - Success checkmark animation
  * - Error shake animation
  * - Respects prefers-reduced-motion
+ * - Uses semantic colors (no isDarkMode needed)
  * 
  * Usage:
  * ```tsx
  * <AnimatedButton
  *   onClick={handleSubmit}
  *   state="loading"
- *   variant="primary"
+ *   variant="default"
  * >
  *   Submit
  * </AnimatedButton>
  * ```
  */
 
-import { ButtonHTMLAttributes, ReactNode, useRef, useEffect, useState } from 'react';
+import { ReactNode, useRef, useEffect, useState } from 'react';
 import { useAnimation } from '../../hooks/useAnimation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { createRipple, shake } from '../../utils/animations';
-import { Check } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
+import { Button, ButtonProps } from './button';
+import { cn } from '@/lib/utils';
 
 export type ButtonState = 'idle' | 'hover' | 'active' | 'loading' | 'success' | 'error' | 'disabled';
 export type ButtonVariant = 'default' | 'primary' | 'secondary' | 'danger' | 'ghost' | 'success';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface AnimatedButtonProps extends Omit<ButtonProps, 'variant' | 'size'> {
   children: ReactNode;
   state?: ButtonState;
   variant?: ButtonVariant;
@@ -40,6 +43,23 @@ interface AnimatedButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
 }
+
+// Map legacy variants to shadcn variants
+const variantMap: Record<ButtonVariant, ButtonProps['variant']> = {
+  default: 'default',
+  primary: 'default',
+  secondary: 'secondary',
+  danger: 'destructive',
+  ghost: 'ghost',
+  success: 'default',
+};
+
+// Map legacy sizes to shadcn sizes
+const sizeMap: Record<ButtonSize, ButtonProps['size']> = {
+  sm: 'sm',
+  md: 'default',
+  lg: 'lg',
+};
 
 export function AnimatedButton({
   children,
@@ -50,7 +70,7 @@ export function AnimatedButton({
   icon,
   iconPosition = 'left',
   onClick,
-  className = '',
+  className,
   disabled,
   ...props
 }: AnimatedButtonProps) {
@@ -66,7 +86,7 @@ export function AnimatedButton({
 
     // Create ripple effect
     if (!isReducedMotion) {
-      const rippleColor = variant === 'primary' 
+      const rippleColor = variant === 'primary' || variant === 'default'
         ? 'rgba(255, 255, 255, 0.4)' 
         : 'rgba(0, 0, 0, 0.1)';
       createRipple(event, rippleColor);
@@ -87,75 +107,23 @@ export function AnimatedButton({
     }
   }, [state, animate, isReducedMotion]);
 
-  // Variant styles
-  const variantClasses = {
-    default: `
-      bg-gradient-to-r from-orange-500 to-orange-600 
-      hover:from-orange-600 hover:to-orange-700
-      text-white
-      shadow-md hover:shadow-lg
-      border-2 border-orange-600
-    `,
-    primary: `
-      bg-gradient-to-r from-orange-500 to-orange-600 
-      hover:from-orange-600 hover:to-orange-700
-      text-white
-      shadow-md hover:shadow-lg
-      border-2 border-orange-600
-    `,
-    secondary: `
-      bg-slate-700 hover:bg-slate-600
-      text-white
-      border-2 border-slate-600
-    `,
-    danger: `
-      bg-gradient-to-r from-red-500 to-red-600
-      hover:from-red-600 hover:to-red-700
-      text-white
-      shadow-md hover:shadow-lg
-      border-2 border-red-600
-    `,
-    success: `
-      bg-gradient-to-r from-green-500 to-green-600
-      hover:from-green-600 hover:to-green-700
-      text-white
-      shadow-md hover:shadow-lg
-      border-2 border-green-600
-    `,
-    ghost: `
-      bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800
-      text-slate-700 dark:text-slate-300
-      border-2 border-transparent hover:border-slate-300
-    `,
-  };
-
-  // Size styles - WCAG 2.5.5 Touch Target Compliance
-  const sizeClasses = {
-    sm: 'px-3 py-2.5 text-sm min-h-[44px]',      // Updated: 36px → 44px (WCAG AA)
-    md: 'px-4 py-2 text-base min-h-[44px]',
-    lg: 'px-6 py-3 text-lg min-h-[52px]',
-  };
-
-  const baseClasses = `
-    relative
-    inline-flex items-center justify-center gap-2
-    font-semibold
-    rounded-lg
-    transition-all duration-150
-    focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
-    overflow-hidden
-    ${!isReducedMotion && !isDisabled ? 'active:scale-95' : ''}
-    ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-    ${fullWidth ? 'w-full' : ''}
-    ${variantClasses[variant]}
-    ${sizeClasses[size]}
-    ${className}
-  `;
+  // Success variant uses green colors
+  const successClasses = variant === 'success' 
+    ? 'bg-green-600 hover:bg-green-700 text-white shadow-md hover:shadow-lg'
+    : '';
 
   return (
-    <button
+    <Button
       ref={buttonRef}
-      className={baseClasses}
+      variant={variantMap[variant]}
+      size={sizeMap[size]}
+      className={cn(
+        'relative overflow-hidden transition-all duration-150 min-h-[44px]',
+        !isReducedMotion && !isDisabled && 'active:scale-95',
+        fullWidth && 'w-full',
+        successClasses,
+        className
+      )}
       onClick={handleClick}
       disabled={isDisabled}
       aria-busy={state === 'loading'}
@@ -164,30 +132,32 @@ export function AnimatedButton({
       {/* Loading Spinner */}
       {state === 'loading' && (
         <div className="absolute inset-0 flex items-center justify-center bg-inherit">
-          <div className="spinner w-5 h-5 border-2 border-white border-l-transparent" />
+          <Loader2 className="w-5 h-5 animate-spin" />
         </div>
       )}
 
       {/* Success Checkmark */}
       {state === 'success' && (
-        <div className={`absolute inset-0 flex items-center justify-center bg-inherit ${!isReducedMotion ? 'animate-scale-in' : ''}`}>
+        <div className={cn(
+          'absolute inset-0 flex items-center justify-center bg-inherit',
+          !isReducedMotion && 'animate-in zoom-in-50 duration-200'
+        )}>
           <Check className="w-6 h-6" />
         </div>
       )}
 
       {/* Content (hidden during loading/success) */}
       <span
-        className={`
-          flex items-center justify-center gap-2
-          ${state === 'loading' || state === 'success' ? 'opacity-0' : 'opacity-100'}
-          transition-opacity duration-150
-        `}
+        className={cn(
+          'flex items-center justify-center gap-2 transition-opacity duration-150',
+          (state === 'loading' || state === 'success') ? 'opacity-0' : 'opacity-100'
+        )}
       >
         {icon && iconPosition === 'left' && icon}
         {children}
         {icon && iconPosition === 'right' && icon}
       </span>
-    </button>
+    </Button>
   );
 }
 
@@ -199,7 +169,7 @@ export function AsyncButton({
   children,
   successDuration = 2000,
   ...props
-}: AnimatedButtonProps & {
+}: Omit<AnimatedButtonProps, 'onClick'> & {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   successDuration?: number;
 }) {

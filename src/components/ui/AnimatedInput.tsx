@@ -81,7 +81,15 @@ export function AnimatedInput({
     if (error && inputRef.current && !isReducedMotion) {
       animate({
         element: inputRef.current,
-        ...shake(),
+        keyframes: [
+          { transform: 'translateX(0)' },
+          { transform: 'translateX(-10px)' },
+          { transform: 'translateX(10px)' },
+          { transform: 'translateX(-10px)' },
+          { transform: 'translateX(10px)' },
+          { transform: 'translateX(0)' },
+        ],
+        duration: 400,
         name: 'input-error-shake',
       });
     }

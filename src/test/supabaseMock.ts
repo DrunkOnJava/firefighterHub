@@ -18,6 +18,7 @@ export interface MockQueryBuilder {
   eq: ReturnType<typeof vi.fn>;
   order: ReturnType<typeof vi.fn>;
   single: ReturnType<typeof vi.fn>;
+  abortSignal: ReturnType<typeof vi.fn>;
 }
 
 export function createMockQueryBuilder(
@@ -30,6 +31,7 @@ export function createMockQueryBuilder(
   const mockUpdate = vi.fn();
   const mockDelete = vi.fn();
   const mockSingle = vi.fn();
+  const mockAbortSignal = vi.fn();
 
   // Create a promise-like object that resolves to the response
   const createPromise = (resp: MockSupabaseResponse) => ({
@@ -57,6 +59,13 @@ export function createMockQueryBuilder(
   });
 
   mockOrder.mockReturnValue({
+    eq: mockEq,
+    single: mockSingle,
+    abortSignal: mockAbortSignal,
+    ...createPromise(response),
+  });
+
+  mockAbortSignal.mockReturnValue({
     eq: mockEq,
     single: mockSingle,
     ...createPromise(response),
@@ -90,6 +99,7 @@ export function createMockQueryBuilder(
     eq: mockEq,
     order: mockOrder,
     single: mockSingle,
+    abortSignal: mockAbortSignal,
   };
 }
 

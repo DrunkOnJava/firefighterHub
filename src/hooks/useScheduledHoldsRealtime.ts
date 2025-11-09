@@ -246,7 +246,9 @@ export function useScheduledHoldsRealtime({
       }
       // Note: unsubscribe in cleanup can remain synchronous - useEffect cleanup
       // cannot be async, and the Promise is safely ignored on unmount
-      channelRef.current?.unsubscribe();
+      if (channelRef.current && typeof channelRef.current.unsubscribe === 'function') {
+        channelRef.current.unsubscribe();
+      }
     };
   }, [currentShift, onDataChange, showToast, showToastOnce]);
 }

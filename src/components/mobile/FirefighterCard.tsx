@@ -13,9 +13,9 @@
 import { MoreVertical, MapPin, TruckIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Firefighter } from '../../lib/supabase';
-import { colors, tokens } from '../../styles';
 import { formatHoldDate } from '../../utils/dateUtils';
 import { useSwipeGesture } from '../../hooks/useSwipeGesture';
+import { cn } from '@/lib/utils';
 
 interface FirefighterCardProps {
   firefighter: Firefighter;
@@ -83,12 +83,7 @@ export function FirefighterCard({
           {firefighter.is_available && onCompleteHold && (
             <button
               onClick={(e) => handleAction(() => onCompleteHold(firefighter.id), e)}
-              className={`
-                w-[70px] flex flex-col items-center justify-center gap-1
-                bg-green-600 text-white font-semibold text-xs
-                ${tokens.transitions.fast}
-                min-h-[44px]
-              `}
+              className="w-[70px] flex flex-col items-center justify-center gap-1 bg-green-600 text-white font-semibold text-xs transition-all duration-200 min-h-[44px]"
               aria-label="Complete hold"
             >
               ✓ Hold
@@ -99,12 +94,7 @@ export function FirefighterCard({
           {onTransferShift && (
             <button
               onClick={(e) => handleAction(() => onTransferShift(firefighter.id), e)}
-              className={`
-                w-[70px] flex flex-col items-center justify-center gap-1
-                bg-blue-600 text-white font-semibold text-xs
-                ${tokens.transitions.fast}
-                min-h-[44px]
-              `}
+              className="w-[70px] flex flex-col items-center justify-center gap-1 bg-blue-600 text-white font-semibold text-xs transition-all duration-200 min-h-[44px]"
               aria-label="Transfer shift"
             >
               ⇄ Transfer
@@ -115,12 +105,7 @@ export function FirefighterCard({
           {onDeactivate && (
             <button
               onClick={(e) => handleAction(() => onDeactivate(firefighter.id), e)}
-              className={`
-                w-[70px] flex flex-col items-center justify-center gap-1
-                bg-red-600 text-white font-semibold text-xs
-                ${tokens.transitions.fast}
-                min-h-[44px]
-              `}
+              className="w-[70px] flex flex-col items-center justify-center gap-1 bg-red-600 text-white font-semibold text-xs transition-all duration-200 min-h-[44px]"
               aria-label="Remove firefighter"
             >
               × Remove
@@ -131,17 +116,11 @@ export function FirefighterCard({
 
       {/* Main Card */}
       <div
-        className={`
-          relative z-10
-          ${colors.structural.bg.card} ${colors.structural.border.default}
-          border rounded-lg
-          ${tokens.spacing.card.md}
-          ${tokens.transitions.fast}
-          cursor-pointer
-          min-h-[44px]
-          ${isNextInRotation ? 'ring-2 ring-blue-500 ring-offset-2 ring-offset-slate-900' : ''}
-          ${isRevealed ? '' : 'active:scale-[0.98]'}
-        `}
+        className={cn(
+          "relative z-10 bg-card border border-border rounded-lg p-4 transition-all duration-200 cursor-pointer min-h-[44px]",
+          isNextInRotation && "ring-2 ring-blue-500 ring-offset-2 ring-offset-background",
+          !isRevealed && "active:scale-[0.98]"
+        )}
         style={{
           transform: isRevealed ? 'translateX(-210px)' : 'translateX(0)',
           transition: 'transform 0.2s ease-out',

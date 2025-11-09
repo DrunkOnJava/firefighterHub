@@ -1,10 +1,14 @@
-import { X, Clock } from 'lucide-react';
 import { ActivityLog } from './ActivityLog';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useFocusReturn } from '../hooks/useFocusReturn';
-import { colors, tokens } from '../styles';
 import { useEffect } from 'react';
-import { IconButton } from './ui/IconButton';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from './ui/dialog';
+import { Clock } from 'lucide-react';
 
 interface ActivityLogModalProps {
   isOpen: boolean;
@@ -28,42 +32,20 @@ export function ActivityLogModal({ isOpen, onClose }: ActivityLogModalProps) {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   return (
-    <div
-      className={`fixed inset-0 ${colors.components.modal.overlay} z-50 flex items-end sm:items-center justify-center ${tokens.spacing.card.md} animate-fade-in`}
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="activity-modal-title"
-    >
-      <div
-        ref={trapRef}
-        className={`${colors.components.modal.background} ${colors.components.modal.border} ${tokens.borders.radius['2xl']} max-w-4xl w-full max-h-[90vh] overflow-hidden ${colors.components.modal.shadow} animate-scale-in`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={`${colors.structural.bg.surface} border-b-2 ${colors.structural.border.default} ${tokens.spacing.card.lg} flex items-center justify-between`}>
-          <div className={`flex items-center ${tokens.spacing.gap.md}`}>
-            <div className={`${colors.semantic.scheduled.gradient} ${tokens.spacing.card.sm} ${tokens.borders.radius.lg}`}>
-              <Clock className="text-white" size={24} />
-            </div>
-            <h2 id="activity-modal-title" className={`${tokens.typography.heading.h2} ${colors.structural.text.primary}`}>Activity Log</h2>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0" ref={trapRef}>
+        <DialogHeader className="bg-secondary border-b-2 border-border px-6 py-4 flex flex-row items-center gap-4">
+          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-2 rounded-lg">
+            <Clock className="text-white" size={24} />
           </div>
-          <IconButton
-            icon={X}
-            label="Close activity log dialog"
-            onClick={onClose}
-            variant="default"
-            size="md"
-            isDarkMode={true}
-          />
-        </div>
+          <DialogTitle className="text-2xl font-bold">Activity Log</DialogTitle>
+        </DialogHeader>
 
         <div className="overflow-y-auto max-h-[calc(90vh-100px)]">
           <ActivityLog />
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

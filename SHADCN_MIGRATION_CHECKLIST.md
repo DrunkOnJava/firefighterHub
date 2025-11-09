@@ -1,8 +1,8 @@
 # shadcn/ui Migration Checklist
 
 **Last Updated:** 2025-01-09  
-**Status:** 15/63 components migrated (23.8%)  
-**Active Sprint:** Priority 7 - Additional Features (7/7 complete ✅)
+**Status:** 17/63 components migrated (27.0%)  
+**Active Sprint:** Priority 6 - Utilities & Helpers (2/11 complete)
 
 ## Migration Strategy
 
@@ -108,8 +108,8 @@ Supporting components and utilities.
 - [ ] `src/components/BattalionChiefLogin.tsx` - BC login
 - [ ] `src/components/HelpModal.tsx` - Help modal
 - [ ] `src/components/KeyboardShortcutsModal.tsx` - Shortcuts modal
-- [ ] `src/components/ActivityLogModal.tsx` - Activity log
-- [ ] `src/components/ActivityLog.tsx` - Activity log component
+- [x] ~~`src/components/ActivityLogModal.tsx`~~ - ✅ Migrated (uses Dialog, shadcn semantic classes)
+- [x] ~~`src/components/ActivityLog.tsx`~~ - ✅ Migrated (uses Card, Button, semantic classes)
 
 ---
 

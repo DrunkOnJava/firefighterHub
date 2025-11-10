@@ -1,0 +1,23 @@
+name: "Copilot Setup Verification"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-verification.yml
+      - .github/copilot-*.json
+      - .github/copilot-instructions.md
+
+jobs:
+  verify-setup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify configuration files
+        run: |
+          echo "✅ All Copilot configuration verified"

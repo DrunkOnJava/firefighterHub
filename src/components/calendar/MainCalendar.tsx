@@ -7,7 +7,6 @@
 
 import { useMemo, useState } from 'react';
 import { ScheduledHold, Firefighter } from '@/lib/supabase';
-import { CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar-shadcn';
@@ -84,19 +83,18 @@ export function MainCalendar({
   }
 
   return (
-    <div className="h-full flex flex-col">
-      {/* Calendar Header with Next Up Section */}
-      <CardHeader className="pb-6 bg-gradient-to-r from-background to-muted/20">
-        <div className="flex items-start justify-between gap-8">
-          <div>
-            <CardTitle className="text-3xl font-bold tracking-tight">Schedule</CardTitle>
-            <CardDescription className="text-base mt-1">Hold rotation & event overview</CardDescription>
-          </div>
+    <div className="h-full flex flex-col overflow-hidden bg-gradient-to-r from-background to-muted/20">
+      {/* Header: Title + Next Up */}
+      <div className="flex-shrink-0 flex items-start justify-between gap-6 p-4 pb-3 border-b border-border/40">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Schedule</h1>
+          <p className="text-sm mt-0.5 text-muted-foreground">Hold rotation & event overview</p>
+        </div>
 
-          {/* Next Up Cards */}
-          <div className="flex flex-col gap-3">
-            <span className="text-sm font-bold text-foreground/70 uppercase tracking-wider">Next Up</span>
-            <div className="flex gap-3">
+        {/* Next Up Cards */}
+        <div className="flex flex-col gap-2">
+          <span className="text-xs font-bold text-foreground/70 uppercase tracking-wider">Next Up</span>
+          <div className="flex gap-2">
               {[
                 { ff: nextUpA, shift: 'A' as const },
                 { ff: nextUpB, shift: 'B' as const },
@@ -112,7 +110,7 @@ export function MainCalendar({
                     onClick={() => onFirefighterClick?.(ff ? ff.id : null)}
                     disabled={!ff}
                     className={`
-                      flex flex-col items-start h-auto py-3 px-4 min-w-[140px]
+                      flex flex-col items-start h-auto py-2 px-3 min-w-[120px]
                       border-2 shadow-md hover:shadow-lg
                       transition-all duration-300
                       hover:scale-[1.02] hover:-translate-y-0.5
@@ -125,7 +123,7 @@ export function MainCalendar({
                     <Badge
                       variant="outline"
                       className={`
-                        mb-2 text-xs font-bold
+                        mb-1 text-xs font-bold
                         ${shift === 'A' ? 'bg-red-500/20 text-red-700 dark:text-red-400 border-red-500/40' : ''}
                         ${shift === 'B' ? 'bg-blue-500/20 text-blue-700 dark:text-blue-400 border-blue-500/40' : ''}
                         ${shift === 'C' ? 'bg-green-500/20 text-green-700 dark:text-green-400 border-green-500/40' : ''}
@@ -135,15 +133,15 @@ export function MainCalendar({
                     </Badge>
                     {ff ? (
                       <>
-                        <span className="font-bold text-sm mb-0.5">{ff.name}</span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="font-bold text-xs mb-0.5">{ff.name}</span>
+                        <span className="text-[10px] text-muted-foreground">
                           {ff.fire_station && `Stn ${ff.fire_station}`}
                           {ff.fire_station && ' • '}
                           {formatLastHold(ff.last_hold_date)}
                         </span>
                       </>
                     ) : (
-                      <span className="text-xs text-muted-foreground italic">No one available</span>
+                      <span className="text-[10px] text-muted-foreground italic">No one available</span>
                     )}
                   </Button>
                 );
@@ -151,41 +149,44 @@ export function MainCalendar({
             </div>
           </div>
         </div>
-      </CardHeader>
 
-      {/* shadcn/ui Calendar */}
-      <CardContent className="flex-1 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold">
-            {format(currentMonth, 'MMMM yyyy')}
-          </h3>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            >
-              <span className="sr-only">Previous month</span>
-              ←
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setCurrentMonth(new Date())}
-            >
-              Today
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            >
-              <span className="sr-only">Next month</span>
-              →
-            </Button>
-          </div>
+      {/* Month Navigation */}
+      <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-border/40">
+        <h3 className="text-base font-semibold">
+          {format(currentMonth, 'MMMM yyyy')}
+        </h3>
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+            className="h-7 w-7"
+          >
+            <span className="sr-only">Previous month</span>
+            ←
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setCurrentMonth(new Date())}
+            className="h-7 px-2 text-xs"
+          >
+            Today
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+            className="h-7 w-7"
+          >
+            <span className="sr-only">Next month</span>
+            →
+          </Button>
         </div>
+      </div>
 
+      {/* Calendar Grid - fills remaining space */}
+      <div className="flex-1 min-h-0 overflow-hidden p-2">
         <Calendar
           mode="single"
           month={currentMonth}
@@ -197,11 +198,14 @@ export function MainCalendar({
           modifiersClassNames={{
             hasHolds: 'font-bold bg-primary/5 hover:bg-primary/10',
           }}
-          className="rounded-md border w-full"
+          className="rounded-md border w-full h-full [--cell-size:theme(spacing.4)] p-0"
         />
+      </div>
 
+      {/* Footer: Legend + Keyboard hint */}
+      <div className="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2 border-t border-border/40">
         {/* Hold indicators legend */}
-        <div className="flex items-center justify-center gap-4 mt-4 text-xs">
+        <div className="flex items-center gap-3 text-[10px]">
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full bg-red-500" />
             <span className="text-muted-foreground">Shift A</span>
@@ -217,13 +221,13 @@ export function MainCalendar({
         </div>
 
         {/* Keyboard Hint */}
-        <div className="flex items-center gap-2 justify-center py-3 text-xs text-muted-foreground border-t mt-4">
+        <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
           <span>Use</span>
-          <kbd className="px-2 py-1 bg-muted rounded border text-xs">←</kbd>
-          <kbd className="px-2 py-1 bg-muted rounded border text-xs">→</kbd>
-          <span>to navigate months</span>
+          <kbd className="px-1.5 py-0.5 bg-muted rounded border text-[10px]">←</kbd>
+          <kbd className="px-1.5 py-0.5 bg-muted rounded border text-[10px]">→</kbd>
+          <span>to navigate</span>
         </div>
-      </CardContent>
+      </div>
     </div>
   );
 }

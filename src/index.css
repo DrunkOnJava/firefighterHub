@@ -105,3 +105,48 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Calendar compact styling with grid lines and constrained heights */
+.rdp-root {
+  @apply text-xs !important;
+}
+
+.rdp-day_button {
+  @apply justify-start items-start p-1 text-xs leading-tight !important;
+  min-height: 2rem !important;
+  max-height: 7rem !important;
+  height: 7rem !important;
+  aspect-ratio: unset !important;
+}
+
+.rdp-week {
+  @apply gap-px bg-border/60 mb-px !important;
+  max-height: 7rem !important;
+}
+
+.rdp-day {
+  @apply border border-border/60 bg-card;
+  aspect-ratio: unset !important;
+  max-height: 7rem !important;
+  height: 7rem !important;
+}
+
+.rdp-weekday {
+  @apply text-xs py-1 !important;
+}
+
+.rdp-month_grid {
+  @apply w-full;
+}
+
+.rdp-month_caption {
+  @apply h-6 text-sm !important;
+}
+
+.rdp-months {
+  @apply gap-0 !important;
+}
+
+.rdp-nav {
+  @apply hidden !important;
+}

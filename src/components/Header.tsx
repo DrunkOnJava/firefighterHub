@@ -1,11 +1,11 @@
 import {
   Clock,
   HelpCircle,
-  LogIn,
   LogOut,
   Menu,
   Moon,
   Printer,
+  Shield,
   Sun,
   UserPlus,
 } from "lucide-react";
@@ -186,7 +186,7 @@ export function Header({
                         onClick={onShowLogin}
                         className="gap-2 font-semibold text-destructive hover:text-destructive-foreground hover:bg-destructive"
                       >
-                        <LogIn className="h-4 w-4" />
+                        <Shield className="h-4 w-4" />
                         <span className="hidden xl:inline">BC Mode</span>
                       </Button>
                     </TooltipTrigger>

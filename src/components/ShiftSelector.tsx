@@ -7,10 +7,33 @@ interface ShiftSelectorProps {
   onShiftChange: (shift: Shift) => void;
 }
 
+// Consistent shift colors across the entire app
+const SHIFT_COLORS = {
+  A: {
+    badge: "bg-red-500 text-white",
+    text: "text-red-500",
+    border: "border-red-500",
+    ring: "ring-red-500/30",
+  },
+  B: {
+    badge: "bg-rose-500 text-white",
+    text: "text-rose-500",
+    border: "border-rose-500",
+    ring: "ring-rose-500/30",
+  },
+  C: {
+    badge: "bg-blue-500 text-white",
+    text: "text-blue-500",
+    border: "border-blue-500",
+    ring: "ring-blue-500/30",
+  },
+};
+
+// For backwards compatibility
 const SHIFT_BADGE_COLORS = {
-  A: "bg-emerald-600 text-white",
-  B: "bg-blue-600 text-white",
-  C: "bg-red-600 text-white",
+  A: SHIFT_COLORS.A.badge,
+  B: SHIFT_COLORS.B.badge,
+  C: SHIFT_COLORS.C.badge,
 };
 
 export function ShiftSelector({
@@ -20,15 +43,16 @@ export function ShiftSelector({
   const shifts: Shift[] = ["A", "B", "C"];
 
   const getShiftClasses = (shift: Shift, isActive: boolean) => {
-    const baseClasses = "font-bold transition-all duration-150";
+    const baseClasses = "font-bold transition-all duration-200 relative";
+    const shiftColor = SHIFT_COLORS[shift];
     
     if (isActive) {
-      if (shift === "A") return `${baseClasses} bg-emerald-600 text-white hover:bg-emerald-700`;
-      if (shift === "B") return `${baseClasses} bg-blue-600 text-white hover:bg-blue-700`;
-      if (shift === "C") return `${baseClasses} bg-red-600 text-white hover:bg-red-700`;
+      // Selected state: Keep shift color + add white border/ring/scale
+      return `${baseClasses} ${shiftColor.badge} border-2 border-white ring-4 ${shiftColor.ring} scale-110 shadow-lg`;
     }
     
-    return `${baseClasses} bg-secondary text-secondary-foreground hover:bg-secondary/80`;
+    // Inactive state: Show shift color text on neutral background
+    return `${baseClasses} bg-muted/50 ${shiftColor.text} hover:bg-muted/80 border-2 ${shiftColor.border} border-opacity-30`;
   };
 
   return (

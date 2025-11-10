@@ -34,6 +34,7 @@ import { BottomNav } from './components/mobile/BottomNav';
 // Core components (always visible)
 import { FirefighterList } from './components/FirefighterList';
 import { FloatingActionButton } from './components/Common/FloatingActionButton';
+import { NextUpBand } from './components/NextUpBand';
 
 // Lazy-loaded components (code splitting for performance)
 const MainCalendar = lazy(() => import('./components/calendar/MainCalendar').then(m => ({ default: m.MainCalendar })));
@@ -253,17 +254,27 @@ function App() {
         className={`
           flex-1
           flex
-          flex-col lg:flex-row
-          gap-6
+          flex-col
+          gap-4
           p-6
-          items-stretch
           overflow-hidden
           min-h-0
           ${device.isMobile ? 'pb-20' : ''}
         `}
       >
-        {/* Calendar Section - flex-1 to take remaining horizontal space */}
-        <Card
+        {/* Next Up Band - Full-width operational status */}
+        <div className="flex-shrink-0">
+          <NextUpBand
+            firefighters={allFirefighters}
+            onFirefighterClick={(ff) => setSelectedFirefighterFilter(ff?.id || null)}
+            selectedFirefighterId={selectedFirefighterFilter}
+          />
+        </div>
+
+        {/* Calendar and Roster Container */}
+        <div className="flex-1 flex flex-col lg:flex-row gap-6 items-stretch overflow-hidden min-h-0">
+          {/* Calendar Section - flex-1 to take remaining horizontal space */}
+          <Card
           id="calendar-view"
           className={`
             flex-1

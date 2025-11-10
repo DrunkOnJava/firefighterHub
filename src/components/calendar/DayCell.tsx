@@ -159,35 +159,37 @@ export function DayCell({
         )}
       </div>
 
-      {/* Holds list - show first 3, compact pills */}
-      <div className="space-y-1.5 flex-1">
-        {/* Show first 3 holds - MODERN PILL DESIGN */}
-        {scheduledHolds.slice(0, 3).map((hold, index) => {
-          const formattedName = formatName(hold.firefighter_name);
+      {/* Holds list - show first 4, NO truncation, NO word wrap */}
+      <div className="space-y-1 flex-1 overflow-hidden">
+        {/* Show first 4 holds - MODERN PILL DESIGN with FULL NAMES */}
+        {scheduledHolds.slice(0, 4).map((hold, index) => {
           const isSelected = hold.firefighter_id === selectedFirefighterId;
 
           return (
             <div
               key={hold.id || index}
               className={`
-                text-[11px] px-2.5 py-1.5 rounded-lg
+                text-[10px] px-2 py-1 rounded-lg
                 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600
                 text-white font-bold
                 border-2 ${isSelected ? 'border-blue-400 ring-2 ring-blue-400/60' : 'border-orange-300/40'}
-                flex items-center justify-between
+                flex items-center justify-between gap-1
                 shadow-md shadow-orange-600/30
                 hover:shadow-lg hover:shadow-orange-600/50
                 hover:scale-[1.02]
                 transition-all duration-200
                 backdrop-blur-sm
+                overflow-hidden
               `}
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               }`}
             >
-              <span className="whitespace-nowrap drop-shadow-md">{formattedName}</span>
+              <span className="whitespace-nowrap drop-shadow-md overflow-hidden text-ellipsis">
+                {hold.firefighter_name || "Unknown"}
+              </span>
               {hold.fire_station && (
-                <span className="ml-1.5 flex-shrink-0 text-orange-50 font-extrabold text-[10px] bg-white/20 px-1.5 py-0.5 rounded">
+                <span className="flex-shrink-0 text-orange-50 font-extrabold text-[9px] bg-white/20 px-1 py-0.5 rounded">
                   #{hold.fire_station}
                 </span>
               )}
@@ -195,45 +197,40 @@ export function DayCell({
           );
         })}
 
-        {completedHolds.slice(0, 3 - scheduledHolds.length).map((hold, index) => {
-          const formattedName = formatName(hold.firefighter_name);
+        {completedHolds.slice(0, 4 - scheduledHolds.length).map((hold, index) => {
           const isSelected = hold.firefighter_id === selectedFirefighterId;
 
           return (
             <div
               key={hold.id || index}
               className={`
-                text-[11px] px-2.5 py-1.5 rounded-lg
+                text-[10px] px-2 py-1 rounded-lg
                 bg-gradient-to-r from-emerald-500 via-emerald-600 to-green-600
                 text-white font-bold
                 border-2 ${isSelected ? 'border-blue-400 ring-2 ring-blue-400/60' : 'border-emerald-300/40'}
-                flex items-center justify-between
+                flex items-center justify-between gap-1
                 shadow-md shadow-emerald-600/30
                 hover:shadow-lg hover:shadow-emerald-600/50
                 hover:scale-[1.02]
                 transition-all duration-200
                 backdrop-blur-sm opacity-95
+                overflow-hidden
               `}
               title={`${hold.firefighter_name || "Unknown"}${
                 hold.fire_station ? ` - Station ${hold.fire_station}` : ""
               } (completed)`}
             >
-              <span className="whitespace-nowrap drop-shadow-md">{formattedName}</span>
+              <span className="whitespace-nowrap drop-shadow-md overflow-hidden text-ellipsis">
+                {hold.firefighter_name || "Unknown"}
+              </span>
               {hold.fire_station && (
-                <span className="ml-1.5 flex-shrink-0 text-emerald-50 font-extrabold text-[10px] bg-white/20 px-1.5 py-0.5 rounded">
+                <span className="flex-shrink-0 text-emerald-50 font-extrabold text-[9px] bg-white/20 px-1 py-0.5 rounded">
                   #{hold.fire_station}
                 </span>
               )}
             </div>
           );
         })}
-
-        {/* Show "more" indicator if there are additional holds */}
-        {day.scheduledHolds.length > 3 && (
-          <div className="text-[10px] text-muted-foreground px-1.5 font-semibold">
-            +{day.scheduledHolds.length - 3} more
-          </div>
-        )}
       </div>
     </button>
   );

@@ -23,6 +23,7 @@
 
 import { supabase } from '../lib/supabase';
 import { track } from '@vercel/analytics';
+import * as Sentry from '@sentry/react';
 
 export interface ErrorContext {
   component?: string;
@@ -205,30 +206,28 @@ function logToSentry(report: ErrorReport): void {
   }
 
   // Sentry is initialized globally in main.tsx
-  // Import dynamically to use it
-  import('@sentry/react')
-    .then((Sentry) => {
-      Sentry.captureException(new Error(report.errorMessage), {
-        contexts: {
-          error_report: {
-            ...report,
-            errorReport: JSON.stringify(report), // Store full report as string
-          },
+  // Use the static import instead of dynamic import to avoid build issues
+  try {
+    Sentry.captureException(new Error(report.errorMessage), {
+      contexts: {
+        error_report: {
+          ...report,
+          errorReport: JSON.stringify(report), // Store full report as string
         },
-        tags: {
-          component: report.context.component || 'unknown',
-          action: report.context.action || 'unknown',
-          shift: report.context.shift || 'unknown',
-          environment: report.environment,
-          sessionId: report.sessionId,
-        },
-        level: 'error',
-      });
-      console.info('✅ Error sent to Sentry');
-    })
-    .catch((err) => {
-      console.warn('Failed to send error to Sentry:', err);
+      },
+      tags: {
+        component: report.context.component || 'unknown',
+        action: report.context.action || 'unknown',
+        shift: report.context.shift || 'unknown',
+        environment: report.environment,
+        sessionId: report.sessionId,
+      },
+      level: 'error',
     });
+    console.info('✅ Error sent to Sentry');
+  } catch (err) {
+    console.warn('Failed to send error to Sentry:', err);
+  }
 }
 
 /**

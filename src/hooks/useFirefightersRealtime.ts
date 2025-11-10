@@ -96,15 +96,22 @@ export function useFirefightersRealtime({
     }
 
     const channel = supabase
-      .channel(`firefighters:${currentShift}`, {
-        config: { private: true, broadcast: { self: false, ack: false } },
-      })
-      .on("broadcast", { event: "*" }, (payload) => {
-        console.log("🔄 Firefighters changed:", payload.payload.type);
-        onDataChange();
-        retryCountRef.current = 0;
-        hasShownErrorToastRef.current = false;
-      })
+      .channel(`firefighters_${currentShift}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "firefighters",
+          filter: `shift=eq.${currentShift}`,
+        },
+        (payload) => {
+          console.log("🔄 Firefighters changed:", payload.eventType);
+          onDataChange();
+          retryCountRef.current = 0;
+          hasShownErrorToastRef.current = false;
+        }
+      )
       .subscribe((status, err) => {
         if (status === "SUBSCRIBED") {
           console.log("✅ Real-time subscription active (firefighters)");

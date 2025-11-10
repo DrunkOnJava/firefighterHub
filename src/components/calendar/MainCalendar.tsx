@@ -9,8 +9,10 @@ import { useMemo, useState } from 'react';
 import { ScheduledHold, Firefighter } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar-shadcn';
+import { Calendar, CalendarDayButton } from '@/components/ui/calendar-shadcn';
 import { addMonths, subMonths, format, parseISO } from 'date-fns';
+import { CalendarDayContent } from './CalendarDayContent';
+import type { DayButton } from 'react-day-picker';
 
 interface MainCalendarProps {
   loading: boolean;
@@ -61,7 +63,7 @@ export function MainCalendar({
   // Handle day click to show holds for that date
   const handleDayClick = (date: Date | undefined) => {
     if (!date) return;
-    
+
     const holdsForDate = scheduledHolds.filter(hold => {
       if (!hold.hold_date) return false;
       const holdDate = parseISO(hold.hold_date);
@@ -72,6 +74,19 @@ export function MainCalendar({
     if (holdsForDate.length > 0) {
       console.log('Holds for', date, holdsForDate);
     }
+  };
+
+  // Custom day button renderer with event pills
+  const CustomDayButton = (props: React.ComponentProps<typeof DayButton>) => {
+    return (
+      <CalendarDayButton {...props}>
+        <CalendarDayContent
+          date={props.day.date}
+          scheduledHolds={scheduledHolds}
+          selectedFirefighterId={selectedFirefighterId}
+        />
+      </CalendarDayButton>
+    );
   };
 
   if (loading) {
@@ -186,7 +201,7 @@ export function MainCalendar({
       </div>
 
       {/* Calendar Grid - fills remaining space */}
-      <div className="flex-1 min-h-0 overflow-hidden p-2">
+      <div className="flex-1 min-h-0 overflow-auto p-2">
         <Calendar
           mode="single"
           month={currentMonth}
@@ -198,7 +213,10 @@ export function MainCalendar({
           modifiersClassNames={{
             hasHolds: 'font-bold bg-primary/5 hover:bg-primary/10',
           }}
-          className="rounded-md border w-full h-full [--cell-size:theme(spacing.4)] p-0"
+          components={{
+            DayButton: CustomDayButton,
+          }}
+          className="rounded-md border w-full h-full [--cell-size:theme(spacing.20)] p-0"
         />
       </div>
 

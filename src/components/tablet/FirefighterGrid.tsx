@@ -5,9 +5,9 @@
  * Uses the same FirefighterCard component as mobile but in a grid layout.
  */
 
-import { Firefighter } from '../../lib/supabase';
+import { Firefighter } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
-import { FirefighterCard } from '../mobile/FirefighterCard';
+import { FirefighterCard } from '@/components/mobile/FirefighterCard';
 
 interface FirefighterGridProps {
   firefighters: Firefighter[];

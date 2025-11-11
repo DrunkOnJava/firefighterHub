@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { X, Calendar, Clock, MapPin, SkipForward, Check } from 'lucide-react';
-import { Firefighter, Shift, HoldDuration } from '../../lib/supabase';
-import { useFocusTrap } from '../../hooks/useFocusTrap';
-import { useFocusReturn } from '../../hooks/useFocusReturn';
+import { Firefighter, Shift, HoldDuration } from '@/lib/supabase';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useFocusReturn } from '@/hooks/useFocusReturn';
 import { format } from 'date-fns';
-import { AnimatedButton, ButtonState } from '../ui/AnimatedButton';
-import { AnimatedToggle } from '../ui/AnimatedToggle';
-import { StationSelector } from '../StationSelector';
+import { AnimatedButton, ButtonState } from '@/components/ui/AnimatedButton';
+import { AnimatedToggle } from '@/components/ui/AnimatedToggle';
+import { StationSelector } from '@/features/shifts/components/StationSelector';
 
 interface DayScheduleModalProps {
   isOpen: boolean;

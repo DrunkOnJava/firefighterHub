@@ -1,5 +1,5 @@
 import { Filter, Trash2 } from 'lucide-react';
-import { FirefighterFilters } from '../hooks/useFilters';
+import { FirefighterFilters } from '@/features/roster/hooks/useFilters';
 import {
   Dialog,
   DialogContent,

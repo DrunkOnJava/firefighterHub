@@ -1,11 +1,11 @@
 import { Edit2, Save, Users, X, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { Shift, supabase } from "../lib/supabase";
-import { ShiftBadge } from "./ShiftSelector";
-import type { Tables } from "../lib/database.types";
-import { IconButton } from "./ui/IconButton";
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { Shift, supabase } from '@/lib/supabase';
+import { ShiftBadge } from "@/features/shifts/components/ShiftBadge";
+import type { Tables } from '@/lib/database.types';
+import { IconButton } from '@/components/ui/IconButton';
 
 type Firefighter = Tables<"firefighters">;
 

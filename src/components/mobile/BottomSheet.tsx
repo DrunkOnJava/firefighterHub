@@ -8,8 +8,8 @@ import { X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useFocusTrap } from '../../hooks/useFocusTrap';
-import { useSwipeGesture } from '../../hooks/useTouchGestures';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useSwipeGesture } from '@/hooks/useTouchGestures';
 
 interface BottomSheetProps {
   isOpen: boolean;

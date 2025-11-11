@@ -8,10 +8,10 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { Shift } from "../lib/supabase";
-import { IconButton } from "./ui/IconButton";
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { Shift } from '@/lib/supabase';
+import { IconButton } from '@/components/ui/IconButton';
 
 interface CalendarSubscribeModalProps {
   isOpen: boolean;
@@ -87,8 +87,8 @@ export function CalendarSubscribeModal({
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b bg-muted border-border">
           <div className="flex items-center gap-4">
-            <div className="p-2 bg-orange-900/20 dark:bg-orange-900/20 rounded-md">
-              <Calendar className="w-6 h-6 text-orange-500" />
+            <div className="p-2 bg-warning/20 dark:bg-warning/20 rounded-md">
+              <Calendar className="w-6 h-6 text-warning" />
             </div>
             <div>
               <h2
@@ -114,7 +114,7 @@ export function CalendarSubscribeModal({
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* How it works */}
-          <div className="rounded-md p-4 border bg-blue-950/20 dark:bg-blue-950/20 border-blue-500/30">
+          <div className="rounded-md p-4 border bg-primary/10 dark:bg-primary/10 border-primary/30">
             <h3 className="font-semibold mb-3 text-foreground">
               How it works
             </h3>
@@ -147,7 +147,7 @@ export function CalendarSubscribeModal({
                   onClick={() => setSelectedShift(shift)}
                   className={`px-4 py-3 rounded-md font-medium transition-all ${
                     selectedShift === shift
-                      ? "bg-orange-600 text-white ring-2 ring-orange-500 ring-offset-2 ring-offset-background"
+                      ? "bg-warning text-warning-foreground ring-2 ring-warning ring-offset-2 ring-offset-background"
                       : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                   }`}
                 >
@@ -179,7 +179,7 @@ export function CalendarSubscribeModal({
                 </ol>
                 <a
                   href={webcalURL}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-success hover:bg-success/90 text-success-foreground rounded-md font-medium transition-colors"
                 >
                   <Calendar className="w-4 h-4" />
                   Subscribe on iPhone/iPad
@@ -204,7 +204,7 @@ export function CalendarSubscribeModal({
                 </ol>
                 <a
                   href={webcalURL}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium transition-colors"
                 >
                   <Calendar className="w-4 h-4" />
                   Subscribe on Desktop
@@ -239,7 +239,7 @@ export function CalendarSubscribeModal({
                     onClick={handleCopy}
                     className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
                       copied
-                        ? "bg-green-600 text-white"
+                        ? "bg-success text-success-foreground"
                         : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
                     }`}
                   >

@@ -7,8 +7,8 @@ import {
   Trash2,
   UserX,
 } from "lucide-react";
-import { Firefighter, Shift } from "../lib/supabase";
-import { ShiftBadge } from "./ShiftSelector";
+import { Firefighter, Shift } from '@/lib/supabase';
+import { ShiftBadge } from "@/features/shifts/components/ShiftBadge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

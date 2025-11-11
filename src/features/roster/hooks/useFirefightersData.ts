@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Firefighter, Shift, supabase } from "../lib/supabase";
-import { sortFirefighters } from "../utils/rotationLogic";
+import { Firefighter, Shift, supabase } from '@/lib/supabase';
+import { sortFirefighters } from '@/utils/rotationLogic';
 
 interface UseFirefightersDataReturn {
   firefighters: Firefighter[];

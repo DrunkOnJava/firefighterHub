@@ -18,10 +18,10 @@
  */
 
 import { useCallback, useEffect, useRef } from "react";
-import { Shift } from "../lib/supabase";
-import { ConfirmOptions } from "./useConfirm";
-import { ToastType } from "./useToast";
-import { useActivityLogger } from "./useActivityLogger";
+import { Shift } from '@/lib/supabase';
+import { ConfirmOptions } from "@/hooks/useConfirm";
+import { ToastType } from "@/hooks/useToast";
+import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useFirefightersData } from "./useFirefightersData";
 import { useFirefightersMutations } from "./useFirefightersMutations";
 import { useFirefightersRealtime } from "./useFirefightersRealtime";

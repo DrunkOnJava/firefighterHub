@@ -7,8 +7,8 @@
 
 import { ArrowRightLeft, CheckCircle, Trash2 } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { useHapticFeedback, useSwipeGesture } from '../../hooks/useTouchGestures';
-import { Firefighter } from '../../lib/supabase';
+import { useHapticFeedback, useSwipeGesture } from '@/hooks/useTouchGestures';
+import { Firefighter } from '@/lib/supabase';
 
 interface SwipeableCardProps {
   firefighter: Firefighter;

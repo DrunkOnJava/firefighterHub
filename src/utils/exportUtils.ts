@@ -1,4 +1,4 @@
-import { Firefighter } from '../lib/supabase';
+import { Firefighter } from '@/lib/supabase';
 
 interface HoldRecord {
   firefighter_name: string;

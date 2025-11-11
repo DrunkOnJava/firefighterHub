@@ -16,10 +16,10 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { Firefighter } from "../../lib/supabase";
-import { ScheduledHold } from "../../utils/calendarUtils";
-import { isHoldLocked } from "../../utils/validation";
-import { EmptyState } from "../EmptyState";
+import { Firefighter } from '@/lib/supabase';
+import { ScheduledHold } from '@/utils/calendarUtils';
+import { isHoldLocked } from '@/utils/validation';
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface HoldListProps {
   holds: ScheduledHold[];
@@ -119,7 +119,7 @@ export function HoldList({
 
                     {hold.is_voluntary && (
                       <span
-                        className="inline-flex items-center gap-1 px-2 py-1 bg-green-900/70 text-green-200 text-xs font-bold rounded"
+                        className="inline-flex items-center gap-1 px-2 py-1 bg-success/70 text-success-foreground text-xs font-bold rounded"
                         title="Member volunteered for this hold"
                       >
                         <span>🙋</span>
@@ -145,7 +145,7 @@ export function HoldList({
                       onClick={() => onMarkCompleted(hold)}
                       className="
                         flex-1 px-3 py-2 rounded-lg
-                        bg-green-600 hover:bg-green-700 text-white
+                        bg-success hover:bg-success/90 text-success-foreground
                         font-semibold transition-colors
                         flex items-center justify-center gap-2
                       "

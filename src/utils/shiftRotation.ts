@@ -10,7 +10,7 @@
  * This creates a 3-day cycle where each shift works 1 day and is off 2 days.
  */
 
-import { Shift } from "../lib/supabase";
+import { Shift } from '@/lib/supabase';
 
 // Reference date where we know which shift was working
 // Adjust this to match your department's actual rotation start

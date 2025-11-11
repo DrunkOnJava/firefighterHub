@@ -5,7 +5,7 @@ import {
   downloadErrorLogs,
   formatErrorReport,
   type ErrorReport,
-} from "../utils/errorReporting";
+} from '@/utils/errorReporting';
 import { toast } from "sonner";
 
 interface Props {

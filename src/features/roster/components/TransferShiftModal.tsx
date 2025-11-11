@@ -1,9 +1,9 @@
 import { ArrowRightLeft, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { Firefighter, Shift } from "../lib/supabase";
-import { Button } from "./ui/button";
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { Firefighter, Shift } from '@/lib/supabase';
+import { Button } from '@/components/ui/button';
 
 interface TransferShiftModalProps {
   isOpen: boolean;

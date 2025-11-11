@@ -14,9 +14,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CompleteHoldModal } from "../CompleteHoldModal";
+import { CompleteHoldModal } from "@/features/shifts/components/CompleteHoldModal";
 import { createMockFirefighter } from "../../test/mockData";
-import type { Firefighter } from "../../lib/supabase";
+import type { Firefighter } from '@/lib/supabase';
 
 describe("CompleteHoldModal", () => {
   const mockOnClose = vi.fn();

@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { autoFitTableContent, setupAutoFitObserver } from '../utils/sidebarTableAutofit';
+import { autoFitTableContent, setupAutoFitObserver } from '@/utils/sidebarTableAutofit';
 
 interface UseTableAutofitOptions {
   /** Minimum font size in pixels */

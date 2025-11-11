@@ -1,7 +1,7 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { useCallback, useEffect, useRef } from "react";
-import { Shift, supabase } from "../lib/supabase";
-import { ToastType } from "./useToast";
+import { Shift, supabase } from '@/lib/supabase';
+import { ToastType } from "@/hooks/useToast";
 
 interface UseFirefightersRealtimeParams {
   currentShift: Shift;

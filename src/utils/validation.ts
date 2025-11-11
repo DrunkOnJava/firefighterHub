@@ -1,4 +1,4 @@
-import { Firefighter } from "../lib/supabase";
+import { Firefighter } from '@/lib/supabase';
 import { ScheduledHold } from "./calendarUtils";
 
 export interface ValidationResult {

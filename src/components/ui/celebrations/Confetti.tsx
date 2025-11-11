@@ -24,7 +24,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import {
   createConfettiParticles,
   updateParticle,
@@ -32,7 +32,7 @@ import {
   drawParticle,
   type ConfettiParticle,
   type ConfettiConfig,
-} from '../../utils/confettiPhysics';
+} from '@/utils/confettiPhysics';
 
 interface ConfettiProps extends ConfettiConfig {
   active: boolean;

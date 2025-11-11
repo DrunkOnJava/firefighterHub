@@ -15,7 +15,7 @@
  * ```
  */
 
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useEffect, useState } from 'react';
 import { Progress } from './progress';
 import { cn } from '@/lib/utils';

@@ -1,9 +1,9 @@
 import { BarChart3, Calendar, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Firefighter, Shift, supabase } from "../lib/supabase";
-import { ScheduledHold } from "../utils/calendarUtils";
-import { NoScheduledHoldsEmptyState } from "./EmptyState";
-import { ShiftBadge } from "./ShiftBadge";
+import { Firefighter, Shift, supabase } from '@/lib/supabase';
+import { ScheduledHold } from '@/utils/calendarUtils';
+import { NoScheduledHoldsEmptyState } from '@/components/EmptyState';
+import { ShiftBadge } from "@/features/shifts/components/ShiftBadge";
 
 type View = "calendar" | "reports";
 

@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { STORAGE_KEYS } from "../config/constants";
+import { STORAGE_KEYS } from '@/config/constants';
 
 export function useDarkMode() {
   const [isDarkMode, setIsDarkMode] = useState(() => {

@@ -1,18 +1,17 @@
 /**
  * NextUpCard Component
  * 
- * Professional, structured card for displaying next firefighter up for each shift.
- * Uses consistent color tokens, subtle styling, and clear hierarchy.
+ * Compact information panel showing next firefighter up for each shift.
+ * Designed to look like operational status tiles, not decorative buttons.
  * 
- * Design: Based on professional UX feedback
- * - Subtle accent bar (not giant gradient fill)
- * - Semi-transparent backgrounds
- * - Consistent 9-11px typography scale
- * - Accessible with proper ARIA labels
+ * Design philosophy:
+ * - Information first, decoration second
+ * - Compact typography (9-11px scale)
+ * - Shift colors as subtle accents, not overwhelming fills
+ * - Professional tone suitable for 3am tired users
  */
 
-import { Firefighter } from "../lib/supabase";
-import { MapPin, Calendar } from "lucide-react";
+import { Firefighter } from '@/lib/supabase';
 
 interface NextUpCardProps {
   shift: "A" | "B" | "C";
@@ -21,31 +20,25 @@ interface NextUpCardProps {
   onClick?: () => void;
 }
 
-// Consistent color tokens (matches ShiftSelector)
-const NEXT_UP_COLORS = {
+// Shift color configuration (Red/Rose/Blue scheme)
+const SHIFT_COLORS = {
   A: {
     border: "border-red-500/40",
-    chipBg: "bg-red-500/10",
-    chipText: "text-red-500",
-    chipBorder: "border-red-500/40",
-    accent: "bg-red-500",
-    ring: "ring-red-500/30",
+    borderHover: "hover:border-red-500/70",
+    pill: "border-red-500/40 bg-red-500/10 text-red-400",
+    hoverText: "group-hover:text-red-300",
   },
   B: {
     border: "border-rose-500/40",
-    chipBg: "bg-rose-500/10",
-    chipText: "text-rose-500",
-    chipBorder: "border-rose-500/40",
-    accent: "bg-rose-500",
-    ring: "ring-rose-500/30",
+    borderHover: "hover:border-rose-500/70",
+    pill: "border-rose-500/40 bg-rose-500/10 text-rose-400",
+    hoverText: "group-hover:text-rose-300",
   },
   C: {
     border: "border-blue-500/40",
-    chipBg: "bg-blue-500/10",
-    chipText: "text-blue-500",
-    chipBorder: "border-blue-500/40",
-    accent: "bg-blue-500",
-    ring: "ring-blue-500/30",
+    borderHover: "hover:border-blue-500/70",
+    pill: "border-blue-500/40 bg-blue-500/10 text-blue-400",
+    hoverText: "group-hover:text-blue-300",
   },
 };
 
@@ -55,89 +48,64 @@ export function NextUpCard({
   isSelected = false,
   onClick,
 }: NextUpCardProps) {
-  const color = NEXT_UP_COLORS[shift];
+  const colors = SHIFT_COLORS[shift];
   
+  // Format last hold date
+  const lastHold = firefighter?.last_hold_date
+    ? new Date(firefighter.last_hold_date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      })
+    : "Never";
+
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={!firefighter}
+      aria-label={`Next up for Shift ${shift}: ${firefighter?.name || "No one available"}`}
       className={`
-        group relative flex flex-col justify-between
-        rounded-xl border bg-card/70
-        px-3 py-2.5
+        group flex flex-col items-start
+        rounded-lg border bg-card
+        px-3 py-2
         text-left
-        shadow-sm
+        shadow-md
         transition-all duration-200
-        hover:-translate-y-0.5 hover:shadow-md
+        hover:shadow-lg hover:border-primary/50
         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-        ${color.border}
-        ${isSelected ? `ring-2 ${color.ring}` : ""}
-        ${!firefighter ? "opacity-60 cursor-default" : "cursor-pointer"}
+        ${colors.border} ${colors.borderHover}
+        ${!firefighter ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+        ${isSelected ? "ring-2 ring-primary bg-primary/5" : ""}
       `}
-      aria-label={`Next up for Shift ${shift}: ${firefighter?.name || "No assignment"}`}
-      aria-pressed={isSelected}
     >
-      {/* Shift label chip */}
-      <div
-        className={`
-          inline-flex w-fit items-center gap-1.5
-          rounded-full border px-2 py-0.5
-          text-[10px] font-semibold tracking-wide
-          ${color.chipBg} ${color.chipText} ${color.chipBorder}
-        `}
-      >
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-current" />
-        <span>Shift {shift}</span>
+      {/* Header: Shift pill */}
+      <div className="mb-1.5 w-full">
+        <span
+          className={`
+            inline-flex items-center
+            rounded border
+            px-1.5 py-0.5
+            text-[10px] font-bold uppercase tracking-wide
+            ${colors.pill}
+          `}
+        >
+          {shift}
+        </span>
       </div>
 
       {/* Firefighter name */}
-      <div className="mt-2 flex items-baseline gap-1">
-        <span className="text-sm font-semibold truncate text-foreground">
-          {firefighter?.name || "No available"}
-        </span>
-        {firefighter && (
-          <span className="text-[9px] uppercase tracking-wide text-muted-foreground/70">
-            Next
-          </span>
-        )}
+      <div className="text-sm font-bold text-foreground leading-tight mb-1 truncate w-full">
+        {firefighter?.name || "No one"}
       </div>
 
-      {/* Meta information */}
+      {/* Station + Last hold */}
       {firefighter && (
-        <div className="mt-1.5 space-y-1">
-          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-            <MapPin className="w-3 h-3 flex-shrink-0" />
-            <span className="truncate">
-              Station {firefighter.fire_station || "—"}
-            </span>
-          </div>
-          
-          <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-            <Calendar className="w-3 h-3 flex-shrink-0" />
-            <span className="truncate">
-              {firefighter.last_hold_date
-                ? new Date(firefighter.last_hold_date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })
-                : "Never"}
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* Subtle accent bar on left edge */}
-      <div
-        className={`
-          pointer-events-none absolute inset-y-1.5 left-1
-          w-0.5 rounded-full ${color.accent}
-        `}
-      />
-      
-      {/* Selected indicator */}
-      {isSelected && (
-        <div className="absolute top-1.5 right-1.5">
-          <div className={`w-2 h-2 rounded-full ${color.accent}`} />
+        <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground w-full">
+          <span className="truncate">
+            {firefighter.fire_station ? `Stn ${firefighter.fire_station}` : "—"}
+          </span>
+          <span className="h-0.5 w-0.5 rounded-full bg-border flex-shrink-0" />
+          <span className="truncate">{lastHold}</span>
         </div>
       )}
     </button>

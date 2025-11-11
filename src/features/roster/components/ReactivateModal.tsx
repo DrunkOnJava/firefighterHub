@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { X, UserPlus } from 'lucide-react';
-import { Firefighter } from '../lib/supabase';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
-import { Button } from './ui/button';
+import { Firefighter } from '@/lib/supabase';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { Button } from '@/components/ui/button';
 
 interface ReactivateModalProps {
   isOpen: boolean;

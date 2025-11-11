@@ -1,7 +1,7 @@
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
-import { Toast as ToastType } from '../hooks/useToast';
+import { Toast as ToastType } from '@/hooks/useToast';
 
-export type { ToastType } from '../hooks/useToast';
+export type { ToastType } from '@/hooks/useToast';
 
 interface SingleToastProps {
   toast: ToastType;

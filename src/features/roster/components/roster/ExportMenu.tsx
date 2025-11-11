@@ -18,8 +18,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Firefighter } from "../../lib/supabase";
-import { exportRosterToCSV, exportRosterToJSON } from "../../utils/exportUtils";
+import { Firefighter } from '@/lib/supabase';
+import { exportRosterToCSV, exportRosterToJSON } from '@/utils/exportUtils';
 
 interface ExportMenuProps {
   isOpen: boolean;

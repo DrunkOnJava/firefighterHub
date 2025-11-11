@@ -16,38 +16,38 @@
 
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
-import { useFirefighters } from './hooks/useFirefighters';
-import { useScheduledHolds } from './hooks/useScheduledHolds';
-import { useToast } from './hooks/useToast';
-import { useDarkMode } from './hooks/useDarkMode';
-import { useDevice } from './hooks/useDevice';
-import { useAnnounce } from './hooks/useAnnounce';
+import { useFirefighters } from '@/features/roster/hooks/useFirefighters';
+import { useScheduledHolds } from '@/features/schedule/hooks/useScheduledHolds';
+import { useToast } from '@/hooks/useToast';
+import { useDarkMode } from '@/hooks/useDarkMode';
+import { useDevice } from '@/hooks/useDevice';
+import { useAnnounce } from '@/hooks/useAnnounce';
 import { Firefighter, Shift } from './lib/supabase';
 import { Toaster } from '@/components/ui/sonner';
-import { Card } from '@/components/ui/card';
 
 // Header component (always visible)
-import { Header } from './components/Header';
-import { MobileNav } from './components/MobileNav';
+import { Header } from '@/components/layout/Header';
+import { MobileNav } from '@/components/layout/MobileNav';
 import { BottomNav } from './components/mobile/BottomNav';
 
+// Main page components (shadcn/ui v4 optimized)
+import { SchedulePage } from './pages/SchedulePage';
+import { DashboardPage } from './pages/DashboardPage';
+
 // Core components (always visible)
-import { FirefighterList } from './components/FirefighterList';
-import { FloatingActionButton } from './components/Common/FloatingActionButton';
-import { NextUpBand } from './components/NextUpBand';
+import { FloatingActionButton } from '@/components/ui/FloatingActionButton';
 
 // Lazy-loaded components (code splitting for performance)
-const MainCalendar = lazy(() => import('./components/calendar/MainCalendar').then(m => ({ default: m.MainCalendar })));
 const HelpModal = lazy(() => import('./components/HelpModal').then(m => ({ default: m.HelpModal })));
-const ActivityLogModal = lazy(() => import('./components/ActivityLogModal').then(m => ({ default: m.ActivityLogModal })));
-const CompleteHoldModal = lazy(() => import('./components/CompleteHoldModal').then(m => ({ default: m.CompleteHoldModal })));
-const TransferShiftModal = lazy(() => import('./components/TransferShiftModal').then(m => ({ default: m.TransferShiftModal })));
-const QuickAddFirefighterModal = lazy(() => import('./components/QuickAddFirefighterModal').then(m => ({ default: m.QuickAddFirefighterModal })));
+const ActivityLogModal = lazy(() => import('@/features/reports/components/ActivityLogModal').then(m => ({ default: m.ActivityLogModal })));
+const CompleteHoldModal = lazy(() => import('@/features/shifts/components/CompleteHoldModal').then(m => ({ default: m.CompleteHoldModal })));
+const TransferShiftModal = lazy(() => import('@/features/roster/components/TransferShiftModal').then(m => ({ default: m.TransferShiftModal })));
+const QuickAddFirefighterModal = lazy(() => import('@/features/roster/components/QuickAddFirefighterModal').then(m => ({ default: m.QuickAddFirefighterModal })));
 // NOTE: BattalionChiefLogin component removed - using simple password prompt instead
 
 // Development tools (only load in dev mode)
 const SentryTestButton = import.meta.env.DEV
-  ? lazy(() => import('./components/dev/SentryTestButton').then(m => ({ default: m.SentryTestButton })))
+  ? lazy(() => import('@/dev/SentryTestButton').then(m => ({ default: m.SentryTestButton })))
   : null;
 
 type MobileTab = 'home' | 'calendar' | 'activity';
@@ -58,11 +58,14 @@ function App() {
   // State: Shift
   const [currentShift, setCurrentShift] = useState<Shift>('A');
 
+  // State: Calendar navigation
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+
   // State: Mobile tab navigation
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileTab>('home');
 
-  // State: View management (reserved for future Reports feature)
-  // const [currentView, setCurrentView] = useState<'calendar' | 'reports'>('calendar');
+  // State: View management - Dashboard or Schedule
+  const [currentView, setCurrentView] = useState<'dashboard' | 'schedule'>('dashboard');
 
   // State: Modal visibility
   const [showHelp, setShowHelp] = useState(false);
@@ -128,24 +131,63 @@ function App() {
     showToast('Battalion Chief Mode disabled', 'success');
   };
 
-  // Load ALL shifts for Next Up section
-  const { firefighters: ffA = [], loading: loadingA } = useFirefighters(showToast, 'A');
-  const { firefighters: ffB = [], loading: loadingB } = useFirefighters(showToast, 'B');
-  const { firefighters: ffC = [], loading: loadingC } = useFirefighters(showToast, 'C');
-
-  // Get CRUD operations from current shift's hook
+  // Load ALL shifts for Next Up section and Dashboard
   const {
-    deactivatedFirefighters,
-    addFirefighter,
-    completeHold,
-    deleteFirefighter,
-    deactivateFirefighter,
-    reactivateFirefighter,
-    transferShift,
-    resetAll,
-    reorderFirefighters,
-    moveToBottomOfRotation,
-  } = useFirefighters(showToast, currentShift);
+    firefighters: ffA = [],
+    deactivatedFirefighters: deactivatedA = [],
+    loading: loadingA,
+    addFirefighter: addFirefighterA,
+    completeHold: completeHoldA,
+    deleteFirefighter: deleteFirefighterA,
+    deactivateFirefighter: deactivateFirefighterA,
+    reactivateFirefighter: reactivateFirefighterA,
+    transferShift: transferShiftA,
+    resetAll: resetAllA,
+    reorderFirefighters: reorderFirefightersA,
+    moveToBottomOfRotation: moveToBottomA,
+  } = useFirefighters(showToast, 'A');
+
+  const {
+    firefighters: ffB = [],
+    deactivatedFirefighters: deactivatedB = [],
+    loading: loadingB,
+    addFirefighter: addFirefighterB,
+    completeHold: completeHoldB,
+    deleteFirefighter: deleteFirefighterB,
+    deactivateFirefighter: deactivateFirefighterB,
+    reactivateFirefighter: reactivateFirefighterB,
+    transferShift: transferShiftB,
+    resetAll: resetAllB,
+    reorderFirefighters: reorderFirefightersB,
+    moveToBottomOfRotation: moveToBottomB,
+  } = useFirefighters(showToast, 'B');
+
+  const {
+    firefighters: ffC = [],
+    deactivatedFirefighters: deactivatedC = [],
+    loading: loadingC,
+    addFirefighter: addFirefighterC,
+    completeHold: completeHoldC,
+    deleteFirefighter: deleteFirefighterC,
+    deactivateFirefighter: deactivateFirefighterC,
+    reactivateFirefighter: reactivateFirefighterC,
+    transferShift: transferShiftC,
+    resetAll: resetAllC,
+    reorderFirefighters: reorderFirefightersC,
+    moveToBottomOfRotation: moveToBottomC,
+  } = useFirefighters(showToast, 'C');
+
+  // Get operations for current shift (Schedule view)
+  const deactivatedFirefighters = currentShift === 'A' ? deactivatedA : currentShift === 'B' ? deactivatedB : deactivatedC;
+  const addFirefighter = currentShift === 'A' ? addFirefighterA : currentShift === 'B' ? addFirefighterB : addFirefighterC;
+  const completeHold = currentShift === 'A' ? completeHoldA : currentShift === 'B' ? completeHoldB : completeHoldC;
+  const deleteFirefighter = currentShift === 'A' ? deleteFirefighterA : currentShift === 'B' ? deleteFirefighterB : deleteFirefighterC;
+  const deactivateFirefighter = currentShift === 'A' ? deactivateFirefighterA : currentShift === 'B' ? deactivateFirefighterB : deactivateFirefighterC;
+  const reactivateFirefighter = currentShift === 'A' ? reactivateFirefighterA : currentShift === 'B' ? reactivateFirefighterB : reactivateFirefighterC;
+  const transferShift = currentShift === 'A' ? transferShiftA : currentShift === 'B' ? transferShiftB : transferShiftC;
+  const resetAll = currentShift === 'A' ? resetAllA : currentShift === 'B' ? resetAllB : resetAllC;
+  const reorderFirefighters = currentShift === 'A' ? reorderFirefightersA : currentShift === 'B' ? reorderFirefightersB : reorderFirefightersC;
+  const moveToBottomOfRotation = currentShift === 'A' ? moveToBottomA : currentShift === 'B' ? moveToBottomB : moveToBottomC;
 
   const {
     loading: holdsLoading,
@@ -222,6 +264,12 @@ function App() {
     setSelectedFirefighterForTransfer(null);
   }
 
+  // Day click handler for calendar (placeholder for future hold management modal)
+  function handleDayClick(date: Date) {
+    // TODO: Open day modal for viewing/scheduling holds
+    console.log('Day clicked:', date);
+  }
+
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Skip Navigation Link - WCAG 2.4.1 Bypass Blocks */}
@@ -237,7 +285,7 @@ function App() {
         onShowHelp={() => setShowHelp(true)}
         onShowActivityLog={() => setShowActivityLog(true)}
         onQuickAddFirefighter={() => setShowQuickAdd(true)}
-        onNavigateToReports={() => {}} // TODO: Implement Reports view
+        onNavigateToReports={() => {}} // Reserved for future use
         onOpenMobileMenu={() => setShowMobileMenu(true)}
         onShowLogin={() => setShowLogin(true)}
         onLogout={handleLogout}
@@ -245,120 +293,90 @@ function App() {
         currentShift={currentShift}
         onShiftChange={setCurrentShift}
         onToggleDarkMode={toggleDarkMode}
+        currentView={currentView}
+        onViewChange={setCurrentView}
       />
 
-      {/* Main Layout: viewport-locked, no page scroll */}
-      <main
-        id="main-content"
-        tabIndex={-1}
-        className={`
-          flex-1
-          flex
-          flex-col
-          gap-4
-          p-6
-          overflow-hidden
-          min-h-0
-          ${device.isMobile ? 'pb-20' : ''}
-        `}
-      >
-        {/* Next Up Band - Full-width operational status */}
-        <div className="flex-shrink-0">
-          <NextUpBand
-            firefighters={allFirefighters}
-            onFirefighterClick={(ff) => setSelectedFirefighterFilter(ff?.id || null)}
-            selectedFirefighterId={selectedFirefighterFilter}
-          />
-        </div>
-
-        {/* Calendar and Roster Container */}
-        <div className="flex-1 flex flex-col lg:flex-row gap-6 items-stretch overflow-hidden min-h-0">
-          {/* Calendar Section - flex-1 to take remaining horizontal space */}
-          <Card
-          id="calendar-view"
-          className={`
-            flex-1
-            flex flex-col
-            overflow-hidden
-            min-w-0
-            min-h-0
-            shadow-lg
-            border-2
-            ${device.isMobile && mobileActiveTab !== 'calendar' ? 'hidden' : ''}
-          `}
-        >
-          {/* Calendar shell: min-h-0 lets flexbox shrink it properly */}
-          <div className="calendar-shell flex-1 min-h-0 overflow-auto">
-            <Suspense fallback={
-              <div className="flex items-center justify-center h-full text-muted-foreground">
-                Loading calendar...
-              </div>
-            }>
-              <MainCalendar
-                loading={holdsLoading}
-                scheduledHolds={scheduledHolds}
-                firefighters={allFirefighters}
-                onFirefighterClick={(id) => setSelectedFirefighterFilter(id)}
-                selectedFirefighterId={selectedFirefighterFilter}
-              />
-            </Suspense>
-          </div>
-        </Card>
-        
-        {/* Roster Sidebar - 2-card layout: header + table */}
-        <div
-          className={`
-            w-full
-            lg:w-[380px]
-            xl:w-[420px]
-            flex flex-col
-            gap-4
-            flex-shrink-0
-            min-h-0
-            ${device.isMobile && mobileActiveTab !== 'home' ? 'hidden' : ''}
-          `}
-        >
-          {/* Top Card: Roster Header */}
-          <Card className="flex-shrink-0 shadow-lg border-2">
-            <div className="p-6 bg-gradient-to-r from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 rounded-t-xl">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl shadow-lg bg-gradient-to-br from-primary to-primary/90">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground">Firefighter Roster</h2>
-                  <p className="text-sm text-muted-foreground">Add and organize your team rotation</p>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Bottom Card: Firefighter Table (auto-fit) */}
-          <Card className="flex-1 min-h-0 shadow-lg border-2 overflow-hidden">
-            <FirefighterList
-              firefighters={firefighters}
-              deactivatedFirefighters={deactivatedFirefighters}
-              onAdd={addFirefighter}
-              onCompleteHold={handleCompleteHoldClick}
-              onDelete={deleteFirefighter}
-              onDeactivate={deactivateFirefighter}
-              onReactivate={reactivateFirefighter}
-              onTransferShift={handleTransferShiftClick}
-              onResetAll={resetAll}
-              onReorder={reorderFirefighters}
-              onVolunteerHold={moveToBottomOfRotation}
-              currentShift={currentShift}
-              isAdminMode={isAdminMode}
-              isLoading={firefightersLoading}
-            />
-          </Card>
-        </div>
-      </main>
+      {/* Main Content - Conditional rendering based on view */}
+      {currentView === 'dashboard' ? (
+        <DashboardPage
+          currentMonth={currentMonth}
+          onMonthChange={setCurrentMonth}
+          firefightersA={ffA}
+          firefightersB={ffB}
+          firefightersC={ffC}
+          scheduledHolds={scheduledHolds}
+          isLoading={firefightersLoading || holdsLoading}
+          isAdminMode={isAdminMode}
+          deactivatedFirefightersA={deactivatedA}
+          deactivatedFirefightersB={deactivatedB}
+          deactivatedFirefightersC={deactivatedC}
+          onAddFirefighter={(shift) => {
+            if (shift === 'A') setShowQuickAdd(true);
+            else if (shift === 'B') setShowQuickAdd(true);
+            else if (shift === 'C') setShowQuickAdd(true);
+          }}
+          onCompleteHold={handleCompleteHoldClick}
+          onDeleteFirefighter={(id) => {
+            const ff = allFirefighters.find(f => f.id === id);
+            if (ff?.shift === 'A') deleteFirefighterA(id);
+            else if (ff?.shift === 'B') deleteFirefighterB(id);
+            else if (ff?.shift === 'C') deleteFirefighterC(id);
+          }}
+          onDeactivateFirefighter={(id) => {
+            const ff = allFirefighters.find(f => f.id === id);
+            if (ff?.shift === 'A') deactivateFirefighterA(id);
+            else if (ff?.shift === 'B') deactivateFirefighterB(id);
+            else if (ff?.shift === 'C') deactivateFirefighterC(id);
+          }}
+          onReactivateFirefighter={(id, position) => {
+            const ff = [...deactivatedA, ...deactivatedB, ...deactivatedC].find(f => f.id === id);
+            if (ff?.shift === 'A') reactivateFirefighterA(id, position);
+            else if (ff?.shift === 'B') reactivateFirefighterB(id, position);
+            else if (ff?.shift === 'C') reactivateFirefighterC(id, position);
+          }}
+          onTransferShift={handleTransferShiftClick}
+          onResetAll={(shift) => {
+            if (shift === 'A') resetAllA();
+            else if (shift === 'B') resetAllB();
+            else if (shift === 'C') resetAllC();
+          }}
+          onReorderFirefighters={(ffs, shift) => {
+            if (shift === 'A') reorderFirefightersA(ffs);
+            else if (shift === 'B') reorderFirefightersB(ffs);
+            else if (shift === 'C') reorderFirefightersC(ffs);
+          }}
+          onVolunteerHold={(id) => {
+            const ff = allFirefighters.find(f => f.id === id);
+            if (ff?.shift === 'A') moveToBottomA(id);
+            else if (ff?.shift === 'B') moveToBottomB(id);
+            else if (ff?.shift === 'C') moveToBottomC(id);
+          }}
+        />
+      ) : (
+        <SchedulePage
+          currentShift={currentShift}
+          currentMonth={currentMonth}
+          onMonthChange={setCurrentMonth}
+          firefighters={allFirefighters}
+          scheduledHolds={scheduledHolds}
+          selectedFirefighterId={selectedFirefighterFilter}
+          onDayClick={handleDayClick}
+          onFirefighterSelect={(id: string | null) => setSelectedFirefighterFilter(id)}
+          isLoading={firefightersLoading || holdsLoading}
+          isAdminMode={isAdminMode}
+          deactivatedFirefighters={deactivatedFirefighters}
+          onAddFirefighter={() => setShowQuickAdd(true)}
+          onCompleteHold={handleCompleteHoldClick}
+          onDeleteFirefighter={deleteFirefighter}
+          onDeactivateFirefighter={deactivateFirefighter}
+          onReactivateFirefighter={reactivateFirefighter}
+          onTransferShift={handleTransferShiftClick}
+          onResetAll={resetAll}
+          onReorderFirefighters={reorderFirefighters}
+          onVolunteerHold={moveToBottomOfRotation}
+        />
+      )}
 
       {/* Toast notifications */}
       {toasts.length > 0 && (

@@ -5,8 +5,8 @@
  */
 
 import { Calendar, Clock, Home } from 'lucide-react';
-import { useDevice } from '../../hooks/useDevice';
-import { useHapticFeedback } from '../../hooks/useTouchGestures';
+import { useDevice } from '@/hooks/useDevice';
+import { useHapticFeedback } from '@/hooks/useTouchGestures';
 import { Button } from '@/components/ui/button';
 
 type TabId = 'home' | 'calendar' | 'activity';

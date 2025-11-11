@@ -21,7 +21,7 @@
  *   }
  */
 
-import { supabase } from '../lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { track } from '@vercel/analytics';
 import * as Sentry from '@sentry/react';
 

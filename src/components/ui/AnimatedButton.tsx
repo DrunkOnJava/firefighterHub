@@ -23,9 +23,9 @@
  */
 
 import { ReactNode, useRef, useEffect, useState } from 'react';
-import { useAnimation } from '../../hooks/useAnimation';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { createRipple, shake } from '../../utils/animations';
+import { useAnimation } from '@/hooks/useAnimation';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { createRipple, shake } from '@/utils/animations';
 import { Check, Loader2 } from 'lucide-react';
 import { Button, ButtonProps } from './button';
 import { cn } from '@/lib/utils';

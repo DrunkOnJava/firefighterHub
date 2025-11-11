@@ -16,7 +16,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { AddFirefighterForm } from "../AddFirefighterForm";
+import { AddFirefighterForm } from "@/features/roster/components/AddFirefighterForm";
 
 describe("AddFirefighterForm", () => {
   const mockOnAdd = vi.fn();

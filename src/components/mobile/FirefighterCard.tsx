@@ -12,9 +12,9 @@
 
 import { MoreVertical, MapPin, TruckIcon } from 'lucide-react';
 import { useState } from 'react';
-import { Firefighter } from '../../lib/supabase';
-import { formatHoldDate } from '../../utils/dateUtils';
-import { useSwipeGesture } from '../../hooks/useSwipeGesture';
+import { Firefighter } from '@/lib/supabase';
+import { formatHoldDate } from '@/utils/dateUtils';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import { cn } from '@/lib/utils';
 
 interface FirefighterCardProps {

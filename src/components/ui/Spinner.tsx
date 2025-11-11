@@ -12,7 +12,7 @@
  * ```
  */
 
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

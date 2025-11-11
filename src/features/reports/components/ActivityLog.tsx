@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { Clock, Award } from 'lucide-react';
-import { Button } from './ui/button';
-import { Card } from './ui/card';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 interface ActivityEntry {
   id: string;

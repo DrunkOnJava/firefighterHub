@@ -15,19 +15,19 @@
  */
 
 import { useState, useMemo } from "react";
-import { useDevice } from "../hooks/useDevice";
-import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
+import { useDevice } from '@/hooks/useDevice';
+import { Firefighter, Shift, HoldDuration } from '@/lib/supabase';
 import {
   getMonthDays,
   attachScheduledHolds,
   ScheduledHold,
   CalendarDay,
-} from "../utils/calendarUtils";
+} from '@/utils/calendarUtils';
 import { CalendarHeader } from './calendar/CalendarHeader';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { DayModal } from './calendar/DayModal';
-import { MobileWeekView } from './mobile/MobileWeekView';
-import { BottomSheet } from './mobile/BottomSheet';
+import { MobileWeekView } from '@/components/mobile/MobileWeekView';
+import { BottomSheet } from '@/components/mobile/BottomSheet';
 
 interface CalendarProps {
   firefighters: Firefighter[];

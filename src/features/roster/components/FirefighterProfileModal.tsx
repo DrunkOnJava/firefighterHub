@@ -14,12 +14,12 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { Firefighter, Shift, supabase } from "../lib/supabase";
-import { formatHoldDate } from "../utils/dateUtils";
-import { ShiftBadge } from "./ShiftSelector";
-import { IconButton } from "./ui/IconButton";
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { Firefighter, Shift, supabase } from '@/lib/supabase';
+import { formatHoldDate } from '@/utils/dateUtils';
+import { ShiftBadge } from "@/features/shifts/components/ShiftBadge";
+import { IconButton } from '@/components/ui/IconButton';
 
 interface HoldRecord {
   id: string;
@@ -243,8 +243,8 @@ export function FirefighterProfileModal({
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
                   isEditMode
-                    ? "bg-green-600 hover:bg-green-700 text-white"
-                    : "bg-orange-600 hover:bg-orange-700 text-white"
+                    ? "bg-success hover:bg-success/90 text-success-foreground"
+                    : "bg-warning hover:bg-warning/90 text-warning-foreground"
                 }`}
                 aria-label={isEditMode ? "Save changes" : "Edit profile"}
               >

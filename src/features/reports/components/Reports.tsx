@@ -6,10 +6,10 @@ import {
   Filter,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Firefighter, supabase } from "../lib/supabase";
-import { ScheduledHold } from "../utils/calendarUtils";
-import { Button } from "./ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
+import { Firefighter, supabase } from '@/lib/supabase';
+import { ScheduledHold } from '@/utils/calendarUtils';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
   // calculateHoldsByStation, // Removed - not used
   calculateHoldsByShift,
@@ -20,8 +20,8 @@ import {
   // calculateHoldsByDuration, // Removed - per user feedback
   // getFirefighterWithMostHolds, // Removed - metric removed per user feedback
   getStationWithMostHolds,
-} from "../utils/metricsCalculations";
-import { MetricCard } from "./MetricCard";
+} from '@/utils/metricsCalculations';
+import { MetricCard } from "@/components/ui/MetricCard";
 
 interface ReportsProps {
   firefighters: Firefighter[];

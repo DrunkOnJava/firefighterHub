@@ -1,4 +1,5 @@
 import {
+  Calendar as CalendarIcon,
   Clock,
   HelpCircle,
   LogOut,
@@ -8,8 +9,9 @@ import {
   Shield,
   Sun,
   UserPlus,
+  Users,
 } from "lucide-react";
-import { Shift } from "../lib/supabase";
+import { Shift } from '@/lib/supabase';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -18,7 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ShiftSelector } from "./ShiftSelector";
+import { ShiftSelector } from "@/features/shifts/components/ShiftSelector";
 
 interface HeaderProps {
   onShowHelp: () => void;
@@ -32,6 +34,8 @@ interface HeaderProps {
   currentShift: Shift;
   onShiftChange: (shift: Shift) => void;
   onToggleDarkMode: () => void;
+  currentView?: 'dashboard' | 'schedule';
+  onViewChange?: (view: 'dashboard' | 'schedule') => void;
 }
 
 export function Header({
@@ -46,6 +50,8 @@ export function Header({
   currentShift,
   onShiftChange,
   onToggleDarkMode,
+  currentView = 'dashboard',
+  onViewChange,
 }: HeaderProps) {
   // Detect dark mode from DOM
   const isDarkMode = document.documentElement.classList.contains('dark');
@@ -59,7 +65,7 @@ export function Header({
   // const connectionStatus = 'connected' | 'connecting' | 'disconnected';
   return (
     <header
-      className="h-16 sticky top-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50"
+      className="h-18 sm:h-20 sticky top-0 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50"
     >
       <div className="px-4 sm:px-6 h-full flex items-center justify-between gap-6">
         {/* Logo & Title - LEFT SIDE */}
@@ -68,14 +74,14 @@ export function Header({
               <img
                 src="/icon-192x192.png"
                 alt="FirefighterHub Logo"
-                className="w-10 h-10"
+                className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16"
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-lg font-bold whitespace-nowrap">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold whitespace-nowrap">
                 FirefighterHub
               </h1>
-              <p className="text-xs text-muted-foreground whitespace-nowrap">
+              <p className="text-sm text-muted-foreground whitespace-nowrap">
                 Hold Rotation Manager
               </p>
             </div>
@@ -85,6 +91,30 @@ export function Header({
           <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             {/* Shift Selector + Action Buttons (Desktop) */}
             <div className="hidden sm:flex items-center gap-3 lg:gap-4">
+              {/* View Switcher - Dashboard/Schedule */}
+              {onViewChange && (
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant={currentView === 'dashboard' ? 'default' : 'outline'}
+                    size="default"
+                    onClick={() => onViewChange('dashboard')}
+                    className="gap-2"
+                  >
+                    <CalendarIcon className="h-5 w-5" />
+                    <span className="hidden lg:inline">Dashboard</span>
+                  </Button>
+                  <Button
+                    variant={currentView === 'schedule' ? 'default' : 'outline'}
+                    size="default"
+                    onClick={() => onViewChange('schedule')}
+                    className="gap-2"
+                  >
+                    <Users className="h-5 w-5" />
+                    <span className="hidden lg:inline">Schedule</span>
+                  </Button>
+                </div>
+              )}
+
               <div className="flex items-center gap-3 pr-6 mr-4">
                 <Separator orientation="vertical" className="h-8 mr-4" />
                 <div className="flex items-center gap-3">
@@ -109,7 +139,7 @@ export function Header({
                         onClick={() => window.print()}
                         className="gap-2"
                       >
-                        <Printer className="h-4 w-4" />
+                        <Printer className="h-5 w-5" />
                         <span className="hidden lg:inline">Print</span>
                       </Button>
                     </TooltipTrigger>
@@ -125,7 +155,7 @@ export function Header({
                         onClick={onShowActivityLog}
                         className="gap-2"
                       >
-                        <Clock className="h-4 w-4" />
+                        <Clock className="h-5 w-5" />
                         <span className="hidden lg:inline">Activity</span>
                       </Button>
                     </TooltipTrigger>
@@ -148,7 +178,7 @@ export function Header({
                       onClick={onToggleDarkMode}
                       className="gap-2"
                     >
-                      {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                      {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                       <span className="hidden lg:inline">
                         {isDarkMode ? "Light" : "Dark"}
                       </span>
@@ -169,7 +199,7 @@ export function Header({
                         onClick={onLogout}
                         className="gap-2 font-bold"
                       >
-                        <LogOut className="h-4 w-4" />
+                        <LogOut className="h-5 w-5" />
                         <span className="hidden xl:inline">BC Mode</span>
                       </Button>
                     </TooltipTrigger>
@@ -186,7 +216,7 @@ export function Header({
                         onClick={onShowLogin}
                         className="gap-2 font-semibold text-destructive hover:text-destructive-foreground hover:bg-destructive"
                       >
-                        <Shield className="h-4 w-4" />
+                        <Shield className="h-5 w-5" />
                         <span className="hidden xl:inline">BC Mode</span>
                       </Button>
                     </TooltipTrigger>
@@ -208,7 +238,7 @@ export function Header({
                       onClick={onShowHelp}
                       className="gap-2"
                     >
-                      <HelpCircle className="h-4 w-4" />
+                      <HelpCircle className="h-5 w-5" />
                       <span className="hidden lg:inline">Help</span>
                     </Button>
                   </TooltipTrigger>
@@ -224,11 +254,11 @@ export function Header({
                   <Button
                     variant="outline"
                     size="icon"
-                    className="sm:hidden"
+                    className="sm:hidden h-12 w-12"
                     onClick={onOpenMobileMenu}
                     aria-label="Open menu"
                   >
-                    <Menu className="h-5 w-5" />
+                    <Menu className="h-6 w-6" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>Open menu</TooltipContent>
@@ -244,7 +274,7 @@ export function Header({
               className="w-full min-h-[44px] gap-2 bg-green-600 hover:bg-green-700 text-white shadow-lg"
               size="default"
             >
-              <UserPlus className="h-4 w-4" />
+              <UserPlus className="h-5 w-5" />
               <span className="text-sm">Add Member</span>
             </Button>
           </div>

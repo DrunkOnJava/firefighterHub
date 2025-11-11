@@ -1,4 +1,4 @@
-import { Shift } from "../lib/supabase";
+import { Shift } from '@/lib/supabase';
 
 interface ShiftBadgeProps {
   shift: Shift;

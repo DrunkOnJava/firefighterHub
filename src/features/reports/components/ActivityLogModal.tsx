@@ -1,13 +1,13 @@
 import { ActivityLog } from './ActivityLog';
-import { useFocusTrap } from '../hooks/useFocusTrap';
-import { useFocusReturn } from '../hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useFocusReturn } from '@/hooks/useFocusReturn';
 import { useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from './ui/dialog';
+} from '@/components/ui/dialog';
 import { Clock } from 'lucide-react';
 
 interface ActivityLogModalProps {

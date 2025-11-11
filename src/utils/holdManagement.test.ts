@@ -11,7 +11,7 @@
  */
 
 import { beforeEach, describe, expect, it } from "vitest";
-import type { Firefighter } from "../lib/supabase";
+import type { Firefighter } from '@/lib/supabase';
 import { createMockFirefighter, mockScheduledHolds } from "../test/mockData";
 import {
   attachScheduledHolds,

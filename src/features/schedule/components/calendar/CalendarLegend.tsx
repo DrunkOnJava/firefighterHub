@@ -9,12 +9,12 @@ export function CalendarLegend() {
   const legendItems = [
     {
       label: 'Scheduled',
-      colorClass: 'bg-orange-500',
+      colorClass: 'bg-warning',
       description: 'Has scheduled holds'
     },
     {
       label: 'Completed',
-      colorClass: 'bg-green-600',
+      colorClass: 'bg-success',
       description: 'Has completed holds'
     },
     {

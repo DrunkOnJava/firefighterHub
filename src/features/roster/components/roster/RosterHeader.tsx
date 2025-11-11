@@ -12,7 +12,7 @@
  */
 
 import { Eye, Filter, UserPlus, Users } from "lucide-react";
-import { Firefighter } from "../../lib/supabase";
+import { Firefighter } from '@/lib/supabase';
 import { ExportMenu } from "./ExportMenu";
 
 interface RosterHeaderProps {

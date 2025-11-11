@@ -9,9 +9,9 @@
  */
 
 import { useState } from "react";
-import { Firefighter, HoldDuration } from "../../lib/supabase";
-import { CalendarDay } from "../../utils/calendarUtils";
-import { StationSelector } from "../StationSelector";
+import { Firefighter, HoldDuration } from '@/lib/supabase';
+import { CalendarDay } from '@/utils/calendarUtils';
+import { StationSelector } from "@/features/shifts/components/StationSelector";
 
 interface HoldFormProps {
   selectedDay: CalendarDay;

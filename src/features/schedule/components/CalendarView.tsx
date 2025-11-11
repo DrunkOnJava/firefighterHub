@@ -7,15 +7,15 @@
 
 import { useState, useMemo } from "react";
 import { Calendar, ChevronLeft, ChevronRight, Plus, Clock, CheckCircle2, Users } from "lucide-react";
-import { Firefighter, Shift, HoldDuration } from "../lib/supabase";
+import { Firefighter, Shift, HoldDuration } from '@/lib/supabase';
 import {
   getMonthDays,
   attachScheduledHolds,
   ScheduledHold,
   CalendarDay,
-} from "../utils/calendarUtils";
+} from '@/utils/calendarUtils';
 import { DayModal } from './calendar/DayModal';
-import { IconButton } from './ui/IconButton';
+import { IconButton } from '@/components/ui/IconButton';
 
 interface CalendarViewProps {
   firefighters: Firefighter[];

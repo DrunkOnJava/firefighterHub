@@ -2,8 +2,8 @@ import { Keyboard } from "lucide-react";
 import {
   KeyboardShortcut,
   formatShortcut,
-} from "../hooks/useKeyboardShortcuts";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+} from '@/hooks/useKeyboardShortcuts';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface KeyboardShortcutsModalProps {
   isOpen: boolean;

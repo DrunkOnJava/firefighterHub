@@ -6,7 +6,7 @@
  */
 
 import { vi } from "vitest";
-import type { Firefighter } from "../lib/supabase";
+import type { Firefighter } from '@/lib/supabase';
 
 // In-memory database
 export const mockDatabase = {

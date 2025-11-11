@@ -17,8 +17,8 @@
  */
 
 import { useCallback, useEffect, useRef } from "react";
-import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
-import { ToastType } from "./useToast";
+import { Firefighter, HoldDuration, Shift } from '@/lib/supabase';
+import { ToastType } from "@/hooks/useToast";
 import { useScheduledHoldsData } from "./useScheduledHoldsData";
 import { useScheduledHoldsMutations } from "./useScheduledHoldsMutations";
 import { useScheduledHoldsRealtime } from "./useScheduledHoldsRealtime";

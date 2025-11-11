@@ -1,4 +1,4 @@
-import { Shift } from "../lib/supabase";
+import { Shift } from '@/lib/supabase';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 

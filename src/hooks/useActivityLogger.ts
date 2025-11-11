@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Shift, supabase } from "../lib/supabase";
+import { Shift, supabase } from '@/lib/supabase';
 
 interface UseActivityLoggerReturn {
   logActivity: (

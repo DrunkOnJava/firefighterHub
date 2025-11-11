@@ -1,4 +1,4 @@
-import { ScheduledHold as DBScheduledHold, Firefighter } from "../lib/supabase";
+import { ScheduledHold as DBScheduledHold, Firefighter } from '@/lib/supabase';
 
 // Re-export database type with convenience type alias
 // This ensures consistency with the actual database schema

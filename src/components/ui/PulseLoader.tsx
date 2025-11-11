@@ -13,7 +13,7 @@
  * ```
  */
 
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { cn } from '@/lib/utils';
 
 interface PulseLoaderProps {

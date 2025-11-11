@@ -1,4 +1,4 @@
-import { Firefighter, ScheduledHold, Shift } from "../lib/supabase";
+import { Firefighter, ScheduledHold, Shift } from '@/lib/supabase';
 
 /**
  * Mock data for testing

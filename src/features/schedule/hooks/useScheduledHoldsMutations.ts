@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { ScheduledHold, Shift, supabase } from "../lib/supabase";
+import { ScheduledHold, Shift, supabase } from '@/lib/supabase';
 
 interface UseScheduledHoldsMutationsParams {
   currentShift: Shift;

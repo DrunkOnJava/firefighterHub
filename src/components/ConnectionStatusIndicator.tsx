@@ -5,7 +5,7 @@
  */
 
 import { Wifi, WifiOff, RefreshCw } from 'lucide-react';
-import { useConnectionStatus } from '../hooks/useConnectionStatus';
+import { useConnectionStatus } from '@/hooks/useConnectionStatus';
 
 interface ConnectionStatusIndicatorProps {
   showLabel?: boolean;

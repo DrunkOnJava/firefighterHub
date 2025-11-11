@@ -17,9 +17,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FirefighterProfileModal } from "../FirefighterProfileModal";
+import { FirefighterProfileModal } from "@/features/roster/components/FirefighterProfileModal";
 import { createMockFirefighter } from "../../test/mockData";
-import type { Firefighter } from "../../lib/supabase";
+import type { Firefighter } from '@/lib/supabase';
 import {
   resetMockDatabase,
   setMockScheduledHolds,

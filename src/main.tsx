@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import * as Sentry from '@sentry/react';
 import App from './App.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { reportError } from './utils/errorReporting';
+import { reportError } from '@/utils/errorReporting';
 import './index.css';
 
 /**

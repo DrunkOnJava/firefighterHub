@@ -27,8 +27,8 @@
  */
 
 import { InputHTMLAttributes, TextareaHTMLAttributes, useEffect, useRef, useState } from 'react';
-import { useAnimation } from '../../hooks/useAnimation';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useAnimation } from '@/hooks/useAnimation';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Check, AlertCircle } from 'lucide-react';
 import { Input } from './input';
 import { Label } from './label';

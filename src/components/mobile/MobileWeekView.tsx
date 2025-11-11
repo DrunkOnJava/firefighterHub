@@ -8,9 +8,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMemo, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useHapticFeedback, useSwipeGesture } from '../../hooks/useTouchGestures';
-import { Firefighter, Shift } from '../../lib/supabase';
-import { attachScheduledHolds, CalendarDay, getMonthDays, ScheduledHold } from '../../utils/calendarUtils';
+import { useHapticFeedback, useSwipeGesture } from '@/hooks/useTouchGestures';
+import { Firefighter, Shift } from '@/lib/supabase';
+import { attachScheduledHolds, CalendarDay, getMonthDays, ScheduledHold } from '@/utils/calendarUtils';
 
 interface MobileWeekViewProps {
   currentDate: Date;

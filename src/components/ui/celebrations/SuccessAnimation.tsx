@@ -10,7 +10,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { Check } from 'lucide-react';
 
 interface SuccessAnimationProps {

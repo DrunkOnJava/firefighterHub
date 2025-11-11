@@ -9,8 +9,8 @@ import {
   Users,
 } from "lucide-react";
 // NOTE: AuthContext removed - using simple BC Mode instead (see App.tsx lines 68-83)
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
-import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 interface HelpModalProps {
   isOpen: boolean;

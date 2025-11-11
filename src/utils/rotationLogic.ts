@@ -1,4 +1,4 @@
-import { Firefighter } from '../lib/supabase';
+import { Firefighter } from '@/lib/supabase';
 
 export function sortFirefighters(firefighters: Firefighter[]): Firefighter[] {
   return [...firefighters].sort((a, b) => {

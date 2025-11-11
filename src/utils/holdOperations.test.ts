@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Shift } from "../lib/supabase";
+import type { Shift } from '@/lib/supabase';
 import { mockScheduledHolds } from "../test/mockData";
 import type { ScheduledHold } from "./calendarUtils";
 import {

@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { Firefighter, HoldDuration, Shift, supabase } from "../lib/supabase";
-import { assignPositions } from "../utils/rotationLogic";
-import { ConfirmOptions } from "./useConfirm";
-import { ToastType } from "./useToast";
+import { Firefighter, HoldDuration, Shift, supabase } from '@/lib/supabase';
+import { assignPositions } from '@/utils/rotationLogic';
+import { ConfirmOptions } from "@/hooks/useConfirm";
+import { ToastType } from "@/hooks/useToast";
 
 interface UseFirefightersMutationsParams {
   currentShift: Shift;

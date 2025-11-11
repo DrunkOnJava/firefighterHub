@@ -11,10 +11,10 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Calendar } from "../Calendar";
+import { Calendar } from "@/features/schedule/components/Calendar";
 import { createMockFirefighter, createMockHold } from "../../test/mockData";
-import type { Firefighter } from "../../lib/supabase";
-import type { ScheduledHold } from "../../utils/calendarUtils";
+import type { Firefighter } from '@/lib/supabase';
+import type { ScheduledHold } from '@/utils/calendarUtils';
 
 describe("Calendar Component", () => {
   const mockOnScheduleHold = vi.fn();

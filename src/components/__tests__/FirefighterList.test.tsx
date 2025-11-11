@@ -10,9 +10,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FirefighterList } from "../FirefighterList";
+import { FirefighterList } from "@/features/roster/components/FirefighterList";
 import { createMockFirefighter } from "../../test/mockData";
-import type { Firefighter } from "../../lib/supabase";
+import type { Firefighter } from '@/lib/supabase';
 
 describe("FirefighterList Component", () => {
   const mockOnAdd = vi.fn();

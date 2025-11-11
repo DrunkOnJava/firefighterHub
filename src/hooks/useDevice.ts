@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BREAKPOINTS, getDeviceCategory, getOrientation } from '../constants/breakpoints';
+import { BREAKPOINTS, getDeviceCategory, getOrientation } from '@/config/constants';
 import { useMediaQuery } from './useMediaQuery';
 
 export type DeviceType = 'mobile' | 'tablet' | 'desktop' | 'large';

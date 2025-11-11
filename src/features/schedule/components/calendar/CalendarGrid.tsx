@@ -9,9 +9,9 @@
  */
 
 import { useRef } from "react";
-import { useSwipeGesture } from "../../hooks/useSwipeGesture";
-import { Shift } from "../../lib/supabase";
-import { CalendarDay } from "../../utils/calendarUtils";
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import { Shift } from '@/lib/supabase';
+import { CalendarDay } from '@/utils/calendarUtils';
 import { DayCell } from "./DayCell";
 
 interface CalendarGridProps {

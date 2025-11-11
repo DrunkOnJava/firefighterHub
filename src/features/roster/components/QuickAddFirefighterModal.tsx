@@ -1,11 +1,11 @@
 import { ChevronDown, ChevronUp, UserPlus, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useFocusReturn } from "../hooks/useFocusReturn";
-import { useFocusTrap } from "../hooks/useFocusTrap";
-import { Shift } from "../lib/supabase";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { Shift } from '@/lib/supabase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface QuickAddFirefighterModalProps {
   isOpen: boolean;

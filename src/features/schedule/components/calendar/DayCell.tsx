@@ -11,9 +11,9 @@
  * - Hover and selected states
  */
 
-import { Shift } from "../../lib/supabase";
-import { CalendarDay } from "../../utils/calendarUtils";
-import { getShiftForDate, getShiftColor } from "../../utils/shiftRotation";
+import { Shift } from '@/lib/supabase';
+import { CalendarDay } from '@/utils/calendarUtils';
+import { getShiftForDate, getShiftColor } from '@/utils/shiftRotation';
 import { Badge } from "@/components/ui/badge";
 
 interface DayCellProps {

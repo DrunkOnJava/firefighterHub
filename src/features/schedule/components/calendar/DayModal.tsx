@@ -11,10 +11,10 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
-import { useFocusReturn } from "../../hooks/useFocusReturn";
-import { useFocusTrap } from "../../hooks/useFocusTrap";
-import { Firefighter, HoldDuration, Shift } from "../../lib/supabase";
-import { CalendarDay, ScheduledHold } from "../../utils/calendarUtils";
+import { useFocusReturn } from '@/hooks/useFocusReturn';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { Firefighter, HoldDuration, Shift } from '@/lib/supabase';
+import { CalendarDay, ScheduledHold } from '@/utils/calendarUtils';
 import { HoldForm } from "./HoldForm";
 import { HoldList } from "./HoldList";
 

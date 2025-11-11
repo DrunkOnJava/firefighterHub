@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { Firefighter } from '../lib/supabase';
+import { Firefighter } from '@/lib/supabase';
 
 export interface FirefighterFilters {
   certifications: string[];

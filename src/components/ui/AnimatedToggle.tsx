@@ -22,7 +22,7 @@
  * ```
  */
 
-import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useEffect, useRef, useState } from 'react';
 import { Switch } from './switch';
 import { Label } from './label';

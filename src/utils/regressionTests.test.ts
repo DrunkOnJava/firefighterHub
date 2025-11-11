@@ -12,7 +12,7 @@ import {
   assignPositions
 } from './rotationLogic';
 import { formatDateForDB, getMonthDays } from './calendarUtils';
-import type { Firefighter } from '../lib/supabase';
+import type { Firefighter } from '@/lib/supabase';
 
 describe('Regression Tests - Known Bugs', () => {
   describe('BUG: Position Gap Bug', () => {

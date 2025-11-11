@@ -10,7 +10,7 @@
 
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { ShiftBadge } from "../ShiftBadge";
+import { ShiftBadge } from "@/features/shifts/components/ShiftBadge";
 
 describe("ShiftBadge", () => {
   describe("Rendering", () => {

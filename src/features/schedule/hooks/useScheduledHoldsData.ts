@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ScheduledHold, Shift, supabase } from "../lib/supabase";
+import { ScheduledHold, Shift, supabase } from '@/lib/supabase';
 
 interface UseScheduledHoldsDataReturn {
   scheduledHolds: ScheduledHold[];

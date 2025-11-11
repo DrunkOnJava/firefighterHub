@@ -6,7 +6,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
-import { Firefighter, HoldDuration, Shift } from "../lib/supabase";
+import { Firefighter, HoldDuration, Shift } from '@/lib/supabase';
 import { StationSelector } from "./StationSelector";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -13,9 +13,9 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { Shift } from "../../lib/supabase";
-import { formatMonthYear } from "../../utils/calendarUtils";
-import { ShiftIndicator } from "../ShiftIndicator";
+import { Shift } from '@/lib/supabase';
+import { formatMonthYear } from '@/utils/calendarUtils';
+import { ShiftIndicator } from "@/features/shifts/components/ShiftIndicator";
 
 interface CalendarHeaderProps {
   currentDate: Date;
@@ -112,7 +112,7 @@ export function CalendarHeader({
               <span className="text-muted-foreground">Completed</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-blue-600/30 ring-2 ring-blue-500" />
+              <div className="w-3 h-3 rounded bg-primary/30 ring-2 ring-primary" />
               <span className="text-muted-foreground">Today</span>
             </div>
           </div>

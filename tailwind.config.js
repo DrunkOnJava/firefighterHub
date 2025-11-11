@@ -153,9 +153,11 @@ export default {
   			}
   		},
   		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			lg: '12px',           /* Calendr modals, large cards */
+  			md: '8px',            /* Calendr buttons, inputs, cards */
+  			sm: '4px',            /* Calendr badges, small elements */
+  			xl: '16px',           /* Calendr hero sections */
+  			full: '9999px'        /* Pills, avatars */
   		}
   	}
   },

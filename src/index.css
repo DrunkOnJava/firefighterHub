@@ -37,30 +37,31 @@ body {
  */
 @layer base {
   :root {
+    /* Calendr Design System - Light Mode */
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --foreground: 216 7% 7%;        /* #121315 from Calendr */
+    --card: 0 0% 98%;               /* #F9F9F9 from Calendr */
+    --card-foreground: 216 7% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --popover-foreground: 216 7% 7%;
+    --primary: 210 85% 51%;         /* #196FEB from Calendr - main blue */
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary-foreground: 216 7% 7%;
     --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%; /* TODO: May need darkening for WCAG AA */
+    --muted-foreground: 0 0% 57%;   /* #909091 from Calendr */
     --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
+    --accent-foreground: 216 7% 7%;
+    --destructive: 4 79% 58%;       /* #E24646 from Calendr */
     --destructive-foreground: 0 0% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 98%;
-    --success: 142 71% 45%;
+    --warning: 47 95% 57%;          /* #F7E030 from Calendr - yellow */
+    --warning-foreground: 0 0% 9%;
+    --success: 162 77% 52%;         /* #2ADBA9 from Calendr - green */
     --success-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
+    --border: 210 6% 18%;           /* #2D2F33 from Calendr */
+    --input: 210 6% 18%;
+    --ring: 210 85% 51%;            /* Primary blue for focus */
+    --radius: 0.5rem;               /* 8px - Calendr standard */
 
     /* Elevation & Shadow System (5-level visual hierarchy) */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -71,28 +72,29 @@ body {
     --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   }
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    /* Calendr Design System - Dark Mode */
+    --background: 216 7% 7%;        /* #121315 from Calendr */
+    --foreground: 0 0% 98%;         /* #F9F9F9 from Calendr */
+    --card: 210 6% 13%;             /* #222325 from Calendr */
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+    --popover: 216 7% 7%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 210 85% 51%;         /* Same #196FEB - consistent across modes */
+    --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%; /* TODO: Verify WCAG AA contrast */
+    --muted: 210 6% 18%;            /* #2D2F33 from Calendr */
+    --muted-foreground: 0 0% 57%;   /* #909091 from Calendr */
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 4 79% 58%;       /* #E24646 - same in both modes */
     --destructive-foreground: 0 0% 98%;
-    --warning: 38 92% 50%;
+    --warning: 47 95% 57%;          /* #F7E030 - same in both modes */
     --warning-foreground: 0 0% 9%;
-    --success: 142 71% 45%;
+    --success: 162 77% 52%;         /* #2ADBA9 - same in both modes */
     --success-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
+    --border: 210 6% 18%;           /* #2D2F33 from Calendr */
+    --input: 210 6% 18%;
     --ring: 0 0% 83.1%;
 
     /* Dark mode shadows - deeper and more prominent */

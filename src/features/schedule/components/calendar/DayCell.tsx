@@ -14,7 +14,7 @@
 import { Shift } from '@/lib/supabase';
 import { CalendarDay } from '@/utils/calendarUtils';
 import { getShiftForDate, getShiftColor } from '@/utils/shiftRotation';
-// import { Badge } from "@/components/ui/badge"; // Unused - hold badges rendered differently
+import { AppointmentPill } from './AppointmentPill';
 
 interface DayCellProps {
   day: CalendarDay;
@@ -176,58 +176,16 @@ export function DayCell({
         )}
       </div>
 
-      {/* Holds list - show first 4, NO truncation, NO word wrap */}
+      {/* Holds list - using AppointmentPill component */}
       <div className="space-y-1 flex-1 overflow-hidden">
-        {/* Show first 4 holds - MODERN PILL DESIGN with FULL NAMES */}
-        {scheduledHolds.slice(0, 4).map((hold, index) => {
-          const isSelected = hold.firefighter_id === selectedFirefighterId;
-
-          return (
-            <div
-              key={hold.id || index}
-              className={`
-                text-[10px] px-2 py-1 rounded-lg
-                bg-gradient-to-r from-orange-500 via-orange-600 to-red-600
-                text-white font-bold
-                border-2 ${isSelected ? 'border-blue-400 ring-2 ring-blue-400/60' : 'border-orange-300/40'}
-                flex items-center justify-between gap-1
-                shadow-md shadow-orange-600/30
-                hover:shadow-lg hover:shadow-orange-600/50
-                hover:scale-[1.02]
-                transition-all duration-200
-                backdrop-blur-sm
-                overflow-hidden
-              `}
-              title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-              }`}
-            >
-              <span className="whitespace-nowrap drop-shadow-md overflow-hidden text-ellipsis">
-                {hold.firefighter_name || "Unknown"}
-              </span>
-              {hold.fire_station && (
-                <span className="flex-shrink-0 text-orange-50 font-extrabold text-[9px] bg-white/20 px-1 py-0.5 rounded">
-                  #{hold.fire_station}
-                </span>
-              )}
-            </div>
-          );
-        })}
-
-        {completedHolds.slice(0, 4 - scheduledHolds.length).map((hold, index) => {
-          const isSelected = hold.firefighter_id === selectedFirefighterId;
-
-          return (
-            <div
-              key={hold.id || index}
-              className={`
-                text-[10px] px-2 py-1 rounded-lg
-                bg-gradient-to-r from-emerald-500 via-emerald-600 to-green-600
-                text-white font-bold
-                border-2 ${isSelected ? 'border-blue-400 ring-2 ring-blue-400/60' : 'border-emerald-300/40'}
-                flex items-center justify-between gap-1
-                shadow-md shadow-emerald-600/30
-                hover:shadow-lg hover:shadow-emerald-600/50
+        {/* Show first 4 holds */}
+        {day.scheduledHolds.slice(0, 4).map((hold, index) => (
+          <AppointmentPill
+            key={hold.id || index}
+            appointment={hold}
+            onClick={() => onDayClick(day)}
+          />
+        ))}
                 hover:scale-[1.02]
                 transition-all duration-200
                 backdrop-blur-sm opacity-95

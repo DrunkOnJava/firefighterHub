@@ -1,11 +1,5 @@
 /**
- * HoldList Component
- *
- * Displays a list of scheduled holds for a selected day with:
- * - Hold cards showing firefighter name, station, status
- * - Action buttons (Edit, Delete, Mark Complete) - admin only
- * - Lock indicator for holds >1 week old
- * - Empty state when no holds exist
+ * HoldList Component - Calendr Design
  */
 
 import {
@@ -15,11 +9,15 @@ import {
   Lock,
   Plus,
   Trash2,
+  Building2,
 } from "lucide-react";
 import { Firefighter } from '@/lib/supabase';
 import { ScheduledHold } from '@/utils/calendarUtils';
 import { isHoldLocked } from '@/utils/validation';
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { InfoCard } from "@/components/ui/InfoCard";
 
 interface HoldListProps {
   holds: ScheduledHold[];
@@ -46,20 +44,11 @@ export function HoldList({
           title="No holds scheduled"
           description="Click 'Add Hold' below to schedule someone"
         />
-
         {isAdminMode && (
-          <button
-            onClick={onAddNew}
-            className="
-              w-full mt-6 px-3 py-2 rounded-lg
-              bg-primary hover:bg-primary/90 text-primary-foreground
-              font-semibold transition-colors
-              flex items-center justify-center gap-2
-            "
-          >
-            <Plus className="w-5 h-5" />
+          <Button onClick={onAddNew} className="w-full mt-6">
+            <Plus className="w-5 h-5 mr-2" />
             Add Hold
-          </button>
+          </Button>
         )}
       </div>
     );
@@ -67,126 +56,48 @@ export function HoldList({
 
   return (
     <div>
-      <div className="space-y-3 mb-6">
+      <div className="space-y-4 mb-6">
         {holds.map((hold) => {
           const locked = isHoldLocked(hold);
-
           return (
-            <div
-              key={hold.id}
-              className={`
-                border-2 rounded-lg p-4
-                ${
-                  hold.status === "scheduled"
-                    ? "bg-blue-950/20 dark:bg-blue-950/20 border-blue-500/30 border-l-blue-500"
-                    : "bg-green-950/20 dark:bg-green-950/20 border-green-500/30 border-l-emerald-500"
-                }
-              `}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className="text-lg font-semibold text-foreground">
-                    {hold.firefighter_name}
-                  </p>
-
-                  {hold.fire_station && (
-                    <p className="text-sm text-muted-foreground mt-1 font-semibold">
-                      Station #{hold.fire_station}
+            <div key={hold.id} className="border border-border rounded-lg overflow-hidden bg-card">
+              <div className="bg-muted/50 p-4 border-b border-border">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-foreground">{hold.firefighter_name}</h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {new Date(hold.hold_date).toLocaleDateString("en-US", {weekday: "long", month: "long", day: "numeric"})}
                     </p>
-                  )}
-
-                  {hold.duration && (
-                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {hold.duration === "12h" ? "12 Hour" : "24 Hour"} Hold
-                      {hold.start_time && ` • Starts ${hold.start_time}`}
-                    </p>
-                  )}
-
-                  <div className="flex items-center gap-2 mt-2 flex-wrap">
-                    <span
-                      className={`
-                        inline-block px-2 py-1 rounded text-xs font-bold
-                        ${
-                          hold.status === "scheduled"
-                            ? "bg-sky-900/70 text-sky-300"
-                            : "bg-emerald-900/70 text-emerald-300"
-                        }
-                      `}
-                    >
-                      {hold.status === "scheduled" ? "SCHEDULED" : "COMPLETED"}
-                    </span>
-
-                    {hold.is_voluntary && (
-                      <span
-                        className="inline-flex items-center gap-1 px-2 py-1 bg-success/70 text-success-foreground text-xs font-bold rounded"
-                        title="Member volunteered for this hold"
-                      >
-                        <span>🙋</span>
-                        VOLUNTARY
-                      </span>
-                    )}
-
-                    {locked && (
-                      <span className="inline-flex items-center px-2 py-1 bg-amber-900/70 text-amber-200 text-xs font-bold rounded">
-                        <Lock className="w-3 h-3" />
-                      </span>
-                    )}
                   </div>
+                  <Badge className={hold.status === 'completed' ? 'bg-success text-success-foreground' : 'bg-warning text-warning-foreground'}>
+                    {hold.status === "scheduled" ? "SCHEDULED" : "COMPLETED"}
+                  </Badge>
                 </div>
               </div>
-
-              {/* Action buttons */}
+              <div className="p-4 grid grid-cols-2 gap-3">
+                <InfoCard label="Duration" value={hold.duration === "12h" ? "12 Hours" : "24 Hours"} icon={Clock} />
+                <InfoCard label="Station" value={hold.fire_station ? `Station ${hold.fire_station}` : '—'} icon={Building2} />
+                {hold.start_time && (
+                  <div className="col-span-2"><InfoCard label="Start Time" value={hold.start_time} icon={Clock} /></div>
+                )}
+              </div>
+              {(hold.is_voluntary || locked) && (
+                <div className="px-4 pb-4 flex gap-2 flex-wrap">
+                  {hold.is_voluntary && <Badge variant="outline" className="bg-success/10 text-success border-success/30">🙋 Voluntary</Badge>}
+                  {locked && <Badge variant="outline" className="bg-warning/10 text-warning border-warning/30"><Lock className="w-3 h-3 mr-1" />Locked</Badge>}
+                </div>
+              )}
               {isAdminMode && (
-                <div className="flex gap-2 pt-3 border-t border-border">
-                  {/* Complete Button: For 'scheduled' holds */}
+                <div className="p-4 pt-0 flex gap-2">
                   {hold.status === "scheduled" && (
-                    <button
-                      onClick={() => onMarkCompleted(hold)}
-                      className="
-                        flex-1 px-3 py-2 rounded-lg
-                        bg-success hover:bg-success/90 text-success-foreground
-                        font-semibold transition-colors
-                        flex items-center justify-center gap-2
-                      "
-                      title="Mark as completed and move to end of rotation"
-                    >
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span className="text-xs">Complete</span>
-                    </button>
+                    <Button onClick={() => onMarkCompleted(hold)} className="flex-1 bg-success hover:bg-success/90 text-success-foreground">
+                      <CheckCircle2 className="w-4 h-4 mr-2" />Complete
+                    </Button>
                   )}
-
-                  {/* Cancel Button: Disabled for locked holds */}
-                  {!hold.id.startsWith("past-") && (
-                    <button
-                      disabled={locked}
-                      onClick={() => !locked && onRemove(hold.id)}
-                      className={`
-                        flex-1 px-3 py-2 rounded-lg font-semibold transition-colors
-                        flex items-center justify-center gap-2
-                        ${
-                          locked
-                            ? "opacity-50 cursor-not-allowed bg-destructive/50 text-destructive-foreground"
-                            : "bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-                        }
-                      `}
-                      title={
-                        locked
-                          ? "Hold is locked (>1 week old)"
-                          : hold.status === "completed"
-                          ? "Cancel completed hold and reset firefighter position"
-                          : "Cancel scheduled hold"
-                      }
-                    >
-                      {locked ? (
-                        <Lock className="w-4 h-4" />
-                      ) : (
-                        <>
-                          <Trash2 className="w-4 h-4" />
-                          <span className="text-xs">Cancel</span>
-                        </>
-                      )}
-                    </button>
+                  {!locked && (
+                    <Button onClick={() => onRemove(hold.id)} variant="destructive" className="flex-1">
+                      <Trash2 className="w-4 h-4 mr-2" />Delete
+                    </Button>
                   )}
                 </div>
               )}
@@ -194,21 +105,10 @@ export function HoldList({
           );
         })}
       </div>
-
-      {/* Add button */}
       {isAdminMode && (
-        <button
-          onClick={onAddNew}
-          className="
-            w-full mt-6 px-3 py-2 rounded-lg
-            bg-primary hover:bg-primary/90 text-primary-foreground
-            font-semibold transition-colors
-            flex items-center justify-center gap-2
-          "
-        >
-          <Plus className="w-5 h-5" />
-          Add Another Hold
-        </button>
+        <Button onClick={onAddNew} variant="outline" className="w-full">
+          <Plus className="w-4 h-4 mr-2" />Add Another Hold
+        </Button>
       )}
     </div>
   );

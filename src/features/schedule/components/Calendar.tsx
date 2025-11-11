@@ -26,6 +26,7 @@ import {
 import { CalendarHeader } from './calendar/CalendarHeader';
 import { CalendarGrid } from './calendar/CalendarGrid';
 import { DayModal } from './calendar/DayModal';
+import { EmptyCalendarState } from './calendar/EmptyCalendarState';
 import { MobileWeekView } from '@/components/mobile/MobileWeekView';
 import { BottomSheet } from '@/components/mobile/BottomSheet';
 
@@ -143,7 +144,21 @@ export function Calendar({
 
       {/* Calendar grid section - fills remaining space */}
       <div className="p-6 flex-1 min-h-0">
-        {device.isMobile ? (
+        {scheduledHolds.length === 0 && !loading ? (
+          /* Show empty state when no holds exist */
+          <EmptyCalendarState 
+            onScheduleHold={() => {
+              // Open modal for today's date with no specific day selected
+              const today = new Date();
+              const todayDay = daysWithHolds.find(d => 
+                d.date.toDateString() === today.toDateString()
+              );
+              if (todayDay) {
+                handleDayClick(todayDay);
+              }
+            }} 
+          />
+        ) : device.isMobile ? (
           <MobileWeekView
             currentDate={currentDate}
             onDateChange={setCurrentDate}

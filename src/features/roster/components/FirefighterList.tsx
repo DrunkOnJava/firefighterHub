@@ -48,7 +48,7 @@ export function FirefighterList({
   onReorder,
   onVolunteerHold,
   confirmAction,
-  currentShift,
+  // currentShift, // Unused - shift filtering handled by parent
   isAdminMode = false,
   searchInputRef: _searchInputRef,
   isLoading = false,
@@ -68,7 +68,7 @@ export function FirefighterList({
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedFirefighter, setSelectedFirefighter] = useState<Firefighter | null>(null);
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
-  const [showExportMenu, setShowExportMenu] = useState(false);
+  // const [showExportMenu, setShowExportMenu] = useState(false); // Export feature temporarily disabled
 
   const {
     filters,

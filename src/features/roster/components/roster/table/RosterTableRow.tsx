@@ -35,9 +35,9 @@ export function RosterTableRow({
   onToggleSelection,
   onViewProfile,
   onVolunteerHold,
-  onCompleteHold,
-  onTransferShift,
-  onDeactivate,
+  // onCompleteHold, // Unused - handled by parent component
+  // onTransferShift, // Unused - handled by parent component
+  // onDeactivate, // Unused - handled by parent component
   onDragStart,
   onDragOver,
   onDrop,

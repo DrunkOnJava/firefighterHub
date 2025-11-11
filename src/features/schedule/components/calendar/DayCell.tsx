@@ -14,7 +14,7 @@
 import { Shift } from '@/lib/supabase';
 import { CalendarDay } from '@/utils/calendarUtils';
 import { getShiftForDate, getShiftColor } from '@/utils/shiftRotation';
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge"; // Unused - hold badges rendered differently
 
 interface DayCellProps {
   day: CalendarDay;
@@ -43,15 +43,15 @@ export function DayCell({
     ? day.scheduledHolds.some(h => h.firefighter_id === selectedFirefighterId)
     : false;
 
-  // Format name as "F. Lastname"
-  const formatName = (fullName: string | null): string => {
-    if (!fullName) return "Unknown";
-    const parts = fullName.trim().split(/\s+/);
-    if (parts.length === 1) return parts[0]; // Single name
-    const firstInitial = parts[0][0]?.toUpperCase() || "";
-    const lastName = parts[parts.length - 1];
-    return `${firstInitial}. ${lastName}`;
-  };
+  // Format name as "F. Lastname" - currently unused, full names shown in pills
+  // const formatName = (fullName: string | null): string => {
+  //   if (!fullName) return "Unknown";
+  //   const parts = fullName.trim().split(/\s+/);
+  //   if (parts.length === 1) return parts[0]; // Single name
+  //   const firstInitial = parts[0][0]?.toUpperCase() || "";
+  //   const lastName = parts[parts.length - 1];
+  //   return `${firstInitial}. ${lastName}`;
+  // };
 
   // Determine styling based on state - WCAG 2.5.5: 44px minimum touch targets
   let cellClasses = `

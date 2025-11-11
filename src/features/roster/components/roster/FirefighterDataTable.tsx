@@ -28,7 +28,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge'; // Unused - no badges in table currently
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,

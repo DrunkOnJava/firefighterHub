@@ -2,7 +2,7 @@
 
 import { useMemo, useCallback, memo } from 'react';
 import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge'; // Unused - no badges in schedule page
 import { Button } from '@/components/ui/button';
 import { OptimizedMainCalendar } from '@/features/schedule/components/calendar/OptimizedMainCalendar';
 import { NextUpBand } from '@/features/shifts/components/NextUpBand';

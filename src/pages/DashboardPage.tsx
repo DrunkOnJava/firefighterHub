@@ -151,9 +151,9 @@ export const DashboardPage = memo<DashboardPageProps>(({
   }, [currentMonth, scheduledHolds, firefightersA, firefightersB, firefightersC]);
 
   // Combine all firefighters for calendar
-  const allFirefighters = useMemo(() => {
-    return [...firefightersA, ...firefightersB, ...firefightersC];
-  }, [firefightersA, firefightersB, firefightersC]);
+  // const allFirefighters = useMemo(() => { // Unused - metrics use per-shift firefighters
+  //   return [...firefightersA, ...firefightersB, ...firefightersC];
+  // }, [firefightersA, firefightersB, firefightersC]);
 
   return (
     <main className="flex-1 flex flex-col gap-6 p-6 overflow-auto">

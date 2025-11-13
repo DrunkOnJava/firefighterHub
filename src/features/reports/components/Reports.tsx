@@ -103,22 +103,18 @@ export function Reports({
           table: "scheduled_holds",
         },
         () => {
-          console.log("🔄 Holds changed, refreshing all holds for reports");
           fetchAllHolds();
         }
       )
       .subscribe((status) => {
         if (status === "CHANNEL_ERROR") {
           console.error("❌ Reports: Real-time subscription error");
-        } else if (status === "SUBSCRIBED") {
-          console.log("✅ Reports: Real-time subscription active");
         }
       });
 
     return () => {
       mounted = false;
       supabase.removeChannel(channel);
-      console.log("🛑 Reports: Unsubscribed from real-time updates");
     };
   }, [holds]);
 

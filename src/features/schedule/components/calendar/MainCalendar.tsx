@@ -71,9 +71,6 @@ export function MainCalendar({
     });
 
     // TODO: Show modal or popover with holds for this date
-    if (holdsForDate.length > 0) {
-      console.log('Holds for', date, holdsForDate);
-    }
   };
 
   // Custom day button renderer with event pills

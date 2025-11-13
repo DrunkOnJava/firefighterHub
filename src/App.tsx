@@ -267,7 +267,6 @@ function App() {
   // Day click handler for calendar (placeholder for future hold management modal)
   function handleDayClick(date: Date) {
     // TODO: Open day modal for viewing/scheduling holds
-    console.log('Day clicked:', date);
   }
 
   return (

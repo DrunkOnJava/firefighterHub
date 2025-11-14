@@ -51,7 +51,6 @@ export function useConnectionStatus(): ConnectionStatusInfo & {
         setStatus('connected');
         setRetryCount(0);
         setLastError(null);
-        console.log('✅ Connection status: CONNECTED');
 
         // Periodic health check
         checkInterval = setInterval(() => {
@@ -68,7 +67,6 @@ export function useConnectionStatus(): ConnectionStatusInfo & {
       } else if (status === 'CLOSED') {
         setStatus('disconnected');
         setLastError('Connection closed');
-        console.log('🔌 Connection status: DISCONNECTED');
       }
     });
 

@@ -22,7 +22,9 @@ export default defineConfig({
           'supabase-vendor': ['@supabase/supabase-js'],
 
           // Date/Calendar libraries - moderate size, may change
-          'calendar-vendor': ['@fullcalendar/core', '@fullcalendar/daygrid', '@fullcalendar/interaction', '@fullcalendar/react', 'date-fns'],
+          // Note: FullCalendar packages removed from manual chunks to fix Vercel build
+          // Let Vite handle FullCalendar chunking automatically
+          'calendar-vendor': ['date-fns'],
 
           // UI libraries - icons and utilities
           'ui-vendor': ['lucide-react', 'clsx'],

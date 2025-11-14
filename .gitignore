@@ -104,6 +104,14 @@ supabase-mcp-server/
 visualAuditReport.txt
 docs/github-copilot/
 docs/github-copilot-markdown/
+fullcontext.txt
+
+# Empty/unused directories
+Copilot-Cli-MCP-Tools/
+
+# Large binary files
+.playwright-mcp/*.pptx
+.playwright-mcp/*.png
 
 # Database
 *.db

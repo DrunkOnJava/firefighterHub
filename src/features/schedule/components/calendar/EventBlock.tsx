@@ -32,6 +32,26 @@ export function EventBlock({ event, onClick }: EventBlockProps) {
     }
   };
 
+  const handleClick = () => {
+    try {
+      onClick?.();
+    } catch (error) {
+      console.error('Failed to handle event click:', {
+        eventId: event.id,
+        firefighterId: event.firefighter_id,
+        status: event.status,
+        error: error instanceof Error ? error.message : String(error)
+      });
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -40,15 +60,10 @@ export function EventBlock({ event, onClick }: EventBlockProps) {
         "hover:brightness-110 transition-all",
         getEventColorClass(event.status)
       )}
-      onClick={onClick}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.();
-        }
-      }}
+      onKeyDown={handleKeyDown}
       aria-label={`${event.firefighter_name} - ${event.status} hold`}
     >
       {/* Name + Duration in compact layout */}

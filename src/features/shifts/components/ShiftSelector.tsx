@@ -16,10 +16,10 @@ const SHIFT_COLORS = {
     ring: "ring-red-500/30",
   },
   B: {
-    badge: "bg-rose-500 text-white",
-    text: "text-rose-500",
-    border: "border-rose-500",
-    ring: "ring-rose-500/30",
+    badge: "bg-red-600 text-white",
+    text: "text-red-600",
+    border: "border-red-600",
+    ring: "ring-red-600/30",
   },
   C: {
     badge: "bg-blue-500 text-white",

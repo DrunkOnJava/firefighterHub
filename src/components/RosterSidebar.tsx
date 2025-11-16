@@ -10,6 +10,14 @@ interface RosterSidebarProps {
   onFirefighterClick?: (firefighterId: string) => void;
   shiftLabel?: string;
   onClose?: () => void; // For mobile drawer close button
+  // Admin actions
+  isAdminMode?: boolean;
+  onDeactivate?: (id: string) => void;
+  onReactivate?: (id: string, position: number) => void;
+  onDelete?: (id: string) => void;
+  onCompleteHold?: (id: string) => void;
+  onTransferShift?: (id: string) => void;
+  onVolunteerHold?: (id: string) => void;
 }
 
 type SortOption = 'position' | 'name' | 'lastHold';
@@ -31,6 +39,13 @@ export function RosterSidebar({
   onFirefighterClick,
   shiftLabel,
   onClose,
+  isAdminMode = false,
+  onDeactivate,
+  onReactivate,
+  onDelete,
+  onCompleteHold,
+  onTransferShift,
+  onVolunteerHold,
 }: RosterSidebarProps) {
   const [sortBy, setSortBy] = useState<SortOption>('position');
   const [filterAvailable, setFilterAvailable] = useState(false);
@@ -155,6 +170,13 @@ export function RosterSidebar({
               number={firefighter.order_position}
               isSelected={selectedFirefighterId === firefighter.id}
               onClick={() => onFirefighterClick?.(firefighter.id)}
+              isAdminMode={isAdminMode}
+              onDeactivate={onDeactivate}
+              onReactivate={onReactivate}
+              onDelete={onDelete}
+              onCompleteHold={onCompleteHold}
+              onTransferShift={onTransferShift}
+              onVolunteerHold={onVolunteerHold}
             />
           ))
         )}

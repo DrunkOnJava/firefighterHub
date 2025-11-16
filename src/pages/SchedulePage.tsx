@@ -120,6 +120,24 @@ export const SchedulePage = memo<SchedulePageProps>(({
   // Mobile drawer state
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
+  // Safe handler wrapper for admin actions
+  const createSafeHandler = useCallback(<T extends any[]>(
+    handler: ((...args: T) => void) | undefined,
+    actionName: string
+  ) => {
+    if (!handler) {
+      return (...args: T) => {
+        console.error(`Handler not provided: ${actionName}`);
+        toast({
+          title: "Action Unavailable",
+          description: `The ${actionName} action is not available.`,
+          variant: "destructive"
+        });
+      };
+    }
+    return handler;
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Left Sidebar - Personnel Roster (Calendr Style) - Desktop Only */}
@@ -129,6 +147,13 @@ export const SchedulePage = memo<SchedulePageProps>(({
           selectedFirefighterId={selectedFirefighterId}
           onFirefighterClick={(id) => onFirefighterSelect?.(id)}
           shiftLabel={currentShift}
+          isAdminMode={isAdminMode}
+          onDeactivate={createSafeHandler(onDeactivateFirefighter, 'deactivate firefighter')}
+          onReactivate={createSafeHandler(onReactivateFirefighter, 'reactivate firefighter')}
+          onDelete={createSafeHandler(onDeleteFirefighter, 'delete firefighter')}
+          onCompleteHold={createSafeHandler(onCompleteHold, 'complete hold')}
+          onTransferShift={createSafeHandler(onTransferShift, 'transfer shift')}
+          onVolunteerHold={createSafeHandler(onVolunteerHold, 'volunteer for hold')}
         />
       </div>
 
@@ -157,6 +182,13 @@ export const SchedulePage = memo<SchedulePageProps>(({
           }}
           shiftLabel={currentShift}
           onClose={() => setIsMobileDrawerOpen(false)}
+          isAdminMode={isAdminMode}
+          onDeactivate={createSafeHandler(onDeactivateFirefighter, 'deactivate firefighter')}
+          onReactivate={createSafeHandler(onReactivateFirefighter, 'reactivate firefighter')}
+          onDelete={createSafeHandler(onDeleteFirefighter, 'delete firefighter')}
+          onCompleteHold={createSafeHandler(onCompleteHold, 'complete hold')}
+          onTransferShift={createSafeHandler(onTransferShift, 'transfer shift')}
+          onVolunteerHold={createSafeHandler(onVolunteerHold, 'volunteer for hold')}
         />
       </div>
 

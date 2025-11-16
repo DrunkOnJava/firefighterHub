@@ -1,14 +1,31 @@
 import { useState } from "react";
 import { Firefighter } from "@/lib/supabase";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MoreVertical, UserPlus, UserMinus, UserX, CheckCircle, ArrowRightLeft, RotateCcw, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 interface RosterItemProps {
   firefighter: Firefighter;
   number: number;
   isSelected?: boolean;
   onClick?: () => void;
+  // Admin actions (only available in admin mode)
+  isAdminMode?: boolean;
+  onDeactivate?: (id: string) => void;
+  onReactivate?: (id: string, position: number) => void;
+  onDelete?: (id: string) => void;
+  onCompleteHold?: (id: string) => void;
+  onTransferShift?: (id: string) => void;
+  onVolunteerHold?: (id: string) => void;
 }
 
 /**
@@ -19,13 +36,31 @@ interface RosterItemProps {
  * - Expandable details on click
  * - Hover state with subtle background
  * - Chevron rotation animation
+ * - Admin context menu (when isAdminMode=true)
  */
-export function RosterItem({ firefighter, number, isSelected, onClick }: RosterItemProps) {
+export function RosterItem({
+  firefighter,
+  number,
+  isSelected,
+  onClick,
+  isAdminMode = false,
+  onDeactivate,
+  onReactivate,
+  onDelete,
+  onCompleteHold,
+  onTransferShift,
+  onVolunteerHold,
+}: RosterItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleClick = () => {
     setIsExpanded(!isExpanded);
     onClick?.();
+  };
+
+  const handleAdminAction = (action: () => void, e: Event) => {
+    e.stopPropagation(); // Prevent triggering onClick
+    action();
   };
 
   const formatLastHold = (date: string | null) => {
@@ -71,14 +106,103 @@ export function RosterItem({ firefighter, number, isSelected, onClick }: RosterI
           )}
         </div>
 
-        <ChevronDown
-          className={cn(
-            "h-4 w-4 text-muted-foreground flex-shrink-0",
-            "group-hover:text-foreground",
-            "transition-transform duration-200",
-            isExpanded && "rotate-180"
+        <div className="flex items-center gap-1">
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 text-muted-foreground flex-shrink-0",
+              "group-hover:text-foreground",
+              "transition-transform duration-200",
+              isExpanded && "rotate-180"
+            )}
+          />
+
+          {/* Admin Actions Menu */}
+          {isAdminMode && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label="Admin actions"
+                >
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel>Admin Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+
+                {/* Complete Hold */}
+                {onCompleteHold && (
+                  <DropdownMenuItem
+                    onClick={(e) => handleAdminAction(() => onCompleteHold(firefighter.id), e as any)}
+                  >
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Complete Hold
+                  </DropdownMenuItem>
+                )}
+
+                {/* Volunteer for Hold */}
+                {onVolunteerHold && (
+                  <DropdownMenuItem
+                    onClick={(e) => handleAdminAction(() => onVolunteerHold(firefighter.id), e as any)}
+                  >
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Volunteer for Hold
+                  </DropdownMenuItem>
+                )}
+
+                {/* Transfer Shift */}
+                {onTransferShift && (
+                  <DropdownMenuItem
+                    onClick={(e) => handleAdminAction(() => onTransferShift(firefighter.id), e as any)}
+                  >
+                    <ArrowRightLeft className="mr-2 h-4 w-4" />
+                    Transfer Shift
+                  </DropdownMenuItem>
+                )}
+
+                <DropdownMenuSeparator />
+
+                {/* Deactivate / Reactivate */}
+                {firefighter.is_available ? (
+                  onDeactivate && (
+                    <DropdownMenuItem
+                      onClick={(e) => handleAdminAction(() => onDeactivate(firefighter.id), e as any)}
+                    >
+                      <UserMinus className="mr-2 h-4 w-4" />
+                      Deactivate
+                    </DropdownMenuItem>
+                  )
+                ) : (
+                  onReactivate && (
+                    <DropdownMenuItem
+                      onClick={(e) => handleAdminAction(() => onReactivate(firefighter.id, firefighter.order_position), e as any)}
+                    >
+                      <RotateCcw className="mr-2 h-4 w-4" />
+                      Reactivate
+                    </DropdownMenuItem>
+                  )
+                )}
+
+                {/* Delete */}
+                {onDelete && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={(e) => handleAdminAction(() => onDelete(firefighter.id), e as any)}
+                      className="text-destructive focus:text-destructive"
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      Delete
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
-        />
+        </div>
       </button>
 
       {/* Expanded Details */}

@@ -6,11 +6,11 @@ import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { OptimizedMainCalendar } from '@/features/schedule/components/calendar/OptimizedMainCalendar';
 import { NextUpBand } from '@/features/shifts/components/NextUpBand';
-import { FirefighterList } from '@/features/roster/components/FirefighterList';
 import { RosterSidebar } from '@/components/RosterSidebar';
 import { Firefighter, ScheduledHold, Shift } from '@/lib/supabase';
-import { Users, ChevronLeft, ChevronRight, Plus, Search, Settings, Menu } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Search, Settings, Menu } from 'lucide-react';
 import { addMonths, subMonths, format } from 'date-fns';
+import { toast } from '@/hooks/use-toast';
 
 interface SchedulePageProps {
   currentShift: Shift;
@@ -46,75 +46,6 @@ const MemoizedNextUpBand = memo(NextUpBand, (prev, next) => {
 });
 
 MemoizedNextUpBand.displayName = 'MemoizedNextUpBand';
-
-// Memoized calendar navigation component
-const CalendarNavigation = memo<{
-  currentMonth: Date;
-  onPrevMonth: () => void;
-  onNextMonth: () => void;
-  onToday: () => void;
-}>(({ currentMonth, onPrevMonth, onNextMonth, onToday }) => {
-  return (
-    <div className="flex items-center justify-between px-6 py-4 border-b bg-muted/20">
-      <div className="flex items-center gap-3">
-        <CalendarIcon className="h-5 w-5 text-muted-foreground" />
-        <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-          {format(currentMonth, 'MMMM yyyy')}
-        </h3>
-      </div>
-      <div className="flex gap-2">
-        <Button
-          variant="ghost"
-          size="default"
-          onClick={onPrevMonth}
-          className="h-9 w-9 p-0"
-          aria-label="Previous month"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="default"
-          onClick={onToday}
-          className="h-9 px-3 text-sm font-medium"
-          aria-label="Go to today"
-        >
-          Today
-        </Button>
-        <Button
-          variant="ghost"
-          size="default"
-          onClick={onNextMonth}
-          className="h-9 w-9 p-0"
-          aria-label="Next month"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </Button>
-      </div>
-    </div>
-  );
-});
-
-CalendarNavigation.displayName = 'CalendarNavigation';
-
-// Memoized calendar legend component
-const CalendarLegend = memo(() => {
-  return (
-    <div className="flex flex-wrap items-center gap-4 px-6 py-3 border-t bg-muted/20">
-      <span className="text-sm text-muted-foreground font-medium">Legend:</span>
-      <div className="flex items-center gap-2">
-        <div className="w-3 h-3 rounded-sm bg-gradient-to-r from-orange-500 to-red-600" />
-        <span className="text-sm">Scheduled</span>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="w-3 h-3 rounded-sm bg-gradient-to-r from-emerald-500 to-green-600" />
-        <span className="text-sm">Completed</span>
-      </div>
-    </div>
-  );
-});
-
-CalendarLegend.displayName = 'CalendarLegend';
 
 /**
  * SchedulePage - Main application page using shadcn/ui v4 components
@@ -312,8 +243,10 @@ export const SchedulePage = memo<SchedulePageProps>(({
                   size="sm"
                   className="bg-primary hover:bg-primary/90 hidden sm:flex"
                   onClick={() => {
-                    // TODO: Open new event modal
-                    console.log('New event clicked');
+                    toast({
+                      title: "Coming Soon",
+                      description: "Event creation modal is under development.",
+                    });
                   }}
                 >
                   <Plus className="h-4 w-4 mr-2" />
@@ -328,8 +261,10 @@ export const SchedulePage = memo<SchedulePageProps>(({
                 size="icon"
                 className="h-9 w-9"
                 onClick={() => {
-                  // TODO: Open search modal
-                  console.log('Search clicked');
+                  toast({
+                    title: "Coming Soon",
+                    description: "Search functionality will be available soon.",
+                  });
                 }}
               >
                 <Search className="h-5 w-5" />
@@ -342,8 +277,10 @@ export const SchedulePage = memo<SchedulePageProps>(({
                   size="icon"
                   className="h-9 w-9 hidden sm:flex"
                   onClick={() => {
-                    // TODO: Open settings
-                    console.log('Settings clicked');
+                    toast({
+                      title: "Coming Soon",
+                      description: "Settings panel is under development.",
+                    });
                   }}
                 >
                   <Settings className="h-5 w-5" />
@@ -417,8 +354,7 @@ SchedulePage.displayName = 'SchedulePage';
  * 1. React.memo with custom comparison for NextUpBand
  * 2. useMemo for expensive computations (nextUpFirefighters, current shift filtering)
  * 3. useCallback for event handlers to prevent child re-renders
- * 4. Memoized static components (CalendarNavigation, CalendarLegend)
- * 5. Prop isolation to minimize re-render cascade
+ * 4. Prop isolation to minimize re-render cascade
  *
  * ACCESSIBILITY FEATURES:
  * 1. Skip navigation support (id="main-content", tabIndex={-1})

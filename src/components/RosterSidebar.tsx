@@ -2,7 +2,7 @@ import { Firefighter } from "@/lib/supabase";
 import { RosterItem } from "./RosterItem";
 import { Button } from "@/components/ui/button";
 import { Filter, ArrowUpDown, Users, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface RosterSidebarProps {
   firefighters: Firefighter[];
@@ -35,23 +35,36 @@ export function RosterSidebar({
   const [sortBy, setSortBy] = useState<SortOption>('position');
   const [filterAvailable, setFilterAvailable] = useState(false);
 
-  // Apply filters and sorting
-  const processedFirefighters = [...firefighters]
-    .filter(ff => !filterAvailable || ff.is_available)
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'name':
-          return a.name.localeCompare(b.name);
-        case 'lastHold':
-          if (!a.last_hold_date && !b.last_hold_date) return 0;
-          if (!a.last_hold_date) return 1;
-          if (!b.last_hold_date) return -1;
-          return new Date(a.last_hold_date).getTime() - new Date(b.last_hold_date).getTime();
-        case 'position':
-        default:
-          return a.order_position - b.order_position;
-      }
-    });
+  // Apply filters and sorting with error handling
+  const processedFirefighters = useMemo(() => {
+    try {
+      return [...firefighters]
+        .filter(ff => !filterAvailable || ff.is_available)
+        .sort((a, b) => {
+          switch (sortBy) {
+            case 'name':
+              return a.name.localeCompare(b.name);
+            case 'lastHold':
+              if (!a.last_hold_date && !b.last_hold_date) return 0;
+              if (!a.last_hold_date) return 1;
+              if (!b.last_hold_date) return -1;
+              return new Date(a.last_hold_date).getTime() - new Date(b.last_hold_date).getTime();
+            case 'position':
+            default:
+              return a.order_position - b.order_position;
+          }
+        });
+    } catch (error) {
+      console.error('Failed to process firefighters:', {
+        sortBy,
+        filterAvailable,
+        firefighterCount: firefighters.length,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      // Return unprocessed as fallback
+      return firefighters;
+    }
+  }, [firefighters, sortBy, filterAvailable]);
 
   const toggleSort = () => {
     const options: SortOption[] = ['position', 'name', 'lastHold'];
@@ -135,11 +148,11 @@ export function RosterSidebar({
             {filterAvailable ? 'No available firefighters' : 'No firefighters in roster'}
           </div>
         ) : (
-          processedFirefighters.map((firefighter, index) => (
+          processedFirefighters.map((firefighter) => (
             <RosterItem
               key={firefighter.id}
               firefighter={firefighter}
-              number={index + 1}
+              number={firefighter.order_position}
               isSelected={selectedFirefighterId === firefighter.id}
               onClick={() => onFirefighterClick?.(firefighter.id)}
             />

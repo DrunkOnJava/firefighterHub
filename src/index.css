@@ -63,6 +63,12 @@ body {
     --ring: 210 85% 51%;            /* Primary blue for focus */
     --radius: 0.5rem;               /* 8px - Calendr standard */
 
+    /* Event-specific colors for calendar blocks */
+    --event-scheduled: 217 91% 60%;    /* Blue - scheduled holds */
+    --event-completed: 173 80% 40%;    /* Teal - completed holds */
+    --event-holiday: 142 71% 45%;      /* Green - holidays */
+    --event-alert: 25 95% 53%;         /* Orange - special events */
+
     /* Elevation & Shadow System (5-level visual hierarchy) */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

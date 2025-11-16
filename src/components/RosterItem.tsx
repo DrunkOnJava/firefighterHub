@@ -32,7 +32,13 @@ export function RosterItem({ firefighter, number, isSelected, onClick }: RosterI
     if (!date) return "Never";
     try {
       return format(new Date(date), "MMM d, yyyy");
-    } catch {
+    } catch (error) {
+      console.error('Failed to parse firefighter last_hold_date:', {
+        firefighterId: firefighter.id,
+        firefighterName: firefighter.name,
+        rawDate: date,
+        error: error instanceof Error ? error.message : String(error)
+      });
       return "Invalid date";
     }
   };

@@ -14,7 +14,7 @@
 import { Shift } from '@/lib/supabase';
 import { CalendarDay } from '@/utils/calendarUtils';
 import { getShiftForDate, getShiftColor } from '@/utils/shiftRotation';
-import { AppointmentPill } from './AppointmentPill';
+import { EventBlock } from './EventBlock';
 
 interface DayCellProps {
   day: CalendarDay;
@@ -53,57 +53,44 @@ export function DayCell({
   //   return `${firstInitial}. ${lastName}`;
   // };
 
-  // Determine styling based on state - WCAG 2.5.5: 44px minimum touch targets
+  // Calendr-style cell classes - cleaner, flatter design
   let cellClasses = `
-    relative w-full p-3 text-left
-    min-h-[44px] min-w-[44px]
-    transition-all duration-300 ease-out
-    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background
+    relative w-full p-2 text-left
+    min-h-[100px] lg:min-h-[120px]
+    transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-primary/50
     flex flex-col
-    aspect-square
-    rounded-xl
-    border-2
+    border border-border/50
+    bg-background
   `;
 
   if (!day.isCurrentMonth) {
-    cellClasses += ` bg-muted/20 border-border/20 text-muted-foreground cursor-default opacity-30`;
+    cellClasses += ` bg-muted/10 text-muted-foreground/50 cursor-default`;
   } else {
-    // Base state - gradient background with depth
+    // Base state - clean, minimal
     cellClasses += `
-      bg-gradient-to-br from-card via-card to-card/95
-      border-border/60
-      text-foreground
-      hover:border-primary/40
-      hover:shadow-lg
-      hover:scale-[1.02]
-      hover:-translate-y-0.5
+      hover:bg-muted/20
       cursor-pointer
-      active:scale-[0.98]
-      shadow-sm
+      active:bg-muted/30
     `;
   }
 
-  // Today indicator - MAXIMUM visual prominence
+  // Today indicator - Calendr-style blue circle on date number
   if (day.isToday && day.isCurrentMonth) {
     cellClasses += `
-      !bg-gradient-to-br !from-blue-500/30 !via-purple-500/20 !to-blue-600/30
-      dark:!from-blue-500/40 dark:!via-purple-500/30 dark:!to-blue-600/40
-      !border-blue-500/80
-      !shadow-2xl
-      !shadow-blue-500/50
-      ring-4 ring-blue-500/30
-      scale-105
+      bg-primary/5
+      border-primary/30
     `;
   }
 
-  // Has holds - add left border accent with glow
+  // Has holds - subtle left border (Calendr style)
   if (hasHolds && day.isCurrentMonth) {
-    cellClasses += ` border-l-4 !border-l-orange-500 bg-orange-50/30 dark:bg-orange-950/20`;
+    cellClasses += ` border-l-2 border-l-primary`;
   }
 
-  // Selected firefighter highlight - accent outline
+  // Selected firefighter highlight - subtle ring
   if (hasSelectedFF && day.isCurrentMonth) {
-    cellClasses += ` ring-2 ring-blue-400 ring-offset-2 ring-offset-background`;
+    cellClasses += ` ring-1 ring-primary/50 ring-inset`;
   }
 
   // Past date and not admin - make read-only
@@ -131,81 +118,47 @@ export function DayCell({
           : undefined
       }
     >
-      {/* Day content wrapper */}
-      <div className="flex items-center justify-between mb-2">
-        {/* Day number with shift indicator */}
-        <div className="flex items-center gap-1.5">
-          <div className={`
-            text-lg font-bold tracking-tight
-            ${day.isToday
-              ? 'text-blue-700 dark:text-blue-200 drop-shadow-sm'
-              : day.isCurrentMonth
-                ? 'text-foreground'
-                : 'text-muted-foreground'
-            }
-          `}>
-            {day.date.getDate()}
-          </div>
-          
-          {/* Working shift indicator - subtle dot instead of badge */}
-          {day.isCurrentMonth && (() => {
-            const workingShift = getShiftForDate(day.date);
-            const shiftColors = getShiftColor(workingShift);
-            return (
-              <div 
-                className={`w-1.5 h-1.5 rounded-full ${shiftColors.dot}`}
-                title={`Shift ${workingShift} working`}
-              />
-            );
-          })()}
+      {/* Day number - Calendr style */}
+      <div className="flex items-start justify-between mb-1.5">
+        {/* Date number - with today indicator */}
+        <div className={`
+          flex items-center justify-center
+          ${day.isToday && day.isCurrentMonth
+            ? 'w-6 h-6 rounded-full bg-primary text-primary-foreground text-sm font-bold'
+            : 'text-sm font-medium text-foreground'
+          }
+        `}>
+          {day.date.getDate()}
         </div>
 
-        {/* Hold count badge */}
+        {/* Hold count indicator - subtle */}
         {hasHolds && day.isCurrentMonth && (
-          <div className="
-            bg-gradient-to-br from-orange-500 to-red-600
-            text-white rounded-full w-7 h-7
-            flex items-center justify-center
-            text-xs font-extrabold
-            shadow-lg shadow-orange-500/50
-            ring-2 ring-white/20
-            transition-transform hover:scale-110
-          ">
-            {day.scheduledHolds.length}
+          <div className="text-[10px] text-muted-foreground font-medium">
+            {day.scheduledHolds.length} event{day.scheduledHolds.length !== 1 ? 's' : ''}
           </div>
         )}
       </div>
 
-      {/* Holds list - using AppointmentPill component */}
+      {/* Holds list - using EventBlock component (Calendr style) */}
       <div className="space-y-1 flex-1 overflow-hidden">
-        {/* Show first 4 holds */}
-        {day.scheduledHolds.slice(0, 4).map((hold, index) => (
-          <AppointmentPill
+        {/* Show first 3 holds (Calendr compact style) */}
+        {day.scheduledHolds.slice(0, 3).map((hold, index) => (
+          <EventBlock
             key={hold.id || index}
-            appointment={hold}
+            event={hold}
             onClick={() => onDayClick(day)}
           />
         ))}
-                hover:scale-[1.02]
-                transition-all duration-200
-                backdrop-blur-sm opacity-95
-                overflow-hidden
-              `}
-              title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-              } (completed)`}
-            >
-              <span className="whitespace-nowrap drop-shadow-md overflow-hidden text-ellipsis">
-                {hold.firefighter_name || "Unknown"}
-              </span>
-              {hold.fire_station && (
-                <span className="flex-shrink-0 text-emerald-50 font-extrabold text-[9px] bg-white/20 px-1 py-0.5 rounded">
-                  #{hold.fire_station}
-                </span>
-              )}
-            </div>
-          );
-        })}
+
+        {/* Overflow indicator */}
+        {day.scheduledHolds.length > 3 && (
+          <button
+            className="text-xs text-muted-foreground hover:text-foreground mt-1"
+            onClick={() => onDayClick(day)}
+          >
+            +{day.scheduledHolds.length - 3} more
+          </button>
+        )}
       </div>
     </button>
   );

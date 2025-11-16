@@ -63,6 +63,12 @@ body {
     --ring: 210 85% 51%;            /* Primary blue for focus */
     --radius: 0.5rem;               /* 8px - Calendr standard */
 
+    /* Event-specific colors for calendar blocks */
+    --event-scheduled: 217 91% 60%;    /* Blue - scheduled holds */
+    --event-completed: 173 80% 40%;    /* Teal - completed holds */
+    --event-holiday: 142 71% 45%;      /* Green - holidays */
+    --event-alert: 25 95% 53%;         /* Orange - special events */
+
     /* Elevation & Shadow System (5-level visual hierarchy) */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -72,30 +78,36 @@ body {
     --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   }
   .dark {
-    /* Calendr Design System - Dark Mode */
-    --background: 216 7% 7%;        /* #121315 from Calendr */
-    --foreground: 0 0% 98%;         /* #F9F9F9 from Calendr */
-    --card: 210 6% 13%;             /* #222325 from Calendr */
+    /* Calendr Design System - Dark Mode (Deeper, more sophisticated) */
+    --background: 222 47% 4%;       /* #020617 Tailwind slate-950 - deeper base */
+    --foreground: 0 0% 98%;         /* #FAFAFA White text */
+    --card: 217 33% 8%;             /* #0F172A Tailwind slate-900 - elevated surfaces */
     --card-foreground: 0 0% 98%;
-    --popover: 216 7% 7%;
+    --popover: 217 33% 8%;
     --popover-foreground: 0 0% 98%;
-    --primary: 210 85% 51%;         /* Same #196FEB - consistent across modes */
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 14.9%;
+    --primary: 217 91% 60%;         /* #3B82F6 Tailwind blue-500 - Calendr blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 28% 17%;       /* #1E293B Tailwind slate-800 - borders/muted */
     --secondary-foreground: 0 0% 98%;
-    --muted: 210 6% 18%;            /* #2D2F33 from Calendr */
-    --muted-foreground: 0 0% 57%;   /* #909091 from Calendr */
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 4 79% 58%;       /* #E24646 - same in both modes */
-    --destructive-foreground: 0 0% 98%;
-    --warning: 47 95% 57%;          /* #F7E030 - same in both modes */
-    --warning-foreground: 0 0% 9%;
-    --success: 162 77% 52%;         /* #2ADBA9 - same in both modes */
-    --success-foreground: 0 0% 98%;
-    --border: 210 6% 18%;           /* #2D2F33 from Calendr */
-    --input: 210 6% 18%;
-    --ring: 0 0% 83.1%;
+    --muted: 217 33% 8%;            /* #0F172A Same as card */
+    --muted-foreground: 0 0% 71%;   /* #B4B4B4 Gray 400 - secondary text */
+    --accent: 173 80% 40%;          /* #14B8A6 Tailwind teal-600 - accents */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;       /* Red for errors */
+    --destructive-foreground: 0 0% 100%;
+    --warning: 25 95% 53%;          /* #F97316 Tailwind orange-500 - alerts */
+    --warning-foreground: 0 0% 100%;
+    --success: 142 71% 45%;         /* #10B981 Tailwind green-600 - holidays/completed */
+    --success-foreground: 0 0% 100%;
+    --border: 215 28% 17%;          /* #1E293B Consistent grid lines */
+    --input: 215 28% 17%;
+    --ring: 217 91% 60%;            /* Blue focus rings */
+
+    /* Event-specific colors for calendar blocks */
+    --event-scheduled: 217 91% 60%;    /* Blue - scheduled holds */
+    --event-completed: 173 80% 40%;    /* Teal - completed holds */
+    --event-holiday: 142 71% 45%;      /* Green - holidays */
+    --event-alert: 25 95% 53%;         /* Orange - special events */
 
     /* Dark mode shadows - deeper and more prominent */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);

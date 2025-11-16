@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { OptimizedMainCalendar } from '@/features/schedule/components/calendar/OptimizedMainCalendar';
 import { NextUpBand } from '@/features/shifts/components/NextUpBand';
 import { FirefighterList } from '@/features/roster/components/FirefighterList';
+import { RosterSidebar } from '@/components/RosterSidebar';
 import { Firefighter, ScheduledHold, Shift } from '@/lib/supabase';
 import { Users, ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
 import { addMonths, subMonths, format } from 'date-fns';
@@ -186,88 +187,124 @@ export const SchedulePage = memo<SchedulePageProps>(({
   }, [firefighters, currentShift]);
 
   return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className="flex-1 flex flex-col gap-6 p-6 overflow-hidden min-h-0"
-    >
-      {/* Next Up Band - Compact operational status */}
-      <div className="flex-shrink-0">
-        <MemoizedNextUpBand
-          firefighters={nextUpFirefighters}
-          onFirefighterClick={(ff) => {
-            const id = ff?.id || null;
-            if (id) onFirefighterSelect?.(id);
-          }}
+    <div className="flex h-screen overflow-hidden">
+      {/* Left Sidebar - Personnel Roster (Calendr Style) */}
+      <div className="hidden lg:block">
+        <RosterSidebar
+          firefighters={currentShiftFirefighters}
           selectedFirefighterId={selectedFirefighterId}
+          onFirefighterClick={(id) => onFirefighterSelect?.(id)}
+          shiftLabel={currentShift}
         />
       </div>
 
-      {/* Main Content: Calendar + Roster - Unified Container */}
-      <Card className="flex-1 flex flex-col lg:flex-row gap-6 overflow-hidden min-h-0 shadow-2xl border">
-        {/* Calendar Section */}
-        <div className="flex-[2] flex flex-col overflow-hidden min-w-0 min-h-0 border-r-0 lg:border-r">
-          <CardHeader className="flex-shrink-0 px-6 py-6 border-b space-y-2">
-            <CardTitle className="text-2xl sm:text-3xl font-bold">Schedule</CardTitle>
-            <CardDescription className="text-base">Hold rotation & events</CardDescription>
-          </CardHeader>
+      {/* Main Calendar Area */}
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="flex-1 flex flex-col overflow-hidden min-h-0 bg-background"
+      >
+        {/* Calendr-Style Header: Month + Navigation + Actions */}
+        <header className="flex-shrink-0 sticky top-0 z-20 bg-background border-b border-border px-6 py-4 flex items-center justify-between">
+          {/* Month/Year Display + Navigation */}
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold text-foreground">
+              {format(currentMonth, 'MMMM yyyy')}
+            </h1>
 
-          <CalendarNavigation
-            currentMonth={currentMonth}
-            onPrevMonth={handlePrevMonth}
-            onNextMonth={handleNextMonth}
-            onToday={handleToday}
-          />
+            {/* Month Navigation */}
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handlePrevMonth}
+                className="h-9 w-9"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
 
-          <CardContent className="flex-1 min-h-0 overflow-auto p-1">
-            <OptimizedMainCalendar
-              currentMonth={currentMonth}
-              onMonthChange={onMonthChange}
-              scheduledHolds={scheduledHolds}
-              selectedFirefighterId={selectedFirefighterId}
-              onDayClick={onDayClick}
-              isLoading={isLoading}
-            />
-          </CardContent>
+              <Button
+                variant="ghost"
+                onClick={handleToday}
+                className="h-9 px-3"
+              >
+                Today
+              </Button>
 
-          <CalendarLegend />
-        </div>
-
-        {/* Roster Sidebar - Integrated into same card */}
-        <div className="w-full lg:w-[360px] flex flex-col overflow-hidden min-h-0">
-          <CardHeader className="flex-shrink-0 px-6 py-6 border-b bg-muted/30">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-primary shadow-sm">
-                <Users className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <CardTitle className="text-xl sm:text-2xl font-bold truncate">Roster</CardTitle>
-                <CardDescription className="text-sm sm:text-base truncate">Shift {currentShift} Team</CardDescription>
-              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleNextMonth}
+                className="h-9 w-9"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
             </div>
-          </CardHeader>
+          </div>
 
-          <div className="flex-1 min-h-0 overflow-auto">
-            <FirefighterList
-              firefighters={currentShiftFirefighters}
-              deactivatedFirefighters={deactivatedFirefighters}
-              onAdd={onAddFirefighter || (() => {})}
-              onCompleteHold={onCompleteHold || (() => {})}
-              onDelete={onDeleteFirefighter || (() => {})}
-              onDeactivate={onDeactivateFirefighter || (() => {})}
-              onReactivate={onReactivateFirefighter || (() => {})}
-              onTransferShift={onTransferShift || (() => {})}
-              onResetAll={onResetAll || (() => {})}
-              onReorder={onReorderFirefighters || (() => {})}
-              onVolunteerHold={onVolunteerHold || (() => {})}
-              currentShift={currentShift}
-              isAdminMode={isAdminMode}
-              isLoading={isLoading}
+          {/* Right Actions */}
+          <div className="flex items-center gap-2">
+            {/* Next Up Indicator - Compact for Calendr style */}
+            <MemoizedNextUpBand
+              firefighters={nextUpFirefighters}
+              onFirefighterClick={(ff) => {
+                const id = ff?.id || null;
+                if (id) onFirefighterSelect?.(id);
+              }}
+              selectedFirefighterId={selectedFirefighterId}
             />
           </div>
+        </header>
+
+        {/* Calendar Grid - Full Width */}
+        <div className="flex-1 overflow-auto p-6">
+          <OptimizedMainCalendar
+            currentMonth={currentMonth}
+            onMonthChange={onMonthChange}
+            scheduledHolds={scheduledHolds}
+            selectedFirefighterId={selectedFirefighterId}
+            onDayClick={onDayClick}
+            isLoading={isLoading}
+          />
         </div>
-      </Card>
-    </main>
+
+        {/* Mobile Roster (show below calendar on small screens) */}
+        <div className="lg:hidden border-t border-border">
+          <Card className="rounded-none border-0">
+            <CardHeader className="px-6 py-4 border-b bg-muted/30">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-primary shadow-sm">
+                  <Users className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-xl font-bold truncate">Roster</CardTitle>
+                  <CardDescription className="text-sm truncate">Shift {currentShift} Team</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+
+            <div className="max-h-96 overflow-auto">
+              <FirefighterList
+                firefighters={currentShiftFirefighters}
+                deactivatedFirefighters={deactivatedFirefighters}
+                onAdd={onAddFirefighter || (() => {})}
+                onCompleteHold={onCompleteHold || (() => {})}
+                onDelete={onDeleteFirefighter || (() => {})}
+                onDeactivate={onDeactivateFirefighter || (() => {})}
+                onReactivate={onReactivateFirefighter || (() => {})}
+                onTransferShift={onTransferShift || (() => {})}
+                onResetAll={onResetAll || (() => {})}
+                onReorder={onReorderFirefighters || (() => {})}
+                onVolunteerHold={onVolunteerHold || (() => {})}
+                currentShift={currentShift}
+                isAdminMode={isAdminMode}
+                isLoading={isLoading}
+              />
+            </div>
+          </Card>
+        </div>
+      </main>
+    </div>
   );
 });
 

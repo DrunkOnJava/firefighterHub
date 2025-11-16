@@ -14,7 +14,7 @@
 import { Shift } from '@/lib/supabase';
 import { CalendarDay } from '@/utils/calendarUtils';
 import { getShiftForDate, getShiftColor } from '@/utils/shiftRotation';
-import { AppointmentPill } from './AppointmentPill';
+import { EventBlock } from './EventBlock';
 
 interface DayCellProps {
   day: CalendarDay;
@@ -176,36 +176,26 @@ export function DayCell({
         )}
       </div>
 
-      {/* Holds list - using AppointmentPill component */}
+      {/* Holds list - using EventBlock component (Calendr style) */}
       <div className="space-y-1 flex-1 overflow-hidden">
-        {/* Show first 4 holds */}
-        {day.scheduledHolds.slice(0, 4).map((hold, index) => (
-          <AppointmentPill
+        {/* Show first 3 holds (Calendr compact style) */}
+        {day.scheduledHolds.slice(0, 3).map((hold, index) => (
+          <EventBlock
             key={hold.id || index}
-            appointment={hold}
+            event={hold}
             onClick={() => onDayClick(day)}
           />
         ))}
-                hover:scale-[1.02]
-                transition-all duration-200
-                backdrop-blur-sm opacity-95
-                overflow-hidden
-              `}
-              title={`${hold.firefighter_name || "Unknown"}${
-                hold.fire_station ? ` - Station ${hold.fire_station}` : ""
-              } (completed)`}
-            >
-              <span className="whitespace-nowrap drop-shadow-md overflow-hidden text-ellipsis">
-                {hold.firefighter_name || "Unknown"}
-              </span>
-              {hold.fire_station && (
-                <span className="flex-shrink-0 text-emerald-50 font-extrabold text-[9px] bg-white/20 px-1 py-0.5 rounded">
-                  #{hold.fire_station}
-                </span>
-              )}
-            </div>
-          );
-        })}
+
+        {/* Overflow indicator */}
+        {day.scheduledHolds.length > 3 && (
+          <button
+            className="text-xs text-muted-foreground hover:text-foreground mt-1"
+            onClick={() => onDayClick(day)}
+          >
+            +{day.scheduledHolds.length - 3} more
+          </button>
+        )}
       </div>
     </button>
   );

@@ -1,7 +1,7 @@
 import { Firefighter } from "@/lib/supabase";
 import { RosterItem } from "./RosterItem";
 import { Button } from "@/components/ui/button";
-import { Filter, ArrowUpDown, Users } from "lucide-react";
+import { Filter, ArrowUpDown, Users, X } from "lucide-react";
 import { useState } from "react";
 
 interface RosterSidebarProps {
@@ -9,6 +9,7 @@ interface RosterSidebarProps {
   selectedFirefighterId?: string | null;
   onFirefighterClick?: (firefighterId: string) => void;
   shiftLabel?: string;
+  onClose?: () => void; // For mobile drawer close button
 }
 
 type SortOption = 'position' | 'name' | 'lastHold';
@@ -29,6 +30,7 @@ export function RosterSidebar({
   selectedFirefighterId,
   onFirefighterClick,
   shiftLabel,
+  onClose,
 }: RosterSidebarProps) {
   const [sortBy, setSortBy] = useState<SortOption>('position');
   const [filterAvailable, setFilterAvailable] = useState(false);
@@ -83,6 +85,18 @@ export function RosterSidebar({
                 <p className="text-xs text-muted-foreground">Shift {shiftLabel}</p>
               )}
             </div>
+            {/* Close button for mobile drawer */}
+            {onClose && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-8 w-8 lg:hidden"
+                aria-label="Close roster"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
           </div>
           <div className="text-xs text-muted-foreground">
             {processedFirefighters.length} member{processedFirefighters.length !== 1 ? 's' : ''}

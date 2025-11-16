@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useCallback, memo } from 'react';
+import { useMemo, useCallback, memo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardDescription, CardTitle } from '@/components/ui/card';
 // import { Badge } from '@/components/ui/badge'; // Unused - no badges in schedule page
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { NextUpBand } from '@/features/shifts/components/NextUpBand';
 import { FirefighterList } from '@/features/roster/components/FirefighterList';
 import { RosterSidebar } from '@/components/RosterSidebar';
 import { Firefighter, ScheduledHold, Shift } from '@/lib/supabase';
-import { Users, ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { Users, ChevronLeft, ChevronRight, Plus, Search, Settings, Menu } from 'lucide-react';
 import { addMonths, subMonths, format } from 'date-fns';
 
 interface SchedulePageProps {
@@ -186,15 +186,46 @@ export const SchedulePage = memo<SchedulePageProps>(({
     return firefighters.filter(ff => ff.shift === currentShift);
   }, [firefighters, currentShift]);
 
+  // Mobile drawer state
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Left Sidebar - Personnel Roster (Calendr Style) */}
+      {/* Left Sidebar - Personnel Roster (Calendr Style) - Desktop Only */}
       <div className="hidden lg:block">
         <RosterSidebar
           firefighters={currentShiftFirefighters}
           selectedFirefighterId={selectedFirefighterId}
           onFirefighterClick={(id) => onFirefighterSelect?.(id)}
           shiftLabel={currentShift}
+        />
+      </div>
+
+      {/* Mobile Drawer Overlay */}
+      {isMobileDrawerOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsMobileDrawerOpen(false)}
+        />
+      )}
+
+      {/* Mobile Drawer - Slide from left */}
+      <div
+        className={`
+          fixed top-0 left-0 h-full z-50 lg:hidden
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+      >
+        <RosterSidebar
+          firefighters={currentShiftFirefighters}
+          selectedFirefighterId={selectedFirefighterId}
+          onFirefighterClick={(id) => {
+            onFirefighterSelect?.(id);
+            setIsMobileDrawerOpen(false);
+          }}
+          shiftLabel={currentShift}
+          onClose={() => setIsMobileDrawerOpen(false)}
         />
       </div>
 
@@ -205,59 +236,154 @@ export const SchedulePage = memo<SchedulePageProps>(({
         className="flex-1 flex flex-col overflow-hidden min-h-0 bg-background"
       >
         {/* Calendr-Style Header: Month + Navigation + Actions */}
-        <header className="flex-shrink-0 sticky top-0 z-20 bg-background border-b border-border px-6 py-4 flex items-center justify-between">
-          {/* Month/Year Display + Navigation */}
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-foreground">
-              {format(currentMonth, 'MMMM yyyy')}
-            </h1>
-
-            {/* Month Navigation */}
-            <div className="flex items-center gap-1">
+        <header className="flex-shrink-0 sticky top-0 z-20 bg-background border-b border-border px-4 lg:px-6 py-3 lg:py-4">
+          <div className="flex items-center justify-between gap-4">
+            {/* Left: Mobile Menu + Month/Year + Navigation */}
+            <div className="flex items-center gap-3">
+              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={handlePrevMonth}
-                className="h-9 w-9"
+                onClick={() => setIsMobileDrawerOpen(true)}
+                className="h-9 w-9 lg:hidden"
+                aria-label="Open roster"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <Menu className="h-5 w-5" />
               </Button>
 
-              <Button
-                variant="ghost"
-                onClick={handleToday}
-                className="h-9 px-3"
-              >
-                Today
-              </Button>
+              {/* Month/Year Display with Loading Indicator */}
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl lg:text-2xl font-bold text-foreground">
+                  {format(currentMonth, 'MMMM yyyy')}
+                </h1>
+                {isLoading && (
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                )}
+              </div>
 
+              {/* Month Navigation - Hidden on mobile */}
+              <div className="hidden md:flex items-center gap-1">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handlePrevMonth}
+                  className="h-9 w-9"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  onClick={handleToday}
+                  className="h-9 px-3"
+                >
+                  Today
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleNextMonth}
+                  className="h-9 w-9"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Right: Actions */}
+            <div className="flex items-center gap-2">
+              {/* Next Up - Hidden on small screens */}
+              <div className="hidden xl:block">
+                <MemoizedNextUpBand
+                  firefighters={nextUpFirefighters}
+                  onFirefighterClick={(ff) => {
+                    const id = ff?.id || null;
+                    if (id) onFirefighterSelect?.(id);
+                  }}
+                  selectedFirefighterId={selectedFirefighterId}
+                />
+              </div>
+
+              {/* New Event Button - Calendr primary action */}
+              {isAdminMode && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="bg-primary hover:bg-primary/90 hidden sm:flex"
+                  onClick={() => {
+                    // TODO: Open new event modal
+                    console.log('New event clicked');
+                  }}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  <span className="hidden lg:inline">New Event</span>
+                  <span className="lg:hidden">New</span>
+                </Button>
+              )}
+
+              {/* Search Button */}
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={handleNextMonth}
                 className="h-9 w-9"
+                onClick={() => {
+                  // TODO: Open search modal
+                  console.log('Search clicked');
+                }}
               >
-                <ChevronRight className="h-5 w-5" />
+                <Search className="h-5 w-5" />
               </Button>
+
+              {/* Settings - Admin only */}
+              {isAdminMode && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 hidden sm:flex"
+                  onClick={() => {
+                    // TODO: Open settings
+                    console.log('Settings clicked');
+                  }}
+                >
+                  <Settings className="h-5 w-5" />
+                </Button>
+              )}
             </div>
           </div>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-2">
-            {/* Next Up Indicator - Compact for Calendr style */}
-            <MemoizedNextUpBand
-              firefighters={nextUpFirefighters}
-              onFirefighterClick={(ff) => {
-                const id = ff?.id || null;
-                if (id) onFirefighterSelect?.(id);
-              }}
-              selectedFirefighterId={selectedFirefighterId}
-            />
+          {/* Mobile Month Navigation - Below header on small screens */}
+          <div className="flex md:hidden items-center justify-center gap-1 mt-3 pt-3 border-t border-border/50">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handlePrevMonth}
+              className="h-8 w-8"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+
+            <Button
+              variant="ghost"
+              onClick={handleToday}
+              className="h-8 px-3 text-sm"
+            >
+              Today
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleNextMonth}
+              className="h-8 w-8"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
           </div>
         </header>
 
         {/* Calendar Grid - Full Width */}
-        <div className="flex-1 overflow-auto p-6">
+        <div className="flex-1 overflow-auto p-4 lg:p-6">
           <OptimizedMainCalendar
             currentMonth={currentMonth}
             onMonthChange={onMonthChange}
@@ -266,42 +392,6 @@ export const SchedulePage = memo<SchedulePageProps>(({
             onDayClick={onDayClick}
             isLoading={isLoading}
           />
-        </div>
-
-        {/* Mobile Roster (show below calendar on small screens) */}
-        <div className="lg:hidden border-t border-border">
-          <Card className="rounded-none border-0">
-            <CardHeader className="px-6 py-4 border-b bg-muted/30">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-primary shadow-sm">
-                  <Users className="h-6 w-6 text-primary-foreground" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <CardTitle className="text-xl font-bold truncate">Roster</CardTitle>
-                  <CardDescription className="text-sm truncate">Shift {currentShift} Team</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-
-            <div className="max-h-96 overflow-auto">
-              <FirefighterList
-                firefighters={currentShiftFirefighters}
-                deactivatedFirefighters={deactivatedFirefighters}
-                onAdd={onAddFirefighter || (() => {})}
-                onCompleteHold={onCompleteHold || (() => {})}
-                onDelete={onDeleteFirefighter || (() => {})}
-                onDeactivate={onDeactivateFirefighter || (() => {})}
-                onReactivate={onReactivateFirefighter || (() => {})}
-                onTransferShift={onTransferShift || (() => {})}
-                onResetAll={onResetAll || (() => {})}
-                onReorder={onReorderFirefighters || (() => {})}
-                onVolunteerHold={onVolunteerHold || (() => {})}
-                currentShift={currentShift}
-                isAdminMode={isAdminMode}
-                isLoading={isLoading}
-              />
-            </div>
-          </Card>
         </div>
       </main>
     </div>
